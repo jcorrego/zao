@@ -20,13 +20,13 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'wwwzaon_zaoshop');
+define('DB_NAME', 'zao');
 
 /** MySQL database username */
-define('DB_USER', 'wwwzaon_zaoshop');
+define('DB_USER', 'zao');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'toto*1218');
+define('DB_PASSWORD', 'zao');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
