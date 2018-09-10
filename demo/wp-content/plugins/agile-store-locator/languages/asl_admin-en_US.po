@@ -1,0 +1,1276 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: Agile Store Locator\n"
+"POT-Creation-Date: 2018-06-26 16:23+0500\n"
+"PO-Revision-Date: 2018-06-26 16:24+0500\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: agile-store-locator.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: en_US\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: admin/class-agile-store-locator-admin.php:119
+msgid "Geocode was not Successful:"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:120
+msgid "Upload Failed! Please try Again."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:121
+msgid "Delete Category"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:122
+msgid "Delete Categories"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:123
+msgid "Are you sure you want to "
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:124
+msgid "Delete it!"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:125
+msgid "Duplicate it!"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:126
+msgid "Delete Marker"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:127
+msgid "Delete Markers"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:128
+msgid "Delete Logo"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:129
+#: admin/class-agile-store-locator-admin.php:130
+msgid "Delete Logos"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:131
+msgid "Delete Store"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:132
+msgid "Delete Stores"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:133
+msgid "Duplicate Selected Store"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:134
+#: admin/partials/add_store.php:257 admin/partials/add_store.php:284
+#: admin/partials/add_store.php:311 admin/partials/add_store.php:338
+#: admin/partials/add_store.php:365 admin/partials/add_store.php:392
+#: admin/partials/add_store.php:419 admin/partials/edit_store.php:246
+#: admin/partials/edit_store.php:277 admin/partials/edit_store.php:308
+#: admin/partials/edit_store.php:339 admin/partials/edit_store.php:370
+#: admin/partials/edit_store.php:401 admin/partials/edit_store.php:432
+msgid "Start Time"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:135
+msgid "Select Logo"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:136
+msgid "Select Marker"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:137
+#: admin/partials/add_store.php:261 admin/partials/add_store.php:288
+#: admin/partials/add_store.php:315 admin/partials/add_store.php:342
+#: admin/partials/add_store.php:369 admin/partials/add_store.php:396
+#: admin/partials/add_store.php:423 admin/partials/edit_store.php:250
+#: admin/partials/edit_store.php:281 admin/partials/edit_store.php:312
+#: admin/partials/edit_store.php:343 admin/partials/edit_store.php:374
+#: admin/partials/edit_store.php:405 admin/partials/edit_store.php:436
+msgid "End Time"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:138
+#: admin/partials/add_store.php:116
+msgid "Select Country"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:139
+msgid "DELETE ALL STORES"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:140
+msgid "Invalid File, Accepts JPG, PNG, GIF or SVG."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:141
+msgid "Error Occured, Please try Again."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:142
+msgid "DELETE ALL"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:333
+msgid "Stores deleted successfully."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:333
+msgid "Store deleted successfully."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:336
+msgid "Error occurred while saving record"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:362
+msgid "Selected Stores"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:365
+msgid "Error occurred while Changing Status"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:421
+msgid "Store Duplicated successfully."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:425
+msgid "Error occurred while saving Store"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:548
+#: admin/class-agile-store-locator-admin.php:554
+msgid "Error occurred while deleting record"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:558
+msgid "Categories deleted successfully."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:558
+msgid "Category deleted successfully."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:599
+msgid "Sorry, your file is too large."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:603
+msgid "Sorry, only JPG, JPEG, PNG & GIF files are allowed."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:618
+#: admin/class-agile-store-locator-admin.php:636
+msgid "Updated Successfully."
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:627
+msgid "Some error occured"
+msgstr ""
+
+#: admin/class-agile-store-locator-admin.php:664
+msgid "Error occurred while geting record"
+msgstr ""
+
+#: admin/partials/add_store.php:6 includes/class-agile-store-locator.php:246
+msgid "Add New Store"
+msgstr ""
+
+#: admin/partials/add_store.php:7
+msgid "Many more features are available in"
+msgstr ""
+
+#: admin/partials/add_store.php:7 admin/partials/user_setting.php:328
+#: admin/partials/user_setting.php:338 admin/partials/user_setting.php:346
+#: admin/partials/user_setting.php:425
+msgid "Full Version"
+msgstr ""
+
+#: admin/partials/add_store.php:8
+msgid ""
+"It is MUST to add Google Maps API Key in ASL Settings, else Google Maps may "
+"not work."
+msgstr ""
+
+#: admin/partials/add_store.php:8
+msgid "Click Here to know How you can add Google Maps API Key"
+msgstr ""
+
+#: admin/partials/add_store.php:15 admin/partials/edit_store.php:14
+msgid "Alert!"
+msgstr ""
+
+#: admin/partials/add_store.php:15 admin/partials/edit_store.php:14
+msgid "Warning!"
+msgstr ""
+
+#: admin/partials/add_store.php:15 admin/partials/edit_store.php:14
+msgid "Best check yourself "
+msgstr ""
+
+#: admin/partials/add_store.php:15 admin/partials/edit_store.php:14
+msgid "alert link"
+msgstr ""
+
+#: admin/partials/add_store.php:23 admin/partials/edit_store.php:21
+msgid "Store Name"
+msgstr ""
+
+#: admin/partials/add_store.php:29 admin/partials/edit_store.php:26
+#: admin/partials/manage_store.php:56 admin/partials/user_setting.php:175
+msgid "Title"
+msgstr ""
+
+#: admin/partials/add_store.php:35 admin/partials/edit_store.php:32
+#: admin/partials/manage_store.php:57
+msgid "Description"
+msgstr ""
+
+#: admin/partials/add_store.php:48 admin/partials/edit_store.php:45
+msgid "Store Address"
+msgstr ""
+
+#: admin/partials/add_store.php:53 admin/partials/edit_store.php:50
+#: admin/partials/manage_store.php:63
+msgid "Phone"
+msgstr ""
+
+#: admin/partials/add_store.php:59 admin/partials/edit_store.php:56
+msgid "Fax"
+msgstr ""
+
+#: admin/partials/add_store.php:69 admin/partials/edit_store.php:65
+#: admin/partials/manage_store.php:64
+msgid "Email"
+msgstr ""
+
+#: admin/partials/add_store.php:76 admin/partials/edit_store.php:71
+#: admin/partials/manage_store.php:60
+msgid "Street"
+msgstr ""
+
+#: admin/partials/add_store.php:87 admin/partials/edit_store.php:81
+#: admin/partials/manage_store.php:62 admin/partials/user_setting.php:177
+msgid "City"
+msgstr ""
+
+#: admin/partials/add_store.php:94 admin/partials/edit_store.php:87
+#: admin/partials/manage_store.php:61 admin/partials/user_setting.php:178
+msgid "State"
+msgstr ""
+
+#: admin/partials/add_store.php:106 admin/partials/edit_store.php:97
+#: admin/partials/manage_store.php:66
+msgid "Postal Code"
+msgstr ""
+
+#: admin/partials/add_store.php:113 admin/partials/edit_store.php:103
+msgid "Country"
+msgstr ""
+
+#: admin/partials/add_store.php:135 admin/partials/edit_store.php:122
+msgid "Longitude"
+msgstr ""
+
+#: admin/partials/add_store.php:141 admin/partials/edit_store.php:128
+msgid "Latitude"
+msgstr ""
+
+#: admin/partials/add_store.php:150 admin/partials/edit_store.php:136
+msgid "Change Coordinates"
+msgstr ""
+
+#: admin/partials/add_store.php:163 admin/partials/edit_store.php:149
+msgid "Detailed Information"
+msgstr ""
+
+#: admin/partials/add_store.php:169 admin/partials/edit_store.php:154
+msgid "Category"
+msgstr ""
+
+#: admin/partials/add_store.php:182 admin/partials/edit_store.php:170
+msgid "Site URL"
+msgstr ""
+
+#: admin/partials/add_store.php:192 admin/partials/edit_store.php:179
+msgid "Additional Details"
+msgstr ""
+
+#: admin/partials/add_store.php:199 admin/partials/edit_store.php:185
+#: admin/partials/manage_store.php:46 admin/partials/manage_store.php:67
+msgid "Disabled"
+msgstr ""
+
+#: admin/partials/add_store.php:212 admin/partials/edit_store.php:196
+msgid "Logo"
+msgstr ""
+
+#: admin/partials/add_store.php:221 admin/partials/edit_store.php:205
+msgid "Marker"
+msgstr ""
+
+#: admin/partials/add_store.php:232 admin/partials/edit_store.php:216
+msgid "Ordering"
+msgstr ""
+
+#: admin/partials/add_store.php:235 admin/partials/edit_store.php:219
+msgid "Descending Order for the list, higher number on top."
+msgstr ""
+
+#: admin/partials/add_store.php:235
+msgid "Shortcode"
+msgstr ""
+
+#: admin/partials/add_store.php:246 admin/partials/edit_store.php:232
+msgid "Set Timing"
+msgstr ""
+
+#: admin/partials/add_store.php:252 admin/partials/edit_store.php:238
+msgid "Monday"
+msgstr ""
+
+#: admin/partials/add_store.php:270 admin/partials/add_store.php:297
+#: admin/partials/add_store.php:324 admin/partials/add_store.php:351
+#: admin/partials/add_store.php:378 admin/partials/add_store.php:405
+#: admin/partials/add_store.php:432 admin/partials/edit_store.php:260
+#: admin/partials/edit_store.php:291 admin/partials/edit_store.php:322
+#: admin/partials/edit_store.php:353 admin/partials/edit_store.php:384
+#: admin/partials/edit_store.php:415 admin/partials/edit_store.php:446
+msgid "Closed"
+msgstr ""
+
+#: admin/partials/add_store.php:271 admin/partials/add_store.php:298
+#: admin/partials/add_store.php:325 admin/partials/add_store.php:352
+#: admin/partials/add_store.php:379 admin/partials/add_store.php:406
+#: admin/partials/add_store.php:433 admin/partials/edit_store.php:261
+#: admin/partials/edit_store.php:292 admin/partials/edit_store.php:323
+#: admin/partials/edit_store.php:354 admin/partials/edit_store.php:385
+#: admin/partials/edit_store.php:416 admin/partials/edit_store.php:447
+msgid "Open 24 Hour"
+msgstr ""
+
+#: admin/partials/add_store.php:279 admin/partials/edit_store.php:269
+msgid "Tuesday"
+msgstr ""
+
+#: admin/partials/add_store.php:306 admin/partials/edit_store.php:300
+msgid "Wednesday"
+msgstr ""
+
+#: admin/partials/add_store.php:333 admin/partials/edit_store.php:331
+msgid "Thursday"
+msgstr ""
+
+#: admin/partials/add_store.php:360 admin/partials/edit_store.php:362
+msgid "Friday"
+msgstr ""
+
+#: admin/partials/add_store.php:387 admin/partials/edit_store.php:393
+msgid "Saturday"
+msgstr ""
+
+#: admin/partials/add_store.php:414 admin/partials/edit_store.php:424
+msgid "Sunday"
+msgstr ""
+
+#: admin/partials/add_store.php:455
+msgid "Saving Store..."
+msgstr ""
+
+#: admin/partials/add_store.php:455
+msgid "Store Saved"
+msgstr ""
+
+#: admin/partials/add_store.php:455
+msgid "Add Store"
+msgstr ""
+
+#: admin/partials/add_store.php:469 admin/partials/add_store.php:487
+#: admin/partials/edit_store.php:478 admin/partials/edit_store.php:496
+msgid "Upload Logo"
+msgstr ""
+
+#: admin/partials/add_store.php:475 admin/partials/add_store.php:520
+#: admin/partials/categories.php:32 admin/partials/categories.php:59
+#: admin/partials/categories.php:111 admin/partials/edit_store.php:484
+#: admin/partials/edit_store.php:529 admin/partials/markers.php:22
+msgid "Name"
+msgstr ""
+
+#: admin/partials/add_store.php:487 admin/partials/categories.php:89
+#: admin/partials/categories.php:135 admin/partials/edit_store.php:496
+msgid "Submitting ..."
+msgstr ""
+
+#: admin/partials/add_store.php:501 admin/partials/add_store.php:546
+#: admin/partials/edit_store.php:510 admin/partials/edit_store.php:555
+#: admin/partials/import_store.php:95
+msgid "Close"
+msgstr ""
+
+#: admin/partials/add_store.php:514 admin/partials/add_store.php:532
+#: admin/partials/edit_store.php:523 admin/partials/edit_store.php:541
+msgid "Upload Marker"
+msgstr ""
+
+#: admin/partials/add_store.php:527 admin/partials/categories.php:73
+#: admin/partials/categories.php:119 admin/partials/edit_store.php:491
+#: admin/partials/import_store.php:76
+msgid "Browse"
+msgstr ""
+
+#: admin/partials/categories.php:5 includes/class-agile-store-locator.php:248
+msgid "Manage Categories"
+msgstr ""
+
+#: admin/partials/categories.php:7
+msgid ""
+"Directory is not writable, Category Image Upload will Fail, Make directory "
+"writable."
+msgstr ""
+
+#: admin/partials/categories.php:11 admin/partials/manage_store.php:18
+msgid "Delete Selected"
+msgstr ""
+
+#: admin/partials/categories.php:12
+msgid "New Category"
+msgstr ""
+
+#: admin/partials/categories.php:16
+msgid "Upload SVG File for Categories if you are using Template 2"
+msgstr ""
+
+#: admin/partials/categories.php:22 admin/partials/manage_store.php:30
+#: admin/partials/manage_store.php:32 admin/partials/manage_store.php:34
+#: admin/partials/markers.php:14
+msgid "Search ID"
+msgstr ""
+
+#: admin/partials/categories.php:23 admin/partials/markers.php:15
+msgid "Search Name"
+msgstr ""
+
+#: admin/partials/categories.php:24 admin/partials/categories.php:33
+#: admin/partials/markers.php:16 admin/partials/markers.php:23
+msgid "Active"
+msgstr ""
+
+#: admin/partials/categories.php:30 admin/partials/manage_store.php:53
+msgid "Select All"
+msgstr ""
+
+#: admin/partials/categories.php:31 admin/partials/categories.php:55
+msgid "Category ID"
+msgstr ""
+
+#: admin/partials/categories.php:34 admin/partials/markers.php:24
+msgid "Icon"
+msgstr ""
+
+#: admin/partials/categories.php:35 admin/partials/manage_store.php:50
+#: admin/partials/manage_store.php:71
+msgid "Created On"
+msgstr ""
+
+#: admin/partials/categories.php:36 admin/partials/manage_store.php:54
+#: admin/partials/markers.php:25
+msgid "Action"
+msgstr ""
+
+#: admin/partials/categories.php:50 admin/partials/categories.php:89
+msgid "Update Category"
+msgstr ""
+
+#: admin/partials/categories.php:64 admin/partials/manage_store.php:15
+msgid "Change"
+msgstr ""
+
+#: admin/partials/categories.php:90 admin/partials/categories.php:136
+#: admin/partials/import_store.php:110
+msgid "Cancel"
+msgstr ""
+
+#: admin/partials/categories.php:106
+msgid "Add New Category"
+msgstr ""
+
+#: admin/partials/categories.php:135
+msgid "Add Category"
+msgstr ""
+
+#: admin/partials/customize_map.php:7
+#: includes/class-agile-store-locator.php:253
+msgid "Customize Map"
+msgstr ""
+
+#: admin/partials/customize_map.php:13
+msgid "Border"
+msgstr ""
+
+#: admin/partials/customize_map.php:16
+msgid "Solid"
+msgstr ""
+
+#: admin/partials/customize_map.php:21 admin/partials/import_store.php:49
+#: admin/partials/import_store.php:111
+msgid "Delete"
+msgstr ""
+
+#: admin/partials/customize_map.php:22
+msgid "Clear All"
+msgstr ""
+
+#: admin/partials/customize_map.php:77
+msgid "Traffic Layer"
+msgstr ""
+
+#: admin/partials/customize_map.php:87
+msgid "Transit Layer"
+msgstr ""
+
+#: admin/partials/customize_map.php:97
+msgid "bike Layer"
+msgstr ""
+
+#: admin/partials/customize_map.php:107
+msgid "Marker Animation"
+msgstr ""
+
+#: admin/partials/customize_map.php:120
+msgid "Save Customization"
+msgstr ""
+
+#: admin/partials/dashboard.php:5
+msgid "Agile Store Locator Dashboard"
+msgstr ""
+
+#: admin/partials/dashboard.php:7
+msgid "Simply add [ASL_STORELOCATOR] shortcode on your"
+msgstr ""
+
+#: admin/partials/dashboard.php:7
+msgid "to display Store Locator, Support Forum for Bugs or Troubleshooting"
+msgstr ""
+
+#: admin/partials/dashboard.php:7
+msgid "Create a Ticket"
+msgstr ""
+
+#: admin/partials/dashboard.php:10
+msgid ""
+"Upgrade to PRO VERSION, without any hassle, please visit the demo page to "
+"explore all options of"
+msgstr ""
+
+#: admin/partials/dashboard.php:13
+msgid ""
+"Your Google API KEY is missing, the Map Search and Direction will not work "
+"without key, Please add Google MAPS API KEY in ASL Settings."
+msgstr ""
+
+#: admin/partials/dashboard.php:13
+msgid "How to Add API Key?"
+msgstr ""
+
+#: admin/partials/dashboard.php:22
+msgid "Stores"
+msgstr ""
+
+#: admin/partials/dashboard.php:28 admin/partials/manage_store.php:47
+#: admin/partials/manage_store.php:68
+msgid "Categories"
+msgstr ""
+
+#: admin/partials/dashboard.php:34
+msgid "Markers"
+msgstr ""
+
+#: admin/partials/dashboard.php:40
+msgid "Searches"
+msgstr ""
+
+#: admin/partials/dashboard.php:50
+msgid "Analytics with Bar Chart, Top Views and Top Stores is added in"
+msgstr ""
+
+#: admin/partials/dashboard.php:50
+msgid "PRO version"
+msgstr ""
+
+#: admin/partials/edit_store.php:6 includes/class-agile-store-locator.php:256
+msgid "Edit Store"
+msgstr ""
+
+#: admin/partials/edit_store.php:33
+msgid "Enter Description"
+msgstr ""
+
+#: admin/partials/import_store.php:8
+msgid "Import Stores"
+msgstr ""
+
+#: admin/partials/import_store.php:10
+msgid ""
+"ZipArchive is not found in your PHP, Contact your server admin OR login to "
+"your cpanel and enable it. Import/Export will Not work without this library."
+msgstr ""
+
+#: admin/partials/import_store.php:17
+msgid "Create Category If NOT Exist"
+msgstr ""
+
+#: admin/partials/import_store.php:21
+msgid "USE API KEY"
+msgstr ""
+
+#: admin/partials/import_store.php:25
+msgid "Export with Store IDs (Only for Update)"
+msgstr ""
+
+#: admin/partials/import_store.php:29
+msgid "Upload"
+msgstr ""
+
+#: admin/partials/import_store.php:30
+msgid "Export All"
+msgstr ""
+
+#: admin/partials/import_store.php:32
+msgid "Fetch Missing Coordinates"
+msgstr ""
+
+#: admin/partials/import_store.php:35
+msgid "Deleting..."
+msgstr ""
+
+#: admin/partials/import_store.php:35
+msgid "Delete All Stores & Logo"
+msgstr ""
+
+#: admin/partials/import_store.php:45
+msgid "File Name"
+msgstr ""
+
+#: admin/partials/import_store.php:46
+msgid "Date"
+msgstr ""
+
+#: admin/partials/import_store.php:47
+msgid "View"
+msgstr ""
+
+#: admin/partials/import_store.php:48
+msgid "Import"
+msgstr ""
+
+#: admin/partials/import_store.php:54
+msgid "No Import File is Uploaded"
+msgstr ""
+
+#: admin/partials/import_store.php:67
+msgid "Upload Excel File"
+msgstr ""
+
+#: admin/partials/import_store.php:73
+msgid "File Path..."
+msgstr ""
+
+#: admin/partials/import_store.php:81
+msgid "Upload File"
+msgstr ""
+
+#: admin/partials/import_store.php:106
+msgid "Delete All Stores"
+msgstr ""
+
+#: admin/partials/import_store.php:108
+msgid "Are you sure you want to Delete ALL stores?"
+msgstr ""
+
+#: admin/partials/logos.php:30
+msgid "No Logo Image is Uploaded"
+msgstr ""
+
+#: admin/partials/manage_store.php:5 includes/class-agile-store-locator.php:247
+msgid "Manage Stores"
+msgstr ""
+
+#: admin/partials/manage_store.php:10
+msgid "Enable"
+msgstr ""
+
+#: admin/partials/manage_store.php:11
+msgid "Disable"
+msgstr ""
+
+#: admin/partials/manage_store.php:21
+msgid "Delete ALL STORES"
+msgstr ""
+
+#: admin/partials/manage_store.php:25
+msgid ""
+"Store Locator Listing columns can easily be updated by simply add/remove "
+"from the template, Please visit the link for more"
+msgstr ""
+
+#: admin/partials/manage_store.php:35
+msgid "Search Title"
+msgstr ""
+
+#: admin/partials/manage_store.php:36
+msgid "Search Description"
+msgstr ""
+
+#: admin/partials/manage_store.php:37
+msgid "Search Lat"
+msgstr ""
+
+#: admin/partials/manage_store.php:38
+msgid "Search Lng"
+msgstr ""
+
+#: admin/partials/manage_store.php:39
+msgid "Search Street"
+msgstr ""
+
+#: admin/partials/manage_store.php:40
+msgid "Search State"
+msgstr ""
+
+#: admin/partials/manage_store.php:41
+msgid "Search City"
+msgstr ""
+
+#: admin/partials/manage_store.php:42
+msgid "Search Phone"
+msgstr ""
+
+#: admin/partials/manage_store.php:43
+msgid "Search Email"
+msgstr ""
+
+#: admin/partials/manage_store.php:44
+msgid "Search URL"
+msgstr ""
+
+#: admin/partials/manage_store.php:45
+msgid "Search Zip"
+msgstr ""
+
+#: admin/partials/manage_store.php:48 admin/partials/manage_store.php:69
+#: admin/partials/markers.php:21
+msgid "Marker ID"
+msgstr ""
+
+#: admin/partials/manage_store.php:49 admin/partials/manage_store.php:70
+#: admin/partials/user_setting.php:179
+msgid "Logo ID"
+msgstr ""
+
+#: admin/partials/manage_store.php:55 admin/partials/user_setting.php:174
+msgid "Store ID"
+msgstr ""
+
+#: admin/partials/manage_store.php:58
+msgid "Lat"
+msgstr ""
+
+#: admin/partials/manage_store.php:59
+msgid "Lng"
+msgstr ""
+
+#: admin/partials/manage_store.php:65
+msgid "URL"
+msgstr ""
+
+#: admin/partials/markers.php:4 includes/class-agile-store-locator.php:249
+msgid "Manage Markers"
+msgstr ""
+
+#: admin/partials/markers.php:8
+msgid "New Marker"
+msgstr ""
+
+#: admin/partials/markers.php:30
+msgid "No Marker is Uploaded"
+msgstr ""
+
+#: admin/partials/user_setting.php:13
+msgid "Agile Locator Setting"
+msgstr ""
+
+#: admin/partials/user_setting.php:17
+msgid "Cluster"
+msgstr ""
+
+#: admin/partials/user_setting.php:24
+msgid "Default Map"
+msgstr ""
+
+#: admin/partials/user_setting.php:26
+msgid "HYBRID"
+msgstr ""
+
+#: admin/partials/user_setting.php:27
+msgid "ROADMAP"
+msgstr ""
+
+#: admin/partials/user_setting.php:28
+msgid "SATELLITE"
+msgstr ""
+
+#: admin/partials/user_setting.php:29
+msgid "TERRAIN"
+msgstr ""
+
+#: admin/partials/user_setting.php:33
+msgid "Time Format"
+msgstr ""
+
+#: admin/partials/user_setting.php:40
+msgid "Distance Unit"
+msgstr ""
+
+#: admin/partials/user_setting.php:47
+msgid "Default Zoom"
+msgstr ""
+
+#: admin/partials/user_setting.php:55
+msgid "Display List"
+msgstr ""
+
+#: admin/partials/user_setting.php:62
+msgid "Map Region"
+msgstr ""
+
+#: admin/partials/user_setting.php:72
+msgid "Map Language"
+msgstr ""
+
+#: admin/partials/user_setting.php:76
+msgid "Enter the Language Code, 2 character."
+msgstr ""
+
+#: admin/partials/user_setting.php:81
+msgid "Header Title"
+msgstr ""
+
+#: admin/partials/user_setting.php:83
+msgid "Head title"
+msgstr ""
+
+#: admin/partials/user_setting.php:89 admin/partials/user_setting.php:91
+msgid "Category Title"
+msgstr ""
+
+#: admin/partials/user_setting.php:97 admin/partials/user_setting.php:99
+msgid "No Item Text"
+msgstr ""
+
+#: admin/partials/user_setting.php:105
+msgid "Google API KEY"
+msgstr ""
+
+#: admin/partials/user_setting.php:109
+msgid "Generate Key from  google console if required"
+msgstr ""
+
+#: admin/partials/user_setting.php:113
+msgid "Default Lat/Lng"
+msgstr ""
+
+#: admin/partials/user_setting.php:120
+msgid "Default coordinates for map to load"
+msgstr ""
+
+#: admin/partials/user_setting.php:123
+msgid "Saving..."
+msgstr ""
+
+#: admin/partials/user_setting.php:123
+msgid "Save Settings"
+msgstr ""
+
+#: admin/partials/user_setting.php:127
+msgid "ADVANCED PRO VERSION FEATURES"
+msgstr ""
+
+#: admin/partials/user_setting.php:130
+msgid "Field Button Type"
+msgstr ""
+
+#: admin/partials/user_setting.php:132
+msgid "Geo-Location"
+msgstr ""
+
+#: admin/partials/user_setting.php:133
+msgid "Search Location"
+msgstr ""
+
+#: admin/partials/user_setting.php:138
+msgid "Display Hours"
+msgstr ""
+
+#: admin/partials/user_setting.php:140
+msgid "Today"
+msgstr ""
+
+#: admin/partials/user_setting.php:141
+msgid "7 Days"
+msgstr ""
+
+#: admin/partials/user_setting.php:146
+msgid "Distance Control"
+msgstr ""
+
+#: admin/partials/user_setting.php:148
+msgid "Slider"
+msgstr ""
+
+#: admin/partials/user_setting.php:149
+msgid "Dropdown"
+msgstr ""
+
+#: admin/partials/user_setting.php:151
+msgid "Choose Either Slider or Dropdown for Radius Miles/KM"
+msgstr ""
+
+#: admin/partials/user_setting.php:152
+msgid "To Set Maximum value for Search Range Slider"
+msgstr ""
+
+#: admin/partials/user_setting.php:155
+msgid "Search Dropdown Options"
+msgstr ""
+
+#: admin/partials/user_setting.php:159
+msgid ""
+"Enter the Search dropdown Options number, Comma Separated. Add default value "
+"with * symbol."
+msgstr ""
+
+#: admin/partials/user_setting.php:160
+msgid "Default Value Example: 10*,20,30 . Here 10 is default value"
+msgstr ""
+
+#: admin/partials/user_setting.php:163
+msgid "Prompt Location"
+msgstr ""
+
+#: admin/partials/user_setting.php:165
+msgid "OFF"
+msgstr ""
+
+#: admin/partials/user_setting.php:166
+msgid "ON"
+msgstr ""
+
+#: admin/partials/user_setting.php:168
+msgid "Prompt a dailog box for Current Location"
+msgstr ""
+
+#: admin/partials/user_setting.php:171
+msgid "Sort List"
+msgstr ""
+
+#: admin/partials/user_setting.php:173
+msgid "Default (Distance)"
+msgstr ""
+
+#: admin/partials/user_setting.php:176
+msgid "Order Field"
+msgstr ""
+
+#: admin/partials/user_setting.php:181
+msgid "Sort your listing based on fields, default is Distance"
+msgstr ""
+
+#: admin/partials/user_setting.php:184
+msgid "Stores Limit (Limited Stores)"
+msgstr ""
+
+#: admin/partials/user_setting.php:186
+msgid ""
+"Default is NULL, Option will display given Store count only, for only mobile "
+"use attribute mobile_stores_limit=\"10\" in shortcode"
+msgstr ""
+
+#: admin/partials/user_setting.php:189
+msgid "Search Result"
+msgstr ""
+
+#: admin/partials/user_setting.php:191
+msgid "Show My Nearest Location From Search"
+msgstr ""
+
+#: admin/partials/user_setting.php:192
+msgid "Default"
+msgstr ""
+
+#: admin/partials/user_setting.php:194
+msgid "In search address point to my nearest markers"
+msgstr ""
+
+#: admin/partials/user_setting.php:197
+msgid "Clicked Zoom"
+msgstr ""
+
+#: admin/partials/user_setting.php:204
+msgid "Zoom Value when List Item is Clicked"
+msgstr ""
+
+#: admin/partials/user_setting.php:207
+msgid "Search Type"
+msgstr ""
+
+#: admin/partials/user_setting.php:209
+msgid "Search By Store Name"
+msgstr ""
+
+#: admin/partials/user_setting.php:210
+msgid "Search By Address"
+msgstr ""
+
+#: admin/partials/user_setting.php:212
+msgid ""
+"Search by Either Address or Store Name, use search_type=\"1\" in ShortCode"
+msgstr ""
+
+#: admin/partials/user_setting.php:215
+msgid "Search Zoom"
+msgstr ""
+
+#: admin/partials/user_setting.php:222
+msgid "Zoom value when Search is performed"
+msgstr ""
+
+#: admin/partials/user_setting.php:225
+msgid "Marker Load"
+msgstr ""
+
+#: admin/partials/user_setting.php:227
+msgid "Load on Bound"
+msgstr ""
+
+#: admin/partials/user_setting.php:228
+msgid "Load All"
+msgstr ""
+
+#: admin/partials/user_setting.php:230
+msgid "Use Load on Bound in case of 1000 plus Markers"
+msgstr ""
+
+#: admin/partials/user_setting.php:233
+msgid "Search By"
+msgstr ""
+
+#: admin/partials/user_setting.php:235
+msgid "Cities (Postal Code, Cities"
+msgstr ""
+
+#: admin/partials/user_setting.php:236
+msgid "All"
+msgstr ""
+
+#: admin/partials/user_setting.php:237
+msgid "Regions (Locality, City, State)"
+msgstr ""
+
+#: admin/partials/user_setting.php:241
+msgid "Restrict Search"
+msgstr ""
+
+#: admin/partials/user_setting.php:245
+msgid "Enter 2 alphabet country"
+msgstr ""
+
+#: admin/partials/user_setting.php:248
+msgid "Category Select"
+msgstr ""
+
+#: admin/partials/user_setting.php:250
+msgid "Multiple Category Selection"
+msgstr ""
+
+#: admin/partials/user_setting.php:251 admin/partials/user_setting.php:290
+msgid "Single Category Selection"
+msgstr ""
+
+#: admin/partials/user_setting.php:256
+msgid "Full Height"
+msgstr ""
+
+#: admin/partials/user_setting.php:258
+msgid "Full Screen"
+msgstr ""
+
+#: admin/partials/user_setting.php:259
+msgid "Full Height (Not Fixed)"
+msgstr ""
+
+#: admin/partials/user_setting.php:260
+msgid "Full Height (Fixed)"
+msgstr ""
+
+#: admin/partials/user_setting.php:266
+msgid "Show Categories"
+msgstr ""
+
+#: admin/partials/user_setting.php:270
+msgid "Time Switch"
+msgstr ""
+
+#: admin/partials/user_setting.php:280
+msgid "Additional Info"
+msgstr ""
+
+#: admin/partials/user_setting.php:284
+msgid "Advance Filter"
+msgstr ""
+
+#: admin/partials/user_setting.php:288
+msgid "Category Marker"
+msgstr ""
+
+#: admin/partials/user_setting.php:293
+msgid "Distance Slider"
+msgstr ""
+
+#: admin/partials/user_setting.php:297
+msgid "Full Width"
+msgstr ""
+
+#: admin/partials/user_setting.php:301
+msgid "Analytics"
+msgstr ""
+
+#: admin/partials/user_setting.php:305
+msgid "Mouse Scroll"
+msgstr ""
+
+#: admin/partials/user_setting.php:309
+msgid "Sort By Bound"
+msgstr ""
+
+#: admin/partials/user_setting.php:313
+msgid "Open Link New Tab"
+msgstr ""
+
+#: admin/partials/user_setting.php:317
+msgid "Default Location Marker"
+msgstr ""
+
+#: admin/partials/user_setting.php:321
+msgid "Smooth Marker Pan"
+msgstr ""
+
+#: admin/partials/user_setting.php:326
+msgid "Layout"
+msgstr ""
+
+#: admin/partials/user_setting.php:328 admin/partials/user_setting.php:338
+#: admin/partials/user_setting.php:346 admin/partials/user_setting.php:425
+msgid "Available in"
+msgstr ""
+
+#: admin/partials/user_setting.php:336
+msgid "Map Layout"
+msgstr ""
+
+#: admin/partials/user_setting.php:344
+msgid "Template"
+msgstr ""
+
+#: admin/partials/user_setting.php:353 admin/partials/user_setting.php:431
+msgid "Color Scheme"
+msgstr ""
+
+#: admin/partials/user_setting.php:398
+msgid "Font Colors"
+msgstr ""
+
+#: admin/partials/user_setting.php:423
+msgid "Infobox Layout"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:244
+msgid "AS Locator"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:245
+msgid "Dashboard"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:246
+msgid "Create New Store"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:249
+msgid "Markers (Pro)"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:250
+msgid "Manage Logos"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:250
+msgid " Logo (Pro)"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:251
+msgid "Import/Export Stores"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:251
+msgid "Import Stores (Pro)"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:253
+msgid "Customize Map (Pro)"
+msgstr ""
+
+#: includes/class-agile-store-locator.php:254
+msgid "ASL Settings"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Agile Store Locator"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://agilestorelocator.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Agile Store Locator is a WordPress Store Finder/Locator Plugin that renders "
+"stores list with Location markers on Google Maps v3, it supports GeoLocation "
+"and render nearest stores with direction over google maps."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "AGILELOGIX"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://agilestorelocator.com/"
+msgstr ""

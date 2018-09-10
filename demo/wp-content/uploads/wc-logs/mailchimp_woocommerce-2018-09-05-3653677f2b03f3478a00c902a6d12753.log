@@ -1,0 +1,103 @@
+2018-09-05T15:53:40+00:00 NOTICE sync.started :: Starting Sync :: Wed, Sep 5, 2018 8:53 PM
+2018-09-05T15:53:53+00:00 NOTICE product_sync.success :: addStoreProduct :: #1911
+2018-09-05T15:53:54+00:00 NOTICE product_sync.success :: addStoreProduct :: #2058
+2018-09-05T15:53:55+00:00 NOTICE product_sync.success :: addStoreProduct :: #2076
+2018-09-05T15:53:55+00:00 NOTICE product_sync.success :: addStoreProduct :: #2080
+2018-09-05T15:53:56+00:00 NOTICE product_sync.success :: addStoreProduct :: #2152
+2018-09-05T15:53:57+00:00 NOTICE product_sync.success :: addStoreProduct :: #2165
+2018-09-05T15:53:58+00:00 NOTICE product_sync.success :: addStoreProduct :: #2187
+2018-09-05T15:53:58+00:00 NOTICE product_sync.success :: addStoreProduct :: #2205
+2018-09-05T15:53:59+00:00 NOTICE product_sync.success :: addStoreProduct :: #2209
+2018-09-05T15:54:00+00:00 NOTICE product_sync.success :: addStoreProduct :: #2211
+2018-09-05T15:54:00+00:00 NOTICE product_sync.success :: addStoreProduct :: #2212
+2018-09-05T15:54:01+00:00 NOTICE product_sync.success :: addStoreProduct :: #2214
+2018-09-05T15:54:02+00:00 NOTICE product_sync.success :: addStoreProduct :: #2216
+2018-09-05T15:54:02+00:00 NOTICE product_sync.success :: addStoreProduct :: #2217
+2018-09-05T15:54:03+00:00 NOTICE product_sync.success :: addStoreProduct :: #2218
+2018-09-05T15:54:04+00:00 NOTICE product_sync.success :: addStoreProduct :: #2220
+2018-09-05T15:54:04+00:00 NOTICE product_sync.success :: addStoreProduct :: #2221
+2018-09-05T15:54:05+00:00 NOTICE product_sync.success :: addStoreProduct :: #2222
+2018-09-05T15:54:06+00:00 NOTICE product_sync.success :: addStoreProduct :: #2223
+2018-09-05T15:54:07+00:00 NOTICE product_sync.success :: addStoreProduct :: #2226
+2018-09-05T15:54:08+00:00 NOTICE product_sync.success :: addStoreProduct :: #2227
+2018-09-05T15:54:09+00:00 NOTICE product_sync.success :: addStoreProduct :: #2230
+2018-09-05T15:54:09+00:00 NOTICE product_sync.success :: addStoreProduct :: #2246
+2018-09-05T15:54:10+00:00 NOTICE product_sync.success :: addStoreProduct :: #2260
+2018-09-05T15:54:10+00:00 NOTICE product_sync.success :: addStoreProduct :: #2275
+2018-09-05T15:54:18+00:00 NOTICE product_sync.success :: addStoreProduct :: #2300
+2018-09-05T15:54:19+00:00 NOTICE product_sync.success :: addStoreProduct :: #2316
+2018-09-05T15:54:19+00:00 NOTICE product_sync.success :: addStoreProduct :: #2340
+2018-09-05T15:54:20+00:00 NOTICE product_sync.success :: addStoreProduct :: #2346
+2018-09-05T15:54:22+00:00 NOTICE product_sync.completed :: Done with the product sync :: queuing up the orders next!
+2018-09-05T15:54:25+00:00 ERROR order_submit.error :: addStoreOrder :: 1695 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:25+00:00 ERROR order_submit.error :: addStoreOrder :: 1340 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:26+00:00 ERROR order_submit.error :: addStoreOrder :: 1458 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:27+00:00 ERROR order_submit.error :: addStoreOrder :: 1576 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:27+00:00 ERROR order_submit.error :: addStoreOrder :: 228 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:31+00:00 ERROR order_submit.error :: addStoreOrder :: 1638 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:31+00:00 ERROR order_submit.error :: addStoreOrder :: 1519 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:32+00:00 ERROR order_submit.error :: addStoreOrder :: 1401 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:33+00:00 ERROR order_submit.error :: addStoreOrder :: 1280 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:33+00:00 ERROR order_submit.error :: addStoreOrder :: 647 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:36+00:00 ERROR order_submit.error :: addStoreOrder :: 1281 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:37+00:00 ERROR order_submit.error :: addStoreOrder :: 1639 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:38+00:00 ERROR order_submit.error :: addStoreOrder :: 660 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:39+00:00 ERROR order_submit.error :: addStoreOrder :: 1402 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:39+00:00 ERROR order_submit.error :: addStoreOrder :: 1520 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:45+00:00 ERROR order_submit.error :: addStoreOrder :: 1640 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:46+00:00 ERROR order_submit.error :: addStoreOrder :: 1521 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:47+00:00 ERROR order_submit.error :: addStoreOrder :: 1403 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:47+00:00 ERROR order_submit.error :: addStoreOrder :: 1282 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:48+00:00 ERROR order_submit.error :: addStoreOrder :: 662 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:50+00:00 ERROR order_submit.error :: addStoreOrder :: 670 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:51+00:00 ERROR order_submit.error :: addStoreOrder :: 1641 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:51+00:00 ERROR order_submit.error :: addStoreOrder :: 1522 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:52+00:00 ERROR order_submit.error :: addStoreOrder :: 1404 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:53+00:00 ERROR order_submit.error :: addStoreOrder :: 1283 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:55+00:00 ERROR order_submit.error :: addStoreOrder :: 1696 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:55+00:00 ERROR order_submit.error :: addStoreOrder :: 670 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:55+00:00 ERROR order_submit.error :: addStoreOrder :: 1459 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:55+00:00 ERROR order_submit.error :: addStoreOrder :: 1641 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:56+00:00 ERROR order_submit.error :: addStoreOrder :: 1522 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:56+00:00 ERROR order_submit.error :: addStoreOrder :: 1341 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:57+00:00 ERROR order_submit.error :: addStoreOrder :: 1404 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:57+00:00 ERROR order_submit.error :: addStoreOrder :: 672 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:57+00:00 ERROR order_submit.error :: addStoreOrder :: 1283 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:54:57+00:00 ERROR order_submit.error :: addStoreOrder :: 1577 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:00+00:00 ERROR order_submit.error :: addStoreOrder :: 673 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:00+00:00 ERROR order_submit.error :: addStoreOrder :: 1696 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:00+00:00 ERROR order_submit.error :: addStoreOrder :: 1643 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:01+00:00 ERROR order_submit.error :: addStoreOrder :: 1459 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:01+00:00 ERROR order_submit.error :: addStoreOrder :: 1524 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:02+00:00 ERROR order_submit.error :: addStoreOrder :: 1406 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:02+00:00 ERROR order_submit.error :: addStoreOrder :: 1341 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:02+00:00 ERROR order_submit.error :: addStoreOrder :: 1285 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:02+00:00 ERROR order_submit.error :: addStoreOrder :: 672 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:03+00:00 ERROR order_submit.error :: addStoreOrder :: 1577 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:05+00:00 ERROR order_submit.error :: addStoreOrder :: 674 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:06+00:00 ERROR order_submit.error :: addStoreOrder :: 1286 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:06+00:00 ERROR order_submit.error :: addStoreOrder :: 673 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:06+00:00 ERROR order_submit.error :: addStoreOrder :: 1407 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:06+00:00 ERROR order_submit.error :: addStoreOrder :: 1643 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:07+00:00 ERROR order_submit.error :: addStoreOrder :: 1525 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:07+00:00 ERROR order_submit.error :: addStoreOrder :: 1524 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:08+00:00 ERROR order_submit.error :: addStoreOrder :: 1644 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:08+00:00 ERROR order_submit.error :: addStoreOrder :: 1406 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:09+00:00 ERROR order_submit.error :: addStoreOrder :: 1285 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:11+00:00 ERROR order_submit.error :: addStoreOrder :: 674 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:12+00:00 ERROR order_submit.error :: addStoreOrder :: 1286 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:13+00:00 ERROR order_submit.error :: addStoreOrder :: 1407 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:14+00:00 ERROR order_submit.error :: addStoreOrder :: 1525 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:15+00:00 ERROR order_submit.error :: addStoreOrder :: 1644 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:22+00:00 ERROR order_submit.error :: addStoreOrder :: 1697 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:23+00:00 ERROR order_submit.error :: addStoreOrder :: 1578 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:24+00:00 ERROR order_submit.error :: addStoreOrder :: 676 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:25+00:00 ERROR order_submit.error :: addStoreOrder :: 1342 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:25+00:00 ERROR order_submit.error :: addStoreOrder :: 1460 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:27+00:00 ERROR order_submit.error :: addStoreOrder :: 1288 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:28+00:00 ERROR order_submit.error :: addStoreOrder :: 1646 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:29+00:00 ERROR order_submit.error :: addStoreOrder :: 678 :: <p>: Required fields were not provided: lines</p> on 1455 in /home/wwwzaon/public_html/demo/wp-content/plugins/mailchimp-for-woocommerce/includes/api/class-mailchimp-api.php
+2018-09-05T15:55:31+00:00 NOTICE order_submit.completed :: Done with the order sync.
+2018-09-05T15:55:31+00:00 NOTICE sync.completed :: Finished Sync :: Wed, Sep 5, 2018 8:55 PM
+2018-09-05T17:13:44+00:00 NOTICE product_submit.success :: addStoreProduct :: #2230
+2018-09-05T17:34:45+00:00 NOTICE product_submit.success :: addStoreProduct :: #2230
