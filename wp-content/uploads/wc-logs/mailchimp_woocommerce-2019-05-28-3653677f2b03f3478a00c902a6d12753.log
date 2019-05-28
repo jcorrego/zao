@@ -1,0 +1,8 @@
+2019-05-28T09:17:38+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3230 :: email: jecafierro92@gmail.com
+2019-05-28T09:17:39+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3230 :: email: jecafierro92@gmail.com
+2019-05-28T09:21:41+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3231 :: email: carorobledo65@hotmail.com
+2019-05-28T09:21:42+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3231 :: email: carorobledo65@hotmail.com
+2019-05-28T09:29:51+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3231 :: email: carorobledo65@hotmail.com
+2019-05-28T09:44:43+00:00 NOTICE abandoned_cart.success :: email: lacasitadeirene@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=ec5d8b2acf608492e10f325ee699db28
+2019-05-28T09:44:43+00:00 NOTICE abandoned_cart.success :: email: lacasitadeirene@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=ec5d8b2acf608492e10f325ee699db28
+2019-05-28T09:48:31+00:00 NOTICE abandoned_cart.success :: email: lacasitadeirene@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=ec5d8b2acf608492e10f325ee699db28

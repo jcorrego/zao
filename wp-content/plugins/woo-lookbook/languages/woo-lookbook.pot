@@ -1,0 +1,598 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-05 04:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/woo-lookbook.php:52
+msgid ""
+"Please install and active WooCommerce. WooCommerce Multi Currency is going "
+"to working."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:91
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:166
+msgid "Settings"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:113
+msgctxt "woo-lookbook"
+msgid "WC Lookbooks"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:114
+msgctxt "woo-lookbook"
+msgid "WC Lookbook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:115
+msgctxt "Lookbooks"
+msgid "WC Lookbooks"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:116
+msgctxt "Lookbook"
+msgid "WC Lookbook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:117
+msgctxt "woo-lookbook"
+msgid "Add New"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:118
+msgid "Add New Lookbook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:119
+msgid "New Lookbook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:120
+msgid "Edit Lookbook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:121
+msgid "View Lookbook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:122
+msgid "All Lookbooks"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:123
+msgid "Search Lookbooks"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:124
+msgid "Parent Lookbooks:"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:125
+msgid "No books found."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:126
+msgid "No books found in Trash."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:131
+msgid "Description."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/admin.php:165
+msgid "WooCommerce Lookbook Setting page"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:109
+msgid "Publish"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:110
+msgid "Pending"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:111
+msgid "Draft"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:128
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:166
+msgid "Instagram"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:129
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:268
+msgid "Image"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:130
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:180
+msgid "Shortcode"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:131
+msgid "Status"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:164
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:255
+msgid "Sync Instagram"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:256
+msgid "Loading"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:276
+msgid "Node"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:305
+msgid "Search your product"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:311
+msgid "X"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:313
+msgid "Y"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:324
+msgid "You are using free version. You add only 2 nodes."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:327
+msgid "Upgrade Premium"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:333
+msgid "Add node"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:386
+msgid "Add Image"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/lookbook.php:391
+msgid "Remove this image"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:43
+msgid "Enable"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:46
+msgid "Enable to display Lookbook on the single product page"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:50
+msgid "Position"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:53
+msgid "Above Description Tab"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:54
+msgid "Below Description Tab"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:56
+msgid "Select lookbook position."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:61
+msgid "Shortcode type"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:64
+msgid "Single Image"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:65
+msgid "Slides"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:67
+msgid "Select how lookbooks should be played."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:71
+msgid "Lookbooks"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:88
+msgid "Select lookbooks to display. You add only 2 lookbooks. To use unlimited"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:90
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:220
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:291
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:360
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:614
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:627
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:640
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:652
+msgid "Update this feature"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:96
+msgid "Align"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:99
+msgid "Center"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:100
+msgid "Left"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:101
+msgid "Right"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/product.php:122
+msgid "LookBook"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:44
+msgid "Please save Settings and get access token again."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:154
+msgid "WooCommerce Lookbook Settings"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:160
+msgid "Design"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:163
+msgid "Product"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:176
+msgid "Link Redirect"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:184
+msgid "Click on Nodes will redirect the page to the single product page."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:190
+msgid "External Link"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:198
+msgid ""
+"Click on Nodes will redirect the page to the external link instead of the "
+"single product page. Working only with External/Affiliate products."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:209
+msgid "Node Options"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:215
+msgid "Icon"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:226
+msgid "Color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:234
+msgid "Background color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:242
+msgid "Border color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:251
+msgid "Hide Title"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:264
+msgid "Title Color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:272
+msgid "Title Background Color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:280
+msgid "Quick view"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:286
+msgid "Loading Icon"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:297
+msgid "Text Color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:305
+msgid "Background Color"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:313
+msgid "Border radius"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:319
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:378
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:391
+msgid "px"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:327
+msgid "Hide Close Button"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:341
+msgid "Hide See More Button"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:355
+msgid "RTL"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:362
+msgid "Support RTL fully"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:367
+msgid "Slide Options"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:372
+msgid "Width"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:385
+msgid "Height"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:399
+msgid "Effect"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:404
+msgid "Slide"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:405
+msgid "Fade"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:412
+msgid "Slide Pagination"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:426
+msgid "Slide Navigation"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:440
+msgid "Auto play"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:453
+msgid "Duration"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:459
+msgid "milliseconds"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:462
+msgid "Specify a time to advance to the next lookbook."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:467
+msgid "Custom Script"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:472
+msgid "Custom CSS"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:485
+msgid "1. Go to "
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:488
+msgid ""
+"2. Click Register Your Application button and click Register new Client ID"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:489
+msgid "3. Copy"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:491
+msgid "to Valid redirect URIs field"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:493
+msgid ""
+"4. When register application successful. Click Manage button on the right "
+"top of\n"
+"                            Application."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:496
+msgid ""
+"5. Copy Client ID and Client Secret to WooCommerce Lookbook Settings "
+"page/Instagram then\n"
+"                            Save Settings"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:499
+msgid "6. Click Get Access Token button in WooCommerce Lookbook Settings page."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:512
+msgid "Client ID"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:524
+msgid "Client Secret"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:536
+msgid "Access Token"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:545
+msgid "Get Access Token"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:549
+msgid "You must fill Client ID and Client Secret to get Access token"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:557
+msgid "Display"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:562
+msgid "Gallery"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:563
+msgid "Carousel"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:570
+msgid "Number items per row"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:574
+msgid "3"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:575
+msgid "4"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:576
+msgid "5"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:582
+msgid "Display limit"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:591
+msgid "Link to Instagram"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:603
+msgid "Synchronize"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:609
+msgid "Schedule"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:616
+msgid "The action will trigger when someone visits your WordPress site."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:622
+msgid "Image Status"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:629
+msgid "Lookbooks status after images are imported."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:635
+msgid "Data Update"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:647
+msgid "Image Quantity"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:654
+msgid "List images are get from API. The fewer quantity sync faster."
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/settings.php:663
+msgid "Save"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:21
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:84
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:84
+msgid "System Status"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:51
+msgid "PHP Time Limit"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:55
+msgid "PHP Max Input Vars"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:60
+msgid "Memory Limit"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/admin/system.php:65
+msgid "Allow URL Open"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/frontend/shortcode.php:96
+msgid "See more"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/frontend/shortcode.php:133
+msgid "View on Instagram"
+msgstr ""
+
+#: Volumes/DATA/SVN/woo-lookbook/trunk/frontend/shortcode.php:230
+msgid "Product added successful"
+msgstr ""
+
+#. Name of the plugin
+msgid "WooCommerce Lookbook"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Allows you to create realistic lookbooks of your products. Help your "
+"customers visualize what they purchase from you."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://villatheme.com/extensions/woocommerce-lookbook/"
+msgstr ""
+
+#. Author of the plugin
+msgid "VillaTheme"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "http://villatheme.com"
+msgstr ""

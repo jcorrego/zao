@@ -1,0 +1,11 @@
+2019-05-19T20:37:28+00:00 NOTICE abandoned_cart.success :: email: di.martagaviria@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=abf82dbd9132a08c23a6237ecda1ab21
+2019-05-20T11:06:50+00:00 NOTICE abandoned_cart.success :: email: infoluzkelly@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=bd348fdaf5fabaf85084db27a6fa68b8
+2019-05-20T11:07:32+00:00 NOTICE member.sync :: Updated Member infoluzkelly@gmail.com
+2019-05-20T11:17:06+00:00 NOTICE member.sync :: Updated Member infoluzkelly@gmail.com
+2019-05-20T11:19:11+00:00 NOTICE member.sync :: Updated Member infoluzkelly@gmail.com
+2019-05-20T11:21:05+00:00 NOTICE member.sync :: Updated Member infoluzkelly@gmail.com
+2019-05-20T11:28:52+00:00 NOTICE order_submit.success :: addStoreOrder :: #3219 :: email: infoluzkelly@gmail.com :: landing site https://www.zaomakeup.com.co/ :: abandoned cart deleted [bd348fdaf5fabaf85084db27a6fa68b8]
+2019-05-20T15:48:01+00:00 NOTICE abandoned_cart.success :: email: maria.palacios9@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=1b2a31e0e2fc0d1a00542c17feb81fe1
+2019-05-20T18:23:13+00:00 NOTICE product_submit.success :: addStoreProduct :: #2076
+2019-05-20T18:23:45+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3219 :: email: infoluzkelly@gmail.com
+2019-05-20T18:23:46+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3219 :: email: infoluzkelly@gmail.com

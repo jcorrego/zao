@@ -1,0 +1,4 @@
+2019-04-29T22:35:23+00:00 NOTICE abandoned_cart.success :: email: johis711@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=244158e986ed74566d398b3fb9b75b39
+2019-04-29T23:12:35+00:00 NOTICE order_submit.success :: addStoreOrder :: #3195 :: email: yeri_m@hotmail.com :: abandoned cart deleted [aa631b3bb62e22d63f2ce6a3b1fc3cdc]
+2019-04-30T08:34:17+00:00 NOTICE product_submit.success :: addStoreProduct :: #2246
+2019-04-30T08:38:46+00:00 NOTICE product_submit.success :: addStoreProduct :: #2165

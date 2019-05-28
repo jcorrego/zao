@@ -1,0 +1,15 @@
+2019-05-22T19:55:18+00:00 NOTICE order_submit.success :: addStoreOrder :: #3137 :: email: annabellasoto@hotmail.com
+2019-05-23T08:03:09+00:00 NOTICE promo_code.update :: updated promo code retirosbonita
+2019-05-23T10:27:01+00:00 NOTICE abandoned_cart.success :: email: mona222714@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=2c5c0dae8ea57d284f138d89203d3fc7
+2019-05-23T10:57:13+00:00 NOTICE abandoned_cart.success :: email: ziana_06@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=196627221d239778993d8f747aa11033
+2019-05-23T11:01:55+00:00 NOTICE order_submit.success :: addStoreOrder :: #3224 :: email: ziana_06@hotmail.com :: landing site https://www.zaomakeup.com.co/ :: abandoned cart deleted [196627221d239778993d8f747aa11033]
+2019-05-23T11:05:00+00:00 NOTICE abandoned_cart.success :: email: angelitapsicologa@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=ee62711a575e1f597bf84df473f4eac1
+2019-05-23T11:18:34+00:00 NOTICE product_submit.success :: addStoreProduct :: #3026
+2019-05-23T11:20:21+00:00 NOTICE product_submit.success :: addStoreProduct :: #2275
+2019-05-23T11:21:12+00:00 NOTICE product_submit.success :: addStoreProduct :: #2275
+2019-05-23T11:22:04+00:00 NOTICE product_submit.success :: addStoreProduct :: #2275
+2019-05-23T11:26:24+00:00 NOTICE product_submit.success :: addStoreProduct :: #2246
+2019-05-23T11:27:14+00:00 NOTICE product_submit.success :: addStoreProduct :: #2165
+2019-05-23T18:29:43+00:00 NOTICE product_submit.success :: addStoreProduct :: #2346
+2019-05-23T18:30:12+00:00 NOTICE product_submit.success :: addStoreProduct :: #2346
+2019-05-23T18:30:44+00:00 NOTICE product_submit.success :: addStoreProduct :: #2346

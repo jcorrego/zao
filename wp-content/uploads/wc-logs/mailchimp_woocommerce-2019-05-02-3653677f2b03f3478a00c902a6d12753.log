@@ -1,0 +1,8 @@
+2019-05-01T20:12:11+00:00 NOTICE order_submit.success :: addStoreOrder :: #3099 :: email: Marefon10@gmail.com :: abandoned cart deleted [8a126782714713f33950092b79f12a23]
+2019-05-01T20:12:12+00:00 NOTICE order_submit.success :: addStoreOrder :: #3098 :: email: Marefon10@gmail.com
+2019-05-02T10:50:10+00:00 NOTICE abandoned_cart.success :: email: salvadomaria1@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=453e47668de0eb4848234274af6e9a00
+2019-05-02T10:51:25+00:00 NOTICE abandoned_cart.success :: email: salvadomaria1@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=453e47668de0eb4848234274af6e9a00
+2019-05-02T11:16:14+00:00 NOTICE order_submit.success :: addStoreOrder :: #3199 :: email: johis711@gmail.com :: abandoned cart deleted [244158e986ed74566d398b3fb9b75b39]
+2019-05-02T11:29:44+00:00 NOTICE order_submit.success :: addStoreOrder :: #3202 :: email: salvadomaria1@gmail.com :: landing site https://www.zaomakeup.com.co/demo/wp-content/uploads/2018/09/logos-pago-hori-3.png
+2019-05-02T11:29:45+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3202 :: email: salvadomaria1@gmail.com
+2019-05-02T11:29:45+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3202 :: email: salvadomaria1@gmail.com

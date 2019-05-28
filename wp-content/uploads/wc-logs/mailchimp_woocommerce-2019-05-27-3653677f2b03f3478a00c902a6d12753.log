@@ -1,0 +1,20 @@
+2019-05-26T21:00:11+00:00 NOTICE abandoned_cart.success :: email: angelcarito12@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=a99233936371df37c92a07406399c47f
+2019-05-27T06:28:24+00:00 NOTICE abandoned_cart.success :: email: angelcarito12@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=a99233936371df37c92a07406399c47f
+2019-05-27T06:32:49+00:00 NOTICE abandoned_cart.success :: email: angelcarito12@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=a99233936371df37c92a07406399c47f
+2019-05-27T10:46:35+00:00 NOTICE product_submit.success :: addStoreProduct :: #2218
+2019-05-27T10:47:29+00:00 NOTICE product_submit.success :: addStoreProduct :: #2226
+2019-05-27T11:25:26+00:00 NOTICE member.sync :: Updated Member ziana_06@hotmail.com
+2019-05-27T11:49:15+00:00 NOTICE member.sync :: Subscribed Member jecafierro92@hotmail.com
+2019-05-27T11:50:38+00:00 NOTICE abandoned_cart.success :: email: jecafierro92@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=2ef5bf164e88fa913f5ad3b26bb5ed94
+2019-05-27T11:55:42+00:00 NOTICE abandoned_cart.success :: email: jecafierro92@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=2ef5bf164e88fa913f5ad3b26bb5ed94
+2019-05-27T12:01:58+00:00 NOTICE abandoned_cart.success :: email: jecafierro92@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=2ef5bf164e88fa913f5ad3b26bb5ed94
+2019-05-27T12:02:40+00:00 NOTICE ac.cart_swap :: Deleted cart [jecafierro92@hotmail.com] :: ID [2ef5bf164e88fa913f5ad3b26bb5ed94]
+2019-05-27T12:02:42+00:00 NOTICE abandoned_cart.success :: email: jecafierro92@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=5c0e9cacece5700e20b22e3847e6a363
+2019-05-27T12:03:52+00:00 NOTICE member.sync :: Updated Member jecafierro92@hotmail.com
+2019-05-27T12:08:11+00:00 NOTICE order_submit.success :: addStoreOrder :: #3230 :: email: jecafierro92@gmail.com :: landing site https://www.zaomakeup.com.co/ :: abandoned cart deleted [5c0e9cacece5700e20b22e3847e6a363]
+2019-05-27T12:08:12+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3230 :: email: jecafierro92@gmail.com
+2019-05-27T12:08:13+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3230 :: email: jecafierro92@gmail.com
+2019-05-27T14:35:08+00:00 NOTICE abandoned_cart.success :: email: jaimeycarolina@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=448e9985200576f0b2bc774e7c3f785c
+2019-05-27T14:37:07+00:00 NOTICE ac.cart_swap :: Deleted cart [jaimeycarolina@gmail.com] :: ID [448e9985200576f0b2bc774e7c3f785c]
+2019-05-27T14:37:08+00:00 NOTICE abandoned_cart.success :: email: carorobledo65@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=32ef6b65190ac189701656b74fc49075
+2019-05-27T14:42:09+00:00 NOTICE order_submit.success :: addStoreOrder :: #3231 :: email: carorobledo65@hotmail.com :: landing site https://www.zaomakeup.com.co/demo/wp-content/uploads/2018/09/logos-pago-hori-3.png :: abandoned cart deleted [32ef6b65190ac189701656b74fc49075]
