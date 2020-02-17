@@ -132,20 +132,23 @@ $posts_per_page = array(
 );
 
 $orderby = array(
-	"heading"		=> __( "Order by", 'dt-the7-core' ),
-	"description"	=> __( "Select how to sort retrieved posts.", 'dt-the7-core' ),
-	"param_name"	=> "orderby",
-	"type"			=> "dropdown",
-	"value"			=> array(
-		"Date"			=> "date",
-		"Author"		=> "author",
-		"Title"			=> "title",
-		"Slug"			=> "name",
-		"Date modified"	=> "modified",
-		"ID"			=> "id",
-		"Random"		=> "rand",
+	'heading'          => __( 'Order by', 'dt-the7-core' ),
+	'description'      => __( 'Select how to sort retrieved posts.', 'dt-the7-core' ),
+	'param_name'       => 'orderby',
+	'type'             => 'dropdown',
+	'std'              => 'date',
+	'value'            => array(
+		'Author'        => 'author',
+		'Slug'          => 'name',
+		'Date'          => 'date',
+		'Name'          => 'title',
+		'ID'            => 'ID',
+		'Modified'      => 'modified',
+		'Comment count' => 'comment_count',
+		'Menu order'    => 'menu_order',
+		'Rand'          => 'rand',
 	),
-	"edit_field_class" => "vc_col-sm-6 vc_column",
+	'edit_field_class' => 'vc_col-sm-6 vc_column',
 );
 
 $order = array(

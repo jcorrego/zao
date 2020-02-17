@@ -14,6 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  */
 add_action( 'admin_head', 'the7_site_icon', 9 );
 
+/**
+ * Bootstrap widget area manager on `widgets.php`.
+ */
+add_action( 'admin_post_the7_admin_wa_manager_save', array( 'The7_Admin_WA_Manager', 'save' ) );
+add_action( 'widgets_admin_page', array( 'The7_Admin_WA_Manager', 'display' ) );
+add_action( 'load-widgets.php', array( 'The7_Admin_WA_Manager', 'enqueue_assets' ) );
+
 if ( ! function_exists( 'presscore_themeoptions_add_share_buttons' ) ) :
 
 	/**
@@ -39,25 +46,6 @@ if ( ! function_exists( 'presscore_themeoptions_add_share_buttons' ) ) :
 
 endif;
 
-/**
- * Admin notice.
- *
- */
-function presscore_admin_notice() {
-	global $current_screen;
-
-	if ( optionsframework_get_options_files( $current_screen->parent_base ) && ! apply_filters( 'presscore_less_cache_writable', true ) ) {
-		the7_admin_notices()->add( 'unable-to-write-css', 'the7_cannot_write_css_notice', 'updated' );
-	}
-}
-add_action( 'admin_notices', 'presscore_admin_notice' );
-
-function the7_cannot_write_css_notice() {
-    echo '<p>';
-    echo esc_html_x( 'Failed to create customization .CSS file. To improve your site performance, please check whether ".../wp-content/uploads/" folder is created, and its CHMOD is set to 755.', 'admin', 'the7mk2' );
-    echo '</p>';
-}
-
 if ( ! function_exists( 'presscore_less_cache_writable_filter' ) ) :
 
 	function presscore_less_cache_writable_filter() {
@@ -67,20 +55,6 @@ if ( ! function_exists( 'presscore_less_cache_writable_filter' ) ) :
 	add_filter( 'presscore_less_cache_writable', 'presscore_less_cache_writable_filter' );
 
 endif;
-
-/**
- * Remove save notice if update credentials saved.
- *
- */
-function presscore_remove_optionsframework_save_options_notice( $clean, $input = array() ) {
-
-	if ( isset( $input['theme_update-user_name'], $input['theme_update-api_key'] ) ) {
-
-		remove_action( 'optionsframework_after_validate', 'optionsframework_save_options_notice' );
-
-	}
-}
-add_action( 'optionsframework_after_validate', 'presscore_remove_optionsframework_save_options_notice', 9, 2 );
 
 /**
  * Add video url field for attachments.
@@ -197,27 +171,27 @@ function dt_get_admin_thumbnail ( $post_id, $max_w = 100, $max_h = 100, $noimage
  * @param integer $post_id
  */
 function dt_admin_thumbnail ( $post_id ) {
-    global $post_type_object;
+	global $post_type_object;
 
-    $post_type = $post_type_object->name;
-    $default_img_map = array(
-        'default' => '/assets/images/post-no-img.gif',
-        'dt_testimonials' => '/assets/images/testimonials-no-img.gif',
-        'dt_team' => '/assets/images/team-no-img.gif',
-    );
+	$post_type       = $post_type_object->name;
+	$default_img_map = array(
+		'default'         => '/assets/images/post-no-img.gif',
+		'dt_testimonials' => '/assets/images/testimonials-no-img.gif',
+		'dt_team'         => '/assets/images/team-no-img.gif',
+	);
 
-    if ( array_key_exists( $post_type, $default_img_map ) ) {
-	    $default_image = $default_img_map[ $post_type ];
-    } else {
-	    $default_image = $default_img_map['default'];
-    }
+	if ( array_key_exists( $post_type, $default_img_map ) ) {
+		$default_image = $default_img_map[ $post_type ];
+	} else {
+		$default_image = $default_img_map['default'];
+	}
 
 	$thumbnail = dt_get_admin_thumbnail( $post_id, 60, 60, PRESSCORE_ADMIN_URI . $default_image );
 
 	if ( $thumbnail ) {
 
-		echo '<a style="display: inline-block;" href="post.php?post=' . absint( $post_id ) . '&action=edit" title="">
-					<img src="' . esc_url( $thumbnail[0] ) . '" width="' . esc_attr( $thumbnail[1] ) . '" height="' . esc_attr( $thumbnail[2] ) . '" alt="" />
+		echo '<a style="display: inline-block;" href="post.php?post=' . absint( $post_id ) . '&action=edit" title="' . esc_attr_x( 'Post featured image', 'admin', 'the7mk2' ) . '">
+					<img src="' . esc_url( $thumbnail[0] ) . '" width="' . esc_attr( $thumbnail[1] ) . '" height="' . esc_attr( $thumbnail[2] ) . '" alt="' . esc_attr( esc_attr_x( 'Post featured image', 'admin', 'the7mk2' ) ) . '" />
 				</a>';
 	}
 }
@@ -380,9 +354,6 @@ function presscore_admin_get_footer_sidebar_column_message( $post_id ) {
 function presscore_display_title_status_for_media( $column_name, $id ) {
 	if ( 'presscore-media-title' == $column_name ) {
 		$hide_title = get_post_meta( $id, 'dt-img-hide-title', true );
-		if ( '' === $hide_title ) {
-			// $hide_title = 1;
-		}
 
 		if ( $hide_title ) {
 			echo '<span class="dt-media-hidden-title">' . _x('Hidden', 'media title hidden', 'the7mk2') . '</span>';
@@ -395,35 +366,53 @@ add_action( 'manage_media_custom_column', 'presscore_display_title_status_for_me
 
 if ( ! function_exists( 'the7_register_admin_scripts' ) ) {
 
-    function the7_register_admin_scripts() {
-	    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-	    $template_uri = PRESSCORE_ADMIN_URI;
+	function the7_register_admin_scripts() {
+		$template_uri = PRESSCORE_ADMIN_URI;
 
-	    $register_styles = array(
-		    'the7-admin'         => array(
-			    'src'     => "{$template_uri}/assets/css/admin-style{$suffix}.css",
-		    ),
-            'the7-meta-box-magic'         => array(
-			    'src'     => "{$template_uri}/assets/css/admin-meta-box-magic{$suffix}.css",
-		    ),
-	    );
+		$register_styles = array(
+			'the7-admin'          => array(
+				'src' => "{$template_uri}/assets/css/admin-style",
+			),
+			'the7-font'           => array(
+				'src' => PRESSCORE_THEME_URI . '/fonts/icomoon-the7-font/icomoon-the7-font',
+			),
+			'the7-meta-box-magic' => array(
+				'src' => "{$template_uri}/assets/css/admin-meta-box-magic",
+			),
+		);
 
-	    foreach ( $register_styles as $name => $props ) {
-		    wp_register_style( $name, $props['src'], array(), THE7_VERSION, 'all' );
-	    }
+		foreach ( $register_styles as $name => $props ) {
+			the7_register_style( $name, $props['src'] );
+		}
 
-	    $register_scripts = array(
-		    'the7-meta-box-magic' => array(
-			    'src'       => "{$template_uri}/assets/js/admin-meta-box-magic{$suffix}.js",
-			    'deps'      => array( 'jquery' ),
-			    'in_footer' => true,
-		    ),
-	    );
+		$register_scripts = array(
+			'the7-meta-box-magic'    => array(
+				'src'       => "{$template_uri}/assets/js/admin-meta-box-magic",
+				'deps'      => array( 'jquery' ),
+				'in_footer' => true,
+			),
+			'the7-dashboard-plugins' => array(
+				'src'       => "{$template_uri}/assets/js/the7-plugins",
+				'deps'      => array( 'jquery' ),
+				'in_footer' => true,
+			),
+		);
 
-	    foreach ( $register_scripts as $name => $props ) {
-		    wp_register_script( $name, $props['src'], $props['deps'], THE7_VERSION, $props['in_footer'] );
-	    }
-    }
+		foreach ( $register_scripts as $name => $props ) {
+			the7_register_script( $name, $props['src'], $props['deps'], THE7_VERSION, $props['in_footer'] );
+		}
+
+		wp_localize_script(
+			'the7-dashboard-plugins',
+			'the7DashboardPlugins',
+			array(
+				'forceUpgradeAlertText' => __(
+					'Please, mind that after an upgrade, plugin speciffic content would be not compatible with older versions of plugin.',
+					'the7mk2'
+				),
+			)
+		);
+	}
 
     add_action( 'admin_enqueue_scripts', 'the7_register_admin_scripts', 0 );
 
@@ -436,6 +425,7 @@ if ( ! function_exists( 'presscore_admin_scripts' ) ) :
 	 */
 	function presscore_admin_scripts() {
 		wp_enqueue_style( 'the7-admin' );
+		wp_enqueue_style( 'the7-font' );
 	}
 
 	add_action( 'admin_enqueue_scripts', 'presscore_admin_scripts' );
@@ -467,6 +457,12 @@ if ( ! function_exists( 'presscore_admin_post_scripts' ) ) :
 			$localized_meta_boxes[ $meta_box['id'] ] = isset($meta_box['only_on'], $meta_box['only_on']['template']) ? (array) $meta_box['only_on']['template'] : array();
 		}
 		wp_localize_script( 'the7-meta-box-magic', 'dtMetaboxes', $localized_meta_boxes );
+
+		$page_template = dt_get_template_name();
+		$page_template = $page_template ? $page_template : 'default';
+		wp_localize_script( 'the7-meta-box-magic', 'dtPageTemplate', array(
+			'templateName' => $page_template,
+		) );
 	}
 
 	add_action( 'admin_enqueue_scripts', 'presscore_admin_post_scripts' );
@@ -479,8 +475,7 @@ if ( ! function_exists( 'presscore_admin_widgets_scripts' ) ) :
 	 * Add widgets scripts. Enqueued only for widgets.php.
 	 */
 	function presscore_admin_widgets_scripts( $hook ) {
-
-		if ( 'widgets.php' != $hook ) {
+		if ( 'widgets.php' !== $hook ) {
 			return;
 		}
 
@@ -488,12 +483,15 @@ if ( ! function_exists( 'presscore_admin_widgets_scripts' ) ) :
 			wp_enqueue_media();
 		}
 
-		// enqueue wp colorpicker
-		wp_enqueue_style( 'wp-color-picker' );
+		the7_register_style( 'the7-widgets', PRESSCORE_ADMIN_URI . '/assets/css/admin-widgets' );
+		the7_register_script( 'the7-widgets', PRESSCORE_ADMIN_URI . '/assets/js/admin-widgets', array(
+			'jquery',
+			'wp-color-picker',
+		), false, true );
 
-		// presscore stuff
-		wp_enqueue_style( 'the7-widgets', PRESSCORE_ADMIN_URI . '/assets/css/admin-widgets.css', array(), THE7_VERSION );
-		wp_enqueue_script( 'the7-widgets', PRESSCORE_ADMIN_URI . '/assets/js/admin-widgets.js', array('jquery', 'wp-color-picker'), THE7_VERSION, true );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'the7-widgets' );
+		wp_enqueue_script( 'the7-widgets' );
 
 		wp_localize_script( 'the7-widgets', 'dtWidgtes', array(
 			'title'			=> _x( 'Title', 'widget', 'the7mk2' ),
@@ -501,7 +499,6 @@ if ( ! function_exists( 'presscore_admin_widgets_scripts' ) ) :
 			'percent'		=> _x( 'Percent', 'widget', 'the7mk2' ),
 			'showPercent'	=> _x( 'Show', 'widget', 'the7mk2' ),
 		) );
-
 	}
 
 	add_action( 'admin_enqueue_scripts', 'presscore_admin_widgets_scripts', 15 );
@@ -553,96 +550,6 @@ if ( ! function_exists( 'presscore_editor_open_images_in_lightbox' ) ) :
 
 endif;
 
-if ( ! function_exists( 'presscore_admin_body_class_filter' ) ) :
-
-	/**
-	 * @param $classes
-	 *
-	 * @return string
-	 */
-	function presscore_admin_body_class_filter( $classes ) {
-		$classes .= ' dt-hide-plugins-notification ';
-
-		return $classes;
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_layerslider_overrides' ) ) :
-
-	function presscore_layerslider_overrides() {
-
-		// Disable auto-updates
-		$GLOBALS['lsAutoUpdateBox'] = false;
-	}
-
-	add_action('layerslider_ready', 'presscore_layerslider_overrides');
-
-endif;
-
-function _presscore_fix_microwidgets_elements_options( $relation_map, $values ) {
-	$elements = array();
-	foreach ( $relation_map as $new_val => $old_val ) {
-		if ( isset( $values[ $old_val ] ) ) {
-			$elements[ $new_val ] = $values[ $old_val ];
-		} else {
-			$elements[ $new_val ] = array();
-		}
-	}
-
-	return $elements;
-}
-
-function presscore_admin_get_postmeta_by_mkey( $meta_key, $value = null ) {
-	global $wpdb;
-	$_meta_key = esc_sql( $meta_key );
-	if ( is_array( $_meta_key ) ) {
-		$_meta_key = implode( "', '", $_meta_key );
-	}
-	$_value = esc_sql( $value );
-
-	$query = "SELECT `meta_id` FROM {$wpdb->postmeta} WHERE `meta_key` IN ('%1\$s')";
-	if ( null !== $value ) {
-		$query .= " AND `meta_value` = '%2\$s'";
-	}
-	return $wpdb->get_col( sprintf( $query, $_meta_key, $_value ) );
-}
-
-function presscore_admin_update_postmeta_by_mkey( $meta_key, $value, $old_value = null ) {
-	global $wpdb;
-	$_meta_key = esc_sql( $meta_key );
-	if ( is_array( $_meta_key ) ) {
-		$_meta_key = implode( "', '", $_meta_key );
-	}
-	$_old_value = esc_sql( $old_value );
-	$_value = esc_sql( $value );
-
-	$query = "UPDATE {$wpdb->postmeta} SET `meta_value` = '%2\$s' WHERE `meta_key` IN ('%1\$s')";
-	if ( null !== $old_value ) {
-		if ( is_array( $_old_value ) ) {
-			$_old_value = implode( "', '", $_old_value );
-		}
-		$query .= " AND `meta_value` IN ('%3\$s')";
-	}
-	return $wpdb->query( sprintf( $query, $_meta_key, $_value, $_old_value ) );
-}
-
-function presscore_options_canonize_font_size( $font_size ) {
-	$canonized_font_size = $font_size;
-	switch ( $font_size ) {
-		case 'big':
-			$canonized_font_size = '16';
-			break;
-		case 'normal':
-			$canonized_font_size = '15';
-			break;
-		case 'small':
-			$canonized_font_size = '12';
-			break;
-	}
-	return $canonized_font_size;
-}
-
 function presscore_is_dev_env() {
 	return defined( 'DT_DEV_ENV' ) && DT_DEV_ENV;
 }
@@ -673,200 +580,8 @@ if ( ! function_exists( 'presscore_of_localized_vars_filter' ) ) :
 		}
 
 		$vars['blockDependencies'] = array(
-			// Layout.
-			'header-classic-menu-bg-block' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'classic',
-					)
-				)
-			),
-			'header-hamburger-block' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'top_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'menu_icon',
-					),
-				)
-			),
-			
-			'header-overlay-block' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'top_line',
-					),
-					array(
-						'field' => 'header_navigation',
-						'operator' => '==',
-						'value' => 'slide_out',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side_line',
-					),
-					array(
-						'field' => 'header_navigation',
-						'operator' => '==',
-						'value' => 'slide_out',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'menu_icon',
-					),
-					
-					array(
-						'field' => 'header_navigation',
-						'operator' => '==',
-						'value' => 'slide_out',
-					),
-				)
-			),
-			'header-mixed-line-block' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'top_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'menu_icon',
-					),
-				)
-			),
-			'header-layout-classic-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'classic',
-					),
-				),
-			),
-			'header-layout-inline-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'inline',
-					),
-				),
-			),
-			'header-layout-split-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'split',
-					),
-				),
-			),
-			'header-layout-side-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side',
-					),
-				),
-			),
-			'header-layout-top_line-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'top_line',
-					),
-				),
-			),
-			'header-layout-side_line-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side_line',
-					),
-				),
-			),
-			'header-layout-menu_icon-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'menu_icon',
-					),
-				),
-			),
-			//Navigation block
-			'navigation-settings' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'top_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'menu_icon',
-					),
-				)
-			),
-
 			//Microwidgets
-			'classic-microwidgets' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'classic',
-					),
-				),
-			),
+
 			'classic-microwidgets-settings' => array(
 				array(
 					array(
@@ -1155,38 +870,6 @@ if ( ! function_exists( 'presscore_of_localized_vars_filter' ) ) :
 				)
 			),
 
-			
-			'submenu-for-side-headers-block' => array(
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side',
-					)
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'top_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'side_line',
-					),
-				),
-				array(
-					array(
-						'field' => 'header-layout',
-						'operator' => '==',
-						'value' => 'menu_icon',
-					),
-				)
-			),
-
 			// Floating header
 			'floating-header-tab' => array(
 				array(
@@ -1338,8 +1021,6 @@ if ( ! function_exists( 'presscore_options_black_list' ) ) :
 			'social_buttons-page-button_title',
 			'social_buttons-page',
 
-			'theme_update-user_name',
-			'theme_update-api_key',
 			'widgetareas',
 
 			// archives
@@ -1351,32 +1032,11 @@ if ( ! function_exists( 'presscore_options_black_list' ) ) :
 			'template_page_id_portfolio_category',
 			'template_page_id_gallery_category',
 
-			// woocommerce
-			'woocommerce_display_product_info',
-			'woocommerce_hover_image',
-			'woocommerce_show_product_titles',
-			'woocommerce_show_product_price',
-			'woocommerce_show_product_rating',
-			'woocommerce_show_cart_icon',
-			"woocommerce_show_steps",
-			'wc_view_mode',
-			'woocommerce_shop_template_layout_default',
-			'woocommerce_shop_template_isotope',
-			'woocommerce_shop_template_responsiveness',
-			'woocommerce_shop_template_bwb_columns',
-			'woocommerce_shop_template_gap',
-			'woocommerce_cart_total_width',
-			'woocommerce_shop_template_column_min_width',
-			'woocommerce_shop_template_columns',
-			'woocommerce_shop_template_img_width',
-			'woocommerce_list_switch',
-			'woocommerce_shop_template_fullwidth',
-			'woocommerce_shop_template_loading_effect',
-			'woocommerce_show_list_desc',
-			'woocommerce_show_masonry_desc',
-
 			//wpml
 			'wpml_dt-custom_style',
+			'contact_form_security_token',
+			'contact_form_recaptcha_site_key',
+			'contact_form_recaptcha_secret_key',
 		);
 
 		return array_unique( array_merge( $fields, $fields_black_list ) );
@@ -1463,6 +1123,18 @@ if ( ! function_exists( 'presscore_themeoption_preserved_fields' ) ) :
 			'header-elements-contact-clock-caption',
 			'header-elements-contact-clock-icon',
 			'header-elements-contact-clock-second-header-switch',
+			'header-elements-contact-multipurpose_1-caption',
+			'header-elements-contact-multipurpose_1-icon',
+			'header-elements-contact-multipurpose_1-second-header-switch',
+			'header-elements-contact-multipurpose_2-caption',
+			'header-elements-contact-multipurpose_2-icon',
+			'header-elements-contact-multipurpose_2-second-header-switch',
+			'header-elements-contact-multipurpose_3-caption',
+			'header-elements-contact-multipurpose_3-icon',
+			'header-elements-contact-multipurpose_3-second-header-switch',
+			'header-elements-contact-multipurpose_4-caption',
+			'header-elements-contact-multipurpose_4-icon',
+			'header-elements-contact-multipurpose_4-second-header-switch',
 			'header-elements-login-caption',
 			'header-elements-logout-caption',
 			'header-elements-login-icon',
@@ -1507,3 +1179,49 @@ if ( ! function_exists( 'presscore_get_wp_memory_limit' ) ):
     }
 
 endif;
+
+if ( ! function_exists( 'presscore_get_icons_for_icons_picker' ) ) {
+
+	/**
+	 * Ajax response with custom icons (as json).
+     *
+     * @since 7.1.3
+	 */
+	function presscore_get_icons_for_icons_picker() {
+		$icon_manager_icons                 = apply_filters( 'the7_icons_in_settings', array() );
+
+		$the7_icons = require PRESSCORE_EXTENSIONS_DIR . '/the7-icons-list.php';
+		$icon_manager_icons = array( 'The7 Icons' => $the7_icons ) + $icon_manager_icons;
+
+		if ( The7_Icon_Manager::is_fontawesome_enabled() ) {
+			$icon_manager_icons['Font Awesome'] = include PRESSCORE_EXTENSIONS_DIR . '/font-awesome-icons.php';
+		}
+		wp_send_json( $icon_manager_icons );
+	}
+	add_action( 'wp_ajax_the7_get_icons_for_icons_picker', 'presscore_get_icons_for_icons_picker' );
+}
+
+if ( ! function_exists( 'presscore_get_post_type_edit_link_template' ) ) {
+
+	/**
+	 * Return post type edit link template or empty string if it's not possible.
+	 *
+	 * Replace %#% placeholder with actual post id.
+	 *
+	 * @sine 7.2.0
+	 *
+	 * @param string $post_type
+	 *
+	 * @return string
+	 */
+	function presscore_get_post_type_edit_link_template( $post_type ) {
+		$post_type_object = get_post_type_object( $post_type );
+		if ( ! $post_type_object || ! $post_type_object->_edit_link ) {
+			return '';
+		}
+		$action = '&amp;action=edit';
+
+		return admin_url( str_replace( '99999', '%#%', sprintf( $post_type_object->_edit_link . $action, 99999 ) ) );
+	}
+
+}

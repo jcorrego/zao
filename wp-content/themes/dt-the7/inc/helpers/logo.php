@@ -104,8 +104,9 @@ if ( ! function_exists( 'presscore_get_the_mobile_logo' ) ) :
 		return presscore_get_the_mobile_logo_image();
 	}
 
- endif;
- if ( ! function_exists( 'presscore_get_the_mobile_logo_image' ) ) :
+endif;
+
+if ( ! function_exists( 'presscore_get_the_mobile_logo_image' ) ) :
 
 	/**
 	 * Return the mobile logo image html.
@@ -154,48 +155,51 @@ if ( ! function_exists( 'presscore_get_mobile_logos_meta' ) ) :
 
 	/**
 	 * Returns the mobile first switch logos array.
+	 *
 	 * @since 6.1.0
+	 *
 	 * @return array
 	 */
 	function presscore_get_mobile_logos_meta() {
-		$config = presscore_config();
-		$use_main_logo_first_switch = ( 'desktop' === $config->get( 'header.mobile.logo.first_switch' ) );
-		if ( $use_main_logo_first_switch ) {
-			$logo = $config->get( 'logo.header.regular' );
+		if ( 'desktop' === of_get_option( 'header-mobile-first_switch-logo' ) ) {
+			$config  = presscore_config();
+			$logo    = $config->get( 'logo.header.regular' );
 			$hd_logo = $config->get( 'logo.header.hd' );
 		} else {
-			$logo = of_get_option( 'header-style-mobile-logo_regular', array( '', 0 ) );
-			$hd_logo = of_get_option( 'header-style-mobile-logo_hd', array( '', 0 ) );
+			$logo    = of_get_option( 'header-style-mobile-logo_regular' );
+			$hd_logo = of_get_option( 'header-style-mobile-logo_hd' );
 		}
 
 		return array(
-			'logo' 			=> dt_get_uploaded_logo( $logo ),
-			'logo_retina'	=> dt_get_uploaded_logo( $hd_logo, 'retina' ),
+			'logo'        => dt_get_uploaded_logo( $logo ),
+			'logo_retina' => dt_get_uploaded_logo( $hd_logo, 'retina' ),
 		);
 	}
 
 endif;
+
 if ( ! function_exists( 'presscore_get_mobile_logos_meta_second' ) ) :
 
 	/**
 	 * Returns the mobile second switch logos array.
+	 *
 	 * @since 6.1.0
+	 *
 	 * @return array
 	 */
 	function presscore_get_mobile_logos_meta_second() {
-		$config = presscore_config();
-		$use_main_logo_second_switch = ( 'desktop' === $config->get( 'header.mobile.logo.second_switch' ) );
-		if ( $use_main_logo_second_switch ) {
-			$logo = $config->get( 'logo.header.regular' );
+		if ( 'desktop' === of_get_option( 'header-mobile-second_switch-logo' ) ) {
+			$config  = presscore_config();
+			$logo    = $config->get( 'logo.header.regular' );
 			$hd_logo = $config->get( 'logo.header.hd' );
 		} else {
-			$logo = of_get_option( 'header-style-mobile-logo_regular', array( '', 0 ) );
-			$hd_logo = of_get_option( 'header-style-mobile-logo_hd', array( '', 0 ) );
+			$logo    = of_get_option( 'header-style-mobile-logo_regular' );
+			$hd_logo = of_get_option( 'header-style-mobile-logo_hd' );
 		}
 
 		return array(
-			'logo' 			=> dt_get_uploaded_logo( $logo ),
-			'logo_retina'	=> dt_get_uploaded_logo( $hd_logo, 'retina' ),
+			'logo'        => dt_get_uploaded_logo( $logo ),
+			'logo_retina' => dt_get_uploaded_logo( $hd_logo, 'retina' ),
 		);
 	}
 
@@ -303,20 +307,57 @@ if ( ! function_exists( 'presscore_get_floating_menu_logos_meta' ) ) :
 
 endif;
 
+if ( ! function_exists( 'presscore_get_top_line_floating_logo' ) ) {
+
+	/**
+	 * Return top line floating logo as array( 'logo', 'logo_retina' ).
+	 *
+	 * @since 7.6.0
+	 *
+	 * @return array
+	 */
+	function presscore_get_top_line_floating_logo() {
+		$logo = $logo_retina = '';
+		if ( presscore_is_floating_transparent_top_line_header() ) {
+			switch ( of_get_option( 'header-style-mixed-top_line-floating-choose_logo' ) ) {
+				case 'main':
+					$logo        = dt_get_uploaded_logo( of_get_option( 'header-style-mixed-logo_regular' ) );
+					$logo_retina = dt_get_uploaded_logo( of_get_option( 'header-style-mixed-logo_hd' ), 'retina' );
+					break;
+				case 'custom':
+					$logo        = dt_get_uploaded_logo(
+						of_get_option( 'header-style-mixed-top_line-floating-logo_regular' )
+					);
+					$logo_retina = dt_get_uploaded_logo(
+						of_get_option( 'header-style-mixed-top_line-floating-logo_hd' ),
+						'retina'
+					);
+					break;
+			}
+		}
+
+		return compact( 'logo', 'logo_retina' );
+	}
+
+}
+
 if ( ! function_exists( 'presscore_display_the_logo' ) ) :
 
 	/**
 	 * Display page logo.
+	 *
 	 * @since 3.0.0
+	 *
 	 * @param  string $logo
+	 * @param string  $class
 	 */
-	function presscore_display_the_logo( $logo ) {
+	function presscore_display_the_logo( $logo, $class = '' ) {
 		if ( ! $logo ) {
 			return;
 		}
 
 		$url = presscore_get_logo_url();
-		echo '<a href="' . esc_url( $url ) . '">' . $logo . '</a>';
+		echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( $url ) . '">' . $logo . '</a>';
 	}
 
 endif;

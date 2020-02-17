@@ -2,28 +2,26 @@
 /**
  * Header template part with main container opener.
  *
- * @package The7
  * @since   1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 ?>
 
-<?php do_action( 'presscore_before_main_container' ) ?>
+<?php do_action( 'presscore_before_main_container' ); ?>
 
-<?php if ( presscore_is_content_visible() ): ?>
+<?php if ( presscore_is_content_visible() ) : ?>
 
-<div id="main" <?php presscore_main_container_classes() ?> <?php presscore_main_container_style() ?> >
+<div id="main" <?php presscore_main_container_classes(); ?> <?php presscore_main_container_style(); ?> >
 
-	<?php do_action( 'presscore_main_container_begin' ) ?>
+	<?php do_action( 'presscore_main_container_begin' ); ?>
 
-    <div class="main-gradient"></div>
-    <div class="wf-wrap">
-    <div class="wf-container-main">
+	<div class="main-gradient"></div>
+	<div class="wf-wrap" <?php the7_main_container_wrap_style() ?>>
+	<div class="wf-container-main">
 
-	<?php do_action( 'presscore_before_content' ) ?>
+	<?php do_action( 'presscore_before_content' ); ?>
 
 <?php endif ?>

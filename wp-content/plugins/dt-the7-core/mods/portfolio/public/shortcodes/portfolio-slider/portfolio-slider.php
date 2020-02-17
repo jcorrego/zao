@@ -24,7 +24,7 @@ if ( ! class_exists( 'DT_Shortcode_Portfolio_Slider', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_vc-portfolio_scroller',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_portfolio_carousel_editor_ico.gif', 131, 104 ),
-	                'title'  => _x( 'Portfolio Scroller', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Portfolio Scroller', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -114,7 +114,7 @@ if ( ! class_exists( 'DT_Shortcode_Portfolio_Slider', false ) ) {
 				'max_width' => '',
 				'width' => '',
 				'height' => '210',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['order'] = apply_filters('dt_sanitize_order', $attributes['order']);

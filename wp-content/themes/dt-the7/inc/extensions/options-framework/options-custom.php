@@ -92,85 +92,6 @@ function optionsframework_widgetareas_ajax() {
 }
 add_action('wp_ajax_process_widgetarea', 'optionsframework_widgetareas_ajax');
 
-/**
- *	DEPRECATED.
- *
- * @param  boolean $get_defaults
- * @return array
- */
-function dt_get_google_fonts_list( $get_defaults = false ) {
-	return presscore_options_get_web_fonts();
-}
-
-// get images for options framework
-function dt_get_images_in( $dir = '', $one_img_dir = '', $basedir = false ){
-	if ( ! $basedir ) {
-		$basedir = dirname(__FILE__) . '/../../../';
-	}
-
-	$dirname = $basedir . $dir;
-	$cache_field_name = 'dt_opts_assets_' . sanitize_key( str_replace( '/', '_', $dir ) );
-
-	if ( ! $res = get_transient( $cache_field_name ) ) {
-		$noimage = '/images/noimage_small.jpg';
-		$res = $full_dir = $thumbs_dir = array();
-
-		// full dir
-		if ( file_exists($dirname. '/full') && $handle = opendir( $dirname. '/full') ) {
-			while (false !== ($file = readdir($handle))) {
-				if (preg_match('/\.(jpeg|jpg|png|gif)$/', $file)) {
-					$f_name = preg_split( '/\.[^.]+$/', $file );
-					$full_dir[$f_name[0]] = $file;
-				}
-			}
-			closedir($handle);
-		}
-		unset($file);
-		
-		// thumbs dir
-		if ( file_exists($dirname. '/thumbs') && $handle = opendir( $dirname. '/thumbs') ) {
-			while (false !== ($file = readdir($handle))) {
-				if ( preg_match('/\.(jpeg|jpg|png|gif)$/', $file) ) {
-					$f_name = preg_split( '/\.[^.]+$/', $file );
-					$thumbs_dir[$f_name[0]] = $file;
-				}
-			}
-			closedir($handle);
-		}
-		unset($file);
-		asort($full_dir);
-
-		foreach( $full_dir as $name=>$file ){
-			$full_link = '/' . $dir . '/full/' . $file;
-			$thumb_link = $full_link;
-			if( array_key_exists( $name, $thumbs_dir ) ){
-				$thumb_link = '/' . $dir . '/thumbs/' . $thumbs_dir[$name];
-			}else {
-				$one_img = explode('.', $name);
-				$file_name = $basedir . $one_img_dir . '/' . $one_img[0];
-
-				if ( count($one_img) > 1 && $one_img[0] != $name && $one_img_dir && file_exists($file_name . '.png') ) {
-					$thumb_link = '/'.$one_img_dir.'/'.$one_img[0].'.png';
-				}
-
-				if ( count($one_img) > 1 && $one_img[0] != $name && $one_img_dir && file_exists($file_name . '.jpg') ) {
-					$thumb_link = '/'.$one_img_dir.'/'.$one_img[0].'.jpg';
-				}
-
-				if ( count($one_img) > 1 && $one_img[0] != $name && $one_img_dir && file_exists($file_name . '.gif') ) {
-					$thumb_link = '/'.$one_img_dir.'/'.$one_img[0].'.gif';
-				}
-			}
-
-			$res[$full_link] = $thumb_link;
-		}
-
-		set_transient( $cache_field_name, $res, 60*60 );
-	}
-
-	return $res;
-}
-
 /* find option pages in array */
 function optionsframework_options_page_filter( $item ) {
 	if( isset($item['type']) && 'page' == $item['type'] ) {
@@ -214,8 +135,8 @@ function optionsframework_options_for_page_filter( $item ) {
 }
 
 function optionsframework_get_cur_page_id() {
-	if ( isset( $_GET['page'] ) ) {
-		return $_GET['page'];
+	if ( isset( $_REQUEST['page'] ) ) {
+		return basename( wp_unslash( $_REQUEST['page'] ) );
 	}
 
 	if ( isset( $_POST['_wp_http_referer'] ) ) {
@@ -262,7 +183,7 @@ function optionsframework_menu_items() {
 
 	$menu_config = apply_filters( 'presscore_options_menu_config', $menu_config );
 
-	return Presscore_Options_Menu_Items_Composition::create_from_array( $menu_config );
+	return The7_Options_Menu_Items_Composition::create_from_array( $menu_config );
 }
 
 function optionsframework_get_options_files( $page_slug = false ) {
@@ -308,39 +229,35 @@ function optionsframework_load_options( $files_list ) {
 	return $options;
 }
 
-function presscore_opts_get_bg_images( $field_id = '' ) {
-	static $filtered_presets_images = null;
-	if ( null === $filtered_presets_images ) {
-		$filtered_presets_images = array();
-		$presets_images = dt_get_images_in( 'inc/presets/images', 'inc/presets/images', trailingslashit( get_template_directory() ) );
-		if ( $presets_images ) {
-			foreach ( $presets_images as $full => $thumb ) {
-				$img_field_id = explode( '.', $full );
 
-				// ignore
-				if ( count( $img_field_id ) < 3 ) {
-					continue;
-				}
-
-				$img_field_id = $img_field_id[1];
-				$clear_key = sanitize_key( str_replace( '-', '_', $img_field_id ) );
-
-				if ( ! isset( $filtered_presets_images[ $clear_key ] ) ) {
-					$filtered_presets_images[ $clear_key ] = array();
-				}
-
-				$filtered_presets_images[ $clear_key ][ $full ] = $thumb;
-			}
-		}
-	}
-
-	$field_id = sanitize_key( str_replace( '-', '_', $field_id ) );
-	$bg_images = dt_get_images_in( 'images/backgrounds/patterns', 'images/backgrounds', trailingslashit( get_template_directory() ) );
-	if ( array_key_exists( $field_id, $filtered_presets_images ) ) {
-		$bg_images = array_merge( $filtered_presets_images[ $field_id ], $bg_images );
-	}
-
-	return $bg_images;
+function presscore_opts_get_bg_images() {
+	return array(
+		'/images/backgrounds/patterns/full/archers.gif'             => '/images/backgrounds/patterns/thumbs/archers.jpg',
+		'/images/backgrounds/patterns/full/binding_dark.gif'        => '/images/backgrounds/patterns/thumbs/binding_dark.jpg',
+		'/images/backgrounds/patterns/full/brickwall.gif'           => '/images/backgrounds/patterns/thumbs/brickwall.jpg',
+		'/images/backgrounds/patterns/full/congruent_outline.png'   => '/images/backgrounds/patterns/thumbs/congruent_outline.jpg',
+		'/images/backgrounds/patterns/full/congruent_pentagon.png'  => '/images/backgrounds/patterns/thumbs/congruent_pentagon.jpg',
+		'/images/backgrounds/patterns/full/crisp_paper_ruffles.jpg' => '/images/backgrounds/patterns/thumbs/crisp_paper_ruffles.jpg',
+		'/images/backgrounds/patterns/full/escheresque_ste.png'     => '/images/backgrounds/patterns/thumbs/escheresque_ste.jpg',
+		'/images/backgrounds/patterns/full/gplaypattern.jpg'        => '/images/backgrounds/patterns/thumbs/gplaypattern.jpg',
+		'/images/backgrounds/patterns/full/graphy-dark.png'         => '/images/backgrounds/patterns/thumbs/graphy-dark.jpg',
+		'/images/backgrounds/patterns/full/graphy-light.png'        => '/images/backgrounds/patterns/thumbs/graphy-light.jpg',
+		'/images/backgrounds/patterns/full/grey_wood.jpg'           => '/images/backgrounds/patterns/thumbs/grey_wood.jpg',
+		'/images/backgrounds/patterns/full/grid-dark.png'           => '/images/backgrounds/patterns/thumbs/grid-dark.jpg',
+		'/images/backgrounds/patterns/full/grid-light.png'          => '/images/backgrounds/patterns/thumbs/grid-light.jpg',
+		'/images/backgrounds/patterns/full/halftone-dark.png'       => '/images/backgrounds/patterns/thumbs/halftone-dark.jpg',
+		'/images/backgrounds/patterns/full/halftone-light.png'      => '/images/backgrounds/patterns/thumbs/halftone-light.jpg',
+		'/images/backgrounds/patterns/full/herald.png'              => '/images/backgrounds/patterns/thumbs/herald.jpg',
+		'/images/backgrounds/patterns/full/linedpaper.jpg'          => '/images/backgrounds/patterns/thumbs/linedpaper.jpg',
+		'/images/backgrounds/patterns/full/low_contrast_linen.jpg'  => '/images/backgrounds/patterns/thumbs/low_contrast_linen.jpg',
+		'/images/backgrounds/patterns/full/notebook.gif'            => '/images/backgrounds/patterns/thumbs/notebook.jpg',
+		'/images/backgrounds/patterns/full/poly.png'                => '/images/backgrounds/patterns/thumbs/poly.jpg',
+		'/images/backgrounds/patterns/full/retro-dark.png'          => '/images/backgrounds/patterns/thumbs/retro-dark.jpg',
+		'/images/backgrounds/patterns/full/retro-light.png'         => '/images/backgrounds/patterns/thumbs/retro-light.jpg',
+		'/images/backgrounds/patterns/full/skulls.gif'              => '/images/backgrounds/patterns/thumbs/skulls.jpg',
+		'/images/backgrounds/patterns/full/stardust.gif'            => '/images/backgrounds/patterns/thumbs/stardust.jpg',
+		'/images/backgrounds/patterns/full/subtle_grunge.png'       => '/images/backgrounds/patterns/thumbs/subtle_grunge.jpg',
+	);
 }
 
 function presscore_options_debug() {
@@ -354,6 +271,7 @@ function presscore_options_add_debug_info() {
 
 	echo '<button class="show-debug-info button hide-if-js">toggle debug info</button>';
 
-	wp_enqueue_script( 'the7-options-debug', PRESSCORE_ADMIN_URI . '/assets/js/options-debug.js', array( 'jquery' ), THE7_VERSION, true );
+	the7_register_script( 'the7-options-debug', PRESSCORE_ADMIN_URI . '/assets/js/options-debug', array( 'jquery' ), false, true );
+	wp_enqueue_script( 'the7-options-debug' );
 }
 add_action( 'optionsframework_before', 'presscore_options_add_debug_info' );

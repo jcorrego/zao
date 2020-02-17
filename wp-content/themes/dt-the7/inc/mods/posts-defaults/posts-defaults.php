@@ -35,7 +35,7 @@ if ( ! class_exists( 'Presscore_Modules_Posts_Defaults', false ) ) {
 
 		public static function localize_js_data() {
 		    $strings = array(
-                'enterName' => __( 'Enter preset name', 'the7mk3' ),
+                'enterName' => __( 'Enter preset name', 'the7mk2' ),
                 'presetSaved' => __( 'Preset saved', 'the7mk2' ),
                 'defaultsSaved' => __( 'Defaults saved', 'the7mk2' ),
                 'applyingPreset' => __( 'Applying preset ...', 'the7mk2' ),
@@ -167,14 +167,10 @@ if ( ! class_exists( 'Presscore_Modules_Posts_Defaults', false ) ) {
 		 * Add the meta box.
 		 */
 		public static function add_meta_box() {
-			add_meta_box(
-				'the7-post-meta-presets-box',
-				__( 'Settings Presets', 'the7mk2' ),
-				array( __CLASS__, 'render_meta_box' ),
-				presscore_get_pages_with_basic_meta_boxes(),
-				'side',
-				'default'
-			);
+			add_meta_box( 'the7-post-meta-presets-box', __( 'Settings Presets', 'the7mk2' ), array(
+				__CLASS__,
+				'render_meta_box',
+			), presscore_get_pages_with_basic_meta_boxes(), 'side', 'default' );
 		}
 
 		/**
@@ -209,7 +205,7 @@ if ( ! class_exists( 'Presscore_Modules_Posts_Defaults', false ) ) {
             <div class="the7-mb-field the7-mb-heading-wrapper"><div class="dt_hr dt_hr-top"></div><h4><?php esc_html_e( 'Preset Actions', 'the7mk2' ) ?></h4></div>
             <p>
                 <button type="button" id="the7-post-meta-save-defaults" class="button button-secondary"><?php esc_html_e( 'Save as default', 'the7mk2' ) ?></button>
-                <button type="button" id="the7-post-meta-apply-preset" class="button button-primary" <?php echo $preset_action_status ?>><?php esc_html_e( 'Apply to this page', 'the7mk2' ) ?></button>
+                <button type="button" id="the7-post-meta-apply-preset" class="button button-primary" <?php echo $preset_action_status ?>><?php esc_html_e( 'Apply to page', 'the7mk2' ) ?></button>
             </p>
 
 			<?php

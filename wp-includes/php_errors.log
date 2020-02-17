@@ -1,0 +1,1 @@
+[05-Dec-2019 06:51:48 UTC] PHP Fatal error:  require(): Failed opening required 'ABSPATHWPINC/option.php' (include_path='.:/usr/share/php') in /home/forge/zaomakeup.com.co/wp-includes/functions.php on line 8

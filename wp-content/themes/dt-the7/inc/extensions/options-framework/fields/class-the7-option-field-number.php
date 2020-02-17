@@ -1,57 +1,86 @@
 <?php
-/**
- * Class The7_Option_Field_Number
- * @package The7
- */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class The7_Option_Field_Number
  */
-class The7_Option_Field_Number {
+class The7_Option_Field_Number extends The7_Option_Field_Abstract {
+
+	/**
+	 * Return field HTML.
+	 *
+	 * @return string
+	 */
+	public function html() {
+		$units = 'px';
+		if ( isset( $this->option['units'] ) ) {
+			$units = $this->option['units'];
+		}
+		$min = isset( $this->option['min'] ) ? (int) $this->option['min'] : null;
+		$max = isset( $this->option['max'] ) ? (int) $this->option['max'] : null;
+
+		return self::static_html( $this->option_name, $this->val, $units, $min, $max );
+	}
 
 	/**
 	 * Return number field HTML.
 	 *
-	 * @param string $name
-	 * @param string $value
-	 * @param string|array  $units
+	 * @param string       $name
+	 * @param string       $value
+	 * @param string|array $units
+	 * @param null|int     $min
+	 * @param null|int     $max
 	 *
 	 * @return string
 	 */
-	public static function html( $name, $value, $units = 'px' ) {
-		$units = self::decode_units( $units );
-		$number = self::sanitize( $value, $units );
+	public static function static_html( $name, $value, $units = 'px', $min = null, $max = null ) {
+		$units     = self::decode_units( $units );
+		$number    = self::sanitize( $value, $units, $min, $max );
 		$cur_units = $number['units'];
-		$val = $number['val'];
+		$val       = $number['val'];
 
 		// Units HTML.
-		$units_html = '';
+		$units_html       = '';
 		$units_wrap_class = 'dt_spacing-units-wrap';
-		$units_name = $name ? "{$name}[units]" : '';
+		$units_name       = $name ? "{$name}[units]" : '';
 		if ( count( $units ) > 1 ) {
 			$units_wrap_class .= ' select';
 			foreach ( $units as $u ) {
-				$units_html .= '<option value="' . esc_attr( $u ) . '" ' . selected( $u, $cur_units, false ) . '>' . esc_html( $u ) . '</option>';
+				$units_html .= '<option value="' . esc_attr( $u ) . '" ' . selected(
+						$u,
+						$cur_units,
+						false
+					) . '>' . esc_html( $u ) . '</option>';
 			}
-			$units_html = '<select class="dt_spacing-units" name="' . $units_name . '" data-units="' . esc_attr( $cur_units ) . '">' . $units_html . '</select>';
+			$units_html = '<select class="dt_spacing-units" name="' . $units_name . '" data-units="' . esc_attr(
+					$cur_units
+				) . '">' . $units_html . '</select>';
 		} else {
-			$units_html = '<span class="dt_spacing-units" data-units="' . esc_attr( $cur_units ) . '"><input type="hidden" name="' . $units_name . '" value="' . esc_attr( $cur_units ) . '"/>' . esc_html( $cur_units ) . '</span>';
+			$units_html = '<span class="dt_spacing-units" data-units="' . esc_attr(
+					$cur_units
+				) . '"><input type="hidden" name="' . $units_name . '" value="' . esc_attr(
+							  $cur_units
+						  ) . '"/>' . esc_html( $cur_units ) . '</span>';
 		}
 
 		$units_html = '<div class="' . $units_wrap_class . '">' . $units_html . '</div>';
 
 		$atts = array(
-			'type' => 'number',
+			'type'  => 'number',
 			'value' => esc_attr( $val ),
 		);
 
 		if ( $name ) {
 			$atts['name'] = "{$name}[val]";
+		}
+
+		if ( $min !== null ) {
+			$atts['min'] = (int) $min;
+		}
+
+		if ( $max !== null ) {
+			$atts['max'] = (int) $max;
 		}
 
 		$input_atts = '';
@@ -69,19 +98,27 @@ class The7_Option_Field_Number {
 	/**
 	 * Sanitize number string. Returns array of sanitized values in format array( 'val' => '', 'units' => '' ).
 	 *
-	 * @param string       $number
-	 * @param array|string $units
+	 * @param string       $number Number string with units.
+	 * @param array|string $units  Supported units.
+	 * @param null|int     $min    Minimal value.
+	 * @param null|int     $max    Maximal value.
 	 *
 	 * @return array
 	 */
-	public static function sanitize( $number, $units ) {
+	public static function sanitize( $number, $units, $min = null, $max = null ) {
 		$decoded_number = self::decode( $number );
-		$units = self::decode_units( $units );
-		$cur_units = current( $units );
+		$units          = self::decode_units( $units );
+		$cur_units      = current( $units );
 		if ( in_array( $decoded_number['units'], $units, true ) ) {
 			$cur_units = $decoded_number['units'];
 		}
 		$cur_val = (int) $decoded_number['val'];
+		if ( $min !== null ) {
+			$cur_val = max( $cur_val, $min );
+		}
+		if ( $max !== null ) {
+			$cur_val = min( $cur_val, $max );
+		}
 
 		return array(
 			'val'   => $cur_val,

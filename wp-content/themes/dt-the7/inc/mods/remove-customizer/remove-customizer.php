@@ -6,10 +6,7 @@
  * @package The7
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Presscore_Modules_Remove_Customizer_Module', false ) ) :
 

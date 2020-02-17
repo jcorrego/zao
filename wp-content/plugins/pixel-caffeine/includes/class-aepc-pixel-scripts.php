@@ -115,18 +115,18 @@ class AEPC_Pixel_Scripts {
 		?>
 		<!-- Facebook Pixel Code -->
 		<script>
-			<?php if ( ! PixelCaffeine()->is_debug_mode() ) : ?>
-			!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-				n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-				n.push=n;n.loaded=!0;n.version='2.0';n.agent='dvpixelcaffeinewordpress';n.queue=[];t=b.createElement(e);t.async=!0;
-				t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-				document,'script','https://connect.facebook.net/en_US/fbevents.js');
-			<?php else : ?>
+			<?php if ( PixelCaffeine()->is_debug_mode() ) : ?>
 			var fbq_calls = [],
 				fbq = function() {
 					console.log( 'fbq: ', arguments[0], arguments[1], arguments[2] );
 					fbq_calls.push( arguments );
 				};
+			<?php elseif ( AEPC_Track::can_init_pixel() ) : ?>
+			!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+				n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+				n.push=n;n.loaded=!0;n.version='2.0';n.agent='dvpixelcaffeinewordpress';n.queue=[];t=b.createElement(e);t.async=!0;
+				t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+				document,'script','https://connect.facebook.net/en_US/fbevents.js');
 			<?php endif; ?>
 
 			var aepc_pixel = <?php echo wp_json_encode( self::pixel_init_arguments() ) ?>,
@@ -152,14 +152,16 @@ class AEPC_Pixel_Scripts {
 				}
 			}
 
+			<?php if ( AEPC_Track::can_init_pixel() ) : ?>
 			fbq('init', aepc_pixel.pixel_id, aepc_pixel.user);
 
 			<?php /* Trigger the event when delay is passed and where there are all fbq calls that need to wait */ ?>
 			setTimeout( function() {
 				fbq('track', "PageView", aepc_pixel_args);
 			}, aepc_pixel.fire_delay * 1000 );
+			<?php endif; ?>
 		</script>
-		<?php if ( ! PixelCaffeine()->is_debug_mode() ) : ?>
+		<?php if ( ! PixelCaffeine()->is_debug_mode() && AEPC_Track::can_init_pixel() ) : ?>
 		<noscript><img height="1" width="1" style="display:none"
 		               src="https://www.facebook.com/tr?id=<?php echo esc_attr( PixelCaffeine()->get_pixel_id() ) ?>&ev=PageView&noscript=1"
 			/></noscript>
@@ -181,7 +183,8 @@ class AEPC_Pixel_Scripts {
 			'standard_events' => AEPC_Track::get_standard_events(),
 			'custom_events'   => AEPC_Track::get_custom_events(),
 			'css_events'      => self::track_css_events(),
-			'link_clicks'     => self::track_link_click_events()
+			'link_clicks'     => self::track_link_click_events(),
+			'js_events'       => self::track_js_event_events(),
 		) ) );
 	}
 
@@ -200,7 +203,7 @@ class AEPC_Pixel_Scripts {
 	 */
 	public static function track_standard_events() {
 
-		if ( is_search() ) {
+		if ( self::is_event_enabled('Search') && is_search() ) {
 			AEPC_Track::track( 'Search', array( 'search_string' => get_search_query( false ) ) );
 		}
 
@@ -334,9 +337,15 @@ class AEPC_Pixel_Scripts {
 			}
 
 			$current_rel_uri = trailingslashit( home_url( add_query_arg( NULL, NULL ) ) );
-			$url = addcslashes( str_replace( '*', '[^/]+', $track['url'] ), '/' );
 
-			if ( '*' == $track['url'] || preg_match( "/{$url}/", $current_rel_uri ) ) {
+			if (
+				'*' == $track['url']
+				|| 'contains' === $track['url_condition'] && preg_match( sprintf( '/%s/', addcslashes( strtr( $track['url'], ['*' => '[^/]+'] ), '/' ) ), $current_rel_uri )
+				|| 'exact' === $track['url_condition'] && (
+					'/' === $track['url'][0] && home_url( $track['url'] ) === $current_rel_uri
+					|| $track['url'] === $current_rel_uri
+				)
+			) {
 				AEPC_Track::track(
 					$track['event'],
 					$track['params'],
@@ -393,7 +402,39 @@ class AEPC_Pixel_Scripts {
 				$links[ $track['url'] ] = array();
 			}
 
-			$links[ $track['url'] ][] = array(
+			$links[ $track['url'] ][ $track['url_condition'] ][] = array(
+				'trackType' => AEPC_Track::get_track_type( $track['event'] ),
+				'trackName' => $track['event'],
+				'trackParams' => AEPC_Track::sanitize_fields( array_merge( $track['params'], $track['custom_params'] ) )
+			);
+		}
+
+		return $links;
+	}
+
+	/**
+	 * Get all conversion events defined by user, for all events handled by JS event
+	 *
+	 * @return array
+	 */
+	public static function track_js_event_events() {
+		$conversions = AEPC_Track::get_conversions_events();
+		$links = array();
+
+		foreach ( $conversions as $track ) {
+			if ( 'js_event' != $track['trigger'] ) {
+				continue;
+			}
+
+			if ( ! isset( $links[ $track['js_event_element'] ] ) ) {
+				$links[ $track['js_event_element'] ] = array();
+			}
+
+			if ( ! isset( $links[ $track['js_event_element'] ][ $track['js_event_name'] ] ) ) {
+				$links[ $track['js_event_element'] ][ $track['js_event_name'] ] = array();
+			}
+
+			$links[ $track['js_event_element'] ][ $track['js_event_name'] ][] = array(
 				'trackType' => AEPC_Track::get_track_type( $track['event'] ),
 				'trackName' => $track['event'],
 				'trackParams' => AEPC_Track::sanitize_fields( array_merge( $track['params'], $track['custom_params'] ) )
@@ -425,7 +466,7 @@ class AEPC_Pixel_Scripts {
 			}
 		}
 
-		return wp_list_pluck( $terms, 'name' );
+		return array_map('html_entity_decode', wp_list_pluck( $terms, 'name' ) );
 	}
 
 	// INTEGRATIONS

@@ -88,7 +88,9 @@ function yith_wcan_attributes_table( $type, $attribute, $id, $name, $values = ar
             $return = sprintf( '<table><tr><th>%s</th><th>%s</th></tr>', __( 'Term', 'yith-woocommerce-ajax-navigation' ), __( 'Color', 'yith-woocommerce-ajax-navigation' ) );
 
             foreach ( $terms as $term ) {
-                $return .= "<tr><td><label for='{$id}{$term->term_id}'>{$term->name}</label></td><td><input type='text' id='{$id}{$term->term_id}' name='{$name}[colors][{$term->term_id}]' value='" . ( isset( $values[$term->term_id] ) ? $values[$term->term_id] : '' ) . "' size='3' class='yith-colorpicker' /></td></tr>";
+            	if( $term instanceof WP_Term ){
+		            $return .= "<tr><td><label for='{$id}{$term->term_id}'>{$term->name}</label></td><td><input type='text' id='{$id}{$term->term_id}' name='{$name}[colors][{$term->term_id}]' value='" . ( isset( $values[$term->term_id] ) ? $values[$term->term_id] : '' ) . "' size='3' class='yith-colorpicker' /></td></tr>";
+	            }
             }
 
             $return .= '</table>';
@@ -394,6 +396,11 @@ if ( ! function_exists( 'yit_term_has_child' ) ) {
         $child_terms = yith_wcan_wp_get_terms( array( 'taxonomy' => $taxonomy, 'child_of' => $term->term_id ) );
 
         if( ! is_wp_error( $child_terms ) ){
+
+            if( apply_filters( 'yith_wcan_skip_check_on_product_in_term',false, $child_terms ) ){
+                return true;
+            }
+
             foreach ( $child_terms as $child_term ) {
                 $_products_in_term = get_objects_in_term( $child_term->term_id, $taxonomy );
                 $count += sizeof( array_intersect( $_products_in_term, YITH_WCAN()->frontend->layered_nav_product_ids ) );
@@ -486,6 +493,10 @@ if ( ! function_exists( 'yit_get_filter_args' ) ) {
             $filter_value['product_tag'] = urlencode( $_GET['product_tag'] );
         }
 
+        elseif( is_product_tag() && $queried_object ){
+	        $filter_value['product_tag'] = $queried_object->slug;
+        }
+
         if (isset($_GET['product_cat'])) {
             $filter_value['product_cat'] = urlencode( $_GET['product_cat'] );
         }
@@ -500,7 +511,7 @@ if ( ! function_exists( 'yit_get_filter_args' ) ) {
         }
 
         elseif( ! is_shop() && is_product_taxonomy() && $queried_object && ! isset( $filter_value['source_id'] ) && ! isset( $filter_value['source_tax'] )){
-            $filter_value['source_id']   = $queried_object->slug;
+            $filter_value['source_id']   = $queried_object->term_id;
             $filter_value['source_tax']  = $queried_object->taxonomy;
         }
 
@@ -554,18 +565,17 @@ if ( ! function_exists( 'yit_get_woocommerce_layered_nav_link' ) ) {
 
         if ( defined( 'SHOP_IS_ON_FRONT' ) || ( is_shop() && ! is_product_category() ) ) {
             $return             = get_post_type_archive_link( 'product' );
-            return apply_filters( 'yith_wcan_untrailingslashit', true ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
+            return apply_filters( 'yith_wcan_untrailingslashit', false ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
         }
 
         elseif ( ! is_shop() && is_product_category( $source_id ) && false ) {
             $return = get_term_link( get_queried_object()->slug, 'product_cat' );
-            return apply_filters( 'yith_wcan_untrailingslashit', true ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
+            return apply_filters( 'yith_wcan_untrailingslashit', false ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
         }
 
         else {
             $return = get_post_type_archive_link( 'product' );
-
-            return apply_filters( 'yith_wcan_untrailingslashit', true ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
+            return apply_filters( 'yith_wcan_untrailingslashit', false ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
         }
         
         return $return;
@@ -699,7 +709,7 @@ if( ! function_exists( 'yit_reorder_hierachical_categories' ) ) {
     }
 }
 
-if( ! function_exists( 'remove_premium_query_arg' ) ) {
+if( ! function_exists( 'yith_remove_premium_query_arg' ) ) {
     /**
      * Remove Premium query args
      *
@@ -708,7 +718,7 @@ if( ! function_exists( 'remove_premium_query_arg' ) ) {
      * @since    2.8.1
      * @author   Andrea Grillo <andrea.grillo@yithemes.com>
      */
-    function remove_premium_query_arg( $link ) {
+    function yith_remove_premium_query_arg( $link ) {
         $reset           = array( 'orderby', 'onsale_filter', 'instock_filter', 'product_tag', 'product_cat' );
         $brands_taxonomy = yit_get_brands_taxonomy();
         if ( ! empty( $brands_taxonomy ) ) {
@@ -788,14 +798,28 @@ if( ! function_exists( 'yith_wcan_wp_get_terms' ) ) {
      */
     function yith_wcan_wp_get_terms( $args ) {
         global $wp_version;
-        
-        if( version_compare( $wp_version, '4.6', '<' ) ){
-            return get_terms( $args['taxonomy'], $args );
+
+        $pre_terms = apply_filters( 'pre_yith_wcan_wp_get_terms', false, $args );
+
+        if( false !== $pre_terms ){
+        	return $pre_terms;
+        }
+
+	    $terms = array();
+
+	    if( version_compare( $wp_version, '4.6', '<' ) ){
+	        $terms = get_terms( $args['taxonomy'], $args );
         }
         
         else {
-            return get_terms( $args );
+            $terms = get_terms( $args );
         }
+
+        if( ! is_array( $terms ) ){
+        	$terms = array();
+        }
+
+        return $terms;
     }
 }
 
@@ -810,3 +834,23 @@ if( ! function_exists( 'yith_wcan_brands_enabled' ) ){
     }
 }
 
+if( ! function_exists( 'yith_wcan_add_rel_nofollow_to_url' ) ){
+	/**
+	 * Check if the user want to add the rel="nofollow" in filter uri
+	 *
+	 * @param bool $get_html_rel_attribute
+	 *
+	 * @return bool|string
+	 */
+	function yith_wcan_add_rel_nofollow_to_url( $get_html_rel_attribute = false  ){
+		$enable_seo          = 'yes' == yith_wcan_get_option( 'yith_wcan_enable_seo' );
+		$enable_rel_nofollow = 'yes' == yith_wcan_get_option( 'yith_wcan_seo_rel_nofollow', 'no' );
+		$return              = $enabled = $enable_seo && $enable_rel_nofollow;
+
+		if ( $enabled && $get_html_rel_attribute ) {
+			$return = 'rel="nofollow"';
+		}
+
+		return $return;
+	}
+}

@@ -32,6 +32,8 @@ class MailChimp_WooCommerce_Order
     protected $promos = array();
     protected $is_amazon_order = false;
     protected $is_privacy_protected = false;
+    protected $original_woo_status = null;
+    protected $ignore_if_new = false;
 
     /**
      * @param $bool
@@ -70,6 +72,43 @@ class MailChimp_WooCommerce_Order
     }
 
     /**
+     * @param string $status
+     * @return $this
+     */
+    public function setOriginalWooStatus($status)
+    {
+        $this->original_woo_status = (string) $status;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getOriginalWooStatus()
+    {
+        return $this->original_woo_status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldIgnoreIfNotInMailchimp()
+    {
+        return (bool) $this->ignore_if_new;
+    }
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function flagAsIgnoreIfNotInMailchimp($bool)
+    {
+        $this->ignore_if_new = (bool) $bool;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getValidation()
@@ -99,7 +138,7 @@ class MailChimp_WooCommerce_Order
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = preg_replace('/[^0-9]/i','', $id);
 
         return $this;
     }
@@ -208,10 +247,13 @@ class MailChimp_WooCommerce_Order
      * @param null $campaign_id
      * @return MailChimp_WooCommerce_Order
      */
-    public function setCampaignId($campaign_id)
+    public function setCampaignId($id)
     {
-        $this->campaign_id = $campaign_id;
-
+        $api = MailChimp_WooCommerce_MailChimpApi::getInstance();
+        $cid = trim($id);
+        if (!empty($cid) && $campaign = $api->getCampaign($cid, false)) {
+            $this->campaign_id = $campaign['id'];
+        }
         return $this;
     }
 
@@ -262,12 +304,22 @@ class MailChimp_WooCommerce_Order
     }
 
     /**
-     * @param null $currency_code
+     * @param null $code
      * @return MailChimp_WooCommerce_Order
      */
-    public function setCurrencyCode($currency_code)
+    public function setCurrencyCode($code = null)
     {
-        $this->currency_code = $currency_code;
+        if (!empty($code)) {
+            $this->currency_code = $code;
+            return $this;
+        }
+
+        try {
+            $woo = wc_get_order($this->id);
+            $this->currency_code = $woo->get_currency();
+        } catch (\Exception $e) {
+            $this->currency_code = get_woocommerce_currency();
+        }
 
         return $this;
     }
@@ -427,6 +479,17 @@ class MailChimp_WooCommerce_Order
     }
 
     /**
+     * @return Array lines_ids
+     */
+    public function getLinesIds()
+    {
+        foreach ($this->lines as $line) {
+            $lines_ids[] = $line->getId();
+        }
+        return $lines_ids;
+    }
+
+    /**
      * @param $bool
      * @param $bool
      * @return $this
@@ -495,11 +558,14 @@ class MailChimp_WooCommerce_Order
      */
     public function toArray()
     {
+        $campaign_id = (string) $this->getCampaignId();
+
         return mailchimp_array_remove_empty(array(
             'id' => (string) $this->getId(),
             'landing_site' => (string) $this->getLandingSite(),
             'customer' => $this->getCustomer()->toArray(),
-            'campaign_id' => (string) $this->getCampaignId(),
+            //'campaign_id' => (string) $this->getCampaignId(),
+            'outreach' => $campaign_id ? ['id' => $campaign_id] : null,
             'financial_status' => (string) $this->getFinancialStatus(),
             'fulfillment_status' => (string) $this->getFulfillmentStatus(),
             'currency_code' => (string) $this->getCurrencyCode(),

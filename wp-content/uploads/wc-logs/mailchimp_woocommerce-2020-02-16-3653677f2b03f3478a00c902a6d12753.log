@@ -1,0 +1,32 @@
+2020-02-16T02:08:57+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id c0587443397306c3969690885e83869f
+2020-02-16T02:08:58+00:00 NOTICE abandoned_cart.success :: email: andreamc5@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=c0587443397306c3969690885e83869f
+2020-02-16T02:09:12+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3969
+2020-02-16T02:15:20+00:00 NOTICE order_submit.success :: addStoreOrder :: #3969 :: email: andreamc5@hotmail.com :: abandoned cart deleted [c0587443397306c3969690885e83869f]
+2020-02-16T18:41:04+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 3d0d4633ecd4d70b5f9d904a73711a58
+2020-02-16T18:41:05+00:00 NOTICE abandoned_cart.success :: email: jrestrepos@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=3d0d4633ecd4d70b5f9d904a73711a58
+2020-02-16T18:42:13+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 3d0d4633ecd4d70b5f9d904a73711a58
+2020-02-16T18:42:14+00:00 NOTICE abandoned_cart.success :: email: jrestrepos@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=3d0d4633ecd4d70b5f9d904a73711a58
+2020-02-16T18:42:53+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 55
+2020-02-16T18:42:53+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3970
+2020-02-16T18:42:54+00:00 NOTICE member.sync :: Updated Member jrestrepos@hotmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Juliana
+            [LNAME] => Restrepo Suárez
+        )
+
+)
+
+2020-02-16T18:45:38+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 55
+2020-02-16T18:45:45+00:00 NOTICE member.sync :: Updated Member jrestrepos@hotmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Juliana
+            [LNAME] => Restrepo Suárez
+        )
+
+)
+
+2020-02-16T18:47:58+00:00 NOTICE order_submit.success :: addStoreOrder :: #3970 :: email: jrestrepos@hotmail.com :: abandoned cart deleted [3d0d4633ecd4d70b5f9d904a73711a58]

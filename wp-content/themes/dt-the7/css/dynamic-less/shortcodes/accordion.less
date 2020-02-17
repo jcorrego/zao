@@ -23,28 +23,16 @@
 	}
 }
 .wpb_content_element.dt-style .wpb_accordion_header > a:after {
-	#page & {
-		@menu-arrow(@base-color-temp-transparent);
-	}
+	color: @base-color-transparent;
 }
-.wpb_content_element.dt-style:not(.dt-accordion-bg-on) .wpb_accordion_header > a:hover:after
+.wpb_content_element.dt-style:not(.dt-accordion-bg-on) .wpb_accordion_header > a:hover:after,
+.wpb_content_element.dt-style:not(.dt-accordion-bg-on) .ui-state-active > a:hover:after
 {
-	#page & {
-		@menu-arrow(@accent-bg-color-temp);
-	}
+		color: @accent-bg-color;
 }
 
 .wpb_accordion .wpb_accordion_wrapper .ui-state-active > a:after {
-	#page & {
-		.tip-icon(@secondary-color-temp);
-	}
-}
-
-.wpb_content_element.dt-style:not(.dt-accordion-bg-on) .ui-state-active > a:hover:after
-{
-	#page & {
-		.tip-icon(@accent-bg-color-temp);
-	}
+	color: @secondary-color;
 }
 
 

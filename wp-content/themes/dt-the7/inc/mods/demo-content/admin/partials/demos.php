@@ -1,6 +1,8 @@
 <?php
 // File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * @var The7_Demo_Content_Admin $this
@@ -8,57 +10,32 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 $dummies_list = $this->get_dummy_list();
 ?>
-	<?php if ( count( $dummies_list ) > 5 ): ?>
 
-	<div class="dt-dummy-search">
-		<label class="screen-reader-text" for="dt-dummy-search-input"><?php esc_html_e( 'Search for demo:', 'the7mk2' ); ?></label>
-		<input type="search" id="dt-dummy-search-input" value="" placeholder="<?php esc_attr_e( 'Search for demo', 'the7mk2' ); ?>" autofocus />
-	</div>
+<h2 class="nav-tab-wrapper hide-if-js" style="display: block;">
+	<?php
+	$tabs      = array(
+		'full-site'   => _x( 'Full site', 'admin', 'the7mk2' ),
+		'single-page' => _x( 'Single page', 'admin', 'the7mk2' ),
+	);
+	$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'full-site-tab';
+	foreach ( $tabs as $id => $title ) {
+	    $tab_query_arg = "{$id}-tab";
+		$act_class = $tab_query_arg === $active_tab ? 'nav-tab-active' : '';
+		$tab_url = add_query_arg( array( 'tab' => $tab_query_arg ) );
+		printf( '<a id="%1$s-tab" class="nav-tab %2$s" title="%3$s" href="%4$s">%3$s</a>', $id, $act_class, $title, esc_url( $tab_url ) );
+	}
+	?>
+</h2>
 
-	<?php endif; ?>
-
-	<?php foreach( $dummies_list as $dummy_info ) : ?>
-
+<div class="tabs-holder hidden">
+    <div id="full-site-group" class="group">
+		<?php include dirname( __FILE__ ) . '/demos/demos-list.php' ?>
+    </div>
+    <div id="single-page-group" class="group the7-import-by-url-page" data-post-type="page">
 		<?php
-		$dummy_title = ( empty( $dummy_info['title'] ) ? '' : $dummy_info['title'] );
-		$dummy_id = ( empty( $dummy_info['id'] ) ? '' : $dummy_info['id'] );
+		// Define post type to import.
+		$the7_import_post_type = 'page';
+		include dirname( __FILE__ ) . '/demos/import-by-url-form.php';
 		?>
-
-		<div class="dt-dummy-content" data-dummy-id="<?php echo esc_attr( $dummy_id ); ?>">
-
-			<?php if ( $dummy_title ) : ?>
-				<h3><?php echo esc_html( $dummy_title ); ?></h3>
-			<?php endif; ?>
-
-			<div class="dt-dummy-import-item">
-
-				<?php if ( ! empty( $dummy_info['screenshot'] ) ) : ?>
-					<?php
-					$width = 215;
-					$height = 161;
-					$img = '<img src="' . esc_url( $dummy_info['screenshot'] ) . '" alt="' . esc_attr( $dummy_title ) . '" ' . image_hwstring( $width, $height ) . '/>';
-
-					if ( ! empty( $dummy_info['link'] ) ) {
-						$img = '<a href="' . esc_url( $dummy_info['link'] ) . '" target="_blank">' . $img . '</a>';
-					}
-					?>
-					<div class="dt-dummy-screenshot">
-						<?php echo $img; ?>
-					</div>
-				<?php endif; ?>
-
-				<div class="dt-dummy-controls">
-					<?php
-					if ( ! presscore_theme_is_activated() ) {
-						include 'demos/theme-not-activated.php';
-					} else {
-						include 'demos/import.php';
-					}
-					?>
-				</div>
-
-			</div>
-
-		</div>
-
-	<?php endforeach; ?>
+    </div>
+</div>

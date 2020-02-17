@@ -67,8 +67,15 @@ if ( ! class_exists( 'Presscore_Mod_Portfolio', false ) ) {
 			add_action( 'init', array( $mod_admin, 'register_post_types' ), 5 );
 			add_action( 'init', array( $mod_admin, 'register_taxonomies' ), 5 );
 
+			// add import by url page.
+			add_filter( 'the7_import_by_url_menu_items', array( $mod_admin, 'add_import_by_url_menu_item' ) );
+
 			// add custom meta boxes
 			add_action( 'presscore_load_meta_boxes', array( $mod_admin, 'add_meta_boxes' ) );
+
+			// add bulk actions.
+			add_action( 'bulk_edit_custom_box', array( $mod_admin, 'bulk_edit_custom_box' ), 20, 2 );
+			add_action( 'save_post', array( $mod_admin, 'bulk_edit_save' ), 10, 2 );
 
 			// add thmbnail column for posts list
 			add_filter( 'manage_edit-dt_portfolio_columns', 'presscore_admin_add_thumbnail_column' );
@@ -86,6 +93,7 @@ if ( ! class_exists( 'Presscore_Mod_Portfolio', false ) ) {
 			 */
 			add_filter( 'presscore_config_post_id_filter', array( $mod_public, 'archive_page_id' ), 15 );
 			add_filter( 'the7_archive_page_template_id', array( $mod_public, 'archive_page_id' ) );
+			add_filter( 'the7_archive_display_full_content', array( $mod_public, 'the7_archive_display_full_content_filter' ) );
 			add_filter( 'presscore_archive_post_content-dt_portfolio', array( $mod_public, 'archive_post_content' ) );
 			add_filter( 'presscore_posted_on_wrap_class', array( $mod_public, 'post_meta_wrap_class_filter' ) );
 			add_filter( 'presscore_get_page_title', array( $mod_public, 'filter_page_title' ) );
@@ -97,6 +105,9 @@ if ( ! class_exists( 'Presscore_Mod_Portfolio', false ) ) {
 			add_action( 'presscore_js_composer_after_bridge_loaded', array( $mod_public, 'load_shortcodes_vc_bridge' ) );
 			add_action( 'widgets_init', array( $mod_public, 'init_widgets' ) );
 			add_action( 'presscore_config_base_init', array( $mod_public, 'init_template_config' ), 10, 2 );
+
+			// Register dynamic stylesheets.
+			add_filter( 'presscore_get_dynamic_stylesheets_list', array( $mod_public, 'register_dynamic_stylesheet' ) );
 		}
 	}
 

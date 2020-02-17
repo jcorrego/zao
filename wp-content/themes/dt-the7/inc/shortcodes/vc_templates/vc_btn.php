@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $gradient_text_color ;
  * @var $smooth_scroll
  * Shortcode class
- * @var $this WPBakeryShortCode_VC_Btn
+ * @var WPBakeryShortCode_Vc_Btn $this
  */
 $style = $shape = $color = $size = $custom_background = $custom_text = $align = $link = $title = $button_block = $el_class = $outline_custom_color = $outline_custom_hover_background = $outline_custom_hover_text = $add_icon = $i_align = $i_type = $i_icon_entypo = $i_icon_fontawesome = $i_icon_linecons = $i_icon_pixelicons = $i_icon_typicons = $css = $css_animation = $smooth_scroll = '';
 $gradient_color_1 = $gradient_color_2 = $gradient_custom_color_1 = $gradient_custom_color_2 = $gradient_text_color = '';
@@ -49,36 +49,19 @@ $icon_wrapper = false;
 $icon_html = false;
 $attributes = array();
 
-$colors = array(
-	'blue' => '#5472d2',
-	'turquoise' => '#00c1cf',
-	'pink' => '#fe6c61',
-	'violet' => '#8d6dc4',
-	'peacoc' => '#4cadc9',
-	'chino' => '#cec2ab',
-	'mulled-wine' => '#50485b',
-	'vista-blue' => '#75d69c',
-	'orange' => '#f7be68',
-	'sky' => '#5aa1e3',
-	'green' => '#6dab3c',
-	'juicy-pink' => '#f4524d',
-	'sandy-brown' => '#f79468',
-	'purple' => '#b97ebb',
-	'black' => '#2a2a2a',
-	'grey' => '#ebebeb',
-	'white' => '#ffffff',
-);
-
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 //parse link
+$link = trim( $link );
 $link = ( '||' === $link ) ? '' : $link;
 $link = vc_build_link( $link );
 $use_link = false;
 if ( strlen( $link['url'] ) > 0 ) {
 	$use_link = true;
 	$a_href = $link['url'];
+	$a_href = apply_filters( 'vc_btn_a_href', $a_href );
 	$a_title = $link['title'];
+	$a_title = apply_filters( 'vc_btn_a_title', $a_title );
 	$a_target = $link['target'];
 	$a_rel = $link['rel'];
 }
@@ -132,7 +115,7 @@ if ( 'true' === $add_icon ) {
 		$button_html .= ' ' . $icon_html;
 	}
 }
-
+$output = '';
 if ( 'custom' === $style ) {
 	if ( $custom_background ) {
 		$styles[] = vc_get_css_color( 'background-color', $custom_background );
@@ -179,8 +162,8 @@ if ( 'custom' === $style ) {
 	}
 } elseif ( 'gradient' === $style || 'gradient-custom' === $style ) {
 
-	$gradient_color_1 = $colors[ $gradient_color_1 ];
-	$gradient_color_2 = $colors[ $gradient_color_2 ];
+	$gradient_color_1 = vc_convert_vc_color( $gradient_color_1 );
+	$gradient_color_2 = vc_convert_vc_color( $gradient_color_2 );
 
 	$button_text_color = '#fff';
 	if ( 'gradient-custom' === $style ) {
@@ -207,8 +190,9 @@ if ( 'custom' === $style ) {
 	$gradient_css_hover[] = 'background-position: 100% 0';
 
 	$uid = uniqid();
-	echo '<style type="text/css">.vc_btn3-style-' . $style . '.vc_btn-gradient-btn-' . $uid . ':hover{' . implode( ';', $gradient_css_hover ) . ';' . '}</style>';
-	echo '<style type="text/css">.vc_btn3-style-' . $style . '.vc_btn-gradient-btn-' . $uid . '{' . implode( ';', $gradient_css ) . ';' . '}</style>';
+	$first_tag = 'style';
+	$output .= '<' . $first_tag . '>.vc_btn3-style-' . esc_attr( $style ) . '.vc_btn-gradient-btn-' . esc_attr( $uid ) . ':hover{' . esc_attr( implode( ';', $gradient_css_hover ) ) . ';' . '}</' . $first_tag . '>';
+	$output .= '<' . $first_tag . '>.vc_btn3-style-' . esc_attr( $style ) . '.vc_btn-gradient-btn-' . esc_attr( $uid ) . '{' . esc_attr( implode( ';', $gradient_css ) ) . ';' . '}</' . $first_tag . '>';
 	$button_classes[] = 'vc_btn-gradient-btn-' . $uid;
 	$attributes[] = 'data-vc-gradient-1="' . $gradient_color_1 . '"';
 	$attributes[] = 'data-vc-gradient-2="' . $gradient_color_2 . '"';
@@ -234,7 +218,7 @@ if ( $button_classes ) {
 }
 
 if ( $use_link ) {
-	$attributes[] = 'href="' . trim( $a_href ) . '"';
+	$attributes[] = 'href="' . esc_url( trim( $a_href ) ) . '"';
 	$attributes[] = 'title="' . esc_attr( trim( $a_title ) ) . '"';
 	if ( ! empty( $a_target ) ) {
 		$attributes[] = 'target="' . esc_attr( trim( $a_target ) ) . '"';
@@ -249,16 +233,19 @@ if ( ! empty( $custom_onclick ) && $custom_onclick_code ) {
 }
 
 $attributes = implode( ' ', $attributes );
-$wrapper_attributes = array();
-if ( ! empty( $el_id ) ) {
-	$wrapper_attributes[] = 'id="' . esc_attr( $el_id ) . '"';
-}
-?>
-<div class="<?php echo trim( esc_attr( $css_class ) ) ?>" <?php echo implode( ' ', $wrapper_attributes ); ?>>
-	<?php
+
+$output .= '<div class="' . esc_attr( trim( $css_class ) ) . '"' . ( ! empty( $el_id ) ? ' id="' . esc_attr( $el_id ) . '"' : '' ) . ' >';
+
 	if ( $use_link ) {
-		echo '<a ' . $attributes . '>' . $button_html . '</a>';
+	$output .= '<a ' . $attributes . '>' . $button_html . '</a>';
 	} else {
-		echo '<button ' . $attributes . '>' . $button_html . '</button>';
+	$output .= '<button ' . $attributes . '>' . $button_html . '</button>';
 	}
-	?></div>
+
+$output .= '</div>';
+
+if ( version_compare( WPB_VC_VERSION, '6.0.3', '<' ) ) {
+	echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+} else {
+	return $output;
+}

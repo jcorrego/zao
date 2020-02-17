@@ -36,7 +36,7 @@ class DT_Shortcode_Fancy_Separator extends DT_Shortcode {
 			'el_width' => '100%',
 		);
 
-		extract(shortcode_atts($default_atts, $atts));
+		extract(shortcode_atts($default_atts, $atts, 'dt_fancy_separator'));
 
 		/////////////////////
 		// sanitize atts //

@@ -13,7 +13,7 @@ if ( ! class_exists( 'Presscore_Modules_AdminIconsBarModule', false ) ) :
 
 	class Presscore_Modules_AdminIconsBarModule {
 
-		const CSS_PATH = 'fonts/fontello/css/fontello.css';
+		const CSS_PATH = 'fonts/fontello/css/fontello.min.css';
 		const JSON_PATH = 'fonts/fontello/config.json';
 
 		/**

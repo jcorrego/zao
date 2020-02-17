@@ -328,8 +328,11 @@ class AEPC_Admin {
 		$post_data = wp_parse_args( $post_data, array(
 			'event_name' => '',
 			'event_trigger_on' => '',
+			'event_url_condition' => 'contains',
 			'event_url' => '',
 			'event_css' => '',
+			'event_js_event_element' => '',
+			'event_js_event_name' => '',
 			'event_standard_events' => '',
 			'event_fire_delay' => '',
 			'event_name_custom' => '',
@@ -338,23 +341,27 @@ class AEPC_Admin {
 		) );
 
 		$raw_data = array(
-			'name'               => sanitize_text_field( $post_data['event_name'] ),
-			'trigger'            => sanitize_text_field( $post_data['event_trigger_on'] ),
-			'url'                => sanitize_text_field( $post_data['event_url'] ),
-			'css'                => sanitize_text_field( $post_data['event_css'] ),
-			'event'              => sanitize_text_field( $post_data['event_standard_events'] ),
-			'delay'              => sanitize_text_field( $post_data['event_fire_delay'] ),
-			'custom_event_name'  => sanitize_text_field( $post_data['event_name_custom'] ),
+			'name'               => sanitize_text_field( (string) $post_data['event_name'] ),
+			'trigger'            => sanitize_text_field( (string) $post_data['event_trigger_on'] ),
+			'url_condition'      => sanitize_text_field( (string) $post_data['event_url_condition'] ),
+			'url'                => sanitize_text_field( (string) $post_data['event_url'] ),
+			'css'                => sanitize_text_field( (string) $post_data['event_css'] ),
+			'js_event_element'   => sanitize_text_field( (string) $post_data['event_js_event_element'] ),
+			'js_event_name'      => sanitize_text_field( (string) $post_data['event_js_event_name'] ),
+			'event'              => sanitize_text_field( (string) $post_data['event_standard_events'] ),
+			'delay'              => sanitize_text_field( (string) $post_data['event_fire_delay'] ),
+			'custom_event_name'  => sanitize_text_field( (string) $post_data['event_name_custom'] ),
 			'pass_advanced_data' => ! empty( $post_data['event_enable_advanced_data'] ),
-			'value'              => sanitize_text_field( $post_data['event_field_value'] ),
-			'currency'           => sanitize_text_field( $post_data['event_field_currency'] ),
-			'content_name'       => sanitize_text_field( $post_data['event_field_content_name'] ),
-			'content_category'   => sanitize_text_field( $post_data['event_field_content_category'] ),
-			'content_ids'        => sanitize_text_field( $post_data['event_field_content_ids'] ),
-			'content_type'       => sanitize_text_field( $post_data['event_field_content_type'] ),
-			'num_items'          => sanitize_text_field( $post_data['event_field_num_items'] ),
-			'search_string'      => sanitize_text_field( $post_data['event_field_search_string'] ),
-			'status'             => sanitize_text_field( $post_data['event_field_status'] ),
+			'value'              => sanitize_text_field( (string) $post_data['event_field_value'] ),
+			'currency'           => sanitize_text_field( (string) $post_data['event_field_currency'] ),
+			'content_name'       => sanitize_text_field( (string) $post_data['event_field_content_name'] ),
+			'content_category'   => sanitize_text_field( (string) $post_data['event_field_content_category'] ),
+			'content_ids'        => sanitize_text_field( (string) $post_data['event_field_content_ids'] ),
+			'content_type'       => sanitize_text_field( (string) $post_data['event_field_content_type'] ),
+			'num_items'          => sanitize_text_field( (string) $post_data['event_field_num_items'] ),
+			'search_string'      => sanitize_text_field( (string) $post_data['event_field_search_string'] ),
+			'status'             => sanitize_text_field( (string) $post_data['event_field_status'] ),
+			'predicted_ltv'      => sanitize_text_field( (string) $post_data['event_field_predicted_ltv'] ),
 			'custom_params'      => $post_data['event_custom_params'],
 		);
 
@@ -367,8 +374,11 @@ class AEPC_Admin {
 		$track = array(
 			'name'          => $raw_data['name'],
 			'trigger'       => $raw_data['trigger'],
+			'url_condition' => $raw_data['url_condition'],
 			'url'           => $raw_data['url'],
 			'css'           => $raw_data['css'],
+			'js_event_element' => $raw_data['js_event_element'],
+			'js_event_name' => $raw_data['js_event_name'],
 			'event'         => $raw_data['event'],
 			'delay'         => $raw_data['delay'],
 			'params'        => array(),
@@ -439,6 +449,7 @@ class AEPC_Admin {
 
 			// Fix value of url/css fields
 			if ( 'css_selector' === $events[ $event_id ]['trigger'] ) {
+				$events[ $event_id ]['url_condition'] = 'contains';
 				$events[ $event_id ]['url'] = '';
 			} else {
 				$events[ $event_id ]['css'] = '';
@@ -620,17 +631,19 @@ class AEPC_Admin {
 				set_transient( 'aepc_pixel_stats', $stats, HOUR_IN_SECONDS );
 			}
 
+			$timezone = null;
+
 			// Convert array to work better after
 			foreach ( $stats as $i => $stat ) {
-				$stat->timestamp = new DateTime( $stat->timestamp );
-				$stat->timestamp->setTime(0, 0);
+				$stat->timestamp = new DateTime( $stat->start_time );
 				$stats[ $stat->timestamp->format( DATE_ISO8601 ) ] = $stat->data[0]->count;
+				$timezone = $stat->timestamp->getTimezone();
 				unset( $stats[ $i ] );
 			}
 
-			$counter = new DateTime( '2 weeks ago' );
+			$counter = new DateTime( '2 weeks ago', $timezone );
 			$counter->setTime( 0, 0 );
-			$tomorrow = new DateTime( 'tomorrow' );
+			$tomorrow = new DateTime( 'tomorrow', $timezone );
 			$counters = array();
 
 			do {

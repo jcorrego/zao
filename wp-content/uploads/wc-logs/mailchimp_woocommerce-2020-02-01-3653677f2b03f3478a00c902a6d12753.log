@@ -1,0 +1,23 @@
+2020-02-01T12:55:45+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T12:56:52+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T12:56:52+00:00 NOTICE abandoned_cart.success :: email: isabolivar2@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T12:56:53+00:00 NOTICE abandoned_cart.success :: email: isabolivar2@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T12:58:34+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T13:00:01+00:00 NOTICE abandoned_cart.success :: email: isabolivar2@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T13:00:22+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T13:01:13+00:00 NOTICE abandoned_cart.success :: email: isabolivar2@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T13:03:26+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T13:04:10+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 118
+2020-02-01T13:04:10+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3894
+2020-02-01T13:04:10+00:00 NOTICE abandoned_cart.success :: email: isabolivar2@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=4a49f50b26d32b1c351a204eb593bfea
+2020-02-01T13:04:11+00:00 NOTICE member.sync :: Updated Member isabolivar2@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Isabel Cristina
+            [LNAME] => Bolívar AGUILERA
+        )
+
+)
+
+2020-02-01T13:07:58+00:00 NOTICE order_submit.success :: addStoreOrder :: #3894 :: email: isabolivar2@gmail.com :: abandoned cart deleted [4a49f50b26d32b1c351a204eb593bfea]

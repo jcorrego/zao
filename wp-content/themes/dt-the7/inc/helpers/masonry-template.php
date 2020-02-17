@@ -25,7 +25,7 @@ if ( ! function_exists( 'presscore_masonry_container_data_atts' ) ) :
 
 		$data_atts = array(
 			'data-padding="' . intval( $config->get( 'item_padding' ) ) . 'px"',
-			'data-cur-page="' . dt_get_paged_var() . '"'
+			'data-cur-page="' . the7_get_paged_var() . '"'
 		);
 		$data_atts = array_merge( $data_atts, $custom_atts );
 

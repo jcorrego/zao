@@ -129,6 +129,17 @@ class WCCT_Admin_CountDown_Post_Options {
 			'default' => 'no',
 		) );
 		$cmb_settings->add_field( array(
+			'name'    => __( 'Reload Page', 'finale-woocommerce-sales-countdown-timer-discount' ),
+			'desc'    => __( 'The current page will reload when countdown timer hits zero.', 'finale-woocommerce-sales-countdown-timer-discount' ),
+			'id'      => 'wcct_reload_page_on_timer_ends',
+			'type'    => 'radio_inline',
+			'options' => array(
+				'yes' => __( 'Yes', 'finale-woocommerce-sales-countdown-timer-discount' ),
+				'no'  => __( 'No', 'finale-woocommerce-sales-countdown-timer-discount' ),
+			),
+			'default' => 'yes',
+		) );
+		$cmb_settings->add_field( array(
 			'name'       => '_wpnonce',
 			'id'         => '_wpnonce',
 			'type'       => 'hidden',

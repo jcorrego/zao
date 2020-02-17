@@ -248,6 +248,14 @@ jQuery(function ($) {
                     widget_reload(t)
                 });
 
+                /* === YooTheme Theme Support === */
+                if( yith_wcan.yootheme.is_enabled == 1 ){
+                    $('.widget-yith-woo-ajax-navigation').add('.widget-yith-woo-ajax-navigation-sort-by').add('.widget-yith-woo-ajax-reset-navigation').add('.widget-yith-wcan-stock-on-sale').add('.widget-yith-wcan-list-price-filter').each(function () {
+                        var t = $(this);
+                        widget_reload(t)
+                    });
+                }
+
                 /* === Avada Theme Support === */
                 if( yith_wcan.avada.is_enabled == 1 ) {
                     var avada_sort_count     = $(yith_wcan.avada.sort_count);

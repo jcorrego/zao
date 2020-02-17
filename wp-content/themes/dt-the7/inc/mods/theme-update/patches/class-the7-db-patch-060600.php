@@ -121,7 +121,7 @@ if ( ! class_exists( 'The7_DB_Patch_060600', false ) ) {
 					$opacity = (int) $this->get_option( $opacity_option );
 				}
 
-				$color_obj = new Presscore_Lib_LessVars_Color( $this->get_option( $color_option ) );
+				$color_obj = new The7_Less_Vars_Value_Color( $this->get_option( $color_option ) );
 				$this->set_option( $color_option, $color_obj->opacity( $opacity )->get_rgba() );
 			}
 		}
@@ -152,7 +152,7 @@ if ( ! class_exists( 'The7_DB_Patch_060600', false ) ) {
 			$this->set_option( 'header-menu-submenu-hover-bg-opacity', 7 );
 			$this->set_option( 'header-menu-submenu-active-bg-opacity', 7 );
 
-			$color_obj = new Presscore_Lib_LessVars_Color( $this->get_option( 'header-menu-submenu-hover-font-color' ) );
+			$color_obj = new The7_Less_Vars_Value_Color( $this->get_option( 'header-menu-submenu-hover-font-color' ) );
 			$bg_color  = $color_obj->opacity( 7 )->get_rgba();
 			$this->set_option( 'header-menu-submenu-hover-bg-color', $bg_color );
 			$this->set_option( 'header-menu-submenu-active-bg-color', $bg_color );
@@ -199,7 +199,7 @@ if ( ! class_exists( 'The7_DB_Patch_060600', false ) ) {
 			}
 
 			foreach ( $gradient as $i => $color ) {
-				$color_obj      = new Presscore_Lib_LessVars_Color( $color );
+				$color_obj      = new The7_Less_Vars_Value_Color( $color );
 				$gradient[ $i ] = $opacity === 100 ? $color_obj->get_hex() : $color_obj->opacity( $opacity )->get_rgba();
 			}
 

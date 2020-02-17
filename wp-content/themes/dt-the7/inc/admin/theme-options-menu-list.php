@@ -54,7 +54,7 @@ return array(
 		'menu_title' => _x( 'WPML Flags', 'backend', 'the7mk2' ),
 	),
 	'of-archives-templates-menu' => array(
-		'menu_title' => _x( 'Archives', 'backend', 'the7mk2' ),
+		'menu_title' => _x( 'Archives and 404', 'backend', 'the7mk2' ),
 	),
 	'of-imghoovers-menu'         => array(
 		'menu_title' => _x( 'Images Styling & Hovers', 'backend', 'the7mk2' ),

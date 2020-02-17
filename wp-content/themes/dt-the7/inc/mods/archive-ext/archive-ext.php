@@ -1,6 +1,7 @@
 <?php
 /**
  * Arhive templates module.
+ *
  * @package the7
  * @since   3.0.0
  */
@@ -32,7 +33,6 @@ if ( ! class_exists( 'Presscore_Modules_ArchiveExtModule', false ) ) :
 			$shortcodes_manager = self::get_archive_shortcodes_manager();
 			add_action( 'admin_init', array( $shortcodes_manager, 'add_cache_invalidation_hooks' ) );
 
-//			add_action( 'the7_archive_populate_config', array( __CLASS__, 'populate_template_config' ) );
 			$supported_post_types = array(
 				'post',
 				'dt_portfolio',
@@ -45,11 +45,58 @@ if ( ! class_exists( 'Presscore_Modules_ArchiveExtModule', false ) ) :
 
 			if ( ! is_admin() ) {
 				add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts_filter' ) );
+				add_action( 'wp_enqueue_scripts', array( __CLASS__, 'show_ultimate_styles' ) );
 			}
 
 			add_action( 'presscore_config_base_init', array( __CLASS__, 'archive_config_action' ) );
 			add_filter( 'presscore_config_post_id_filter', array( __CLASS__, 'config_page_id_filter' ) );
 			add_filter( 'presscore_options_files_list', array( __CLASS__, 'add_theme_options_filter' ) );
+		}
+
+		/**
+		 * Print VC shortcode inline css.
+		 *
+		 * @param int $page_id
+		 */
+		public static function print_vc_inline_css( $page_id ) {
+			echo self::get_vc_inline_css( $page_id );
+		}
+
+		/**
+		 * Return VC inline css tags.
+		 *
+		 * @param int $page_id Post/Page ID.
+		 *
+		 * @return string
+		 */
+		public static function get_vc_inline_css( $page_id ) {
+			$inline_css = '';
+			$post_custom_css = get_post_meta( $page_id, '_wpb_post_custom_css', true );
+			if ( ! empty( $post_custom_css ) ) {
+				$inline_css .= '<style type="text/css" data-type="vc_custom-css">' . strip_tags( $post_custom_css ) . '</style>';
+			}
+
+			$shortcodes_custom_css = get_post_meta( $page_id, '_wpb_shortcodes_custom_css', true );
+			if ( ! empty( $shortcodes_custom_css ) ) {
+				$inline_css .= '<style type="text/css" data-type="vc_shortcodes-custom-css">' . strip_tags( $shortcodes_custom_css ) . '</style>';
+			}
+
+			return $inline_css;
+		}
+
+		/**
+		 * Enable ultimate addons global scripts.
+		 *
+		 * @since 7.3.0
+		 *
+		 * @uses  `ultimate_global_scripts` filer.
+		 */
+		public static function show_ultimate_styles() {
+			if ( ! ( is_archive() || is_search() ) ) {
+				return;
+			}
+
+			add_filter( 'ultimate_global_scripts', 'the7__return_enable' );
 		}
 
 		/**
@@ -104,7 +151,7 @@ if ( ! class_exists( 'Presscore_Modules_ArchiveExtModule', false ) ) :
 			}
 
 			$posts_per_page = get_option( 'posts_per_page', 10 );
-			$atts = $shortcodes_manager->get_shortcode_atts();
+			$atts           = $shortcodes_manager->get_shortcode_atts();
 			switch ( $shortcodes_manager->get_shortcode_tag() ) {
 				case 'dt_blog_list':
 				case 'dt_blog_masonry':
@@ -112,7 +159,7 @@ if ( ! class_exists( 'Presscore_Modules_ArchiveExtModule', false ) ) :
 				case 'dt_team_masonry':
 				case 'dt_testimonials_masonry':
 					if ( isset( $atts['loading_mode'] ) ) {
-						$mode = $atts['loading_mode'];
+						$mode    = $atts['loading_mode'];
 						$ppp_map = array(
 							'standard'        => 'st_posts_per_page',
 							'js_pagination'   => 'jsp_posts_per_page',
@@ -163,14 +210,41 @@ if ( ! class_exists( 'Presscore_Modules_ArchiveExtModule', false ) ) :
 		}
 
 		/**
+		 * Determine, display full content or not, based on theme options.
+		 *
+		 * @since 7.2.0
+		 *
+		 * @uses  of_get_option()
+		 *
+		 * @return bool
+		 */
+		public static function is_displaying_full_content() {
+			$display_full_content = false;
+
+			if ( is_search() ) {
+				$display_full_content = of_get_option( 'template_page_id_search_full_content' );
+			} else if ( is_category() ) {
+				$display_full_content = of_get_option( 'template_page_id_blog_category_full_content' );
+			} else if ( is_tag() ) {
+				$display_full_content = of_get_option( 'template_page_id_blog_tags_full_content' );
+			} else if ( is_author() ) {
+				$display_full_content = of_get_option( 'template_page_id_author_full_content' );
+			} else if ( is_date() || is_day() || is_month() || is_year() ) {
+				$display_full_content = of_get_option( 'template_page_id_date_full_content' );
+			}
+
+			return (bool) apply_filters( 'the7_archive_display_full_content', $display_full_content );
+		}
+
+		/**
 		 * Factory method for The7_Archive_Shortcodes_Manager.
 		 *
 		 * @return The7_Archive_Shortcodes_Manager
 		 */
 		public static function get_archive_shortcodes_manager() {
 			if ( ! self::$archive_manager ) {
-				$shortcodes_map = new The7_Archive_Shortcodes_Map();
-				$shortcodes_handler = new The7_Archive_Shortcodes_Handler();
+				$shortcodes_map        = new The7_Archive_Shortcodes_Map();
+				$shortcodes_handler    = new The7_Archive_Shortcodes_Handler();
 				self::$archive_manager = new The7_Archive_Shortcodes_Manager( $shortcodes_map, $shortcodes_handler );
 			}
 
@@ -246,93 +320,36 @@ if ( ! class_exists( 'Presscore_Modules_ArchiveExtModule', false ) ) :
 				return $res;
 			}
 
-			$config = presscore_config();
+			$config  = presscore_config();
 			$page_id = (int) $config->get( 'page_id' );
 
 			// Check page content.
-			$page = get_post( $page_id ? $page_id : - 1 );
+			$page = get_post( $page_id ? $page_id : -1 );
 
 			// On invalid page display generic archive.
 			if ( ! is_object( $page ) ) {
 				return false;
 			}
 
-			$page_template_layout = false;
-//			$page_template_layout = self::get_page_template_layout( $page_id );
 			$shortcodes_manager = self::get_archive_shortcodes_manager();
 
 			if ( ! $shortcodes_manager->get_shortcode_tag() ) {
 				return false;
 			}
 
+			self::print_vc_inline_css( $page_id );
+
 			do_action( 'presscore_before_loop' );
 
-			if ( $page_template_layout ) {
-//				presscore_get_template_part( 'theme', "archive/blog-{$page_template_layout}" );
+			if ( self::is_displaying_full_content() ) {
+				$shortcodes_manager->display_content();
 			} else {
-				$atts = $shortcodes_manager->get_shortcode_atts();
-
-				// Disable pagination and filters.
-				$atts['loading_mode'] = 'disabled';
-				$atts['show_categories_filter'] = 'n';
-				$atts['show_orderby_filter'] = 'n';
-				$atts['show_order_filter'] = 'n';
-				$atts['show_filter'] = '';
-				$atts['show_orderby'] = '';
-				$atts['show_order'] = '';
-				$atts['posts_per_page'] = '-1';
-
-				$shortcodes_manager->set_shortcode_atts( $atts );
 				$shortcodes_manager->display_shortcode();
 			}
 
-			dt_paginator();
 			do_action( 'presscore_after_loop' );
 
 			return true;
-		}
-
-		/**
-		 * Populate config for posts archive.
-		 */
-		public static function populate_template_config() {
-			if ( ! ( is_category() || is_tag() ) ) {
-				return;
-			}
-
-			$config = presscore_config();
-			$post_id = $config->get( 'post_id' );
-
-			// In archive use page_id, NOT post_id.
-			$config->set( 'page_id', $post_id );
-
-			$layout = self::get_page_template_layout( $post_id );
-			if ( ! $layout ) {
-				return;
-			}
-
-			$config->set( 'template', 'blog' );
-			$config->set( 'template.layout.type', $layout );
-			presscore_congif_populate_blog_vars();
-		}
-
-		/**
-		 * Retrieve blog template name.
-		 *
-		 * @param string|int $post_id
-		 *
-		 * @return string
-		 */
-		protected static function get_page_template_layout( $post_id ) {
-			$page_template = dt_get_template_name( $post_id );
-			switch ( $page_template ) {
-				case 'template-blog-list.php':
-					return 'list';
-				case 'template-blog-masonry.php':
-					return 'masonry';
-				default:
-					return '';
-			}
 		}
 
 		/**

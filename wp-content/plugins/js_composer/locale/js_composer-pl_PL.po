@@ -10027,4 +10027,310 @@ msgstr ""
 msgid "Edit only"
 msgstr ""
 
-#: include/./templates/pages/partials/vc-roles-parts/_sh
+#: include/./templates/pages/partials/vc-roles-parts/_shortcodes.tpl.php:37
+msgid "Control user access to content elements."
+msgstr ""
+
+#: include/./templates/pages/partials/vc-roles-parts/_templates.tpl.php:12
+msgid "Apply templates only"
+msgstr ""
+
+#: include/./templates/pages/partials/vc-roles-parts/_templates.tpl.php:16
+msgid ""
+"Control access rights to templates and predefined templates. Note: \"Apply "
+"templates only\" restricts users from saving new templates and deleting "
+"existing."
+msgstr ""
+
+#: include/./templates/pages/vc-settings/default-template-post-type.tpl.php:14
+msgid "Post type"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/default-template-post-type.tpl.php:15
+msgid "Template"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab-vc-roles.php:15
+msgid ""
+"Control user group role access to the features and options of WPBakery Page "
+"Builder - manage WordPress default and custom roles."
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:22
+msgid ""
+"It is optional to activate license on localhost development environment. You "
+"can still activate license on localhost to receive plugin updates and get "
+"access to template library."
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:41
+msgid "Guide tours"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:45
+msgid "Done"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:45
+msgid "Reset"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:48
+msgid ""
+"Guide tours are shown in VC editors to help you to start working with "
+"editors. You can see them again by clicking button above."
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:71
+msgid "Restore Default"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:80
+msgid ""
+"You have activated WPBakery Page Builder version which allows you to access "
+"all the customer benefits. Thank you for choosing WPBakery Page Builder as "
+"your page builder. If you do not wish to use WPBakery Page Builder on this "
+"WordPress site you can deactivate your license below."
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:91
+msgid "Deactivate WPBakery Page Builder"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:101
+msgid ""
+"In order to receive all benefits of WPBakery Page Builder, you need to "
+"activate your copy of the plugin. By activating WPBakery Page Builder "
+"license you will unlock premium options - <strong>direct plugin updates</"
+"strong>, access to <strong>template library</strong> and <strong>official "
+"support.</strong>"
+msgstr ""
+
+#: include/./templates/pages/vc-settings/tab.php:120
+#, php-format
+msgid ""
+"Don't have direct license yet? <a href=\"%s\" target=\"_blank\">Purchase "
+"WPBakery Page Builder license</a>."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/index.php:8
+#, php-format
+msgid "Welcome to WPBakery Page Builder %s"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/index.php:11
+msgid ""
+"Congratulations! You are about to use most powerful time saver for WordPress "
+"ever - page builder plugin with Frontend and Backend editors by WPBakery."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/index.php:14
+#, php-format
+msgid "Version %s"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-faq.php:7
+msgid "New to WPBakery Page Builder or Looking for More Information?"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-faq.php:9
+#, php-format
+msgid ""
+"WPBakery has complete documentation available at our knowledge base: <a "
+"target=\"_blank\" href=\"%s\">kb.wpbakery.com</a> which covers everything "
+"related to WPBakery Page Builder starting from Installation and up to more "
+"advanced features based on our Inner API."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-faq.php:100
+msgid "Visit Knowledge Base for more information"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-resources.php:11
+msgid ""
+"There are several resources available to WPBakery Page Builder users to help "
+"you to get around plugin:"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-resources.php:23
+msgid "Official Support"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-resources.php:25
+#, php-format
+msgid ""
+"To get your support related question answered in the fastest timing, please "
+"head over to our <a href=\"%s\" target=\"_blank\">support page</a> and open "
+"Support ticket. To open a support ticket you should have a valid support "
+"subscription in case if your support has expired you can <a href=\"%s\" "
+"target=\"_blank\">purchase support extension</a> on support.wpbakery.com."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-resources.php:27
+#, php-format
+msgid ""
+"Before applying for support please make sure you understand the rules of "
+"support and go through all steps described and listed in <a href=\"%s\" "
+"target=\"_blank\">Support Policy</a> in order to get your issues solved as "
+"soon as possible."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:11
+msgid "New Interface, Native Colors"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:13
+msgid ""
+"A new slim interface of WPBakery Page Builder with native WordPress colors "
+"will become your best companion. Enjoy editing your website hassle free via "
+"desktop or mobile."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:21
+#, fuzzy
+msgid "Native Colors"
+msgstr "Kolor"
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:23
+msgid ""
+"Default WordPress colors will blend your WordPress and page builder "
+"experience in no time."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:28
+#, fuzzy
+msgid "New Icons"
+msgstr "Ikona"
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:30
+msgid ""
+"Simple and beautiful SVG icons for all our content elements and controls "
+"tailored for mobile devices."
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:35
+msgid "Icon Library Updates"
+msgstr ""
+
+#: include/./templates/pages/vc-welcome/vc-welcome.php:37
+msgid "Add even more icons to your website with our updated icon libraries."
+msgstr ""
+
+#: include/./templates/params/column_offset/template.tpl.php:21
+#, php-format
+msgid ""
+"Responsive design settings are currently disabled. You can enable them in "
+"WPBakery Page Builder <a href=\"%s\">settings page</a> by unchecking "
+"\"Disable responsive content elements\"."
+msgstr ""
+
+#: include/./templates/params/column_offset/template.tpl.php:31
+msgid "Device"
+msgstr ""
+
+#: include/./templates/params/column_offset/template.tpl.php:40
+msgid "Hide on device?"
+msgstr ""
+
+#: include/./templates/params/column_offset/template.tpl.php:69
+msgid "Inherit: "
+msgstr ""
+
+#: include/./templates/params/column_offset/template.tpl.php:70
+msgid "Inherit from default"
+msgstr ""
+
+#: include/./templates/params/google_fonts/template.php:41
+msgid "Google Fonts preview"
+msgstr ""
+
+#: include/./templates/params/google_fonts/template.php:43
+msgid "Grumpy wizards make toxic brew for the evil Queen and Jack."
+msgstr ""
+
+#: include/./templates/params/vc_grid_item/attributes/post_categories.php:28
+#, php-format
+msgid "View all posts in %s"
+msgstr ""
+
+#: include/./templates/params/vc_grid_item/editor/vc_grid_item_editor.tpl.php:18
+msgid "Loading, please wait..."
+msgstr "Ładuję, proszę czekać..."
+
+#: include/./templates/params/vc_grid_item/editor/vc_grid_item_editor.tpl.php:20
+msgid "Crunching..."
+msgstr ""
+
+#: include/./templates/shortcodes/post_block/_item.php:22
+#, php-format
+msgid "Permalink to %s"
+msgstr ""
+
+#: include/./templates/shortcodes/vc_accordion_tab.php:26
+msgid "Empty section. Edit page to add content here."
+msgstr ""
+
+#: include/./templates/shortcodes/vc_item.php:19
+msgid "Item"
+msgstr ""
+
+#: include/./templates/shortcodes/vc_posts_grid.php:194
+#: include/./templates/shortcodes/vc_posts_slider.php:209
+msgid "Nothing found."
+msgstr "Nie znaleziono."
+
+#: include/./templates/shortcodes/vc_tab.php:25
+msgid "Empty tab. Edit page to add content here."
+msgstr ""
+
+#: include/./templates/shortcodes/vc_tabs.php:52
+#, fuzzy
+msgid "Previous tab"
+msgstr "Poprzedni slajd"
+
+#: include/./templates/shortcodes/vc_tabs.php:52
+msgid "Next tab"
+msgstr ""
+
+#: include/./templates/shortcodes/vc_tweetmeme.php:24
+msgid "Tweet to"
+msgstr ""
+
+#: include/./templates/shortcodes/vc_tweetmeme.php:29
+#: include/./templates/shortcodes/vc_tweetmeme.php:33
+msgid "Tweet"
+msgstr "Tweet"
+
+#: include/./templates/teaser.html.php:20
+#: include/./templates/teaser.html.php:41
+#, fuzzy
+msgid "Link to"
+msgstr "Link do wpisu"
+
+#: include/./templates/teaser.html.php:24
+#: include/./templates/teaser.html.php:45
+#, fuzzy
+msgid "On post"
+msgstr "Link do wpisu"
+
+#: include/./templates/teaser.html.php:26
+#: include/./templates/teaser.html.php:47
+#, fuzzy
+msgid "Big image"
+msgstr "Pojedynczy obrazek"
+
+#: include/./templates/teaser.html.php:35
+msgid "Featured"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Exit WPBakery Page Builder edit mode"
+#~ msgstr "Ustawienia Edytora wizualnego"
+
+#, fuzzy
+#~ msgid "Template name"
+#~ msgstr "Szablon"
+
+#, fuzzy
+#~ msgid "Untitled"
+#~ msgstr "Rodzaj linku."

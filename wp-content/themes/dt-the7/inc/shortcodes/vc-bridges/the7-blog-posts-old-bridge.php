@@ -1,13 +1,10 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	"weight" => -1,
-	"name" => __("Blog Masonry & Grid (old)", 'the7mk2'),
+	"name" => __("Blog Masonry and Grid (old)", 'the7mk2'),
 	"base" => "dt_blog_posts",
 	"icon" => "dt_vc_ico_blog_posts",
 	"class" => "dt_vc_sc_blog_posts",

@@ -60,9 +60,9 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 		}
 
 		?>
-		<div class="wlb-product-short-description">
+        <div class="wlb-product-short-description">
 			<?php echo $short_description; // WPCS: XSS ok. ?>
-		</div>
+        </div>
 	<?php }
 
 	/**
@@ -71,9 +71,9 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 	public function product_price() {
 		global $product;
 		?>
-		<div class="wlb-product-price">
+        <div class="wlb-product-price">
 			<?php echo $product->get_price_html(); ?>
-		</div>
+        </div>
 	<?php }
 
 	/**
@@ -92,9 +92,10 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 			return false;
 		}
 		global $post; ?>
-		<div class="wlb-read-more">
-			<a class="wlb-read-more-button" href="<?php the_permalink( $post->ID ) ?>"><?php esc_html_e( 'See more', 'woo-lookbook' ) ?></a>
-		</div>
+        <div class="wlb-read-more">
+            <a class="wlb-read-more-button"
+               href="<?php the_permalink( $post->ID ) ?>"><?php esc_html_e( 'See more', 'woo-lookbook' ) ?></a>
+        </div>
 	<?php }
 
 	/**
@@ -106,37 +107,38 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 		if ( $lookbook_id ) {
 			$products = $this->get_data( $lookbook_id, 'product_id', array() );
 			?>
-			<div class="wlb-left">
+            <div class="wlb-left">
 				<?php echo do_shortcode( '[woocommerce_lookbook id="' . $lookbook_id . '"]' ) ?>
-			</div>
-			<div class="wlb-right wlb-product-galleries">
-				<div class="wlb-instagram-controls">
+            </div>
+            <div class="wlb-right wlb-product-galleries">
+                <div class="wlb-instagram-controls">
 					<?php $likes = $this->get_data( $lookbook_id, 'likes' );
 					if ( $likes ) {
 						?>
-						<div class="wlb-instagram-controls-likes">
+                        <div class="wlb-instagram-controls-likes">
 							<?php echo esc_html( $likes ) ?>
-						</div>
+                        </div>
 					<?php }
 					$comments = $this->get_data( $lookbook_id, 'comments' );
 					if ( $comments ) {
 						?>
-						<div class="wlb-instagram-controls-comments">
+                        <div class="wlb-instagram-controls-comments">
 							<?php echo esc_html( $comments ) ?>
-						</div>
+                        </div>
 					<?php }
 					$code = $this->get_data( $lookbook_id, 'code' );
 					if ( $code && $this->settings->ins_link() ) {
 						?>
-						<div class="wlb-instagram-controls-link">
+                        <div class="wlb-instagram-controls-link">
 							<?php $ins_url = 'https://www.instagram.com/p/' . $code ?>
-							<a target="_blank" href="<?php echo esc_url( $ins_url ) ?>"><?php esc_html_e( 'View on Instagram', 'woo-lookbook' ) ?></a>
-						</div>
+                            <a target="_blank"
+                               href="<?php echo esc_url( $ins_url ) ?>"><?php esc_html_e( 'View on Instagram', 'woo-lookbook' ) ?></a>
+                        </div>
 					<?php } ?>
-				</div>
-				<div class="wlb-instagram-description">
+                </div>
+                <div class="wlb-instagram-description">
 					<?php echo esc_html( get_post_field( 'post_title', $lookbook_id ) ) ?>
-				</div>
+                </div>
 				<?php if ( count( $products ) ) { ?>
 					<?php foreach ( $products as $product_id ) {
 
@@ -151,17 +153,17 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 						 */
 						?>
 
-						<div class="wlb-product-gallery">
+                        <div class="wlb-product-gallery">
 							<?php
 							do_action( 'woocommerce_lookbook_single_product_gallery' ); ?>
-						</div>
+                        </div>
 						<?php
 					} ?>
 
 					<?php
 				} ?>
 
-			</div>
+            </div>
 
 		<?php }
 		die;
@@ -176,13 +178,13 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 		$product = wc_get_product( $prod_id );
 		$post    = get_post( $prod_id );
 		?>
-		<div class="wlb-left">
+        <div class="wlb-left">
 			<?php if ( has_post_thumbnail() ) {
 				$image = get_the_post_thumbnail( $post->ID, apply_filters( 'single_product_large_thumbnail_size', 'shop_single' ) );
 				echo apply_filters( 'woocommerce_single_product_image_html', sprintf( '%s', $image ), $post->ID );
 			} ?>
-		</div>
-		<div class="wlb-right">
+        </div>
+        <div class="wlb-right">
 			<?php
 			/**
 			 * woocommerce_single_product_summary hook.
@@ -197,7 +199,7 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 			 * @hooked WC_Structured_Data::generate_product_data() - 60
 			 */
 			do_action( 'woocommerce_lookbook_single_product_summary' ); ?>
-		</div>
+        </div>
 		<?php
 		die;
 	}
@@ -208,27 +210,27 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 	public function overlay() {
 		wp_enqueue_script( 'wc-add-to-cart-variation' );
 		?>
-		<div class="woo-lookbook-quickview" style="display: none">
-			<div class="woo-lookbook-quickview-inner single-product">
-				<div class="wlb-overlay"></div>
-				<div class="wlb-product-wrapper">
+        <div class="woo-lookbook-quickview" style="display: none">
+            <div class="woo-lookbook-quickview-inner single-product">
+                <div class="wlb-overlay"></div>
+                <div class="wlb-product-wrapper">
 					<?php echo $this->loading_html(); ?>
-					<div class="wlb-product-frame" style="display: none">
-						<div class="wlb-product-data product"></div>
+                    <div class="wlb-product-frame" style="display: none">
+                        <div class="wlb-product-data product"></div>
 						<?php if ( ! $this->settings->enable_close_button() ) { ?>
-							<span class="wlb-close"></span>
+                            <span class="wlb-close"></span>
 						<?php } ?>
-						<div class="wlb-controls">
-							<span class="wlb-controls-next"></span>
-							<span class="wlb-controls-previous"></span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="wlb-added">
+                        <div class="wlb-controls">
+                            <span class="wlb-controls-next"></span>
+                            <span class="wlb-controls-previous"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wlb-added">
 			<?php echo esc_html__( 'Product added successful', 'woo-lookbook' ) ?>
-		</div>
+        </div>
 	<?php }
 
 	/**
@@ -237,7 +239,7 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 	 */
 	private function loading_html() {
 		ob_start(); ?>
-		<div class="wlb-rotating-plane wlb-loading"></div>
+        <div class="wlb-rotating-plane wlb-loading"></div>
 		<?php
 		return ob_get_clean();
 	}
@@ -350,8 +352,9 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 
 
 		ob_start(); ?>
-		<div class="woo-lookbook <?php echo $atts['style'] == 'carousel' ? 'wlb-lookbook-carousel' : 'wlb-lookbook-gallery' ?>" data-col="<?php echo esc_attr( $atts['row'] ) ?>">
-			<div class="woo-lookbook-inner">
+        <div class="woo-lookbook <?php echo $atts['style'] == 'carousel' ? 'wlb-lookbook-carousel' : 'wlb-lookbook-gallery' ?>"
+             data-col="<?php echo esc_attr( $atts['row'] ) ?>">
+            <div class="woo-lookbook-inner">
 				<?php if ( $the_query->have_posts() ) {
 					while ( $the_query->have_posts() ) {
 						$the_query->the_post();
@@ -363,28 +366,28 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 						$products     = $this->get_data( $id, 'product_id' );
 						if ( $src ) {
 							?>
-							<div class="wlb-lookbook-item-wrapper wlb-lookbook-instagram-item wlb-col-<?php echo esc_attr( $atts['row'] ) ?>">
-								<div class="wlb-lookbook-instagram-item-inner">
-									<img src="<?php echo esc_url( $src ) ?>" class="" />
+                            <div class="wlb-lookbook-item-wrapper wlb-lookbook-instagram-item wlb-col-<?php echo esc_attr( $atts['row'] ) ?>">
+                                <div class="wlb-lookbook-instagram-item-inner">
+                                    <img src="<?php echo esc_url( $src ) ?>" class=""/>
 									<?php
 									if ( is_array( $products ) && count( $products ) ) {
 										foreach ( $products as $k => $product ) {
 											if ( ! $product ) {
 												continue;
 											}
-											echo $this->get_node( $product, $pos_x[$k], $pos_y[$k] );
+											echo $this->get_node( $product, $pos_x[ $k ], $pos_y[ $k ] );
 										}
 									} ?>
-									<div class="wlb-zoom" data-id="<?php echo esc_attr( $id ) ?>"></div>
-								</div>
-							</div>
+                                    <div class="wlb-zoom" data-id="<?php echo esc_attr( $id ) ?>"></div>
+                                </div>
+                            </div>
 						<?php }
 					}
 				}
 				wp_reset_postdata();
 				?>
-			</div>
-		</div>
+            </div>
+        </div>
 		<?php $html = ob_get_clean();
 
 		return $html;
@@ -414,7 +417,7 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 		}
 
 		ob_start(); ?>
-		<div class="wlb-lookbook-slide">
+        <div class="wlb-lookbook-slide">
 			<?php foreach ( $ids as $id ) {
 				$image_id = $this->get_data( $id, 'image' );
 
@@ -427,22 +430,22 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 				if ( ! $img_url ) {
 					continue;
 				} ?>
-				<div class="woo-lookbook wlb-lookbook-item-wrapper">
-					<div class="woo-lookbook-inner">
-						<img src="<?php echo esc_url( $img_url ) ?>" class="wlb-image" />
+                <div class="woo-lookbook wlb-lookbook-item-wrapper">
+                    <div class="woo-lookbook-inner">
+                        <img src="<?php echo esc_url( $img_url ) ?>" class="wlb-image"/>
 						<?php if ( count( $products ) && is_array( $products ) ) {
 							foreach ( $products as $k => $product ) {
 								if ( ! $product ) {
 									continue;
 								}
-								echo $this->get_node( $product, $pos_x[$k], $pos_y[$k] );
+								echo $this->get_node( $product, $pos_x[ $k ], $pos_y[ $k ] );
 								?>
 							<?php }
 						} ?>
-					</div>
-				</div>
+                    </div>
+                </div>
 			<?php } ?>
-		</div>
+        </div>
 		<?php $html = ob_get_clean();
 
 		return $html;
@@ -492,21 +495,21 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 			if ( ! $img_url ) {
 				continue;
 			} ?>
-			<div class="woo-lookbook wlb-lookbook-item-wrapper">
-				<div class="woo-lookbook-inner">
-					<img src="<?php echo esc_url( $img_url ) ?>" class="wlb-image" />
+            <div class="woo-lookbook wlb-lookbook-item-wrapper">
+                <div class="woo-lookbook-inner">
+                    <img src="<?php echo esc_url( $img_url ) ?>" class="wlb-image"/>
 					<?php if ( count( $products ) && is_array( $products ) ) {
 						foreach ( $products as $k => $product ) {
 							if ( ! $product ) {
 								continue;
 							}
-							echo $this->get_node( $product, $pos_x[$k], $pos_y[$k] );
+							echo $this->get_node( $product, $pos_x[ $k ], $pos_y[ $k ] );
 							?>
 						<?php }
 					} ?>
-				</div>
-			</div>
-			<div class="wlb-clearfix"></div>
+                </div>
+            </div>
+            <div class="wlb-clearfix"></div>
 		<?php }
 		$html = ob_get_clean();
 
@@ -522,10 +525,7 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 	 *
 	 * @return mixed
 	 */
-	private
-	function get_node(
-		$product_id, $pos_x, $pos_y
-	) {
+	private function get_node( $product_id, $pos_x, $pos_y ) {
 		ob_start();
 		$link = '';
 		if ( $this->settings->link_redirect() ) {
@@ -555,7 +555,9 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 		}
 
 		?>
-		<div class="wlb-item default <?php echo esc_attr( $class ) ?>" data-pid="<?php echo esc_attr( $product_id ) ?>" style="left: <?php echo esc_attr( $pos_x ); ?>%;top:<?php echo esc_attr( $pos_y ) ?>%;"><?php echo $link ?>+<?php echo $title_html ?></div>
+        <div class="wlb-item default <?php echo esc_attr( $class ) ?>" data-pid="<?php echo esc_attr( $product_id ) ?>"
+             style="left: <?php echo esc_attr( $pos_x ); ?>%;top:<?php echo esc_attr( $pos_y ) ?>%;"><?php echo $link ?>
+            +<?php echo $title_html ?></div>
 		<?php
 
 
@@ -569,20 +571,16 @@ class WOO_F_LOOKBOOK_Frontend_Shortcode {
 	 *
 	 * @return bool
 	 */
-	private
-	function get_data(
-		$post_id, $field, $default = ''
-	) {
-
-		if ( isset( $this->data[$post_id] ) && $this->data[$post_id] ) {
-			$params = $this->data[$post_id];
+	private function get_data( $post_id, $field, $default = '' ) {
+		if ( isset( $this->data[ $post_id ] ) && $this->data[ $post_id ] ) {
+			$params = $this->data[ $post_id ];
 		} else {
-			$this->data[$post_id] = get_post_meta( $post_id, 'wlb_params', true );
-			$params               = $this->data[$post_id];
+			$this->data[ $post_id ] = get_post_meta( $post_id, 'wlb_params', true );
+			$params                 = $this->data[ $post_id ];
 		}
 
-		if ( isset( $params[$field] ) && $field ) {
-			return $params[$field];
+		if ( isset( $params[ $field ] ) && $field ) {
+			return $params[ $field ];
 		} else {
 			return $default;
 		}

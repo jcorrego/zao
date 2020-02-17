@@ -51,3 +51,12 @@
 .custom-mixin-isString (@rule: "", @customString) when (isstring(@customString)) {
 	@rule: @customString;
 }
+.custom-mixin-font-style (@customString) when not(@customString = ~"") {
+	font-style: @customString;
+}
+.custom-mixin-font-weight (@customString) when not(@customString = ~"") {
+	font-weight: @customString;
+}
+.custom-mixin-text-transform (@customString) when not(@customString = ~"") {
+	text-transform: @customString;
+}

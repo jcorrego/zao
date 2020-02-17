@@ -17,6 +17,7 @@
     -webkit-transition:width 0.25s, opacity 0.25s, -webkit-opacity 0.25s;
     -o-transition:width 0.25s, opacity 0.25s, -o-opacity 0.25s;
     transition:width 0.25s, opacity 0.25s;
+	box-sizing: content-box;
 }
 .the7-mb-images li:before {
 	content: ' ';

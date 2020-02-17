@@ -57,7 +57,7 @@ if ( ! class_exists( 'The7_DB_Patch_060000', false ) ) {
 				$_color = $this->get_option( $color );
 				if ( $this->option_exists( $opacity ) && strpos( $_color, 'rgba' ) === false ) {
 					$_opacity = $this->get_option( $opacity );
-					$color_obj = new Presscore_Lib_LessVars_Color( $_color );
+					$color_obj = new The7_Less_Vars_Value_Color( $_color );
 					$color_obj->opacity( $_opacity );
 					$rgba_color = $color_obj->get_rgba();
 					if ( $rgba_color === '""' ) {
@@ -206,7 +206,7 @@ if ( ! class_exists( 'The7_DB_Patch_060000', false ) ) {
 			}
 
 			if ( ! $this->option_exists( 'header-mobile-menu_icon-bg-color' ) ) {
-				$color_obj = new Presscore_Lib_LessVars_Color( $this->get_option( 'header-bg-color' ) );
+				$color_obj = new The7_Less_Vars_Value_Color( $this->get_option( 'header-bg-color' ) );
 				$color_obj->opacity( 0 );
 				$this->set_option( 'header-mobile-menu_icon-bg-color', $color_obj->get_rgba() );
 			}

@@ -59,7 +59,7 @@ class WCCT_Campaign {
 	}
 
 	public static function get_instance() {
-		if ( null == self::$ins ) {
+		if ( null === self::$ins ) {
 			self::$ins = new self;
 		}
 
@@ -71,12 +71,12 @@ class WCCT_Campaign {
 	 *
 	 * Depreciated
 	 *
-	 * @global type $post
-	 * @global type $product
+	 * @param $data
 	 *
-	 * @param type $data
+	 * @return
+	 * @global $post
+	 * @global $product
 	 *
-	 * @return type
 	 */
 	public function wcct_set_global_data( $data ) {
 
@@ -88,7 +88,7 @@ class WCCT_Campaign {
 		wcct_force_log( 'the_post hook: ' . $data->ID );
 		if ( is_object( $product ) ) {
 			$tempId = $this->wcct_get_product_parent_id( $product );
-			if ( $product->get_type() == 'grouped' ) {
+			if ( 'grouped' === $product->get_type() ) {
 				WCCT_Core()->public->wcct_get_product_obj( $tempId );
 				$this->get_single_campaign_pro_data( $tempId, true ); // setting campaign data for parent product (grouped)
 				$product->get_children();
@@ -103,7 +103,7 @@ class WCCT_Campaign {
 
 			}
 
-			if ( is_object( WCCT_Common::$wcct_post ) && ( ( is_singular( 'product' ) && WCCT_Common::$wcct_post->ID == $tempId ) || WCCT_Common::$wcct_post->ID == null ) ) {
+			if ( is_object( WCCT_Common::$wcct_post ) && ( ( is_singular( 'product' ) && WCCT_Common::$wcct_post->ID == $tempId ) || WCCT_Common::$wcct_post->ID === null ) ) {
 
 				$expiry_text = ( $this->single_campaign[ $tempId ] && isset( $this->single_campaign[ $tempId ]['expiry_text'] ) ) ? $this->single_campaign[ $tempId ]['expiry_text'] : '';
 
@@ -129,7 +129,7 @@ class WCCT_Campaign {
 			$product_type            = $product->get_type();
 			$product_variation_types = WCCT_Common::get_variation_league_product_types();
 
-			if ( in_array( $product_type, $product_variation_types ) ) {
+			if ( in_array( $product_type, $product_variation_types, true ) ) {
 				$parent_id = WCCT_Common::get_post_parent_id( $product->get_id() );
 				if ( false === $parent_id ) {
 					$parent_id = $product->get_id();
@@ -141,7 +141,7 @@ class WCCT_Campaign {
 		} elseif ( 0 !== $product ) {
 			$parent_id = WCCT_Common::get_post_parent_id( $product );
 
-			if ( $parent_id == false ) {
+			if ( empty( $parent_id ) ) {
 				$parent_id = (int) $product;
 			}
 		}
@@ -152,9 +152,9 @@ class WCCT_Campaign {
 	/**
 	 * Get product object if already set using product ID
 	 *
-	 * @param type $product_id
+	 * @param $product_id
 	 *
-	 * @return type
+	 * @return
 	 */
 	public function wcct_get_product_obj( $product_id ) {
 		if ( isset( WCCT_Core()->public->product_obj[ $product_id ] ) && is_object( WCCT_Core()->public->product_obj[ $product_id ] ) ) {
@@ -182,7 +182,7 @@ class WCCT_Campaign {
 	 */
 	public function get_single_campaign_pro_data( $id, $the_post = false, $skip_rules = false, $force = false ) {
 
-		if ( true == $the_post && defined( 'DOING_AJAX' ) && ( in_array( filter_input( INPUT_POST, 'action' ), $this->get_restricted_action() ) || in_array( filter_input( INPUT_GET, 'action' ), $this->get_restricted_action() ) ) ) {
+		if ( true === $the_post && defined( 'DOING_AJAX' ) && ( in_array( filter_input( INPUT_POST, 'action' ), $this->get_restricted_action(), true ) || in_array( filter_input( INPUT_GET, 'action' ), $this->get_restricted_action(), true ) ) ) {
 			return false;
 		}
 
@@ -375,10 +375,9 @@ class WCCT_Campaign {
 	/**
 	 * Hold Custom Css against campaign  id
 	 *
-	 * @param type $j
-	 * @param type $css
+	 * @param $j
+	 * @param $css
 	 *
-	 * @return boolean
 	 */
 	public function setup_custom_css( $j, $css ) {
 		if ( empty( $css ) ) {
@@ -396,8 +395,8 @@ class WCCT_Campaign {
 	/**
 	 * Checking product type is booking if yes return false
 	 *
-	 * @param type $product_id
-	 * @param type $return_type
+	 * @param $product_id
+	 * @param $return_type
 	 *
 	 * @return boolean
 	 */
@@ -412,7 +411,7 @@ class WCCT_Campaign {
 			$type = $product_global->get_type();
 		}
 
-		if ( $type == 'booking' ) {
+		if ( 'booking' === $type ) {
 			$restrict = true;
 		}
 
@@ -421,7 +420,7 @@ class WCCT_Campaign {
 
 	public function setup_cart_data() {
 
-		if ( ( is_cart() || is_checkout() ) && WCCT_Common::$is_executing_rule === false ) {
+		if ( ( is_cart() || is_checkout() ) && false === WCCT_Common::$is_executing_rule ) {
 			$get_cart = WC()->cart->get_cart();
 			if ( $get_cart && count( $get_cart ) > 0 ) {
 				foreach ( $get_cart as $cartitem ) {
@@ -438,9 +437,8 @@ class WCCT_Campaign {
 	public function wcct_reset_logs() {
 
 		if ( ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) && is_singular( 'product' ) ) {
-			if ( ( WCCT_Common::$is_force_debug === true ) || ( WP_DEBUG === true && ! is_admin() ) ) {
+			if ( ( true === WCCT_Common::$is_force_debug ) || ( WP_DEBUG === true && ! is_admin() ) ) {
 				wcct_force_log( 'abs', 'force.txt', 'w' );
-
 			}
 		}
 
@@ -455,10 +453,10 @@ class WCCT_Campaign {
 	 * Setting Product Goal using campaign setting
 	 *
 	 * @param WC_Product $product
-	 * @param type $goals
-	 * @param type $campaign_id
+	 * @param $goals
+	 * @param $campaign_id
 	 *
-	 * @return type
+	 * @return
 	 */
 	public function wcct_set_goal_meta( $product, $product_id, $goals, $campaign_id ) {
 		$goals_meta = array();
@@ -477,15 +475,15 @@ class WCCT_Campaign {
 			$goals_meta                   = get_post_meta( $product_id, $wcct_deal_meta_key, true );
 			$wcct_campaign_sold_out       = get_post_meta( $product_id, $wcct_sold_out_key, true );
 			$wcct_campaign_total_sold_out = get_post_meta( $product_id, $wcct_sold_out_campaign_key, true );
-			$wcct_campaign_sold_out       = (int) ( $wcct_campaign_sold_out != '' ? $wcct_campaign_sold_out : 0 );
+			$wcct_campaign_sold_out       = (int) ( '' !== $wcct_campaign_sold_out ? $wcct_campaign_sold_out : 0 );
 
 			if ( ! is_array( $goals_meta ) ) {
-				if ( $goals['type'] == 'same' ) {
+				if ( 'same' === $goals['type'] ) {
 
 					/**
 					 * handling for the variation product, will show for the products which are not managing stock at variable level
 					 */
-					if ( in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types() ) ) {
+					if ( in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types(), true ) ) {
 						if ( WCCT_Common::get_total_stock( $product ) > 0 ) {
 							$unit = WCCT_Common::get_total_stock( $product );
 						} else {
@@ -512,8 +510,8 @@ class WCCT_Campaign {
 				update_post_meta( $product_id, $wcct_deal_meta_key, $goals_meta );
 
 			} else {
-				if ( $goals['type'] != $goals_meta['type'] ) {
-					if ( $goals['type'] == 'same' ) {
+				if ( $goals['type'] !== $goals_meta['type'] ) {
+					if ( 'same' === $goals['type'] ) {
 						$unit = get_post_meta( $product_id, '_stock', true );
 					} else {
 						$unit = (int) $goals['deal_custom_units'];
@@ -524,7 +522,7 @@ class WCCT_Campaign {
 						'campaign_id' => $campaign_id,
 					);
 					update_post_meta( $product_id, $wcct_deal_meta_key, $goals_meta );
-				} elseif ( $goals_meta['type'] == 'custom' ) {
+				} elseif ( 'custom' === $goals_meta['type'] ) {
 					if ( (int) $goals_meta['quantity'] !== (int) $goals['deal_custom_units'] ) {
 						$goals_meta = array(
 							'quantity'    => (int) $goals['deal_custom_units'],
@@ -533,19 +531,19 @@ class WCCT_Campaign {
 						);
 						update_post_meta( $product_id, $wcct_deal_meta_key, $goals_meta );
 					}
-				} elseif ( $goals_meta['type'] == 'same' ) {
+				} elseif ( 'same' === $goals_meta['type'] ) {
 					$manage_stock_check = true;
-					if ( in_array( $product->get_type(), WCCT_Common::get_simple_league_product_types() ) ) {
+					if ( in_array( $product->get_type(), WCCT_Common::get_simple_league_product_types(), true ) ) {
 						$manage_stock_check = $product->managing_stock();
 					}
 
 					if ( $manage_stock_check && WCCT_Common::get_total_stock( $product ) > 0 ) {
 						$unit = WCCT_Common::get_total_stock( $product );
 
-						if ( $goals['inventry_goal_for'] == 'recurrence' ) {
+						if ( 'recurrence' === $goals['inventry_goal_for'] ) {
 							$check_total_stock = ( $wcct_campaign_sold_out ? $wcct_campaign_sold_out : 0 ) + $unit;
 						}
-						if ( $goals['inventry_goal_for'] == 'campaign' ) {
+						if ( 'campaign' === $goals['inventry_goal_for'] ) {
 							$check_total_stock = ( $wcct_campaign_total_sold_out ? $wcct_campaign_total_sold_out : 0 ) + $unit;
 						}
 						if ( $check_total_stock != $goals_meta['quantity'] ) {
@@ -570,14 +568,14 @@ class WCCT_Campaign {
 			}
 
 			$goals_meta['sold_out'] = $wcct_campaign_sold_out;
-			if ( $goals['inventry_goal_for'] == 'campaign' ) {
+			if ( 'campaign' === $goals['inventry_goal_for'] ) {
 				$goals_meta['sold_out'] = $wcct_campaign_total_sold_out;
 			}
 
 			/**
 			 * Sometime there we have an error about non numeric value set over there.
 			 */
-			if ( '' == $goals_meta['sold_out'] ) {
+			if ( '' === $goals_meta['sold_out'] ) {
 				$goals_meta['sold_out'] = 0;
 			}
 			$goals_meta['campaign_id']         = (int) $campaign_id;
@@ -629,15 +627,14 @@ class WCCT_Campaign {
 	/**
 	 * Retrieve Final Goal Object for counter bar against product id
 	 *
-	 * @param type $goals
-	 * @param type $product_id
-	 * @param type $do_not_sustain Setting this to true will not sustain result as class property
+	 * @param $goals
+	 * @param $product_id
+	 * @param $is_rule : check if it is a rule
 	 *
 	 * @return array
 	 */
 	public function wcct_get_goal_object( $goals, $product_id, $is_rule = false ) {
 		$goals_meta = array();
-		$product    = false;
 
 		if ( $goals && is_array( $goals ) && count( $goals ) > 0 ) {
 			$product = WCCT_Core()->public->wcct_get_product_obj( $product_id );
@@ -684,16 +681,16 @@ class WCCT_Campaign {
 		if ( true === $maybe_run ) {
 			/** Check if valid WooCommerce product */
 			if ( $post instanceof WP_Post && $post->ID == $product_id ) {
-				if ( ! in_array( $post->post_type, array( 'product', 'product_variation' ) ) ) {
+				if ( ! in_array( $post->post_type, array( 'product', 'product_variation' ), true ) ) {
 					return $value;
 				}
 			} elseif ( $product instanceof WC_Product && $product->get_id() == $product_id ) {
-				if ( ! in_array( $product->get_type(), array( 'product', 'product_variation' ) ) ) {
+				if ( ! in_array( $product->get_type(), array( 'product', 'product_variation' ), true ) ) {
 					return $value;
 				}
 			} else {
 				$post_data = WCCT_Common::get_post_data( $product_id );
-				if ( is_object( $post_data ) && ! in_array( $post_data->post_type, array( 'product', 'product_variation' ) ) ) {
+				if ( is_object( $post_data ) && ! in_array( $post_data->post_type, array( 'product', 'product_variation' ), true ) ) {
 					return $value;
 				}
 			}

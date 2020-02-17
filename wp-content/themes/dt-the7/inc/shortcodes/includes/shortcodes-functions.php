@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Convert dimensions string like '1x1' to array [1, 1].
@@ -63,4 +60,40 @@ function the7_shortcode_add_responsive_columns_data_attributes( $data_atts_array
 	}
 
 	return $data_atts_array;
+}
+
+/**
+ * Return array of custom icons stylesheets.
+ *
+ * @since 7.0.0
+ *
+ * @param array $icons_stylesheets
+ *
+ * @return array
+ */
+function the7_get_custom_icons_stylesheets( $icons_stylesheets = array() ) {
+	$custom_icons = (array) get_option( 'smile_fonts', array() );
+	$upload_dir   = wp_get_upload_dir();
+
+	foreach ( $custom_icons as $icon ) {
+		if ( isset( $icon['style'] ) ) {
+			$icons_stylesheets[] = $upload_dir['baseurl'] . '/smile_fonts/' . $icon['style'];
+		}
+	}
+
+	return $icons_stylesheets;
+}
+
+/**
+ * Return shortcode uid based on $tag and $atts.
+ *
+ * @since 7.1.3
+ *
+ * @param string $tag  Shortcode tag.
+ * @param array  $atts Shortcode atts array.
+ *
+ * @return string Shortcode UID.
+ */
+function the7_get_shortcode_uid( $tag, $atts = array() ) {
+	return md5( $tag . json_encode( $atts ) );
 }

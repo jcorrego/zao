@@ -99,14 +99,14 @@ final class WOOF_EXT_BY_INSTOCK extends WOOF_EXT {
 
         //out of stock products - remove from dyn recount
         //wp-admin/admin.php?page=wc-settings&tab=products&section=inventory
-        if (get_option('woocommerce_hide_out_of_stock_items', 'no') == 'yes')
+       /*if (get_option('woocommerce_hide_out_of_stock_items', 'no') == 'yes')
         {
             $meta_query[] = array(
                 'key' => '_stock_status',
                 'value' => array('instock'),
                 'compare' => 'IN'
             );
-        }
+        }*/
 
         //+++
 
@@ -268,7 +268,7 @@ final class WOOF_EXT_BY_INSTOCK extends WOOF_EXT {
                 }
             }
         }
-        //http://www.dev.woocommerce-filter.com/shop/?swoof=1&pa_size=xl&stock=instock&min_price=15&max_price=80&pa_color=green
+
         return $where;
     }
 

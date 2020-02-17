@@ -83,6 +83,17 @@ if(!class_exists('AIO_Flip_Box'))
 								"dependency" => Array("element" => "flip_box_style", "value" => array("simple")),
 							),
 							array(
+								"type" => "number",
+								"class" => "",
+								"heading" => __("Border Radius", "ultimate_vc"),
+								"param_name" => "border_radius",
+								"value" => "",
+								"max" => 500,
+								"suffix"=> "px",
+								"description" => __("0 pixel value will create a square border. As you increase the value, the shape convert in circle slowly.", "ultimate_vc"),
+								"dependency" => Array("element" => "flip_box_style", "value" => array("simple")),
+							),
+							array(
 								"type" => "dropdown",
 								"class" => "",
 								"heading" => __("Box Border Style", "ultimate_vc"),
@@ -109,6 +120,17 @@ if(!class_exists('AIO_Flip_Box'))
 								"max" => 10,
 								"suffix" => "px",
 								"description" => __("Enter value in pixels.", "ultimate_vc"),
+								"dependency" => Array("element" => "box_border_style", "value" => array("solid","dashed","dotted","double","inset","outset")),
+							),
+							array(
+								"type" => "number",
+								"class" => "",
+								"heading" => __("Border Radius", "ultimate_vc"),
+								"param_name" => "border_radius_box",
+								"value" => "",
+								"max" => 500,
+								"suffix"=> "px",
+								"description" => __("0 pixel value will create a square border. As you increase the value, the shape convert in circle slowly.", "ultimate_vc"),
 								"dependency" => Array("element" => "box_border_style", "value" => array("solid","dashed","dotted","double","inset","outset")),
 							),
 							array(
@@ -741,7 +763,7 @@ if(!class_exists('AIO_Flip_Box'))
 		// Shortcode handler function for  icon block
 		function block_shortcode($atts)
 		{
-			$icon_type = $icon_img = $img_width = $icon = $icon_color = $icon_color_bg = $icon_size = $icon_style = $icon_border_style = $icon_border_radius = $icon_color_border = $icon_border_size = $icon_border_spacing = $icon_link = $el_class = $icon_animation = $block_title_front = $front_heading_tag = $block_desc_front = $block_title_back = $back_heading_tag = $block_desc_back = $button_text = $button_link = $block_text_color = $block_desc_color = $block_front_color = $block_back_color = $block_back_text_color =$block_back_desc_color = $animation = $font_size_icon = $box_border_style = $box_border_size = $box_border_color = $border_size = $border_color = $box_border_color_back = $custom_link = $button_bg = $button_txt = $height_type = $box_height = $flip_type = $flip_box_style = $text_color = $desc_color = $bg_color = $front_text = $back_text = $frontd_text = $backd_text = $box_border_color_advanced = '';
+			$icon_type = $icon_img = $img_width = $icon = $icon_color = $icon_color_bg = $icon_size = $icon_style = $icon_border_style = $icon_border_radius = $icon_color_border = $icon_border_size = $icon_border_spacing = $icon_link = $el_class = $icon_animation = $block_title_front = $front_heading_tag = $block_desc_front = $block_title_back = $back_heading_tag = $block_desc_back = $button_text = $button_link = $block_text_color = $block_desc_color = $block_front_color = $block_back_color = $block_back_text_color =$block_back_desc_color = $animation = $font_size_icon = $box_border_style = $box_border_size = $box_border_color = $border_size = $border_color = $box_border_color_back = $custom_link = $button_bg = $button_txt = $height_type = $box_height = $flip_type = $flip_box_style = $text_color = $desc_color = $bg_color = $front_text = $back_text = $frontd_text = $backd_text = $box_border_color_advanced = $border_radius = $border_radius_box='';
 			$desc_font_line_height = $title_font_line_height = $title_font=$title_font_style=$title_font_size=$desc_font = $desc_font_style = $desc_font_size = '';
 			extract(shortcode_atts( array(
 				'icon_type' => 'selector',
@@ -783,8 +805,10 @@ if(!class_exists('AIO_Flip_Box'))
 				'block_back_desc_color' => '',
 				'border_size' => '2',
 				'border_color' => '#A4A4A4',
+				'border_radius'=> '',
 				'box_border_style' => 'none',
 				'box_border_size' => '2',
+				'border_radius_box'=>'',
 				'box_border_color' => '#A4A4A4',
 				'box_border_color_back' => '#A4A4A4',
 				'height_type' => 'ifb-jq-height',
@@ -805,7 +829,7 @@ if(!class_exists('AIO_Flip_Box'))
 			),$atts));
 			$output = $f_style = $b_style = $ico_color = $box_border = $icon_border = $link_style = $height = $link_sufix = $link_prefix = $link_style = '';
 			$title_style = $desc_style = $flip_design_style = $url = $target = $link_title  = $rel  = '';
-			$border_front = $border_back = '';
+			$border_front = $border_back = $box_border_radius= '';
 			//$font_args = array();
 			$flip_design_style = $flipbx_margin;
 			$flip_design_style .=$flipbx_padding;
@@ -888,6 +912,13 @@ if(!class_exists('AIO_Flip_Box'))
 					$box_border .= 'border-style: '.$box_border_style.';';
 					$box_border .= 'border-width: '.$box_border_size.'px;';
 				}
+				if($box_border_style !== 'none')
+				{
+					if($border_radius_box != '')
+					{
+						$box_border_radius .= 'border-radius: '.$border_radius_box.'px;';
+					}
+				}
 				if($animation !== 'none')
 				{
 					$css_trans = 'data-animation="'.esc_attr( $animation ).'" data-animation-delay="03"';
@@ -937,6 +968,7 @@ if(!class_exists('AIO_Flip_Box'))
 					$border_back =  'border-color:'.$border_color.';';
 					$box_border = 'border-width: '.$border_size.'px;';
 					$box_border .= 'border-style: solid;';
+					$box_border_radius = 'border-radius: '.$border_radius.'px;';
 				}
 			}
 
@@ -952,7 +984,7 @@ if(!class_exists('AIO_Flip_Box'))
 			$output .= '<div class="flip-box-wrap" style="'.esc_attr($flip_design_style).'">';
 			$output .= '<div class="flip-box '.esc_attr($height_type).' '.esc_attr($el_class).' '. esc_attr($flip_type) .' flip-'.esc_attr($height_type).'" '.$css_trans.' style="'.esc_attr($height).'" '.$box_style_data.'>';
 			$output .= '<div class="ifb-flip-box" id="'.esc_attr($flip_box_id).'">';
-				$output .= '<div class="ifb-face ifb-front " style="'.esc_attr($f_style).' '.esc_attr($box_border).' '.esc_attr($border_front).'">
+				$output .= '<div class="ifb-face ifb-front " style="'.esc_attr($f_style).' '.esc_attr($box_border).' '.esc_attr($border_front).' '.esc_attr($box_border_radius).'">
 							<div class="ifb-flip-box-section '.esc_attr($verticalcont).'">
 							';
 						if($icon !== '' || $icon_img !== '')
@@ -962,7 +994,7 @@ if(!class_exists('AIO_Flip_Box'))
 						if($block_desc_front!='')
 							$output.='<div class="ifb-flip-box-section-content ult-responsive" '.$data_list_desc.' style="'.esc_attr($desc_style).esc_attr($front_text). esc_attr($frontd_text).'"><p>'.$block_desc_front.'</p></div>';
 					$output.='</div></div><!-- END .front -->
-						<div class="ifb-face ifb-back" style="'.esc_attr($b_style).' '.esc_attr($box_border).' '.esc_attr($border_back).'">
+						<div class="ifb-face ifb-back" style="'.esc_attr($b_style).' '.esc_attr($box_border).' '.esc_attr($border_back).' '.esc_attr($box_border_radius).'">
 							<div class="ifb-flip-box-section '.esc_attr($verticalcont).'">';
 							if($block_title_back!='')
 								$output.='<'.$back_heading_tag.' class="ult-responsive flipbox_heading" '.$data_list.' style="'.esc_attr($back_text).' '.esc_attr($title_style).'">'.$block_title_back.'</'.$back_heading_tag.'>';

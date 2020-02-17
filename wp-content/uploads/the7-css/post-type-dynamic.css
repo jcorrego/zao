@@ -2,11 +2,19 @@
   color: #fff;
   background-color: #fdae96;
 }
+.accent-gradient .accent-bg-mixin {
+  background: #fdae96;
+  background: -webkit-linear-gradient();
+  background: linear-gradient();
+}
 .solid-bg-mixin {
   background-color: #f4f4f4;
 }
 .header-color {
   color: #222222;
+}
+.dt-mega-parent .sidebar-content .widget .header-color {
+  color: #515151;
 }
 #main .sidebar-content .header-color {
   color: #222222;
@@ -84,11 +92,34 @@
   text-transform: none;
   color: #fdae96;
 }
+.accent-gradient .dt-team-shortcode .team-author p {
+  background: -webkit-linear-gradient();
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+@media all and (-ms-high-contrast: none) {
+  .accent-gradient .dt-team-shortcode .team-author p {
+    color: #fdae96;
+  }
+}
+.dt-mega-parent .sidebar-content .widget .team-author p {
+  color: #515151;
+}
+.sidebar-content .team-author p {
+  color: #222222;
+}
+.footer .team-author p {
+  color: #ffffff;
+}
 .testimonial-vcard .text-secondary {
   color: #222222;
   font-size: 13px;
   line-height: 25px;
   font-weight: bold;
+}
+.dt-mega-parent .sidebar-content .widget .testimonial-vcard .text-secondary {
+  color: #515151;
 }
 #main .sidebar-content .testimonial-vcard .text-secondary {
   color: #222222;
@@ -102,6 +133,17 @@
   font-weight: normal;
   color: #fdae96;
 }
+.accent-gradient .dt-testimonials-shortcode .testimonial-vcard .text-secondary {
+  background: -webkit-linear-gradient();
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+@media all and (-ms-high-contrast: none) {
+  .accent-gradient .dt-testimonials-shortcode .testimonial-vcard .text-secondary {
+    color: #fdae96;
+  }
+}
 .dt-testimonials-shortcode .more-link {
   color: #fdae96;
 }
@@ -111,6 +153,9 @@
   line-height: 26px;
   font-weight: bold;
 }
+.dt-mega-parent .sidebar-content .widget .testimonial-vcard .text-primary {
+  color: #515151;
+}
 #main .sidebar-content .testimonial-vcard .text-primary {
   color: #222222;
 }
@@ -119,6 +164,9 @@
 }
 .testimonial-vcard .text-primary * {
   color: #222222;
+}
+.dt-mega-parent .sidebar-content .widget .testimonial-vcard .text-primary * {
+  color: #515151;
 }
 #main .sidebar-content .testimonial-vcard .text-primary * {
   color: #222222;
@@ -137,20 +185,42 @@
 .content .team-author-name a:hover {
   color: #fdae96;
 }
-.widget .team-author-name {
+.accent-gradient .content .team-author-name a:hover {
+  background: -webkit-linear-gradient();
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+@media all and (-ms-high-contrast: none) {
+  .accent-gradient .content .team-author-name a:hover {
+    color: #fdae96;
+  }
+}
+.widget .team-author-name,
+.widget .team-author-name a {
   font:   bold 20px / 30px "Roboto Slab", Helvetica, Arial, Verdana, sans-serif;
   text-transform: none;
   color: #222222;
 }
-#main .sidebar-content .widget .team-author-name {
+.dt-mega-parent .sidebar-content .widget .widget .team-author-name,
+.dt-mega-parent .sidebar-content .widget .widget .team-author-name a {
+  color: #515151;
+}
+#main .sidebar-content .widget .team-author-name,
+#main .sidebar-content .widget .team-author-name a {
   color: #222222;
 }
-.footer .widget .team-author-name {
+.footer .widget .team-author-name,
+.footer .widget .team-author-name a {
   color: #ffffff;
 }
 .team-author-name,
 .team-author-name a {
   color: #222222;
+}
+.dt-mega-parent .sidebar-content .widget .team-author-name,
+.dt-mega-parent .sidebar-content .widget .team-author-name a {
+  color: #515151;
 }
 #main .sidebar-content .team-author-name,
 #main .sidebar-content .team-author-name a {
@@ -213,6 +283,15 @@
 .slider-content .owl-dot.active {
   -webkit-box-shadow: inset 0 0 0 20px rgba(119,119,119,0.35);
   box-shadow: inset 0 0 0 20px rgba(119,119,119,0.35);
+}
+.dt-mega-parent .sidebar-content .widget .slider-content .owl-dot:not(.active):not(:hover),
+.dt-mega-parent .sidebar-content .widget .slider-content .owl-dot:not(.active):hover {
+  -webkit-box-shadow: inset 0 0 0 2px rgba(81,81,81,0.35);
+  box-shadow: inset 0 0 0 2px rgba(81,81,81,0.35);
+}
+.dt-mega-parent .sidebar-content .widget .slider-content .owl-dot.active {
+  -webkit-box-shadow: inset 0 0 0 20px rgba(81,81,81,0.35);
+  box-shadow: inset 0 0 0 20px rgba(81,81,81,0.35);
 }
 .sidebar .slider-content .owl-dot:not(.active):not(:hover),
 .sidebar .slider-content .owl-dot:not(.active):hover,

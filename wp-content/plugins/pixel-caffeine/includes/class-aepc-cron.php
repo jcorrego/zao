@@ -32,6 +32,9 @@ class AEPC_Cron {
 	public static function init() {
 		self::bootstrap_jobs();
 
+		AEPC_Admin::init();
+		AEPC_Admin::$api->connect();
+
 		foreach ( self::$jobs as $job ) {
 			$job->init();
 		}

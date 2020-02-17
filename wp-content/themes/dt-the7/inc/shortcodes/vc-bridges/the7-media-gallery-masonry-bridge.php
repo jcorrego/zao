@@ -10,15 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 return array(
 	'weight'            => -1,
-	'name'              => __( 'Media Gallery Masonry & Grid', 'the7mk2' ),
+	'name'              => __( 'Media Gallery Masonry and Grid', 'the7mk2' ),
 	'description'       => __( 'Images from Media Library', 'the7mk2' ),
 	'base'              => 'dt_gallery_masonry',
 	'class'             => 'dt_vc_sc_gallery_masonry',
 	'icon'              => 'dt_vc_ico_media_gallery',
 	'category'          => __( 'by Dream-Theme', 'the7mk2' ),
-	'admin_enqueue_css' => array(
-		PRESSCORE_THEME_URI . '/fonts/icomoon-the7-gallery-32x32/style.css',
-	),
 	'params'            => array(
 		// General group.
 		array(
@@ -236,9 +233,10 @@ return array(
 			'heading'          => __( 'Hover background color', 'the7mk2' ),
 			'param_name'       => 'image_hover_bg_color',
 			'type'             => 'dropdown',
-			'std'              => 'solid_rollover_bg',
+			'std'              => 'default',
 			'value'            => array(
 				'Disabled'    => 'disabled',
+				'Default'    => 'default',
 				'Mono color' => 'solid_rollover_bg',
 				'Gradient'    => 'gradient_rollover_bg',
 			),
@@ -249,47 +247,21 @@ return array(
 			'heading'     => __( 'Background color', 'the7mk2' ),
 			'param_name'  => 'custom_rollover_bg_color',
 			'type'        => 'colorpicker',
-			'value'       => '',
+			'value'       => 'rgba(0,0,0,0.5)',
 			'dependency'  => array(
 				'element' => 'image_hover_bg_color',
-				'value'   => array( 'solid_rollover_bg' ),
+				'value'   => 'solid_rollover_bg',
 			),
-			'description' => __( 'Leave empty to use default hover color.', 'the7mk2' ),
 		),
 		array(
-			'heading'     => __( 'Gradient color 1', 'the7mk2' ),
-			'param_name'  => 'custom_rollover_bg_color_1',
-			'type'        => 'colorpicker',
-			'value'       => '',
-			'dependency'  => array(
+			'heading'    => __( 'Gradient', 'the7mk2' ),
+			'param_name' => 'custom_rollover_bg_gradient',
+			'type'       => 'dt_gradient_picker',
+			'value'      => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+			'dependency' => array(
 				'element' => 'image_hover_bg_color',
 				'value'   => 'gradient_rollover_bg',
 			),
-			'description' => __( 'Leave empty to use default hover color.', 'the7mk2' ),
-		),
-		array(
-			'heading'     => __( 'Gradient color 2', 'the7mk2' ),
-			'param_name'  => 'custom_rollover_bg_color_2',
-			'type'        => 'colorpicker',
-			'value'       => '',
-			'dependency'  => array(
-				'element' => 'image_hover_bg_color',
-				'value'   => 'gradient_rollover_bg',
-			),
-			'description' => __( 'Leave empty to use default hover color.', 'the7mk2' ),
-		),
-		array(
-			'heading'          => __( 'Gradient angle', 'the7mk2' ),
-			'param_name'       => 'custom_rollover_gradient_deg',
-			'type'             => 'dt_number',
-			'value'            => '135deg',
-			'units'            => 'deg',
-			'dependency'       => array(
-				'element' => 'image_hover_bg_color',
-				'value'   => 'gradient_rollover_bg',
-			),
-			'description'      => __( '(0 - 360)', 'the7mk2' ),
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 
 		array(
@@ -309,6 +281,18 @@ return array(
 				'value'   => array( 'solid_rollover_bg', 'gradient_rollover_bg' ),
 			),
 		),
+
+		array(
+			'heading'    => __( 'Open in popup on click', 'the7mk2' ),
+			'param_name' => 'on_click',
+			'type'       => 'dt_switch',
+			'value'      => 'popup',
+			'options'    => array(
+				'Yes' => 'popup',
+				'No'  => 'none',
+			),
+		),
+
 		//Icons
 
 		array(
@@ -327,7 +311,7 @@ return array(
 			'heading'    => __( 'Choose image zoom icon', 'the7mk2' ),
 			'param_name' => 'gallery_image_zoom_icon',
 			'type'       => 'dt_navigation',
-			'value'      => 'icon-im-hover-001',
+			'value'      => 'icomoon-the7-font-the7-zoom-06',
 			'dependency' => array(
 				'element' => 'show_zoom',
 				'value'   => 'y',
@@ -555,7 +539,7 @@ return array(
 				'value'   => 'js_lazy_loading',
 			),
 			'description'      => __( 'Leave empty to use number from wp settings.', 'the7mk2' ),
-			'group'            => __( 'Pagination & Categorization', 'the7mk2' ),
+			'group'            => __( 'Pagination', 'the7mk2' ),
 		),
 		array(
 			'heading'    => __( 'Color Settings', 'the7mk2' ),
@@ -568,7 +552,7 @@ return array(
 			'param_name'  => 'navigation_font_color',
 			'type'        => 'colorpicker',
 			'value'       => '',
-			'description' => __( 'Leave empty to use headers color.', 'the7mk2' ),
+			'description' => __( 'Leave empty to use headings color.', 'the7mk2' ),
 			'group'       => __( 'Pagination', 'the7mk2' ),
 		),
 		array(

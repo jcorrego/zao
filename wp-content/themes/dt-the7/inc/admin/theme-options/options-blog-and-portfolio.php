@@ -62,28 +62,14 @@ $options['general-filter_style-material-line_size'] = array(
 
 $options[] = array( 'type' => 'divider' );
 
-$options['general-filter-font-family'] = array(
-	'id'    => 'general-filter-font-family',
-	'name'  => _x( 'Font', 'theme-options', 'the7mk2' ),
-	'type'  => 'web_fonts',
-	'std'   => 'Open Sans',
-	'fonts' => 'all',
-);
-
-$options['general-filter-font-size'] = array(
-	'id'       => 'general-filter-font-size',
-	'name'     => _x( 'Font size', 'theme-options', 'the7mk2' ),
-	'type'     => 'slider',
-	'sanitize' => 'font_size',
-	'std'      => 16,
-	'options'  => array( 'min' => 9, 'max' => 120 ),
-);
-
-$options['general-filter_ucase'] = array(
-	'id'   => 'general-filter_ucase',
-	'name' => _x( 'Capitalize', 'theme-options', 'the7mk2' ),
-	'type' => 'checkbox',
-	'std'  => 0,
+$options['filter-typography'] = array(
+	'id'   => 'filter-typography',
+	'type' => 'typography',
+	'std'  => array(
+		'font_family'    => 'Open Sans',
+		'font_size'      => 16,
+		'text_transform' => 'none',
+	),
 );
 
 $options[] = array( 'type' => 'divider' );
@@ -189,7 +175,7 @@ $options['blog-thumbnail_proportions'] = array(
 
 $options[] = array( 'name' => _x( 'Author info in posts', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-$options[] = array(
+$options['general-show_author_in_blog'] = array(
 	'name'    => _x( 'Show author info in blog posts', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-show_author_in_blog',
 	'std'     => 1,
@@ -212,7 +198,7 @@ $options[] = array(
 	'type' => 'block',
 );
 
-$options[] = array(
+$options['general-next_prev_in_blog'] = array(
 	'name'    => _x( 'Show in blog posts', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-next_prev_in_blog',
 	'type'    => 'images',
@@ -232,7 +218,7 @@ $options[] = array(
 
 $options[] = array( 'name' => _x( 'Back button', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-$options[] = array(
+$options['general-show_back_button_in_post'] = array(
 	'name'    => _x( 'Back button', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-show_back_button_in_post',
 	'std'     => '0',
@@ -250,10 +236,11 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
-	'name'       => _x( 'Choose page', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-post_back_button_target_page_id',
-	'type'       => 'pages_list',
+$options['general-post_back_button_url'] = array(
+	'name'       => _x( 'Back button url', 'theme-options', 'the7mk2' ),
+	'id'         => 'general-post_back_button_url',
+	'type'       => 'text',
+	'class'      => 'wide',
 	'dependency' => array(
 		'field'    => 'general-show_back_button_in_post',
 		'operator' => '==',
@@ -263,7 +250,7 @@ $options[] = array(
 
 $options[] = array( 'name' => _x( 'Meta information', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-$options[] = array(
+$options['general-blog_meta_on'] = array(
 	'name'    => _x( 'Meta information', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-blog_meta_on',
 	'std'     => '1',
@@ -281,7 +268,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-blog_meta_date'] = array(
 	'name'       => _x( 'Date', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-blog_meta_date',
 	'type'       => 'checkbox',
@@ -293,7 +280,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-blog_meta_author'] = array(
 	'name'       => _x( 'Author', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-blog_meta_author',
 	'type'       => 'checkbox',
@@ -305,7 +292,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-blog_meta_categories'] = array(
 	'name'       => _x( 'Categories', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-blog_meta_categories',
 	'type'       => 'checkbox',
@@ -317,7 +304,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-blog_meta_comments'] = array(
 	'name'       => _x( 'Comments', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-blog_meta_comments',
 	'type'       => 'checkbox',
@@ -329,7 +316,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-blog_meta_tags'] = array(
 	'name'       => _x( 'Tags', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-blog_meta_tags',
 	'type'       => 'checkbox',
@@ -343,7 +330,7 @@ $options[] = array(
 
 $options[] = array( 'name' => _x( 'Related posts', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-$options[] = array(
+$options['general-show_rel_posts'] = array(
 	'name'    => _x( 'Related posts', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-show_rel_posts',
 	'std'     => '0',
@@ -361,7 +348,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-rel_posts_head_title'] = array(
 	'name'       => _x( 'Title', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-rel_posts_head_title',
 	'std'        => __( 'Related Posts', 'the7mk2' ),
@@ -373,7 +360,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-rel_posts_max'] = array(
 	'name'       => _x( 'Maximum number of related posts', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-rel_posts_max',
 	'std'        => 6,

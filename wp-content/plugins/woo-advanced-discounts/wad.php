@@ -13,18 +13,18 @@
  * @package           Wad
  *
  * @wordpress-plugin
- * Plugin Name:       WooCommerce All Discounts Lite
+ * Plugin Name:       Conditional Discounts for WooCommerce by ORION
  * Plugin URI:        https://discountsuiteforwp.com
  * Description:       Manage your shop discounts like a pro.
- * Version:           2.0
+ * Version:           2.10
  * Author:            ORION
  * Author URI:        https://discountsuiteforwp.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wad
+ * Text Domain:       woo-advanced-discounts
  * Domain Path:       /languages
  * WC requires at least: 3.0.0
- * WC tested up to: 3.5.7
+ * WC tested up to: 3.9
  */
 
 // If this file is called directly, abort.
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WAD_VERSION', '2.0' );
+define( 'WAD_VERSION', '2.10' );
 define( 'WAD_URL', plugins_url('/', __FILE__) );
 define( 'WAD_DIR', dirname(__FILE__) );
 define( 'WAD_MAIN_FILE', 'woocommerce-all-discounts/wad.php' );

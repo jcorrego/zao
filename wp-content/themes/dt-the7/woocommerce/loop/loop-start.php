@@ -10,54 +10,68 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woothemes.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
+ * @see         https://docs.woothemes.com/document/template-structure/
+ * @author      WooThemes
+ * @package     WooCommerce/Templates
  * @version     3.3.0
  */
-//Responsiveness mode:Browser width based data atts
 
+defined( 'ABSPATH' ) || exit;
+
+do_action( 'dt_wc_loop_start' );
+do_action( 'presscore_before_loop' );
+
+// Responsiveness mode: Browser width based data atts.
+$data_atts             = array();
 $wp_col_responsiveness = of_get_option( 'woocommerce_shop_template_bwb_columns' );
-$columns = array(
-	'desktop' => 'desktop',
-	'v_tablet' => 'v-tablet',
-	'h_tablet' => 'h-tablet',
-	'phone' => 'phone',
-);
-
 if ( $wp_col_responsiveness ) {
+	$columns = array(
+		'desktop'  => 'desktop',
+		'v_tablet' => 'v-tablet',
+		'h_tablet' => 'h-tablet',
+		'phone'    => 'phone',
+	);
 	foreach ( $columns as $column => $data_att ) {
-		$val = ( isset( $wp_col_responsiveness[ $column ] ) ? absint( $wp_col_responsiveness[ $column ] ) : '' );
+		$val         = ( isset( $wp_col_responsiveness[ $column ] ) ? absint( $wp_col_responsiveness[ $column ] ) : '' );
 		$data_atts[] = 'data-' . $data_att . '-columns-num="' . esc_attr( $val ) . '"';
 	}
 }
-//Layout list class
-$wc_list_html_class = '';
-if ( of_get_option( 'woocommerce_hover_image' ) ) {
-	$wc_list_html_class = 'wc-img-hover';
+
+// Fullwidth wrap open.
+if ( presscore_config()->get( 'full_width' ) ) {
+	echo '<div class="full-width-wrap">';
 }
-$hide_desc_class = '';
-if ( !of_get_option( 'woocommerce_show_list_desc' ) ) {
-	$hide_desc_class = ' hide-description';
-}
-do_action( 'dt_wc_loop_start' );
 
-do_action( 'presscore_before_loop' );
+$loop_layout = presscore_config()->get( 'layout' );
+if ( 'list' === $loop_layout ) {
+	$classes = array(
+		'wc-layout-list',
+		'dt-products',
+		'products',
+	);
 
-
-
-// fullwidth wrap open
-if ( presscore_config()->get( 'full_width' ) ) { echo '<div class="full-width-wrap">'; }
-if ( 'list' === presscore_config()->get( 'layout' )) {
-	echo '<div class="wc-layout-list '. $wc_list_html_class .  $hide_desc_class .'" >';
-
-}else{
-// masonry container open
-	if ( 'grid' === presscore_config()->get( 'layout' )) {
-		$classes = array_diff( presscore_masonry_container_classes_array(), array( 'iso-grid') );
-		echo '<div class="dt-css-grid-wrap woo-hover wc-grid ' . esc_attr( implode( ' ', $classes ) ) . '" ' . presscore_masonry_container_data_atts($data_atts) . '>';
-		echo '<div class="dt-css-grid">';
-	}else{
-		echo '<div ' . presscore_masonry_container_class( array( 'wf-container', 'woo-hover' ) ) . presscore_masonry_container_data_atts($data_atts) . '>';
+	if ( of_get_option( 'woocommerce_hover_image' ) ) {
+		$classes[] = 'wc-img-hover';
 	}
+
+	if ( ! of_get_option( 'woocommerce_show_list_desc' ) ) {
+		$classes[] = 'hide-description';
+	}
+
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	printf( '<div class="%s">', implode( ' ', $classes ) );
+} elseif ( 'grid' === $loop_layout ) {
+	$classes   = array_diff( presscore_masonry_container_classes_array(), array( 'iso-grid' ) );
+	$classes[] = 'dt-css-grid-wrap';
+	$classes[] = 'woo-hover';
+	$classes[] = 'wc-grid';
+	$classes[] = 'dt-products';
+	$classes[] = 'products';
+
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	printf( '<div class="%s" %s><div class="dt-css-grid">', esc_attr( implode( ' ', $classes ) ), presscore_masonry_container_data_atts( $data_atts ) );
+} else {
+	$classes = array( 'wf-container', 'dt-products ', 'woo-hover', 'products' );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo '<div ' . presscore_masonry_container_class( $classes ) . presscore_masonry_container_data_atts( $data_atts ) . '>';
 }

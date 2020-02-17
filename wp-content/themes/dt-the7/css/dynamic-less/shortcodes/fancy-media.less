@@ -29,3 +29,17 @@
 	.solid-bg-mixin;
 	.shadow-decoration;
 }
+
+
+.rollover-icon {
+	.shortcode-single-image-wrap & {
+		color: @accent-bg-color;
+		border-color: @accent-bg-color;
+		.dt-icon-bg-on& {
+			background-color: @accent-bg-color;
+			.accent-gradient & {
+				.background-gradient (@startColor: @accent-bg-color, @endColor: @accent-bg-color-2);
+			}
+		}
+	}
+}

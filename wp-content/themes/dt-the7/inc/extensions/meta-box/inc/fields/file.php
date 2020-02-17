@@ -13,12 +13,17 @@ if ( ! class_exists( 'THE7_RWMB_File_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
+			static $vars_localized;
+
 			wp_enqueue_style( 'the7-mb-file', THE7_RWMB_CSS_URL . 'file.css', array(), THE7_RWMB_VER );
 			wp_enqueue_script( 'the7-mb-file', THE7_RWMB_JS_URL . 'file.js', array( 'jquery', 'wp-ajax-response' ), THE7_RWMB_VER, true );
-			wp_localize_script( 'the7-mb-file', 'the7mbFile', array(
-				'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'the7mk2' ),
-				'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'the7mk2' ),
-			) );
+			if ( ! $vars_localized ) {
+				wp_localize_script( 'the7-mb-file', 'the7mbFile', array(
+					'maxFileUploadsSingle' => __( 'You may only upload maximum %d file', 'the7mk2' ),
+					'maxFileUploadsPlural' => __( 'You may only upload maximum %d files', 'the7mk2' ),
+				) );
+				$vars_localized = true;
+			}
 		}
 
 		/**

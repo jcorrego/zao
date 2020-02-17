@@ -2,12 +2,13 @@
 /**
  * Slide out header.
  *
- * @package the7
- * @since 3.0.0
+ * @since   3.0.0
+ * @package The7/Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 
 <div <?php presscore_header_class( 'masthead side-header slide-out' ); ?> role="banner">

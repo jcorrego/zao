@@ -77,8 +77,21 @@ if ( ! class_exists( 'The7_Compatibility_EDD', false ) ) {
 			$config->set( 'edd.mini_cart.dropdown', of_get_option( 'header-elements-edd_cart-show_sub_cart' ) );
 		}
 
-		public static function cart_micro_widget_less_vars( Presscore_Lib_LessVars_Manager $less_vars ) {
+		public static function cart_micro_widget_less_vars( The7_Less_Vars_Manager_Interface $less_vars ) {
 			$less_vars->add_hex_color( 'edd-product-counter-color', of_get_option( 'header-elements-edd_cart-counter-color' ) );
+			$less_vars->add_hex_color(
+				'edd-sub-cart-color',
+				of_get_option( 'header-elements-edd_cart-sub_cart-font-color' )
+			);
+
+	 		$less_vars->add_pixel_number(
+	     		'edd-sub-cart-width',
+	     		of_get_option( 'header-elements-edd_cart-sub_cart-bg-width' )
+	     	);
+			$less_vars->add_rgba_color(
+				'edd-sub-cart-bg',
+				of_get_option( 'header-elements-edd_cart-sub_cart-bg-color' )
+			);
 
 			$counter_color_vars = array( 'edd-product-counter-bg', 'edd-product-counter-bg-2' );
 			switch ( of_get_option( 'header-elements-edd_cart-counter-bg' ) ) {
@@ -99,6 +112,8 @@ if ( ! class_exists( 'The7_Compatibility_EDD', false ) ) {
 					$less_vars->add_rgba_color( $counter_color_vars[0], $first_color );
 					$less_vars->add_keyword( $counter_color_vars[1], $gradient->with_angle( 'left' )->get_string() );
 			}
+
+			$less_vars->add_pixel_number( 'mw-edd-cart-counter-size', of_get_option( 'header-elements-woocommerce_edd_cart-counter-size', 9 ) );
 
 			$less_vars->add_number( 'edd-cart-total-width', of_get_option( 'edd_cart_total_width' ) );
 		}

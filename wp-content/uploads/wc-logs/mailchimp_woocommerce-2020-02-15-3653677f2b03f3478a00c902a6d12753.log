@@ -1,0 +1,8 @@
+2020-02-15T13:21:06+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id dfac073d494b24a428c64ff65b3bbbee
+2020-02-15T13:21:06+00:00 NOTICE abandoned_cart.success :: email: nata2606@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=dfac073d494b24a428c64ff65b3bbbee
+2020-02-15T21:47:53+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id b0bc99c91a630766a427d1c97f46c94f
+2020-02-15T21:47:54+00:00 NOTICE abandoned_cart.success :: email: damyb038@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=b0bc99c91a630766a427d1c97f46c94f
+2020-02-15T21:48:11+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3968
+2020-02-15T22:22:48+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id b0bc99c91a630766a427d1c97f46c94f
+2020-02-15T22:26:31+00:00 NOTICE abandoned_cart.success :: email: damyb038@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=b0bc99c91a630766a427d1c97f46c94f
+2020-02-15T23:54:56+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3968

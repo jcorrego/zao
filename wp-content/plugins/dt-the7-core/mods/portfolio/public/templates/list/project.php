@@ -31,10 +31,7 @@ $article_content_layout = presscore_get_template_image_layout( $config->get( 'la
 
 				$image = presscore_project_get_thumbnail_img( $image_id, $link_class );
 				$rollover_content = presscore_project_get_preview_buttons( $image_id );
-
-				if ( 1 == presscore_project_preview_buttons_count() ) {
-					$rollover_class .= ' rollover-active';
-				}
+				$rollover_class = the7pt_get_portfolio_rollover_class();
 				break;
 			case 'slideshow':
 				$class = array( 'slider-simple', 'owl-carousel', 'dt-owl-carousel-init' );

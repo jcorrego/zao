@@ -76,7 +76,7 @@ if (!defined('ABSPATH'))
     <?php $cron_key = $woof_settings[$key]['use_external_cron'] ?>
     <input type="hidden" name="woof_settings[<?php echo $key ?>][show_label]" value="<?php echo $woof_settings[$key]['show_label'] ?>" /> 
     <input type="hidden" name="woof_settings[<?php echo $key ?>][label]" value="<?php echo $woof_settings[$key]['label'] ?>" />
-    <input type="hidden" name="woof_settings[<?php echo $key ?>][notes_for_customer]" value="<?php echo $woof_settings[$key]['notes_for_customer'] ?>" />
+    <input type="hidden" name="woof_settings[<?php echo $key ?>][notes_for_customer]" value="<?php echo stripcslashes($woof_settings[$key]['notes_for_customer']); ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][show_btn_subscr]" value="<?php echo $woof_settings[$key]['show_btn_subscr'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][wp_cron_period]" value="<?php echo $woof_settings[$key]['wp_cron_period'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][use_external_cron]" value="<?php echo $woof_settings[$key]['use_external_cron'] ?>" />

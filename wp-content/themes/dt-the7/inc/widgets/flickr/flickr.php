@@ -5,30 +5,33 @@ $flickr_api_key = "d348e6e1216a46f2a4c9e28f93d75a48"; // You can use your own if
 function sakura_widget_quickflickr($args) {
 	extract($args);
 
-    $defaults = array(
-        'title'                 => '',
-        'rss'                   => '',
-        'items'                 => 12,
-        'view'                  => '_t',
-        'defore_item'           => '',
-        'after_item'            => '',
-        'before_flickr_widget'  => '',
-        'after_flickr_widget'   => '',
-        'more_title'            => '',
-        'target'                => '',
-        'show_titles'           => '',
-        'username'              => '',
-        'user_id'               => '',
-        'error'                 => '',
-        'thickbox'              => '',
-        'tags'                  => '',
-        'random'                => '',
-        'javascript'            => ''
-    );  
+	$defaults = array(
+		'title'                => '',
+		'rss'                  => '',
+		'items'                => 12,
+		'view'                 => '_t',
+		'defore_item'          => '',
+		'after_item'           => '',
+		'before_flickr_widget' => '',
+		'after_flickr_widget'  => '',
+		'more_title'           => '',
+		'target'               => '',
+		'show_titles'          => '',
+		'username'             => '',
+		'user_id'              => '',
+		'error'                => '',
+		'thickbox'             => '',
+		'tags'                 => '',
+		'random'               => '',
+		'javascript'           => '',
+		'html_cache_ttl'       => HOUR_IN_SECONDS,
+	);
 
 	$options = get_option("sakura_widget_quickflickr");
     $options = wp_parse_args( $options, $defaults );	
-	
+
+    $html_cache_ttl = (int) $options['html_cache_ttl'];
+
 	$title = apply_filters( 'widget_title', $options["title"] );;
 	$items = $options["items"];
 	$view = $options["view"];
@@ -82,55 +85,60 @@ function sakura_widget_quickflickr($args) {
 		// Output via php or javascript?
 		elseif (!$javascript)
 		{
-		   $flickr_data = wp_remote_fopen($url);
+			$out = get_transient( 'the7_widget_flickr_html_cache' );
+			if ( ! $out ) {
+				$flickr_data = wp_remote_fopen( $url );
+				$flickr_data = str_replace( '<?php', '', $flickr_data );
+				$flickr_data = str_replace( '?>', '', $flickr_data );
+				$flickr_data = str_replace( "jsonFlickrFeed(", "", $flickr_data );
+				$flickr_data = preg_replace( "/\)[\n\r\t ]*$/", "", $flickr_data );
+				$flickr_data = preg_replace( '/"(description|title)":.*?\n/', '', $flickr_data );
+				//echo $flickr_data;
+				$flickr_data = json_decode( $flickr_data, true );
 
-		   $flickr_data = str_replace('<?php', '', $flickr_data);
-		   $flickr_data = str_replace('?>', '', $flickr_data);
-			$flickr_data = str_replace("jsonFlickrFeed(", "", $flickr_data);
-			$flickr_data = preg_replace("/\)[\n\r\t ]*$/", "", $flickr_data);
-			$flickr_data = preg_replace('/"(description|title)":.*?\n/', '', $flickr_data);
-			//echo $flickr_data;
-			$flickr_data = json_decode($flickr_data, TRUE);
-						
-			$photos = $flickr_data;
-			
-			if($random && isset($photos["items"]) ) shuffle($photos["items"]);
-			
-			if ($photos)
-			{	
-			   $view = '_s';
-			   $out="";
-			   $counter=1;
-				foreach($photos["items"] as $key => $value)
-				{
-					if (--$items < 0) break;
-					$photo_title = '';
-					//$photo_title = $value["title"];
-					$photo_link = "";
-					if ( isset($value["url"]) )
-   					$photo_link = $value["url"];
-					//preg_match("<img[^>]* src=\"([^\"]*)\"[^>]*>", $value["description"], $regs);
-					//$photo_url = $regs[1];
-					//$photo_description = str_replace("\n", "", strip_tags($value["title"]));
-										
-					$photo_url = $value["media"]["m"];
-					$photo_medium_url = str_replace("_m.jpg", ".jpg", $photo_url);
-					$photo_url = str_replace("_m.jpg", "$view.jpg", $photo_url);
+				$photos = $flickr_data;
 
-					$thickbox_attrib = ($thickbox) ? "class=\"thickbox\" rel=\"flickr-gallery\" title=\"$photo_title\"" : "";
-					$href = ($thickbox) ? $photo_medium_url : $photo_link;
-					$href = $value["link"];
-					
-//					$photo_title = ($show_titles) ? "<div class=\"qflickr-title\">$photo_title</div>" : "";
-					$out .= $before_item . "<a target=\"_blank\" href=\"$href\" class=\"rollover rollover-small\"><img alt=\"\" title=\"\" src=\"$photo_url\" width=\"75\" height=\"75\" /></a>$photo_title" . "" .$after_item;
-					
-					$counter++;
+				if ( $random && isset( $photos["items"] ) ) {
+					shuffle( $photos["items"] );
 				}
-				$flickr_home = $photos["link"];
-			}
-			else
-			{
-				$out = "Something went wrong with the Flickr feed! Please check your configuration and make sure that the Flickr username or RSS feed exists";
+
+				if ( $photos ) {
+					$view    = '_s';
+					$out     = "";
+					$counter = 1;
+					foreach ( $photos["items"] as $key => $value ) {
+						if ( -- $items < 0 ) {
+							break;
+						}
+						$photo_title = '';
+						//$photo_title = $value["title"];
+						$photo_link = "";
+						if ( isset( $value["url"] ) ) {
+							$photo_link = $value["url"];
+						}
+						//preg_match("<img[^>]* src=\"([^\"]*)\"[^>]*>", $value["description"], $regs);
+						//$photo_url = $regs[1];
+						//$photo_description = str_replace("\n", "", strip_tags($value["title"]));
+
+						$photo_url        = $value["media"]["m"];
+						$photo_medium_url = str_replace( "_m.jpg", ".jpg", $photo_url );
+						$photo_url        = str_replace( "_m.jpg", "$view.jpg", $photo_url );
+
+						$thickbox_attrib = ( $thickbox ) ? "class=\"thickbox\" rel=\"flickr-gallery\" title=\"$photo_title\"" : "";
+						$href            = ( $thickbox ) ? $photo_medium_url : $photo_link;
+						$href            = $value["link"];
+
+						//					$photo_title = ($show_titles) ? "<div class=\"qflickr-title\">$photo_title</div>" : "";
+						$out .= $before_item . "<a target=\"_blank\" href=\"$href\" class=\"rollover rollover-small\"><img alt=\"\" title=\"\" src=\"$photo_url\" width=\"75\" height=\"75\" /></a>$photo_title" . "" . $after_item;
+
+						$counter ++;
+					}
+					$flickr_home = $photos["link"];
+				} else {
+					$out = "Something went wrong with the Flickr feed! Please check your configuration and make sure that the Flickr username or RSS feed exists";
+				}
+
+				$html_cache_ttl && set_transient( 'the7_widget_flickr_html_cache', $out, $html_cache_ttl );
 			}
 		}
 		else // via javascript
@@ -157,26 +165,27 @@ function sakura_widget_quickflickr($args) {
 }
 
 function sakura_widget_quickflickr_control() {
-    $defaults = array(
-        'title'                 => '',
-        'rss'                   => '',
-        'items'                 => 12,
-        'view'                  => '_s',
-        'defore_item'           => '',
-        'after_item'            => '',
-        'before_flickr_widget'  => '',
-        'after_flickr_widget'   => '',
-        'more_title'            => '',
-        'target'                => '',
-        'show_titles'           => '',
-        'username'              => '',
-        'user_id'               => '',
-        'error'                 => '',
-        'thickbox'              => '',
-        'tags'                  => '',
-        'random'                => '',
-        'javascript'            => ''
-    );  
+	$defaults = array(
+		'title'                => '',
+		'rss'                  => '',
+		'items'                => 12,
+		'view'                 => '_s',
+		'defore_item'          => '',
+		'after_item'           => '',
+		'before_flickr_widget' => '',
+		'after_flickr_widget'  => '',
+		'more_title'           => '',
+		'target'               => '',
+		'show_titles'          => '',
+		'username'             => '',
+		'user_id'              => '',
+		'error'                => '',
+		'thickbox'             => '',
+		'tags'                 => '',
+		'random'               => '',
+		'javascript'           => '',
+		'html_cache_ttl'       => HOUR_IN_SECONDS,
+	);
 
 	$options = $newoptions = get_option("sakura_widget_quickflickr");
 
@@ -212,6 +221,7 @@ function sakura_widget_quickflickr_control() {
 		$newoptions["tags"] = isset($_POST["sakura-flickr-tags"])?strip_tags(stripslashes($_POST["sakura-flickr-tags"])):'';
 		$newoptions["random"] = isset($_POST["sakura-flickr-random"])?strip_tags(stripslashes($_POST["sakura-flickr-random"])):'';
 		$newoptions["javascript"] = isset($_POST["sakura-flickr-javascript"])?strip_tags(stripslashes($_POST["sakura-flickr-javascript"])):'';
+		$newoptions["html_cache_ttl"] = isset($_POST["sakura-flickr-html-cache-ttl"])?absint($_POST["sakura-flickr-html-cache-ttl"]):$defaults['html_cache_ttl'];
 		
 		if (!empty($newoptions["username"]) && $newoptions["username"] != $options["username"])
 		{
@@ -260,6 +270,10 @@ function sakura_widget_quickflickr_control() {
 			$newoptions["error"] = "Flickr RSS or Screen name empty. Please reconfigure.";
 	}
 	if ( $options != $newoptions ) {
+		// Invalidate cache on cache ttl change.
+		if ( $options['html_cache_ttl'] !== $newoptions['html_cache_ttl'] ) {
+			delete_transient( 'the7_widget_flickr_html_cache' );
+		}
 		$options = $newoptions;
 		update_option("sakura_widget_quickflickr", $options);
 	}
@@ -282,14 +296,16 @@ function sakura_widget_quickflickr_control() {
 	$tags = esc_html($options["tags"]);
 	$random = esc_html($options["random"]);
 	$javascript = esc_html($options["javascript"]);
-	
+	$html_cache_ttl = $options['html_cache_ttl'];
 	?>
 	<p><label for="flickr-title"><?php _ex('Title:', 'widget', 'the7mk2'); ?> <input class="widefat" id="flickr-title" name="sakura-flickr-title" type="text" value="<?php echo $title; ?>" /></label></p>
 	<p><label for="flickr-username"><?php _ex('Flickr Latest RSS URL:', 'widget', 'the7mk2'); ?> <input class="widefat" id="flickr-username" name="sakura-flickr-username" type="text" value="<?php echo $flickr_username; ?>" /></label></p>
 	
-    <p><label for="flickr-items"><?php _ex('How many items?', 'widget', 'the7mk2'); ?> <input type="text" class="widefat" id="rss-items" name="sakura-rss-items" value="<?php echo $items; ?>" /></label></p>
+    <p><label for="rss-items"><?php _ex('How many items?', 'widget', 'the7mk2'); ?> <input type="text" class="widefat" id="rss-items" name="sakura-rss-items" value="<?php echo $items; ?>" /></label></p>
 	
 	<p><label for="flickr-tags"><?php _ex('Filter by tags (comma seperated):', 'widget', 'the7mk2'); ?> <input class="widefat" id="flickr-tags" name="sakura-flickr-tags" type="text" value="<?php echo $tags; ?>" /></label></p>
+
+	<p><label for="sakura-flickr-html-cache-ttl"><?php _ex('Update interval (in seconds):', 'widget', 'the7mk2'); ?> <input type="number" min="0" class="widefat" id="sakura-flickr-html-cache-ttl" name="sakura-flickr-html-cache-ttl" value="<?php echo esc_attr( $html_cache_ttl ); ?>" /></label></p>
 	
 	<p><label for="flickr-random"><input id="flickr-random" name="sakura-flickr-random" type="checkbox" value="checked" <?php echo $random; ?> /> <?php _ex('Random pick', 'widget', 'the7mk2'); ?></label></p>
 	
@@ -298,11 +314,7 @@ function sakura_widget_quickflickr_control() {
 }
 
 function sakura_quickflickr_widgets_init() {
-
-   wp_register_sidebar_widget(9022, (DT_WIDGET_PREFIX." Flickr"), 'sakura_widget_quickflickr');
+   wp_register_sidebar_widget(9022, DT_WIDGET_PREFIX." Flickr", 'sakura_widget_quickflickr');
    wp_register_widget_control(9022, DT_WIDGET_PREFIX." Flickr", "sakura_widget_quickflickr_control");
-	
-	$options = get_option("sakura_widget_quickflickr");
-	
 }
 add_action("init", "sakura_quickflickr_widgets_init");

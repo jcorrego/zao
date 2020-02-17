@@ -36,8 +36,14 @@ if ( ! class_exists( 'THE7_RWMB_Taxonomy_Field' ) )
 			// Set default args
 			$field['options']['args'] = ! isset( $field['options']['args'] ) ? $default_args : wp_parse_args( $field['options']['args'], $default_args );
 
-			$tax = get_taxonomy( $field['options']['taxonomy'] );
-			$field['placeholder'] = empty( $field['placeholder'] ) ? sprintf( __( 'Select a %s' , 'the7mk2' ), $tax->labels->singular_name ) : $field['placeholder'];
+			if ( empty( $field['placeholder'] ) ) {
+				$post_type_name = 'Term';
+				$tax            = get_taxonomy( $field['options']['taxonomy'] );
+				if ( is_object( $tax ) ) {
+					$post_type_name = $tax->labels->singular_name;
+				}
+				$field['placeholder'] = sprintf( __( 'Select a %s', 'the7mk2' ), $post_type_name );
+			}
 
 			switch( $field['options']['type'] )
 			{

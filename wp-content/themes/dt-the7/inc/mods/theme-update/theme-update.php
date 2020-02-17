@@ -204,7 +204,7 @@ if ( ! class_exists( 'Presscore_Modules_ThemeUpdateModule', false ) ) :
 					'theme' => $theme_template,
 					'new_version' => $new_version,
 					'url' => presscore_theme_update_get_changelog_url(),
-					'package' => $the7_remote_api->get_theme_download_url(),
+					'package' => $the7_remote_api->get_theme_download_url( $new_version ),
 				);
 			}
 

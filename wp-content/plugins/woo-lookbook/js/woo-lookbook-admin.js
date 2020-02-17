@@ -1,65 +1,56 @@
 'use strict';
 jQuery(document).ready(function () {
-	jQuery('.vi-ui.tabular.menu .item').tab({
+	jQuery('.vi-ui.tabular.menu .item').vi_tab({
 		history    : true,
 		historyType: 'hash'
 	});
 
 	/*Setup tab*/
-	var tabs,
-		tabEvent = false,
-		initialTab = 'design',
-		navSelector = '.vi-ui.menu',
-		navFilter = function (el) {
-			return jQuery(el).attr('href').replace(/^#/, '');
-		},
-		panelSelector = '.vi-ui.tab',
-		panelFilter = function () {
-			jQuery(panelSelector + ' a').filter(function () {
-				return jQuery(navSelector + ' a[title=' + jQuery(this).attr('title') + ']').size() != 0;
-			}).each(function (event) {
-				jQuery(this).attr('href', '#' + $(this).attr('title').replace(/ /g, '_'));
-			});
-		};
+    var tabs,
+        tabEvent = false,
+        initialTab = 'general',
+        navSelector = '.vi-ui.menu',
+        navFilter = function (el) {
+            // return jQuery(el).attr('href').replace(/^#/, '');
+        },
+        panelSelector = '.vi-ui.tab',
+        panelFilter = function () {
+            jQuery(panelSelector + ' a').filter(function () {
+                return jQuery(navSelector + ' a[title=' + jQuery(this).attr('title') + ']').size() != 0;
+            });
+        };
 
-	// Initializes plugin features
-	jQuery.address.strict(false).wrap(true);
+    // Initializes plugin features
+    jQuery.address.strict(false).wrap(true);
 
-	if (jQuery.address.value() == '') {
-		jQuery.address.history(false).value(initialTab).history(true);
-	}
+    if (jQuery.address.value() == '') {
+        jQuery.address.history(false).value(initialTab).history(true);
+    }
 
-	// Address handler
-	jQuery.address.init(function (event) {
+    // Address handler
+    jQuery.address.init(function (event) {
 
-		// Adds the ID in a lazy manner to prevent scrolling
-		jQuery(panelSelector).attr('id', initialTab);
+        // Adds the ID in a lazy manner to prevent scrolling
+        jQuery(panelSelector).attr('id', initialTab);
 
-		// Enables the plugin for all the content links
-		jQuery(panelSelector + ' a').address(function () {
-			return navFilter(this);
-		});
+        panelFilter();
 
-		panelFilter();
+        // Tabs setup
+        tabs = jQuery('.vi-ui.menu')
+            .vi_tab({
+                history: true,
+                historyType: 'hash'
+            })
 
-		// Tabs setup
-		tabs = jQuery('.vi-ui.menu')
-			.tab({
-				history    : true,
-				historyType: 'hash'
-			})
+        // Enables the plugin for all the tabs
+        jQuery(navSelector + ' a').click(function (event) {
+            tabEvent = true;
+            // jQuery.address.value(navFilter(event.target));
+            tabEvent = false;
+            return true;
+        });
 
-		// Enables the plugin for all the tabs
-		jQuery(navSelector + ' a').click(function (event) {
-			tabEvent = true;
-			jQuery.address.value(navFilter(event.target));
-			tabEvent = false;
-			return false;
-		});
-
-	});
-
-
+    });
 	/*Init JS input*/
 	jQuery('.vi-ui.checkbox').checkbox();
 	jQuery('select.vi-ui.dropdown').dropdown();

@@ -217,10 +217,13 @@
 		right: 0;
 		width: 13px;
 		height: 13px;
-		content: "";
+	}
+	.custom-nav > li.has-children > a:after {
+		float: right;
+		content: "\f005";
+    	font-family: 'icomoon-the7-font';
 
-		background-repeat: no-repeat;
-		background-position: center center;
+		font-size: 8px;
 	}
 		.custom-nav > li .custom-menu li {
 			border: none !important;
@@ -314,7 +317,6 @@
 .custom-menu a,
 .widget_pages a {
 	text-decoration: none;
-	//padding-right: 15px;
 }
 .widget_nav_menu a {
 	display: inline-block;
@@ -328,20 +330,32 @@
 	.show-arrow& {
 		padding-left: 23px;
 	}
-	background-repeat: no-repeat;
-	background-position: 0 5px;
 	.enable-bold& {
 		font-weight: bold;
 	}
 }
+.custom-menu.show-arrow a:before {
+	height: 14px;
+	content: "";
+}
 .custom-menu.show-arrow a:before,
 .widget_presscore-custom-menu-one .custom-menu.show-arrow a:after {
 	position: absolute;
+	width: 14px;
 	top: 5px;
 	left: 0;
-	width: 14px;
-	height: 14px;
-	content: "";
+}
+.widget_presscore-custom-menu-one .custom-menu.show-arrow a:after {
+	content: "\f007";
+	font-family: 'icomoon-the7-font';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+  	font-size: 7px;
+  	line-height: 14px;
+  	text-align: center;
 }
 .custom-nav.show-arrow > .has-children > a:after {
 	display: block;
@@ -498,13 +512,29 @@
 	.widget .searchform .submit,
 	.content .searchform .submit {
 		position: absolute;
-		top: 12px;
-		right: 15px;
-		width: 16px;
-		height: 16px;
+		top: 0;
+		.flex-display(@display: flex);
+		.align-items(@align: center);
+		.justify-content(@justify: center);
+		right: 11px;
+		width: 20px;
+		height: 100%;
 		padding: 0;
-		background-position: 0 0;
-		background-repeat: no-repeat;
+		text-decoration: none;
+		&:hover {
+			opacity: 0.7;
+			cursor: pointer;
+		}
+		&:before {
+		    content: "\ec051";
+		    font-family: 'icomoon-the7-font' !important;
+		    font-style: normal;
+		    font-weight: normal;
+		    font-variant: normal;
+		    text-transform: none;
+		    line-height: inherit;
+		    font-size: 16px;
+		}
 	}
 /* #Skills
 ================================================== */
@@ -515,7 +545,6 @@
 	display: none !important;
 }
 html:not(.mobile-true) .skill-value {
-	-webkit-transition: width 1200ms ease;
 	transition:      width 1200ms ease;
 }
 
@@ -544,20 +573,12 @@ html:not(.mobile-true) .skill-value {
 		content: "";
 		background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
 		background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-		background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-		background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 		background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-		-webkit-background-size: 40px 40px;
-		-moz-background-size: 40px 40px;
-		-o-background-size: 40px 40px;
 		background-size: 40px 40px;
 	}
 
 		html:not(.mobile-true) .skill-value {
-			-moz-transition-delay:300ms;
-			-ms-transition-delay: 300ms;
-			-o-transition-delay: 300ms;
-			-webkit-transition-delay: 300ms;
+			transition-delay: 300ms;
 		}
 
 		.skill-value span {
@@ -681,8 +702,17 @@ html:not(.mobile-true) .skill-value {
 				content: "";
 			}
 			.st-accordion li > a:after {
-				background-position: center center;
-				background-repeat: no-repeat;
+				//margin-top: -4px;
+				content: "\f005";
+				font-family: 'icomoon-the7-font';
+			    speak: none;
+			    font-style: normal;
+			    font-weight: normal;
+			    font-variant: normal;
+			    text-transform: none;
+			  	font-size: 8px;
+			  	line-height: 14px;
+			  	text-align: center;
 			}
 			.st-content {
 				display: none;

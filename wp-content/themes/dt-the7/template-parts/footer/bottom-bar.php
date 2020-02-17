@@ -50,7 +50,17 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="wf-float-right">
 
 				<?php
-				presscore_nav_menu_list( 'bottom', '' );
+				$extended_menu = new The7_Extended_Microwidgets_Menu();
+				$extended_menu->add_hooks();
+
+				presscore_nav_menu_list(
+					'bottom',
+					array(
+						'submenu_class' => implode( ' ', presscore_get_primary_submenu_class( 'footer-sub-nav' ) ),
+					)
+				);
+
+				$extended_menu->remove_hooks();
 
 				$bottom_text = $config->get( 'template.bottom_bar.text' );
 				if ( $bottom_text ) {

@@ -72,7 +72,7 @@ if ( ! class_exists( 'DT_Shortcode_Banner', false ) ) {
 				'link' => '',
 				'target_blank' => 'false',
 				'animation' => 'none',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			$clean_atts['text_size'] = sanitize_key( $clean_atts['text_size'] );
 			$clean_atts['type'] = sanitize_key( $clean_atts['type'] );

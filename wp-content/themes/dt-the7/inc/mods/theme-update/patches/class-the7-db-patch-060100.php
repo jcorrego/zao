@@ -60,7 +60,7 @@ if ( ! class_exists( 'The7_DB_Patch_060100', false ) ) {
 				return;
 			}
 
-			$color_obj = new Presscore_Lib_LessVars_Color( $this->get_option( 'header-bg-color' ) );
+			$color_obj = new The7_Less_Vars_Value_Color( $this->get_option( 'header-bg-color' ) );
 			$header_bg_color = $color_obj->opacity( 0 )->get_rgba();
 			if ( $header_bg_color === '""' ) {
 				$header_bg_color = '';

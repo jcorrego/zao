@@ -56,7 +56,7 @@ article {
 			.transparent-bg-mixin(@opacity: 15%)
 		}
 	}
-	.content-bg-on:not(.classic-layout-list):not(.centered-layout-list) & {
+	.content-bg-on:not(.classic-layout-list):not(.centered-layout-list):not(.gradient-overlay-layout-list) & {
 		.solid-bg-mixin;
 	}
 	.content-bg-on:not(.classic-layout-list):not(.centered-layout-list):not(.gradient-overlap-layout-list):not(.gradient-overlay-layout-list):not(.content-rollover-layout-list) & {
@@ -92,8 +92,9 @@ article {
 }
 //Gradient overlay blog layout defaults
 .post-entry-content {
-	#page .content-bg-on.gradient-overlay-layout-list & {
-		.solid-bg-mixin;
+	#page .enable-bg-rollover.gradient-overlay-layout-list & {
+		background-color: @project-rollover-bg-color;
+	.background-gradient (@startColor: @project-rollover-bg-color, @endColor: @project-rollover-bg-color-2);
 
 	}
 }
@@ -102,16 +103,28 @@ article {
 
 	.blog-shortcode &,
 	.portfolio-shortcode &,
+	.albums-shortcode &,
 	.owl-carousel.blog-carousel-shortcode & {
 		font: normal @h3-font-variant normal @h3-font-size~"/"@h3-line-height @h3-font-family;
 		.mode-masonry&,
 		.mode-grid&,
 		.blog-carousel-shortcode&,
-		.portfolio-carousel-shortcode& {
+		.portfolio-carousel-shortcode&,
+		.albums-carousel-shortcode& {
 			font: normal @h4-font-variant normal @h4-font-size~"/"@h4-line-height @h4-font-family;
 		}
 		& a {
 			.header-color;
+		}
+	}
+}
+.entry-title {
+
+	.blog-shortcode &,
+	.portfolio-shortcode:not(.gradient-overlay-layout-list):not(.content-rollover-layout-list) &,
+	.albums-shortcode &,
+	.owl-carousel.blog-carousel-shortcode & {
+		& a {
 			&:hover {
 				.color-accent;
 			}
@@ -121,6 +134,7 @@ article {
 .entry-meta {
 	.blog-shortcode &,
 	.portfolio-shortcode &,
+	.albums-shortcode &,
 	.owl-carousel & {
 		.text-small;
 		.color-base-transparent;
@@ -129,6 +143,7 @@ article {
 .entry-excerpt {
 	.blog-shortcode &,
 	.portfolio-shortcode &,
+	.albums-shortcode &,
 	.owl-carousel & {
 		.text-normal;
 	}
@@ -207,9 +222,13 @@ article {
 //Portfolio
 .project-links-container {
 	.portfolio-shortcode & {
-		& a span,
-		& a:hover span {
+		& a:not(:hover) span {
 			color: @accent-bg-color;
+		}
+		& a:hover span {
+			.dt-icon-hover-on& {
+				color: @accent-bg-color;
+			}
 		}
 		&:before,
 		&:after {

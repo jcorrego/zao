@@ -81,8 +81,6 @@ class The7_Background_Updater extends WP_Background_Process {
 			define( 'THE7_UPDATING', true );
 		}
 
-		include_once( dirname( __FILE__ ) . '/the7-update-functions.php' );
-
 		$task = false;
 		if ( is_callable( $callback ) ) {
 			$task = call_user_func( $callback );

@@ -11,13 +11,16 @@
 	border-color: @customColor;
 }
 .box-shadow (@string) {
-	-webkit-box-shadow: @string;
 	box-shadow:         @string;
 }
 a {
 	.dt-shortcode-soc-icons.@{unique-shortcode-class-name} & {
-		margin-right: @soc-icon-gap-between;
+		//margin-right: @soc-icon-gap-between;
+		.custom-mixin-margin-right (@soc-icon-gap-between);
 	}
+}
+.custom-mixin-margin-right (@customString) when not(@customString = ~"") {
+	margin-right: @customString;
 }
 a.@{unique-shortcode-class-name} {
 	.dt-shortcode-soc-icons & {
@@ -25,7 +28,8 @@ a.@{unique-shortcode-class-name} {
 		min-height: @soc-icon-bg-size;
 		font-size: @soc-icon-size;
 		border-radius: @soc-icon-border-radius;
-		margin-right: @soc-icon-gap-between;
+		//margin-right: @soc-icon-gap-between;
+		.custom-mixin-margin-right (@soc-icon-gap-between);
 		&:last-child {
 			margin-right: 0;
 		}
@@ -51,7 +55,8 @@ a.@{unique-shortcode-class-name} {
 		&:hover {
 			font-size: @soc-icon-size;
 			
-			& .soc-font-icon {
+			& .soc-font-icon,
+			& .soc-icon {
 				#page &,
 				#phantom & {
 					.custom-mixin-color (@soc-icon-color-hover);
@@ -66,13 +71,15 @@ a.@{unique-shortcode-class-name} {
 				}
 			}
 		}
-		&:not(:hover) .soc-font-icon {
+		&:not(:hover) .soc-font-icon,
+		&:not(:hover) .soc-icon {
 			#page &,
 			#phantom & {
 				.custom-mixin-color (@soc-icon-color);
 			}
 		}
-		& .soc-font-icon {
+		& .soc-font-icon,
+		& .soc-icon {
 			font-size: @soc-icon-size;
 		}
 	}

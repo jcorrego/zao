@@ -38,7 +38,7 @@ class DT_Shortcode_Fancy_Title extends DT_Shortcode {
 			'title_bg' => 'disabled',
 		);
 
-		extract(shortcode_atts($default_atts, $atts));
+		extract(shortcode_atts($default_atts, $atts, 'dt_fancy_title'));
 
 		/////////////////////
 		// sanitize atts //

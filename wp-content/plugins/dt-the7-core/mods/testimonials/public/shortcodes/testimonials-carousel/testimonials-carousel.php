@@ -7,11 +7,9 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 
-	class DT_Shortcode_Testimonials_Carousel extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_Testimonials_Carousel extends The7pt_Shortcode_With_Inline_CSS {
 		/**
 		 * @var string
 		 */
@@ -71,6 +69,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 				'slides_on_mob' => '1',
 				'adaptive_height' => 'n',
 				'item_space' => '30',
+				'stage_padding' => '0',
 				'speed' => '600',
 				'autoplay' => 'n',
 				'autoplay_speed' => "6000",
@@ -178,7 +177,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 			presscore_remove_posts_masonry_wrap();
 
 			echo '<div ' . $this->get_container_html_class( array( 'owl-carousel testimonials-carousel-shortcode dt-testimonials-shortcode dt-owl-carousel-call' ) ) . ' ' . $this->get_container_data_atts() . '>';
-
+				$lazy_loading_enabled = presscore_lazy_loading_enabled();
 				if ( $query->have_posts() ): while( $query->have_posts() ): $query->the_post();
 					do_action('presscore_before_post');
 					$post_id = get_the_ID();
@@ -208,6 +207,9 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 										'img_meta' => wp_get_attachment_image_src( $thumb_id, 'full' ),
 										'prop'     => $proportion,
 										'echo'     => false,
+										'lazy_loading'  => $lazy_loading_enabled,
+										'lazy_class'    => 'owl-lazy-load',
+										'lazy_bg_class' => 'layzr-bg',
 										'wrap'     => '<img %IMG_CLASS% %SRC% %SIZE% %IMG_TITLE% %ALT% />',
 									);
 
@@ -304,6 +306,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 
 					endwhile; endif;
 				echo '</div>';
+				presscore_add_lazy_load_attrs();
 				do_action( 'presscore_after_shortcode_loop', $this->sc_name, $this->atts );
 		}
 		
@@ -470,6 +473,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 				'phone-columns-num' => $this->atts['slides_on_mob'],
 				'auto-height' => ($this->atts['adaptive_height'] === 'y') ? 'true' : 'false',
 				'col-gap' => $this->atts['item_space'],
+				'stage-padding' => $this->atts['stage_padding'],
 				'speed' => $this->atts['speed'],
 				'autoplay' => ($this->atts['autoplay'] === 'y') ? 'true' : 'false',
 				'autoplay_speed' => $this->atts['autoplay_speed'],
@@ -519,9 +523,8 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'testimonials-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
 
@@ -668,7 +671,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Carousel', false ) ) :
 			return $this->vc_inline_dummy( array(
 				'class'  => 'dt_testimonials_carousel',
 				'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_testim_carousel_editor_ico.gif', 133, 104 ),
-				'title'  => _x( 'Testimonials Carousel', 'vc inline dummy', 'the7mk2' ),
+				'title'  => _x( 'Testimonials Carousel', 'vc inline dummy', 'dt-the7-core' ),
 				'style' => array( 'height' => 'auto' )
 			) );
 		}

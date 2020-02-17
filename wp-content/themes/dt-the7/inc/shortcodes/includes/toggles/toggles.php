@@ -25,17 +25,13 @@ class DT_Shortcode_Toggles extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( 'dt_toggle', array($this, 'shortcode') );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
     }
 
     public function shortcode( $atts, $content = null ) {
        $attributes = shortcode_atts( array(
             'title'         => '',
-        ), $atts );
+        ), $atts, 'dt_toggle' );
         
         $attributes['title'] = wp_kses($attributes['title'], array());
         

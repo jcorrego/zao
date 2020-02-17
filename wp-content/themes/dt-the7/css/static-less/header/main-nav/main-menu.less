@@ -13,7 +13,13 @@
 		position: relative;
 		.flex-display(@display: flex);
 		.align-items(@align: center);
+
+
+		.side-header:not(.h-center) & {
+			.align-items(@align: flex-start);
+		}
 	}
+
 	.not-clickable-item {
 		cursor: default;
 	}
@@ -33,8 +39,9 @@
 		a > i,
 		.text-wrap > i {
 			.main-nav .menu-item &,
-			.mini-nav .menu-item & {
-				padding-right: 6px;
+			.mini-nav .menu-item &,
+			.mobile-main-nav .menu-item & {
+				margin-right: 6px;
 			}
 		}
 		.subtitle-text,
@@ -44,6 +51,9 @@
 		.top-header .main-nav.level-arrows-on > li.has-children > a .menu-text {
 			position: relative;
 			padding-right: 10px;
+			//.flex-display(@display: inline-flex);
+			display: inline-block;
+			vertical-align: top;
 		}
 		.sub-sideways .main-nav.level-arrows-on > li.has-children > a .menu-item-text {
 			position: relative;
@@ -51,54 +61,48 @@
 			.top-header .main-nav .menu-text:after {
 				position: absolute;
 				top: 50%;
-				margin-top: -5px;
+				margin-top: -4px;
 				right: 0;
 				width: 8px;
 				height: 8px;
-				content: "";
 			}
+			.top-header .main-nav.level-arrows-on > li.has-children > a .menu-text:after {
+				content: "\f005";
+				font-family: 'icomoon-the7-font';
+			    speak: none;
+			    font-style: normal;
+			    font-weight: normal;
+			    font-variant: normal;
+			    text-transform: none;
+			  	font-size: 8px;
+			  	line-height: 1;
+			  	text-align: center;
+			}
+		.sub-downwards .next-level-button,
+		.sub-downwards.dt-parent-menu-clickable.side-header .next-level-button {
 
-		.side-header .main-nav.level-arrows-on > li.has-children > a:after {
-			position: absolute;
-			top: 50%;
-			margin-top: -7px;
-			right: -14px;
-			width: 14px;
-			height: 14px;
-			content: "";
-			background-repeat: no-repeat;
-			background-position: center center;
-		}
-		.side-header.sub-downwards .main-nav.level-arrows-on > li.has-children > a:after {
-			right: -30px;
-			margin-top: -15px;
-			width: 30px;
-			height: 30px;
-		}
-		.sub-downwards .next-level-button {
 			position: relative;
 			.align-self(@align: center);
-			width: 30px;
-			height: 30px;
-			background-repeat: no-repeat;
-			background-position: center center;
+			.flex-display(@display: flex);
+			margin-left: 5px;
+			&:before {
+				content: "\ef01";
+				font-family: 'icomoon-the7-font';
+			  	speak: none;
+			    font-style: normal;
+			    font-weight: normal;
+			    font-variant: normal;
+			    text-transform: none;
+			  	font-size: 12px;
+			  	line-height: 1;
+			}
 		}
-		.sub-downwards.dt-parent-menu-clickable .main-nav.level-arrows-on > li.has-children > a:after,
-		.dt-mobile-header.dt-parent-menu-clickable .mobile-main-nav > li.has-children > a:after {
-			display: none;
-		}
-		.sub-downwards .main-nav.level-arrows-on > li.has-children > a:after,
-		.sub-downwards .side-header .main-nav.level-arrows-on > li.has-children > a:after,
+
 		.sub-downwards .next-level-button,
 		.dt-mobile-header .next-level-button {
-			-ms-transition: -ms-transform 0.3s ease-out;
-			-webkit-transition: -webkit-transform 0.3s ease-out;
 			transition: transform 0.3s ease-out;
 		}
-		.sub-downwards .main-nav.level-arrows-on > li.has-children.open-sub > a.act:after,
 		.sub-downwards li.has-children.open-sub > .next-level-button,
 		.dt-mobile-header li.has-children.open-sub > .next-level-button {
-			-ms-transform: rotate(45deg);
-			-webkit-transform: rotate(45deg);
 			transform: rotate(45deg);
 		}

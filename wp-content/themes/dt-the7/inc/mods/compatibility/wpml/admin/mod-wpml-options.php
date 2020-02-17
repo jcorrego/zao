@@ -1,38 +1,34 @@
 <?php
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
-
 /**
- * Page definition.
+ * The7 WPML options definition.
+ *
+ * @package The7
  */
+
+defined( 'ABSPATH' ) || exit;
+
 $options[] = array(
-	"page_title" => _x( "WPML Flags", 'theme-options', 'the7mk2' ),
-	"menu_title" => _x( "WPML Flags", 'theme-options', 'the7mk2' ),
-	"menu_slug" => "of-wpml-menu",
-	"type" => "page"
+	'name' => _x( 'WPML Flags', 'theme-options', 'the7mk2' ),
+	'type' => 'heading',
+	'id'   => 'wpml',
 );
 
-/**
- * Heading definition.
- */
-$options[] = array( "name" => _x('WPML Flags', 'theme-options', 'the7mk2'), "type" => "heading" );
+$options[] = array(
+	'name' => _x( 'WPML Flags', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
 
-/**
- * WPML settings.
- */
-$options[] = array( "name" => _x("WPML Flags", "theme-options", 'the7mk2'), "type" => "block_begin" );
+$options['wpml_dt-custom_style'] = array(
+	'name' => _x( 'Use The7 skin for the language switcher', 'theme-options', 'the7mk2' ),
+	'id'   => 'wpml_dt-custom_style',
+	'type' => 'checkbox',
+	'std'  => '1',
+);
 
-	// checkbox
-	$options['wpml_dt-custom_style'] = array(
-		"name"      => _x( 'Use The7 skin for the language switcher', 'theme-options', 'the7mk2' ),
-		"id"    	=> 'wpml_dt-custom_style',
-		"type"  	=> 'checkbox',
-		'std'   	=> 1,
-	);
-	$options[] = array(
-		'desc' => _x( 'Click "Save" and configure language switcher appearance ' . sprintf(_x('<a href="%1$s">here</a>', 'theme-options', 'the7mk2'), admin_url( 'admin.php?page=sitepress-multilingual-cms%2Fmenu%2Flanguages.php#wpml-language-switcher-shortcode-action' ) ) . '.', 'theme-options', 'the7mk2' ),
-		'type' => 'info',
-	);
-
-
-$options[] = array( "type" => "block_end" );
+/* translators: %s - link to wpml admin page */
+$wpml_info_desc      = _x( 'Click "Save" and configure language switcher appearance %s', 'theme-options', 'the7mk2' );
+$wpml_info_admin_url = admin_url( 'admin.php?page=sitepress-multilingual-cms%2Fmenu%2Flanguages.php#wpml-language-switcher-shortcode-action' );
+$options[]           = array(
+	'desc' => sprintf( $wpml_info_desc, '<a href="' . $wpml_info_admin_url . '">' . _x( 'here', 'theme-options', 'the7mk2' ) . '</a>' ),
+	'type' => 'info',
+);

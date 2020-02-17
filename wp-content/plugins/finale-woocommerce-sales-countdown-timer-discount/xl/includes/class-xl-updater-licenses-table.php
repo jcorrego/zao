@@ -123,8 +123,15 @@ class XL_Updater_Licenses_Table extends WP_List_Table {
 
 		if ( 'active' == $item['product_status'] ) {
 			$deactivate_url = wp_nonce_url( add_query_arg( 'action', 'xl_deactivate-product', add_query_arg( 'filepath', $item['product_file_path'], add_query_arg( 'page', $_GET['page'], add_query_arg( 'tab', 'licenses' ), network_admin_url( 'admin.php' ) ) ) ), 'bulk-licenses' );
-			$response       = '<p>' . $item['existing_key'] . '</p>';
-			$response       .= '<a href="' . esc_url( $deactivate_url ) . '">' . __( 'Deactivate', 'xlplugins' ) . '</a>' . "\n";
+
+			$key                   = $item['existing_key'];
+			$last_six              = substr( $key, - 6 );
+			$initial_string        = str_replace( $last_six, '', $key );
+			$initial_string_length = strlen( $initial_string );
+			$final_string          = str_repeat( 'x', $initial_string_length ) . $last_six;
+
+			$response = '<p>' . $final_string . '</p>';
+			$response .= '<a href="' . esc_url( $deactivate_url ) . '">' . __( 'Deactivate', 'xlplugins' ) . '</a>' . "\n";
 		} else {
 			$response .= '<input name="license_keys[' . esc_attr( $item['product_file_path'] ) . ']" id="license_keys-' . esc_attr( $item['product_file_path'] ) . '" type="text" size="37" aria-required="true" value="' . $item['existing_key'] . '" placeholder="' . esc_attr__( '
 Place your license key here', 'xlplugins' ) . '" />' . "\n";

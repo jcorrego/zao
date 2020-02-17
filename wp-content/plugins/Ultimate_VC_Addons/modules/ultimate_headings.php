@@ -579,7 +579,7 @@ if(!class_exists("Ultimate_Headings")){
 				"line_icon_fixer" 			=> "10",
 				"heading_tag" 				=> "",
 				"el_class" => "",
-			),$atts));
+			),$atts, 'ultimate_heading'));
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
 			$is_vc_49_plus = (version_compare(4.9, $vc_version, '<=')) ? 'ult-adjust-bottom-margin' : '';
 			$wrapper_class = $spacer;
@@ -600,7 +600,7 @@ if(!class_exists("Ultimate_Headings")){
 					$main_heading_style_inline .= 'font-family:\''.$mhfont_family.'\';';
 			}
 			// main heading font style
-			$main_heading_style_inline .= get_ultimate_font_style($main_heading_style);
+			$main_heading_style_inline .= get_ultimate_font_style( $main_heading_style );
 			//attach font size if set
 
 			//attach font color if set

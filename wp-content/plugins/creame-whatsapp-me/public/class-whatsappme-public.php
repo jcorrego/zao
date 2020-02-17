@@ -6,6 +6,8 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
+ * @since      1.0.0
+ * @since      3.0.0      Added $show property and more hooks
  * @package    WhatsAppMe
  * @subpackage WhatsAppMe/public
  * @author     Creame <hola@crea.me>
@@ -40,29 +42,33 @@ class WhatsAppMe_Public {
 	private $settings;
 
 	/**
+	 * Show WhatsApp button in front.
+	 *
+	 * @since    3.0.0
+	 * @access   private
+	 * @var      bool     $show    Show button on front.
+	 */
+	private $show;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
 	 * @since    2.0.0     Added visibility setting
 	 * @since    2.1.0     Added message_badge
-	 * @param    string    $plugin_name       The name of the plugin.
-	 * @param    string    $version    The version of this plugin.
+	 * @since    2.3.0     Added button_delay and whatsapp_web settings, message_delay in seconds
+	 * @param    string $plugin_name       The name of the plugin.
+	 * @param    string $version    The version of this plugin.
+	 * @return   void
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->settings = array(
-			'show'          => false,
-			'telephone'     => '',
-			'message_text'  => '',
-			'message_delay' => 10000,
-			'message_badge' => 'no',
-			'message_send'  => '',
-			'mobile_only'   => false,
-			'position'      => 'right',
-			'visibility'    => array( 'all' => 'yes' ),
-		);
+		$this->version     = $version;
+
+		// Updated in get_settings() at 'wp' hook
+		$this->show     = false;
+		$this->settings = array();
 
 	}
 
@@ -71,83 +77,138 @@ class WhatsAppMe_Public {
 	 *
 	 * @since    1.0.0
 	 * @since    2.0.0   Check visibility
+	 * @since    2.2.0   Post settings can also change "telephone". Added 'whastapp_web' setting
+	 * @since    2.3.0   Fix global $post incorrect post id on loops. WPML integration.
+	 * @since    3.0.0   New filters.
 	 * @return   void
 	 */
 	public function get_settings() {
 
-		global $post;
+		// If use "global $post;" take first post in loop on archive pages
+		$obj = get_queried_object();
 
-		$global_settings = get_option( 'whatsappme' );
+		$default_settings = array_merge(
+			array(
+				'telephone'     => '',
+				'mobile_only'   => 'no',
+				'button_image'  => '',
+				'button_tip'    => '',
+				'button_delay'  => 3,
+				'whatsapp_web'  => 'no',
+				'message_text'  => '',
+				'message_delay' => 10,
+				'message_badge' => 'no',
+				'message_send'  => '',
+				'message_start' => __( 'Open chat', 'creame-whatsapp-me' ),
+				'position'      => 'right',
+				'visibility'    => array( 'all' => 'yes' ),
+				'dark_mode'     => 'no',
+			),
+			apply_filters( 'whatsappme_extra_settings', array() )
+		);
 
-		if ( is_array( $global_settings ) ) {
+		$settings = $default_settings;
+		$show     = false;
+
+		$site_settings = get_option( 'whatsappme' );
+
+		if ( is_array( $site_settings ) ) {
 			// Clean unused saved settings
-			$settings = array_intersect_key( $global_settings, $this->settings );
+			$settings = array_intersect_key( $site_settings, $default_settings );
 			// Merge defaults with saved settings
-			$settings = array_merge( $this->settings, $settings );
+			$settings = array_merge( $default_settings, $settings );
+			// miliseconds (<v2.3) to seconds
+			if ( $settings['message_delay'] > 120 ) {
+				$settings['message_delay'] = round( $settings['message_delay'] / 1000 );
+			}
 
-			// Post custom settings
-			$post_settings = is_object( $post ) ? get_post_meta( $post->ID, '_whatsappme', true ) : '';
+			// Load WPML/Polylang translated strings
+			$settings_i18n = WhatsAppMe_Util::settings_i18n();
 
-			// Move old 'hide' to new 'view' field
-			if ( isset( $post_settings['hide'] ) ) {
-				$post_settings['view'] = 'no';
-				unset( $post_settings['hide'] );
+			foreach ( $settings_i18n as $key => $label ) {
+				$settings[ $key ] = $settings[ $key ] ? apply_filters( 'wpml_translate_single_string', $settings[ $key ], 'WhatsApp me', $label ) : '';
+			}
+
+			// Filter for site settings (can be overriden by post settings)
+			$settings = apply_filters( 'whatsappme_get_settings_site', $settings, $obj );
+
+			// Post custom settings override site settings
+			$post_settings = is_a( $obj, 'WP_Post' ) ? get_post_meta( $obj->ID, '_whatsappme', true ) : '';
+
+			if ( is_array( $post_settings ) ) {
+				// Move old 'hide' to new 'view' field
+				if ( isset( $post_settings['hide'] ) ) {
+					$post_settings['view'] = 'no';
+					unset( $post_settings['hide'] );
+				}
+
+				$settings = array_merge( $settings, $post_settings );
 			}
 
 			// Prepare settings
-			$settings['telephone']   = preg_replace( '/^0+|\D/', '', $settings['telephone'] );
-			$settings['position']    = $settings['position'] != 'left' ? 'right' : 'left';
-			$settings['mobile_only'] = $settings['mobile_only'] == 'yes';
-			if ( isset( $post_settings['message_text'] ) ) {
-				$settings['message_text'] = $post_settings['message_text'];
-			}
-			if ( isset( $post_settings['message_send'] ) ) {
-				$settings['message_send'] = $post_settings['message_send'];
-			}
-			$settings['message_badge'] = $settings['message_text'] && $settings['message_badge'] == 'yes';
-			$settings['message_send']  = $this->formated_message_send( $settings['message_send'] );
+			$settings['telephone']     = preg_replace( '/^0+|\D/', '', $settings['telephone'] );
+			$settings['mobile_only']   = 'yes' == $settings['mobile_only'];
+			$settings['whatsapp_web']  = 'yes' == $settings['whatsapp_web'];
+			$settings['message_badge'] = 'yes' == $settings['message_badge'] && '' != $settings['message_text'];
+			$settings['position']      = 'right' == $settings['position'] ? 'right' : 'left';
+			$settings['dark_mode']     = in_array( $settings['dark_mode'], array( 'no', 'yes', 'auto' ) ) ? $settings['dark_mode'] : 'no';
+			$settings['message_send']  = WhatsAppMe_Util::replace_variables( $settings['message_send'] );
+			// Set true to link http://web.whatsapp.com instead http://api.whatsapp.com
+			$settings['whatsapp_web'] = apply_filters( 'whatsappme_whatsapp_web', 'yes' == $settings['whatsapp_web'] );
 
-			$settings['show'] = $settings['telephone'] != '';
-			if ( $settings['show'] ) {
-				$settings['show'] = isset( $post_settings['view'] ) ?
-					$post_settings['view'] == 'yes' :
-					$this->check_visibility( $settings['visibility'] );
+			// Only show if there is a phone number
+			if ( '' != $settings['telephone'] ) {
+				if ( isset( $settings['view'] ) && 'yes' == $settings['view'] ) {
+					$show = true;
+				} elseif ( isset( $settings['view'] ) && 'no' == $settings['view'] ) {
+					$show = false;
+				} else {
+					$show = $this->check_visibility( $settings['visibility'] );
+				}
 			}
-
-			$this->settings = $settings;
+			// Unset post 'view' setting
+			unset( $settings['view'] );
 		}
 
-		// Apply filter to settings
-		$this->settings = apply_filters( 'whatsappme_get_settings', $this->settings, $post );
+		// Apply filters to final settings after site and post settings
+		$this->settings = apply_filters( 'whatsappme_get_settings', $settings, $obj );
+		// Apply filters to alter 'show' value
+		$this->show = apply_filters( 'whatsappme_show', $show, $this->settings, $obj );
 
 		// Ensure not show if not phone
-		if ( ! $this->settings['telephone'] ) {
-			$this->settings['show'] = false;
+		if ( '' == $this->settings['telephone'] ) {
+			$this->show = false;
 		}
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing side of the site.
+	 * Enqueue the stylesheets for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 * @since    2.2.2     minified
+	 * @return   void
 	 */
 	public function enqueue_styles() {
 
-		if ( $this->settings['show'] ) {
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/whatsappme.css', array(), $this->version, 'all' );
+		if ( $this->show ) {
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . "css/{$this->plugin_name}{$min}.css", array(), $this->version, 'all' );
 		}
 
 	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
+	 * Enqueue the JavaScript for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 * @since    2.2.2     minified
+	 * @return   void
 	 */
 	public function enqueue_scripts() {
 
-		if ( $this->settings['show'] ) {
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/whatsappme.js', array( 'jquery' ), $this->version, true );
+		if ( $this->show ) {
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . "js/{$this->plugin_name}{$min}.js", array( 'jquery' ), $this->version, true );
 		}
 
 	}
@@ -156,176 +217,159 @@ class WhatsAppMe_Public {
 	 * Outputs WhatsApp button html and his settings on footer
 	 *
 	 * @since    1.0.0
+	 * @since    3.2.0  Capture and filter output
+	 * @return   void
 	 */
 	public function footer_html() {
-
-		// Clean unnecessary settings on front
-		$data = array_diff_key( $this->settings, array_flip( array( 'show', 'visibility', 'position' ) ) );
-
-		if ( $this->settings['show'] ) {
-		?>
-		<div class="whatsappme whatsappme--<?php echo $this->settings['position']; ?>" data-settings="<?php echo esc_attr( json_encode( $data ) ); ?>">
-			<div class="whatsappme__button">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" fill="currentColor"/></svg>
-				<?php if ($this->settings['message_badge']): ?><div class="whatsappme__badge">1</div><?php endif; ?>
-			</div>
-			<?php if ($this->settings['message_text']): ?>
-				<div class="whatsappme__box">
-					<header class="whatsappme__header">
-						<svg xmlns="http://www.w3.org/2000/svg" width="120" height="28" viewBox="0 0 120 28"><path d="M117.2 17c0 .4-.2.7-.4 1-.1.3-.4.5-.7.7l-1 .2c-.5 0-.9 0-1.2-.2l-.7-.7a3 3 0 0 1-.4-1 5.4 5.4 0 0 1 0-2.3c0-.4.2-.7.4-1l.7-.7a2 2 0 0 1 1.1-.3 2 2 0 0 1 1.8 1l.4 1a5.3 5.3 0 0 1 0 2.3zm2.5-3c-.1-.7-.4-1.3-.8-1.7a4 4 0 0 0-1.3-1.2c-.6-.3-1.3-.4-2-.4-.6 0-1.2.1-1.7.4a3 3 0 0 0-1.2 1.1V11H110v13h2.7v-4.5c.4.4.8.8 1.3 1 .5.3 1 .4 1.6.4a4 4 0 0 0 3.2-1.5c.4-.5.7-1 .8-1.6.2-.6.3-1.2.3-1.9s0-1.3-.3-2zm-13.1 3c0 .4-.2.7-.4 1l-.7.7-1.1.2c-.4 0-.8 0-1-.2-.4-.2-.6-.4-.8-.7a3 3 0 0 1-.4-1 5.4 5.4 0 0 1 0-2.3c0-.4.2-.7.4-1 .1-.3.4-.5.7-.7a2 2 0 0 1 1-.3 2 2 0 0 1 1.9 1l.4 1a5.4 5.4 0 0 1 0 2.3zm1.7-4.7a4 4 0 0 0-3.3-1.6c-.6 0-1.2.1-1.7.4a3 3 0 0 0-1.2 1.1V11h-2.6v13h2.7v-4.5c.3.4.7.8 1.2 1 .6.3 1.1.4 1.7.4a4 4 0 0 0 3.2-1.5c.4-.5.6-1 .8-1.6.2-.6.3-1.2.3-1.9s-.1-1.3-.3-2c-.2-.6-.4-1.2-.8-1.6zm-17.5 3.2l1.7-5 1.7 5h-3.4zm.2-8.2l-5 13.4h3l1-3h5l1 3h3L94 7.3h-3zm-5.3 9.1l-.6-.8-1-.5a11.6 11.6 0 0 0-2.3-.5l-1-.3a2 2 0 0 1-.6-.3.7.7 0 0 1-.3-.6c0-.2 0-.4.2-.5l.3-.3h.5l.5-.1c.5 0 .9 0 1.2.3.4.1.6.5.6 1h2.5c0-.6-.2-1.1-.4-1.5a3 3 0 0 0-1-1 4 4 0 0 0-1.3-.5 7.7 7.7 0 0 0-3 0c-.6.1-1 .3-1.4.5l-1 1a3 3 0 0 0-.4 1.5 2 2 0 0 0 1 1.8l1 .5 1.1.3 2.2.6c.6.2.8.5.8 1l-.1.5-.4.4a2 2 0 0 1-.6.2 2.8 2.8 0 0 1-1.4 0 2 2 0 0 1-.6-.3l-.5-.5-.2-.8H77c0 .7.2 1.2.5 1.6.2.5.6.8 1 1 .4.3.9.5 1.4.6a8 8 0 0 0 3.3 0c.5 0 1-.2 1.4-.5a3 3 0 0 0 1-1c.3-.5.4-1 .4-1.6 0-.5 0-.9-.3-1.2zM74.7 8h-2.6v3h-1.7v1.7h1.7v5.8c0 .5 0 .9.2 1.2l.7.7 1 .3a7.8 7.8 0 0 0 2 0h.7v-2.1a3.4 3.4 0 0 1-.8 0l-1-.1-.2-1v-4.8h2V11h-2V8zm-7.6 9v.5l-.3.8-.7.6c-.2.2-.7.2-1.2.2h-.6l-.5-.2a1 1 0 0 1-.4-.4l-.1-.6.1-.6.4-.4.5-.3a4.8 4.8 0 0 1 1.2-.2 8.3 8.3 0 0 0 1.2-.2l.4-.3v1zm2.6 1.5v-5c0-.6 0-1.1-.3-1.5l-1-.8-1.4-.4a10.9 10.9 0 0 0-3.1 0l-1.5.6c-.4.2-.7.6-1 1a3 3 0 0 0-.5 1.5h2.7c0-.5.2-.9.5-1a2 2 0 0 1 1.3-.4h.6l.6.2.3.4.2.7c0 .3 0 .5-.3.6-.1.2-.4.3-.7.4l-1 .1a21.9 21.9 0 0 0-2.4.4l-1 .5c-.3.2-.6.5-.8.9-.2.3-.3.8-.3 1.3s.1 1 .3 1.3c.1.4.4.7.7 1l1 .4c.4.2.9.2 1.3.2a6 6 0 0 0 1.8-.2c.6-.2 1-.5 1.5-1a4 4 0 0 0 .2 1H70l-.3-1v-1.2zm-11-6.7c-.2-.4-.6-.6-1-.8-.5-.2-1-.3-1.8-.3-.5 0-1 .1-1.5.4a3 3 0 0 0-1.3 1.2v-5h-2.7v13.4H53v-5.1c0-1 .2-1.7.5-2.2.3-.4.9-.6 1.6-.6.6 0 1 .2 1.3.6.3.4.4 1 .4 1.8v5.5h2.7v-6c0-.6 0-1.2-.2-1.6 0-.5-.3-1-.5-1.3zm-14 4.7l-2.3-9.2h-2.8l-2.3 9-2.2-9h-3l3.6 13.4h3l2.2-9.2 2.3 9.2h3l3.6-13.4h-3l-2.1 9.2zm-24.5.2L18 15.6c-.3-.1-.6-.2-.8.2A20 20 0 0 1 16 17c-.2.2-.4.3-.7.1-.4-.2-1.5-.5-2.8-1.7-1-1-1.7-2-2-2.4-.1-.4 0-.5.2-.7l.5-.6.4-.6v-.6L10.4 8c-.3-.6-.6-.5-.8-.6H9c-.2 0-.6.1-.9.5C7.8 8.2 7 9 7 10.7c0 1.7 1.3 3.4 1.4 3.6.2.3 2.5 3.7 6 5.2l1.9.8c.8.2 1.6.2 2.2.1.6-.1 2-.8 2.3-1.6.3-.9.3-1.5.2-1.7l-.7-.4zM14 25.3c-2 0-4-.5-5.8-1.6l-.4-.2-4.4 1.1 1.2-4.2-.3-.5A11.5 11.5 0 0 1 22.1 5.7 11.5 11.5 0 0 1 14 25.3zM14 0A13.8 13.8 0 0 0 2 20.7L0 28l7.3-2A13.8 13.8 0 1 0 14 0z" fill="currentColor" fill-rule="evenodd"/></svg>
-						<div class="whatsappme__close">&times;</div>
-					</header>
-					<div class="whatsappme__message"><?php echo $this->formated_message(); ?></div>
-				</div>
-			<?php endif; ?>
-		</div>
-		<?php
-		}
-
-	}
-
-
-	/**
-	 * Format raw message text for html output.
-	 * Also apply styles transformations like WhatsApp app.
-	 *
-	 * @since    1.3.0
-	 * @return   string     message formated string
-	 */
-	public function formated_message() {
-
-		$replacements = apply_filters( 'whatsappme_message_replacements', array(
-			'/_(\S[^_]*\S)_/mu'    => '<em>$1</em>',
-			'/\*(\S[^\*]*\S)\*/mu' => '<strong>$1</strong>',
-			'/~(\S[^~]*\S)~/mu'    => '<del>$1</del>',
-		) );
-
-		$replacements_keys = array_keys( $replacements );
-
-		// Split text into lines and apply replacements line by line
-		$lines = explode( "\n", $this->settings['message_text'] );
-		foreach ($lines as $key => $line) {
-			$lines[$key] = preg_replace( $replacements_keys, $replacements, esc_html( $line ) );
-		}
-
-		return implode( '<br>', $lines );
-
-	}
-
-	/**
-	 * Format message send, replace vars.
-	 *
-	 * @since    1.4.0
-	 * @return   string     message formated string
-	 */
-	public function formated_message_send( $string ) {
 		global $wp;
 
-		$replacements = apply_filters( 'whatsappme_message_send_replacements', array(
-			'/\{SITE\}/i' => get_bloginfo( 'name' ),
-			'/\{URL\}/i'  => home_url( $wp->request ),
-			'/\{TITLE\}/i'=> $this->get_title(),
-		) );
+		if ( $this->show ) {
 
-		return preg_replace( array_keys( $replacements ), $replacements, $string );
+			// Clean unnecessary settings on front
+			$excluded_fields = apply_filters(
+				'whatsappme_excluded_fields',
+				array(
+					'visibility',
+					'position',
+					'button_tip',
+					'button_image',
+					'message_start',
+					'dark_mode',
+				)
+			);
 
-	}
+			$data = array_diff_key( $this->settings, array_flip( $excluded_fields ) );
 
-	/**
-	 * Get current page title
-	 *
-	 * @since    1.4.0
-	 * @return   string     message formated string
-	 */
-	public function get_title() {
+			$copy = apply_filters( 'whatsappme_copy', 'Powered by' );
 
-		if ( is_home() || is_singular() ) {
-			$title = single_post_title( '', false );
-		} elseif ( is_tax() ) {
-			$title = single_term_title( '', false );
-		} elseif ( function_exists( 'wp_get_document_title' ) ) {
-			$title  = wp_get_document_title();
+			$powered_url  = urlencode( home_url( $wp->request ) );
+			$powered_site = urlencode( get_bloginfo( 'name' ) );
+			$powered_link = "https://wame.chat/powered/?site={$powered_site}&url={$powered_url}";
 
-			// Try to remove sitename from $title for cleaner title
-			$sep   = apply_filters( 'document_title_separator', '-' );
-			$site  = get_bloginfo( 'name', 'display' );
-			$title = str_replace( esc_html( convert_chars( wptexturize( " $sep " . $site ) ) ), '', $title);
-		} else {
-			$title = get_bloginfo( 'name' );
+			// Set custom img tag and bypass default image logic
+			$image = apply_filters( 'whatsappme_image', null );
+
+			if ( is_null( $image ) && $this->settings['button_image'] ) {
+				$img_path = get_attached_file( $this->settings['button_image'] );
+
+				if ( apply_filters( 'whatsappme_image_original', WhatsAppMe_Util::is_animated_gif( $img_path ) ) ) {
+					$image = '<img src="' . wp_get_attachment_url( $this->settings['button_image'] ) . '" alt="">';
+				} elseif ( is_array( WhatsAppMe_Util::thumb( $img_path, 58, 58 ) ) ) {
+					$image = '<img src="' . WhatsAppMe_Util::thumb( $img_path, 58, 58 )['url'] . '" srcset="' .
+						WhatsAppMe_Util::thumb( $img_path, 116, 116 )['url'] . ' 2x, ' .
+						WhatsAppMe_Util::thumb( $img_path, 174, 174 )['url'] . ' 3x" alt="">';
+				}
+			}
+
+			$whatsappme_classes  = 'whatsappme--' . $this->settings['position'];
+			$whatsappme_classes .= isset( $_SERVER['HTTP_ACCEPT'] ) && strpos( $_SERVER['HTTP_ACCEPT'], 'image/webp' ) !== false ? ' whatsappme--webp' : '';
+			if ( 'no' !== $this->settings['dark_mode'] ) {
+				$whatsappme_classes .= 'auto' === $this->settings['dark_mode'] ? ' whatsappme--dark-auto' : ' whatsappme--dark';
+			}
+
+			if ( $this->settings['message_text'] ) {
+				$box_content = '<div class="whatsappme__message">' . WhatsAppMe_Util::formated_message( $this->settings['message_text'] ) . '</div>';
+			} else {
+				$box_content = '';
+			}
+
+			ob_start();
+
+			// load SVGs
+			echo file_get_contents( __DIR__ . '/images/svgs.php' );
+			?>
+			<div class="whatsappme <?php echo apply_filters( 'whatsappme_classes', $whatsappme_classes ); ?>" data-settings="<?php echo esc_attr( json_encode( $data ) ); ?>">
+				<div class="whatsappme__button">
+					<svg class="whatsappme__button__open"><use href="#wame_svg__logo"></use></svg>
+					<?php if ( $image ) : ?>
+						<div class="whatsappme__button__image"><?php echo $image; ?></div>
+					<?php endif; ?>
+					<?php if ( $this->settings['message_start'] ) : ?>
+						<div class="whatsappme__button__sendtext"><?php echo $this->settings['message_start']; ?></div>
+					<?php endif; ?>
+					<?php if ( $this->settings['message_text'] ) : ?>
+						<svg class="whatsappme__button__send" viewbox="0 0 400 400" stroke-linecap="round" stroke-width="33">
+							<path class="wame_svg__plain" d="M168.83 200.504H79.218L33.04 44.284a1 1 0 0 1 1.386-1.188L365.083 199.04a1 1 0 0 1 .003 1.808L34.432 357.903a1 1 0 0 1-1.388-1.187l29.42-99.427"/>
+							<path class="wame_svg__chat" d="M318.087 318.087c-52.982 52.982-132.708 62.922-195.725 29.82l-80.449 10.18 10.358-80.112C18.956 214.905 28.836 134.99 81.913 81.913c65.218-65.217 170.956-65.217 236.174 0 42.661 42.661 57.416 102.661 44.265 157.316"/>
+						</svg>
+					<?php endif; ?>
+					<?php if ( $this->settings['message_badge'] ) : ?>
+						<div class="whatsappme__badge">1</div>
+					<?php endif; ?>
+					<?php if ( $this->settings['button_tip'] ) : ?>
+						<div class="whatsappme__tooltip"><div><?php echo $this->settings['button_tip']; ?></div></div>
+					<?php endif; ?>
+				</div>
+				<div class="whatsappme__box">
+					<div class="whatsappme__header">
+						<svg><use href="#wame_svg__whatsapp"></use></svg>
+						<div class="whatsappme__close"><svg><use href="#wame_svg__close"></use></svg></div>
+					</div>
+					<div class="whatsappme__box__scroll">
+						<div class="whatsappme__box__content">
+							<?php echo apply_filters( 'whatsappme_content', $box_content, $this->settings ); ?>
+						</div>
+					</div>
+					<?php if ( $copy ) : ?>
+						<div class="whatsappme__copy"><?php echo $copy; ?> <a href="<?php echo $powered_link; ?>" rel="nofollow noopener" target="_blank"><svg><use href="#wame_svg__wame"></use></svg></a></div>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php
+			$html_output = ob_get_clean();
+
+			echo apply_filters( 'whatsappme_html_output', $html_output, $this->settings );
 		}
-
-		return apply_filters( 'whatsappme_get_title', $title );
-
 	}
 
 	/**
 	 * Check visibility on current page
 	 *
 	 * @since    2.0.0
-	 * @param    array       $options    array of visibility settings
+	 * @since    3.0.0       Added filter to 'whatsappme_visibility'
+	 * @param    array $options    array of visibility settings
 	 * @return   boolean     is visible or not on current page
 	 */
-	public function check_visibility($options) {
+	public function check_visibility( $options ) {
 
-		$global = isset( $options['all'] ) ? $options['all'] == 'yes' : true;
+		// Custom visibility, bypass all checks if not null
+		$visibility = apply_filters( 'whatsappme_visibility', null, $options );
+		if ( ! is_null( $visibility ) ) {
+			return $visibility;
+		}
+
+		$global = isset( $options['all'] ) ? 'yes' == $options['all'] : true;
 
 		// Check front page
 		if ( is_front_page() ) {
-			return isset( $options['front_page'] ) ? $options['front_page'] == 'yes' : $global;
+			return isset( $options['front_page'] ) ? 'yes' == $options['front_page'] : $global;
 		}
 
 		// Check blog page
 		if ( is_home() ) {
-			return isset( $options['blog_page'] ) ? $options['blog_page'] == 'yes' : $global;
+			return isset( $options['blog_page'] ) ? 'yes' == $options['blog_page'] : $global;
 		}
 
 		// Check 404 page
 		if ( is_404() ) {
-			return isset( $options['404_page'] ) ? $options['404_page'] == 'yes' : $global;
-		}
-
-		// Check WooCommerce
-		if ( class_exists( 'WooCommerce' ) ) {
-			$woo = isset( $options['woocommerce'] ) ? $options['woocommerce'] == 'yes' : $global;
-
-			// Product page
-			if ( is_product() ) {
-				return isset( $options['product'] ) ? $options['product'] == 'yes' : $woo;
-			}
-
-			// Cart page
-			if ( is_cart() ) {
-				return isset( $options['cart'] ) ? $options['cart'] == 'yes' : $woo;
-			}
-
-			// Checkout page
-			if ( is_checkout() ) {
-				return isset( $options['checkout'] ) ? $options['checkout'] == 'yes' : $woo;
-			}
-
-			// Customer account pages
-			if ( is_account_page() ) {
-				return isset( $options['account_page'] ) ? $options['account_page'] == 'yes': $woo;
-			}
-
-			if ( is_woocommerce() ) {
-				return $woo;
-			}
+			return isset( $options['404_page'] ) ? 'yes' == $options['404_page'] : $global;
 		}
 
 		// Check Custom Post Types
-		foreach ( $options as $cpt => $view ) {
-			if ( substr( $cpt, 0, 4 ) == 'cpt_' ) {
-				$cpt = substr( $cpt, 4 );
-				if ( is_singular( $cpt ) || is_post_type_archive( $cpt ) ) {
-					return $view == 'yes';
+		if ( is_array( $options ) ) {
+			foreach ( $options as $cpt => $view ) {
+				if ( substr( $cpt, 0, 4 ) == 'cpt_' ) {
+					$cpt = substr( $cpt, 4 );
+					if ( is_singular( $cpt ) || is_post_type_archive( $cpt ) ) {
+						return 'yes' == $view;
+					}
 				}
 			}
 		}
 
 		// Search results
 		if ( is_search() ) {
-			return isset( $options['search'] ) ? $options['search'] == 'yes' : $global;
+			return isset( $options['search'] ) ? 'yes' == $options['search'] : $global;
 		}
 
 		// Check archives
@@ -333,15 +377,15 @@ class WhatsAppMe_Public {
 
 			// Date archive
 			if ( isset( $options['date'] ) && is_date() ) {
-				return $options['date'] == 'yes';
+				return 'yes' == $options['date'];
 			}
 
 			// Author archive
 			if ( isset( $options['author'] ) && is_author() ) {
-				return $options['author'] == 'yes';
+				return 'yes' == $options['author'];
 			}
 
-			return isset( $options['archive'] ) ? $options['archive'] == 'yes' : $global;
+			return isset( $options['archive'] ) ? 'yes' == $options['archive'] : $global;
 		}
 
 		// Check singular
@@ -349,17 +393,31 @@ class WhatsAppMe_Public {
 
 			// Page
 			if ( isset( $options['page'] ) && is_page() ) {
-				return $options['page'] == 'yes';
+				return 'yes' == $options['page'];
 			}
 
 			// Post (or other custom posts)
 			if ( isset( $options['post'] ) && is_single() ) {
-				return $options['post'] == 'yes';
+				return 'yes' == $options['post'];
 			}
 
-			return isset( $options['singular'] ) ? $options['singular'] == 'yes' : $global;
+			return isset( $options['singular'] ) ? 'yes' == $options['singular'] : $global;
 		}
 
 		return $global;
 	}
+
+	/**
+	 * Hide on Elementor preview mode.
+	 * Set 'show' false when is editing on Elementor
+	 *
+	 * @since    2.2.3
+	 * @param    object      /Elementor/Preview instance
+	 */
+	public function elementor_preview_disable( $elementor_preview ) {
+
+		$this->show = apply_filters( 'whatsappme_elementor_preview_show', false );
+
+	}
+
 }

@@ -608,8 +608,12 @@ if ( ! class_exists( "Ultimate_Carousel" ) ) {
 			$desing_style = esc_attr( $desing_style );
 			if ( $slide_to_scroll == "all" ) {
 				$slide_to_scroll = $slides_on_desk;
+				$slide_to_tab = $slides_on_tabs;
+				$slide_to_mob = $slides_on_mob;
 			} else {
 				$slide_to_scroll = 1;
+				$slide_to_tab =	1;
+				$slide_to_mob = 1;
 			}
 
 			$arr_style .= 'color:' . $arrow_color . '; font-size:' . $arrow_size . 'px;';
@@ -669,9 +673,11 @@ if ( ! class_exists( "Ultimate_Carousel" ) ) {
 			}
 			if ( $slides_on_mob == '' ) {
 				$slides_on_mob = $slides_on_desk;
+				$slide_to_tab = $slide_to_scroll;
 			}
 			if ( $slides_on_tabs == '' ) {
 				$slides_on_tabs = $slides_on_desk;
+				$slide_to_mob = $slide_to_scroll;
 			}
 			if ( $draggable !== 'off' && $draggable !== '' ) {
 				$settings .= 'swipe: true,';
@@ -742,14 +748,14 @@ if ( ! class_exists( "Ultimate_Carousel" ) ) {
 							  breakpoint: 1025,
 							  settings: {
 								slidesToShow: ' . $slides_on_tabs . ',
-								slidesToScroll: ' . $slides_on_tabs . '
+								slidesToScroll: ' . $slide_to_tab . '
 							  }
 							},
 							{
 							  breakpoint: 760,
 							  settings: {
 								slidesToShow: ' . $slides_on_mob . ',
-								slidesToScroll: ' . $slides_on_mob . '
+								slidesToScroll: ' . $slide_to_mob . '
 							  }
 							}
 						],';

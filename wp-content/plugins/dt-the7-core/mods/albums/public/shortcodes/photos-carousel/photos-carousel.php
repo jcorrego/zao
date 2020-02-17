@@ -7,11 +7,9 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 
-	class DT_Shortcode_Photos_Carousel extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_Photos_Carousel extends The7pt_Shortcode_With_Inline_CSS {
 		/**
 		 * @var string
 		 */
@@ -63,23 +61,23 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 				'shadow_blur_radius' 			 => '12px',
 				'shadow_spread'      			 => '3px',
 				'shadow_color'       			 => 'rgba(0,0,0,.25)',
-				'custom_rollover_bg_color'       => '',
-				'custom_rollover_bg_color_2'     => '',
-				'custom_rollover_bg_color_1'     => '',
-				'custom_rollover_gradient_deg'   => '135deg',
-				'slide_to_scroll' => 'single',
-				'slides_on_wide_desk' => '6',
-				'slides_on_desk' => '6',
-				'slides_on_lapt' => '5',
-				'slides_on_h_tabs' => '4',
-				'slides_on_v_tabs' => '3',
-				'slides_on_mob' => '1',
-				'item_space' => '10',
+				'image_hover_bg_color' => 'default',
+				'custom_rollover_bg_color'       => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+				'slide_to_scroll' 					=> 'single',
+				'slides_on_wide_desk' 				=> '6',
+				'slides_on_desk' 					=> '6',
+				'slides_on_lapt' 					=> '5',
+				'slides_on_h_tabs' 					=> '4',
+				'slides_on_v_tabs' 					=> '3',
+				'slides_on_mob' 					=> '1',
+				'item_space' 						=> '10',
+				'stage_padding' 					=> '0',
 				'speed' => '600',
 				'autoplay' => 'n',
 				'autoplay_speed' => "6000",
 				'show_zoom'                      => 'y',
-				'gallery_image_zoom_icon'        => 'icon-im-hover-001',
+				'gallery_image_zoom_icon'        => 'icomoon-the7-font-the7-zoom-06',
 				'project_icon_size'              => '32px',
 				'dt_project_icon'                => '',
 				'project_icon_bg_size'           => '44px',
@@ -166,7 +164,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 					'post',
 					'visible',
 				);
-
+				$lazy_loading_enabled = presscore_lazy_loading_enabled();
 				while( $dt_query->have_posts() ) { 
 					$dt_query->the_post();
 					$img_id = get_the_ID();
@@ -187,6 +185,9 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 						$thumb_title = presscore_image_title_enabled( $img_id ) ? get_the_title() : false;
 
 						$thumb_args = array(
+							'lazy_loading'  => $lazy_loading_enabled,
+							'lazy_class'    => 'owl-lazy-load',
+							'lazy_bg_class' => 'layzr-bg',
 							'echo'				=> false,
 							'img_meta' 			=> $thumb_meta,
 							'img_id'			=> $img_id,
@@ -231,7 +232,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 					echo '</article>';
 				}
 			echo '</div>';
-
+			presscore_add_lazy_load_attrs();
 			do_action( 'presscore_after_shortcode_loop', $this->sc_name, $this->atts );
 		}
 		
@@ -377,6 +378,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 				'post__in' => $media_items,
 				'orderby' => 'post__in',
 				'suppress_filters'  => false,
+				'posts_per_page' => '-1',
 			);
 			$pagination_mode = $this->get_att( 'loading_mode' );
 			$posts_per_page = $this->atts['dis_posts_total'];
@@ -397,6 +399,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 				'v-tablet-columns-num' => $this->atts['slides_on_v_tabs'],
 				'phone-columns-num' => $this->atts['slides_on_mob'],
 				'col-gap' => $this->atts['item_space'],
+				'stage-padding' => $this->atts['stage_padding'],
 				'speed' => $this->atts['speed'],
 				'autoplay' => ($this->atts['autoplay'] === 'y') ? 'true' : 'false',
 				'autoplay_speed' => $this->atts['autoplay_speed'],
@@ -451,18 +454,28 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
-			$less_vars->add_keyword( 'unique-shortcode-class-name', 'gallery-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
+			$less_vars->add_keyword( 'unique-shortcode-class-name', '' . $this->get_unique_class(), '~"%s"' );
 
 
 			$less_vars->add_pixel_number( 'media-image-border-radius', $this->get_att( 'image_border_radius' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-1', $this->get_att( 'custom_rollover_bg_color_1', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-2', $this->get_att( 'custom_rollover_bg_color_2', '~""' ) );
-			$less_vars->add_number( 'rollover-gradient-deg', $this->get_att( 'custom_rollover_gradient_deg' ));
-		
+
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
+
 			$less_vars->add_pixel_number( 'item-gap',$this->get_att('item_space' ));
 
 			$less_vars->add_pixel_number( 'project-icon-size', $this->get_att( 'project_icon_size' ) );
@@ -555,7 +568,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Carousel', false ) ) :
 			return $this->vc_inline_dummy( array(
 				'class'  => 'dt_vc-photos_carousel',
 				'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_photo_carousel_editor_ico.gif', 131, 104 ),
-				'title'  => _x( 'Photos Carousel', 'vc inline dummy', 'the7mk2' ),
+				'title'  => _x( 'Photos Carousel', 'vc inline dummy', 'dt-the7-core' ),
 				'style' => array( 'height' => 'auto' )
 			) );
 		}

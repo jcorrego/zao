@@ -1,0 +1,9 @@
+2020-01-19T01:06:46+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id da314f6cb23088f34f5be7540dd9788b
+2020-01-19T01:06:48+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3757
+2020-01-19T01:09:17+00:00 NOTICE abandoned_cart.success :: email: elianamedinart1@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=da314f6cb23088f34f5be7540dd9788b
+2020-01-19T01:11:29+00:00 NOTICE order_submit.success :: addStoreOrder :: #3757 :: email: elianamedinart1@gmail.com :: abandoned cart deleted [da314f6cb23088f34f5be7540dd9788b]
+2020-01-19T14:13:27+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id dbeb28d319d3f200081a4594d5e1fa59
+2020-01-19T14:13:48+00:00 NOTICE abandoned_cart.success :: email: l_torregrosa@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=dbeb28d319d3f200081a4594d5e1fa59
+2020-01-19T14:14:21+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 75
+2020-01-19T14:14:21+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3762
+2020-01-19T14:20:23+00:00 NOTICE order_submit.success :: addStoreOrder :: #3762 :: email: l_torregrosa@hotmail.com :: abandoned cart deleted [dbeb28d319d3f200081a4594d5e1fa59]

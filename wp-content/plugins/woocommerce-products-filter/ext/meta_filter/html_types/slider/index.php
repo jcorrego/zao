@@ -37,12 +37,12 @@ if (!defined('ABSPATH'))
         
     }    
     public function wp_footer(){
-        wp_enqueue_script('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/js/ion-rangeSlider/ion.rangeSlider.min.js', array('jquery'));
-        wp_enqueue_style('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.css');   
+        wp_enqueue_script('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/js/ion-rangeSlider/ion.rangeSlider.min.js', array('jquery'),WOOF_VERSION);
+        wp_enqueue_style('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.css',array(),WOOF_VERSION);   
         $ion_slider_skin = $this->woof_settings['ion_slider_skin'];
-        wp_enqueue_style('ion.range-slider-skin', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.' . $ion_slider_skin . '.css');
-        wp_enqueue_script( 'meta-slider-js',  $this->get_meta_filter_link(). 'js/slider.js', array('jquery'), '', true );
-        wp_enqueue_style( 'meta-slider-css',  $this->get_meta_filter_link(). 'css/slider.css' );
+        wp_enqueue_style('ion.range-slider-skin', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.' . $ion_slider_skin . '.css',array(),WOOF_VERSION);
+        wp_enqueue_script( 'meta-slider-js',  $this->get_meta_filter_link(). 'js/slider.js', array('jquery') ,WOOF_VERSION, true );
+        wp_enqueue_style( 'meta-slider-css',  $this->get_meta_filter_link(). 'css/slider.css',array(),WOOF_VERSION );
     } 
     public function woof_print_html_type_meta(){
         $data['meta_key']=$this->meta_key;
@@ -81,11 +81,11 @@ if (!defined('ABSPATH'))
                 $range=explode("-",$this->range,2);
                 $to=$range[1];
             }
-            
+            $type=apply_filters('woof_slider_meta_query_type','numeric',$this->meta_key);
             $meta=array(
                 'key' => $this->meta_key,
                 'value'   => array( $from, $to ),
-		'type'    => 'numeric',
+		'type'    => $type,
                 'compare'=>'BETWEEN',
             );    
             return $meta;

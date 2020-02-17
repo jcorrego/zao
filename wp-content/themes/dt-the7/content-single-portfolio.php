@@ -2,17 +2,15 @@
 /**
  * Portfolio single page template.
  *
- * @package The7
  * @since  1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 ?>
 
-	<article id="post-<?php the_ID() ?>" <?php post_class( 'project-post' ) ?>>
+	<article id="post-<?php the_ID(); ?>" <?php post_class( 'project-post' ); ?>>
 
 		<?php
 		do_action( 'presscore_before_post_content' );
@@ -24,4 +22,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	</article>
 
-<?php presscore_display_related_projects() ?>
+<?php presscore_display_related_projects(); ?>

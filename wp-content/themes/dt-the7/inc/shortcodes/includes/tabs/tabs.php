@@ -26,19 +26,15 @@ class DT_Shortcode_Tabs extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( 'dt_tab', array($this, 'shortcode_tab') );
         add_shortcode( 'dt_tabs', array($this, 'shortcode_tabs') );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
     }
 
     public function shortcode_tabs( $atts, $content = null ) {
        $attributes = shortcode_atts( array(
             'style'         => '1',
             'layout'        => 'top'
-        ), $atts );
+        ), $atts, 'dt_tabs' );
         
         // sanitize attributes
         $attributes['style'] = in_array($attributes['style'], array('1', '2', '3') ) ? $attributes['style'] : '1';
@@ -67,7 +63,7 @@ class DT_Shortcode_Tabs extends DT_Shortcode {
        $attributes = shortcode_atts( array(
             'title'         => '',
             'opened'        => '0'
-        ), $atts );
+        ), $atts, 'dt_tab' );
         
         $attributes['opened'] = apply_filters('dt_sanitize_flag', $attributes['opened']);
         $attributes['title'] = wp_kses($attributes['title'], array());

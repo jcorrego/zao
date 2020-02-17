@@ -62,7 +62,7 @@ if ( ! class_exists( 'THE7_RWMB_Radio_Field' ) ) {
 						$image = sprintf(
 							'<img src="%s" class="the7-mb-thumb hide-if-no-js"  style="%s" width="%d" height="%d" /><br />',
 							esc_url($admin_images_uri . 'blank.gif'),
-							"background-image:url('" . esc_url($admin_images_uri . $image_meta[0]) . "');",
+							esc_attr( "background-image:url('" . esc_url($admin_images_uri . $image_meta[0]) . "'); height: {$image_meta[2]}px;" ),
 							absint($image_meta[1]),
 							absint($image_meta[2])
 						);

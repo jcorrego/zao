@@ -3,16 +3,11 @@
  * Legacy module.
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Presscore_Modules_Legacy' ) ) :
 
 	class Presscore_Modules_Legacy {
-
-		const STATE_OPTION_ID = 'the7_legacy_state';
 
 		/**
 		 * Legacy settings ids.
@@ -27,7 +22,7 @@ if ( ! class_exists( 'Presscore_Modules_Legacy' ) ) :
 		public static function execute() {
 			self::$settings = array(
 				'rows',
-				'icons-bar',
+				'admin-icons-bar',
 			    'overlapping-headers',
 			);
 
@@ -39,29 +34,7 @@ if ( ! class_exists( 'Presscore_Modules_Legacy' ) ) :
 				) ) ;
 			}
 
-			if ( ! defined( 'DOING_AJAX' ) ) {
-				add_action( 'admin_init', array( __CLASS__, 'regenerate_css_on_legacy_activation' ) );
-			}
-
 			self::handle_legacy_code();
-		}
-
-		/**
-		 * Regenerate css on legacy state change.
-		 */
-		public static function regenerate_css_on_legacy_activation() {
-			$current_state = self::is_legacy_mode_active();
-			$previous_state = self::get_previous_state();
-
-			if ( $previous_state === $current_state ) {
-				return;
-			}
-
-			if ( false === $previous_state && $current_state ) {
-				presscore_set_force_regenerate_css( true );
-			}
-
-			self::set_state( $current_state );
 		}
 
 		/**
@@ -120,7 +93,7 @@ if ( ! class_exists( 'Presscore_Modules_Legacy' ) ) :
 		 */
 		public static function is_legacy_mode_active() {
 			// Do not count icons-bar.
-			$settings = array_diff( self::$settings, array( 'icons-bar' ) );
+			$settings = array_diff( self::$settings, array( 'admin-icons-bar' ) );
 
 			foreach ( $settings as $id ) {
 				if ( The7_Admin_Dashboard_Settings::get( $id ) ) {
@@ -129,31 +102,6 @@ if ( ! class_exists( 'Presscore_Modules_Legacy' ) ) :
 			}
 
 			return false;
-		}
-
-		/**
-		 * Get previous legacy state.
-		 *
-		 * @return bool|null
-		 */
-		public static function get_previous_state() {
-			$state = get_option( self::STATE_OPTION_ID );
-			if ( false === $state ) {
-				return null;
-			}
-
-			return (bool) $state;
-		}
-
-		/**
-		 * Set state.
-		 *
-		 * @param $value
-		 *
-		 * @return bool
-		 */
-		public static function set_state( $value ) {
-			return update_option( self::STATE_OPTION_ID, absint( $value ) );
 		}
 	}
 

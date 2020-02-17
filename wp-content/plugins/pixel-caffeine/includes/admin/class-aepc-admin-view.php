@@ -709,8 +709,11 @@ class AEPC_Admin_View {
 		$data = wp_parse_args( $data, array(
 			'name'          => '',
 			'trigger'       => '',
+			'url_condition' => 'contains',
 			'url'           => '',
 			'css'           => '',
+			'js_event_element' => '',
+			'js_event_name' => '',
 			'event'         => '',
 			'params'        => array(),
 			'custom_params' => array(),
@@ -1036,7 +1039,7 @@ class AEPC_Admin_View {
 	 * @return mixed
 	 */
 	public function get_feed_field_value( $product_catalog, $group, $field_name = '', $subkey = '' ) {
-		$value = '';
+		$value = null;
 
 		if ( $product_catalog ) {
 
@@ -1050,7 +1053,7 @@ class AEPC_Admin_View {
 				case Configuration::OPTION_FEED_CONFIG :
 					$value = $product_catalog->configuration()->get( $field_name );
 					if ( ! empty( $subkey ) ) {
-						$value = isset( $value[ $subkey ] ) ? $value[ $subkey ] : '';
+						$value = isset( $value[ $subkey ] ) ? $value[ $subkey ] : null;
 					}
 					break;
 			}
@@ -1058,7 +1061,7 @@ class AEPC_Admin_View {
 		}
 
 		// Defaults
-		if ( empty( $value ) ) {
+		if ( is_null( $value ) ) {
 
 			switch ( $group ) {
 				case Configuration::OPTION_FILE_NAME :

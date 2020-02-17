@@ -39,6 +39,8 @@ if ( ! class_exists( 'DT_Shortcode_Benefits_Vc', false ) ) {
 				return '';
 			}
 
+			wp_enqueue_style( 'the7-elements-benefits-logo' );
+
 			self::$shortcodes_count++;
 
 			$output = '';
@@ -229,7 +231,7 @@ if ( ! class_exists( 'DT_Shortcode_Benefits_Vc', false ) ) {
 				'orderby' => 'date',
 				'animation' => 'none',
 				'animate' => 'one_by_one',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			$clean_atts['order'] = apply_filters('dt_sanitize_order', $clean_atts['order']);
 			$clean_atts['orderby'] = apply_filters('dt_sanitize_orderby', $clean_atts['orderby']);
@@ -304,14 +306,14 @@ if ( ! class_exists( 'DT_Shortcode_Benefits_Vc', false ) ) {
 				}
 
 				$stylesheet .= $this->get_stylesheet_rule(
-					"#{$shortcode_unique_id}.icons-bg .benefits-grid-ico > .fa",
+					"#{$shortcode_unique_id}.icons-bg .benefits-grid-ico > i",
 					sprintf( 'font-size: %1$spx; line-height: %2$spx;', $this->atts['icons_size'], $this->atts['image_background_size'] )
 				);
 
 			} else {
 
 				$stylesheet .= $this->get_stylesheet_rule(
-					"#{$shortcode_unique_id} .benefits-grid-ico > .fa",
+					"#{$shortcode_unique_id} .benefits-grid-ico > i",
 					sprintf( 'font-size: %1$spx; line-height: %1$spx;', $this->atts['icons_size'] )
 				);
 
@@ -319,16 +321,16 @@ if ( ! class_exists( 'DT_Shortcode_Benefits_Vc', false ) ) {
 
 			if ( 'custom' == $this->atts['icons_paint'] ) {
 				$stylesheet .= $this->get_stylesheet_rule(
-					"#{$shortcode_unique_id}.custom-icon-color .benefits-grid-ico > .fa,
-					#{$shortcode_unique_id}.custom-icon-color .benefits-grid-ico > .fa:before",
+					"#{$shortcode_unique_id}.custom-icon-color .benefits-grid-ico > i,
+					#{$shortcode_unique_id}.custom-icon-color .benefits-grid-ico > i:before",
 					sprintf( 'color: %1$s;', $this->atts['icons_color'] )
 				);
 			}
 
 			if ( 'custom' == $this->atts['icons_hover_paint'] ) {
 				$stylesheet .= $this->get_stylesheet_rule(
-					"#{$shortcode_unique_id}.custom-icon-hover-color a.benefits-grid-ico:hover > .fa,
-					#{$shortcode_unique_id}.custom-icon-hover-color a.benefits-grid-ico:hover > .fa:before",
+					"#{$shortcode_unique_id}.custom-icon-hover-color a.benefits-grid-ico:hover > i,
+					#{$shortcode_unique_id}.custom-icon-hover-color a.benefits-grid-ico:hover > i:before",
 					sprintf( 'color: %1$s; -webkit-text-fill-color: %1$s;', $this->atts['icons_hover_color'] )
 				);
 			}

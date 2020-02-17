@@ -1,0 +1,20 @@
+2020-02-03T13:53:59+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3894
+2020-02-03T13:55:22+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3862
+2020-02-03T13:56:30+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3894 :: email: isabolivar2@gmail.com
+2020-02-03T13:57:01+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3867
+2020-02-03T13:57:02+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3862 :: email: nvalenc8@gmail.com
+2020-02-03T13:57:02+00:00 NOTICE member.sync :: Updated Member nvalenc8@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Natasha
+            [LNAME] => Valencia
+        )
+
+)
+
+2020-02-03T14:00:16+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3867 :: email: alejiscastro@hotmail.com
+2020-02-03T15:16:39+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id e66ac429e60d32d29dd787dd5b097246
+2020-02-03T15:16:58+00:00 NOTICE abandoned_cart.success :: email: linadonatob@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=e66ac429e60d32d29dd787dd5b097246
+2020-02-03T15:17:47+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3901
+2020-02-03T15:22:31+00:00 NOTICE order_submit.success :: addStoreOrder :: #3901 :: email: linadonatob@gmail.com :: abandoned cart deleted [e66ac429e60d32d29dd787dd5b097246]

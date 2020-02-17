@@ -119,11 +119,13 @@ if ( ! class_exists( 'Presscore_Modules_OptionsWizardModule', false ) ) :
 			}
 
 			$sanitized_input = self::sanitize_options( $input, $preset_options );
-			$sanitized_input = self::override_options_filter( array_merge( $preset_options, $sanitized_input ) );
 
 			if ( $start_from_scratch ) {
+				$sanitized_input = array_merge( $preset_options, $sanitized_input );
 				add_filter( 'wp_redirect', array( __CLASS__, 'switch_mode_with_redirect_filter' ) );
 			}
+
+			$sanitized_input = self::override_options_filter( $sanitized_input );
 
 			return array_merge( $saved_options, $sanitized_input );
 		}
@@ -432,35 +434,48 @@ if ( ! class_exists( 'Presscore_Modules_OptionsWizardModule', false ) ) :
 
 			// Text font family.
 			$fonts_font_family = array(
-				'top_bar-font-family',
-				'header-menu-submenu-font-family',
-				'header-mobile-submenu-font-family',
-				'header-elements-near_menu-font_family',
-				'header-elements-near_logo-font_family',
-				'general-breadcrumbs_font_family',
-                'header-mobile-microwidgets-font-family',
+				'header-elements-near_menu-typography',
+				'header-elements-near_logo-typography',
 			);
 			foreach ( $fonts_font_family as $opt_id ) {
-				$options[ $opt_id ] = $options['fonts-font_family'];
+				$options[ $opt_id ]['font_family'] = $options['fonts-font_family'];
+			}
+			$apply_general_text_font_to_typography = array(
+				'top_bar-typography',
+				'header-mobile-microwidgets-typography',
+				'header-menu-submenu-typography',
+				'header-mobile-submenu-typography',
+			);
+			foreach ( $apply_general_text_font_to_typography as $typography_option ) {
+				if ( isset( $options[ $typography_option ] ) && is_array( $options[ $typography_option ] ) ) {
+					$options[ $typography_option ]['font_family'] = $options['fonts-font_family'];
+				}
 			}
 
-			// Headers font family.
-			$fonts_h1_font_family = array(
-				'general-filter-font-family',
-				'fonts-h2_font_family',
-				'fonts-h3_font_family',
-				'fonts-h4_font_family',
-				'fonts-h5_font_family',
-				'fonts-h6_font_family',
-				'header-menu-font-family',
-				'header-mobile-menu-font-family',
-				'buttons-s_font_family',
-				'buttons-m_font_family',
-				'buttons-l_font_family',
-				'general-font_family',
-			);
-			foreach ( $fonts_h1_font_family as $opt_id ) {
-				$options[ $opt_id ] = $options['fonts-h1_font_family'];
+			if ( isset( $options['fonts-h1-typography']['font_family'] ) ) {
+				$h1_font = $options['fonts-h1-typography']['font_family'];
+
+				// Headers font family.
+				$apply_h1_font_to_typography = array(
+					'fonts-h2-typography',
+					'fonts-h3-typography',
+					'fonts-h4-typography',
+					'fonts-h5-typography',
+					'fonts-h6-typography',
+					'general-page-title-typography',
+					'filter-typography',
+					'breadcrumbs-typography',
+					'header-menu-typography',
+					'header-mobile-menu-typography',
+					'buttons-s-typography',
+					'buttons-m-typography',
+					'buttons-l-typography',
+				);
+				foreach ( $apply_h1_font_to_typography as $typography_option ) {
+					if ( isset( $options[ $typography_option ] ) && is_array( $options[ $typography_option ] ) ) {
+						$options[ $typography_option ]['font_family'] = $h1_font;
+					}
+				}
 			}
 
 			// Sidebar style.
@@ -528,14 +543,14 @@ if ( ! class_exists( 'Presscore_Modules_OptionsWizardModule', false ) ) :
 			$micro_widgets_font = $options['fonts-font_family'];
 			$micro_widgets_color = $options['header-menu-font-color'];
 
-            $options["header-{$header_layout}-elements-near_menu-font_family"] = $micro_widgets_font;
+            $options["header-{$header_layout}-elements-near_menu-typography"]['font_family'] = $micro_widgets_font;
 			$options["header-{$header_layout}-elements-near_menu-font_color"] = $micro_widgets_color;
 
 			if ( 'classic' === $header_layout ) {
-				$options["header-{$header_layout}-elements-near_logo-font_family"] = $micro_widgets_font;
+				$options["header-{$header_layout}-elements-near_logo-typography"]['font_family'] = $micro_widgets_font;
 				$options["header-{$header_layout}-elements-near_logo-font_color"] = $micro_widgets_color;
             } elseif ( 'top_line' === $header_layout ) {
-				$options["header-{$header_layout}-elements-in_top_line-font_family"] = $micro_widgets_font;
+				$options["header-{$header_layout}-elements-in_top_line-typography"]['font_family'] = $micro_widgets_font;
 				$options["header-{$header_layout}-elements-in_top_line-font_color"] = $micro_widgets_color;
             }
 

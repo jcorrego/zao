@@ -83,7 +83,7 @@
 </div>
 
 <script id="tmpl_list_item" type="text/x-jsrender">
-	<div class="item">
+	<div class="item" data-id="{{:id}}">
     <div class="addr-sec">
     <p class="p-title">{{:title}}</p>
     </div>
@@ -137,6 +137,9 @@
       {{/if}}
       <div class="address"><span class="glyphicon icon-location"></span>{{:address}}</div>
       <div class="phone"><span class="glyphicon icon-phone-outline"></span><b>Phone: </b><a href="tel:{{:phone}}">{{:phone}}</a></div>
+      {{if email}}
+      <div class="phone"><span class="glyphicon icon-at"></span><a href="mailto:{{:email}}" style="text-transform: lowercase">{{:email}}</a></div>
+      {{/if}}
       {{if c_names}}
       <div class="p-category"><span class="glyphicon icon-tag"></span> {{:c_names}}</div>
       {{/if}}

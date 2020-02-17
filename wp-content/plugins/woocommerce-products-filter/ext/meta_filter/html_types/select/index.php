@@ -17,8 +17,8 @@ if (!defined('ABSPATH'))
         add_filter('woof_extensions_type_index',array($this, 'add_type_index'));
     } 
     public function wp_footer(){
-        wp_enqueue_script( 'meta-select-js',  $this->get_meta_filter_link(). 'js/select.js', array('jquery'), '', true );
-        wp_enqueue_style( 'meta-select-css',  $this->get_meta_filter_link(). 'css/select.css' );
+        wp_enqueue_script( 'meta-select-js',  $this->get_meta_filter_link(). 'js/select.js', array('jquery'),WOOF_VERSION, true );
+        wp_enqueue_style( 'meta-select-css',  $this->get_meta_filter_link(). 'css/select.css',array(),WOOF_VERSION);
     }    
      
     public function get_meta_filter_path(){
@@ -44,7 +44,7 @@ if (!defined('ABSPATH'))
         $data['meta_key']=$this->meta_key;
         $data['options']=$this->type_options;
         $data['meta_options']= (isset($this->type_options["options"]))?$this->type_options["options"]:"";
-     
+        $data['meta_settings']=(isset($this->woof_settings[$this->meta_key]))?$this->woof_settings[$this->meta_key]:"";
         if($this->woof_settings[$this->meta_key]["show"]){
             echo  $this->render_html($this->get_meta_filter_path().'/views/woof.php', $data);
         }

@@ -83,11 +83,20 @@ class WOOF_Widget extends WP_Widget {
             }
             
             $dynamic_recount = -1;
-            
+            if (isset($instance['dynamic_recount']))
+            {
+                $dynamic_recount = $instance['dynamic_recount'];
+            }
             $btn_position = 'b';
-            
+            if (isset($instance['btn_position']))
+            {
+                $btn_position = $instance['btn_position'];
+            }
             $autosubmit=-1;
-            
+            if (isset($instance['autosubmit']))
+            {
+                $autosubmit = $instance['autosubmit'];
+            }
             ?>
 
             <?php echo do_shortcode('[woof sid="widget" autosubmit="'.$autosubmit.'" start_filtering_btn=' . $woof_start_filtering_btn . ' price_filter=' . $price_filter . ' redirect="' . $redirect . '" ajax_redraw="' . $ajax_redraw . '" btn_position="'.$btn_position.'" dynamic_recount="'.$dynamic_recount.'" ]'); ?>
@@ -162,10 +171,12 @@ class WOOF_Widget extends WP_Widget {
             <i><?php _e('User on the site front will have to press button like "Show products filter form" to load search form by ajax and start filtering. Good feature when search form is quite big and page loading takes more time because of it!', 'woocommerce-products-filter') ?></i>
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id('dynamic_recount'); ?>" style="color: red;"><?php _e('Dynamic recount', 'woocommerce-products-filter') ?>:</label>
+            <label for="<?php echo $this->get_field_id('dynamic_recount'); ?>"><?php _e('Dynamic recount', 'woocommerce-products-filter') ?>:</label>
             <?php
             $options = array(
                 -1 => __('Default', 'woocommerce-products-filter'),
+                0 => __('No', 'woocommerce-products-filter'),
+                1 => __('Yes', 'woocommerce-products-filter')
             );
             ?>
             <select class="widefat" id="<?php echo $this->get_field_id('dynamic_recount') ?>" name="<?php echo $this->get_field_name('dynamic_recount') ?>">
@@ -173,7 +184,7 @@ class WOOF_Widget extends WP_Widget {
                     <option <?php selected($instance['dynamic_recount'], $k) ?> value="<?php echo $k ?>" class="level-0"><?php echo $val ?></option>
                 <?php endforeach; ?>
             </select>
-            <i><?php _e('Dynamic recount for current search form. Premium only.', 'woocommerce-products-filter') ?></i>
+            <i><?php _e('Dynamic recount for current search form', 'woocommerce-products-filter') ?></i>
         </p>
          <p>
             <label for="<?php echo $this->get_field_id('autosubmit'); ?>"><?php _e('Autosubmit', 'woocommerce-products-filter') ?>:</label>
@@ -192,10 +203,12 @@ class WOOF_Widget extends WP_Widget {
             <i><?php _e('Yes - filtering starts immediately if user changed any item in the search form. No - user can set search data and then should press Filter button', 'woocommerce-products-filter') ?></i>
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id('btn_position'); ?>" style="color: red;"><?php _e('Submit button position', 'woocommerce-products-filter') ?>:</label>
+            <label for="<?php echo $this->get_field_id('btn_position'); ?>"><?php _e('Submit button position', 'woocommerce-products-filter') ?>:</label>
             <?php
             $options = array(
                 'b' => __('Bottom', 'woocommerce-products-filter'),
+                't' => __('Top', 'woocommerce-products-filter'),
+                'tb' => __('Top AND Bottom', 'woocommerce-products-filter')
             );
             ?>
             <select class="widefat" id="<?php echo $this->get_field_id('btn_position') ?>" name="<?php echo $this->get_field_name('btn_position') ?>">
@@ -203,7 +216,7 @@ class WOOF_Widget extends WP_Widget {
                     <option <?php selected($instance['btn_position'], $k) ?> value="<?php echo $k ?>" class="level-0"><?php echo $val ?></option>
                 <?php endforeach; ?>
             </select>
-            <i><?php _e('The submit and reset buttons position in current search form. Premium only.', 'woocommerce-products-filter') ?></i>
+            <i><?php _e('The submit and reset buttons position in current search form', 'woocommerce-products-filter') ?></i>
         </p>        
         <p>
             <label for="<?php echo $this->get_field_id('ajax_redraw'); ?>"><?php _e('Form AJAX redrawing', 'woocommerce-products-filter') ?>:</label>

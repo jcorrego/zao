@@ -85,6 +85,7 @@ if ( ! class_exists( 'Presscore_Mod_Team', false ) ) {
 			add_action( 'widgets_init', array( $mod_public, 'init_widgets' ) );
 			add_action( 'presscore_config_base_init', array( $mod_public, 'init_template_config' ), 10, 2 );
 			add_filter( 'presscore_before_post_masonry-filter_taxonomy', array( $mod_public, 'filter_masonry_wrap_taxonomy' ), 10, 2 );
+			add_filter( 'presscore_get_page_title', array( $mod_public, 'filter_page_title' ) );
 		}
 	}
 

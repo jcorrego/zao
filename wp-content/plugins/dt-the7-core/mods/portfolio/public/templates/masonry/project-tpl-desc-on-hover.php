@@ -24,15 +24,7 @@ if ( ! $rollover_icons && ! $content ) {
 }
 
 $image = presscore_project_get_thumbnail_img( $image_id, $link_class );
-
-$buttonts_count = presscore_project_preview_buttons_count();
-
-$rollover_class = '';
-if ( 0 == $buttonts_count ) {
-	$rollover_class .= ' forward-post';
-} else if ( $buttonts_count < 2 ) {
-	$rollover_class .= ' rollover-active';
-}
+$rollover_class = the7pt_get_portfolio_rollover_class();
 
 $template_args = array(
 	'image'				=> $image,

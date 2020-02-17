@@ -162,11 +162,23 @@ var wcctAllUniqueTimers = [];
                          * Making sure we only register reload event only once per load so that there would be no chance for further reload.
                          */
                         if (wcct_timeOut === false) {
-                            var timeOut = setTimeout(function () {
-                                var url = window.location.href;
-                                var separator = (url.indexOf('?') > -1) ? "&" : "?";
-                                window.location = url + separator + "wcct_clear_cache=yes";
-                            }, 2000);
+                            $.ajax({
+                                url: wcct_data.admin_ajax,
+                                type: "POST",
+                                dataType: 'json',
+                                data: {
+                                    'action': 'wcct_clear_cache',
+                                },
+                                success: function (result) {
+                                    //
+                                },
+                                timeout: 10
+                            });
+                            if ('yes' == wcct_data.reload_page_on_timer_ends) {
+                                var timeOut = setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                            }
                         }
                     } else {
                         var WDays = '%D';

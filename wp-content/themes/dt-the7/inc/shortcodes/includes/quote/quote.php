@@ -34,7 +34,7 @@ if ( ! class_exists( 'DT_Shortcode_Quote', false ) ) {
 				'background' => 'plain'
 			);
 
-			extract( shortcode_atts( $default_atts, $atts ) );
+			extract( shortcode_atts( $default_atts, $atts, 'dt_quote' ) );
 
 			$font_size = sanitize_key( $font_size );
 			$type = sanitize_key( $type );

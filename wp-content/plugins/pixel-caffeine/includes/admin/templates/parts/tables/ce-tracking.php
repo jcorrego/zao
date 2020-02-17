@@ -40,17 +40,30 @@ if ( empty( $conversions ) ) {
 						<?php
 						if ( 'page_visit' == $event['trigger'] ) {
 							esc_html_e( 'Page visit', 'pixel-caffeine' );
-							echo '<br />' . __( 'URL contains', 'pixel-caffeine' ) . ': ' . $event['url'];
+							if ( 'contains' === $event['url_condition'] ) {
+								echo '<br />' . __( 'URL contains', 'pixel-caffeine' ) . ': ' . $event['url'];
+							} elseif ( 'exact' === $event['url_condition'] ) {
+								echo '<br />' . __( 'URL is exact', 'pixel-caffeine' ) . ': ' . $event['url'];
+							}
 						}
 
 						elseif ( 'link_click' == $event['trigger'] ) {
 							esc_html_e( 'Link click', 'pixel-caffeine' );
-							echo '<br />' . __( 'URL contains', 'pixel-caffeine' ) . ': ' . $event['url'];
+							if ( 'contains' === $event['url_condition'] ) {
+								echo '<br />' . __( 'URL contains', 'pixel-caffeine' ) . ': ' . $event['url'];
+							} elseif ( 'exact' === $event['url_condition'] ) {
+								echo '<br />' . __( 'URL is exact', 'pixel-caffeine' ) . ': ' . $event['url'];
+							}
 						}
 
 						elseif ( 'css_selector' == $event['trigger'] ) {
 							esc_html_e( 'On click css selector', 'pixel-caffeine' );
 							echo '<br />' . '"' . esc_html( $event['css'] ) . '"';
+						}
+
+						elseif ( 'js_event' == $event['trigger'] ) {
+							esc_html_e( 'On Javascript Event', 'pixel-caffeine' );
+							printf( __( '<br />When "%s" triggers "%s"', 'pixel-caffeine' ), esc_html( $event['js_event_element'] ), esc_html( $event['js_event_name'] ) );
 						}
 						?>
 					</td>

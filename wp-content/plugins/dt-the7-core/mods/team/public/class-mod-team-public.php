@@ -53,4 +53,18 @@ class Presscore_Mod_Team_Public {
 		}
 		return $html;
 	}
+
+	public function filter_page_title( $page_title ) {
+		if ( of_get_option( 'show_static_part_of_archive_title' ) === '0' ) {
+			return $page_title;
+		}
+
+		if ( is_tax( 'dt_team_category' ) ) {
+			$page_title = sprintf( __( 'Team Category: %s', 'dt-the7-core' ), '<span>' . single_term_title( '', false ) . '</span>' );
+		} elseif ( is_post_type_archive( 'dt_team' ) ) {
+			$page_title = __( 'Team Archive:', 'dt-the7-core' );
+		}
+
+		return $page_title;
+	}
 }

@@ -17,6 +17,17 @@ return array(
 		$album_number_order_title,
 		$albums_to_show,
 		$albums_per_page,
+		array(
+			array(
+				'heading'          => __( 'Albums offset', 'dt-the7-core' ),
+				'param_name'       => 'posts_offset',
+				'type'             => 'dt_number',
+				'value'            => 0,
+				'min'              => 0,
+				'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+				'description'      => __( 'Offset for albums query (i.e. 2 means, albums will be displayed starting from the third album).', 'dt-the7-core' ),
+			),
+		),
 		$ordering,
 		$album_filter_title,
 		$show_filter,

@@ -1,13 +1,10 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	'weight' => -1,
-	'name' => __( 'Blog Masonry & Grid', 'the7mk2' ),
+	'name' => __( 'Blog Masonry and Grid', 'the7mk2' ),
 	'base' => 'dt_blog_masonry',
 	'class' => 'dt_vc_sc_blog_masonry',
 	'icon' => 'dt_vc_ico_blog_posts',
@@ -175,6 +172,10 @@ return array(
 				'Yes' => 'y',
 				'No' => 'n',
 			),
+			'dependency'	=> array(
+				'element'	=> 'layout',
+				'value' => array( 'classic', 'bottom_overlap', 'gradient_rollover', 'gradient_overlap' ),
+			),
 		),
 		array(
 			'heading'		=> __('Color', 'the7mk2'),
@@ -231,23 +232,48 @@ return array(
 			'units' => 'px, %',
 		),
 		array(
-			'heading' => __('Enable scale animation on hover', 'the7mk2'),
+			'heading' => __('Scale animation on hover', 'dt-the7-core'),
 			'param_name' => 'image_scale_animation_on_hover',
-			'type' => 'dt_switch',
-			'value' => 'y',
-			'options' => array(
-				'Yes' => 'y',
-				'No' => 'n',
+			'type' => 'dropdown',
+			'std' => 'slow_scale',
+			'value' => array(
+				'Disabled' => 'disabled',
+				'Quick scale' => 'quick_scale',
+				'Slow scale' => 'slow_scale',
+			),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+		),
+		array(
+			'heading'          => __( 'Hover background color', 'dt-the7-core' ),
+			'param_name'       => 'image_hover_bg_color',
+			'type'             => 'dropdown',
+			'std'              => 'disabled',
+			'value'            => array(
+				'Disabled'    => 'disabled',
+				'Default'     => 'default',
+				'Mono color' => 'solid_rollover_bg',
+				'Gradient'    => 'gradient_rollover_bg',
+			),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+		),
+		array(
+			'heading'		=> __('Background color', 'dt-the7-core'),
+			'param_name'	=> 'custom_rollover_bg_color',
+			'type'			=> 'colorpicker',
+			'value'			=> 'rgba(0,0,0,0.5)',
+			'dependency'	=> array(
+				'element'	=> 'image_hover_bg_color',
+				'value' => array( 'solid_rollover_bg' ),
 			),
 		),
 		array(
-			'heading' => __('Enable hover background color', 'the7mk2'),
-			'param_name' => 'image_hover_bg_color',
-			'type' => 'dt_switch',
-			'value' => 'y',
-			'options' => array(
-				'Yes' => 'y',
-				'No' => 'n',
+			'heading'    => __( 'Gradient', 'dt-the7-core' ),
+			'param_name' => 'custom_rollover_bg_gradient',
+			'type'       => 'dt_gradient_picker',
+			'value'      => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+			'dependency' => array(
+				'element' => 'image_hover_bg_color',
+				'value'   => 'gradient_rollover_bg',
 			),
 		),
 		// - Columns & Responsiveness.
@@ -323,192 +349,6 @@ return array(
 			'description'   => __( 'Post wide/normal width can be chosen in single post options.', 'the7mk2' ),
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
-		// - Pagination.
-		array(
-			'heading' => __( 'Pagination', 'the7mk2' ),
-			'param_name' => 'dt_title',
-			'type' => 'dt_title',
-			'value' => '',
-		),
-		array(
-			'heading' => __('Pagination mode', 'the7mk2'),
-			'param_name' => 'loading_mode',
-			'type' => 'dropdown',
-			'std' => 'disabled',
-			'value' => array(
-				'Disabled' => 'disabled',
-				'Standard' => 'standard',
-				'JavaScript pages' => 'js_pagination',
-				'"Load more" button' => 'js_more',
-				'Infinite scroll' => 'js_lazy_loading',
-			),
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-		),
-		// -- Disabled.
-		array(
-			'heading' => __('Total number of posts', 'the7mk2'),
-			'param_name' => 'dis_posts_total',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'disabled',
-			),
-			'description' => __('Leave empty to display all posts.', 'the7mk2'),
-		),
-		// -- Standard.
-		array(
-			'heading' => __('Number of posts to display on one page', 'the7mk2'),
-			'param_name' => 'st_posts_per_page',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'standard',
-			),
-			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
-		),
-		array(
-			'heading' => __('Show all pages in paginator', 'the7mk2'),
-			'param_name' => 'st_show_all_pages',
-			'type' => 'dt_switch',
-			'value' => 'n',
-			'options' => array(
-				'Yes' => 'y',
-				'No' => 'n',
-			),
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'standard',
-			),
-		),
-		array(
-			'heading' => __('Gap before pagination', 'the7mk2'),
-			'param_name' => 'st_gap_before_pagination',
-			'type' => 'dt_number',
-			'value' => '',
-			'units' => 'px',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'standard',
-			),
-			'description' => __('Leave empty to use default gap', 'the7mk2'),
-		),
-		// -- JavaScript pages.
-		array(
-			'heading' => __('Total number of posts', 'the7mk2'),
-			'param_name' => 'jsp_posts_total',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_pagination',
-			),
-			'description' => __('Leave empty to display all posts.', 'the7mk2'),
-		),
-		array(
-			'heading' => __('Number of posts to display on one page', 'the7mk2'),
-			'param_name' => 'jsp_posts_per_page',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_pagination',
-			),
-			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
-		),
-		array(
-			'heading' => __('Show all pages in paginator', 'the7mk2'),
-			'param_name' => 'jsp_show_all_pages',
-			'type' => 'dt_switch',
-			'value' => 'n',
-			'options' => array(
-				'Yes' => 'y',
-				'No' => 'n',
-			),
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_pagination',
-			),
-		),
-		array(
-			'heading' => __('Gap before pagination', 'the7mk2'),
-			'param_name' => 'jsp_gap_before_pagination',
-			'type' => 'dt_number',
-			'value' => '',
-			'units' => 'px',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_pagination',
-			),
-			'description' => __('Leave empty to use default gap', 'the7mk2'),
-		),
-		// -- js Load more.
-		array(
-			'heading' => __('Total number of posts', 'the7mk2'),
-			'param_name' => 'jsm_posts_total',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_more',
-			),
-			'description' => __('Leave empty to display all posts.', 'the7mk2'),
-		),
-		array(
-			'heading' => __('Number of posts to display on one page', 'the7mk2'),
-			'param_name' => 'jsm_posts_per_page',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_more',
-			),
-			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
-		),
-		array(
-			'heading' => __('Gap before pagination', 'the7mk2'),
-			'param_name' => 'jsm_gap_before_pagination',
-			'type' => 'dt_number',
-			'value' => '',
-			'units' => 'px',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_more',
-			),
-			'description' => __('Leave empty to use default gap', 'the7mk2'),
-		),
-		// -- js Infinite scroll.
-		array(
-			'heading' => __('Total number of posts', 'the7mk2'),
-			'param_name' => 'jsl_posts_total',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_lazy_loading',
-			),
-			'description' => __('Leave empty to display all posts.', 'the7mk2'),
-		),
-		array(
-			'heading' => __('Number of posts to display on one page', 'the7mk2'),
-			'param_name' => 'jsl_posts_per_page',
-			'type' => 'dt_number',
-			'value' => '',
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'dependency' => array(
-				'element' => 'loading_mode',
-				'value'	=> 'js_lazy_loading',
-			),
-			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
-		),
 		// Post group.
 		array(
 			'heading' => __('Content alignment', 'the7mk2'),
@@ -562,7 +402,7 @@ return array(
 			'param_name'	=> 'custom_title_color',
 			'type'			=> 'colorpicker',
 			'value'			=> '',
-			'description' => __( 'Leave empty to use headers color.', 'the7mk2' ),
+			'description' => __( 'Leave empty to use headings color.', 'the7mk2' ),
 			'group' => __( 'Post', 'the7mk2' ),
 		),
 		array(
@@ -793,7 +633,7 @@ return array(
 			'heading' => __('Button text', 'the7mk2'),
 			'param_name' => 'read_more_button_text',
 			'type' => 'textfield',
-			'value' => 'Read more',
+			'value' => _x( 'Read more', 'the7 shortcode', 'the7mk2' ),
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 			'dependency' => array(
 				'element' => 'read_more_button',
@@ -903,13 +743,372 @@ return array(
 			'description' => __( 'Leave empty to use predefined color or category color indication.', 'the7mk2' ),
 			'group' => __( 'Fancy Elements', 'the7mk2' ),
 		),
-		// List group.
+		//Icons
+
+		array(
+			'group'      => __( 'Hover Icon', 'the7mk2' ),
+			'heading'    => __( 'Show icon on image hover', 'the7mk2' ),
+			'param_name' => 'show_zoom',
+			'type'       => 'dt_switch',
+			'value'      => 'n',
+			'options'    => array(
+				'Yes' => 'y',
+				'No'  => 'n',
+			),
+		),
+		array(
+			'group'      => __( 'Hover Icon', 'the7mk2' ),
+			'heading'    => __( 'Choose image zoom icon', 'the7mk2' ),
+			'param_name' => 'gallery_image_zoom_icon',
+			'type'       => 'dt_navigation',
+			'value'      => 'icon-im-hover-001',
+			'dependency' => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Icon Size & Background', 'the7mk2' ),
+			'param_name'       => 'dt_project_icon_title',
+			'type'             => 'dt_title',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Icon size', 'the7mk2' ),
+			'param_name'       => 'project_icon_size',
+			'type'             => 'dt_number',
+			'value'            => '32px',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Icon color', 'the7mk2' ),
+			'description'      => __( 'Live empty to use accent color.', 'the7mk2' ),
+			'param_name'       => 'project_icon_color',
+			'type'             => 'colorpicker',
+			'value'            => 'rgba(255,255,255,1)',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Background size', 'the7mk2' ),
+			'param_name'       => 'project_icon_bg_size',
+			'type'             => 'dt_number',
+			'value'            => '44px',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Paint background', 'the7mk2' ),
+			'param_name'       => 'project_icon_bg',
+			'type'             => 'dt_switch',
+			'value'            => 'n',
+			'options'          => array(
+				'Yes' => 'y',
+				'No'  => 'n',
+			),
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Background color', 'the7mk2' ),
+			'param_name'       => 'project_icon_bg_color',
+			'type'             => 'colorpicker',
+			'value'            => 'rgba(255,255,255,0.3)',
+			'dependency'       => array(
+				'element' => 'project_icon_bg',
+				'value'   => 'y',
+			),
+			'description'      => __( 'Live empty to use accent color.', 'the7mk2' ),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Border radius', 'the7mk2' ),
+			'param_name'       => 'project_icon_border_radius',
+			'type'             => 'dt_number',
+			'value'            => '100px',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Border width', 'the7mk2' ),
+			'param_name'       => 'project_icon_border_width',
+			'type'             => 'dt_number',
+			'value'            => '0',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'            => __( 'Hover Icon', 'the7mk2' ),
+			'heading'          => __( 'Border color', 'the7mk2' ),
+			'description'      => __( 'Live empty to use accent color.', 'the7mk2' ),
+			'param_name'       => 'project_icon_border_color',
+			'type'             => 'colorpicker',
+			'value'            => '',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		// Pagination & Categorization group.
+		// - Pagination.
+		array(
+			'heading' => __( 'Pagination', 'the7mk2' ),
+			'param_name' => 'dt_title',
+			'type' => 'dt_title',
+			'value' => '',
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Pagination mode', 'the7mk2'),
+			'param_name' => 'loading_mode',
+			'type' => 'dropdown',
+			'std' => 'disabled',
+			'value' => array(
+				'Disabled' => 'disabled',
+				'Standard' => 'standard',
+				'JavaScript pages' => 'js_pagination',
+				'"Load more" button' => 'js_more',
+				'Infinite scroll' => 'js_lazy_loading',
+			),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- Disabled.
+		array(
+			'heading' => __('Total number of posts', 'the7mk2'),
+			'param_name' => 'dis_posts_total',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'disabled',
+			),
+			'description' => __('Leave empty to display all posts.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- Standard.
+		array(
+			'heading' => __('Number of posts to display on one page', 'the7mk2'),
+			'param_name' => 'st_posts_per_page',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'standard',
+			),
+			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- JavaScript pages.
+		array(
+			'heading' => __('Total number of posts', 'the7mk2'),
+			'param_name' => 'jsp_posts_total',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_pagination',
+			),
+			'description' => __('Leave empty to display all posts.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Number of posts to display on one page', 'the7mk2'),
+			'param_name' => 'jsp_posts_per_page',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_pagination',
+			),
+			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- js Load more.
+		array(
+			'heading' => __('Total number of posts', 'the7mk2'),
+			'param_name' => 'jsm_posts_total',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_more',
+			),
+			'description' => __('Leave empty to display all posts.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Number of posts to display on one page', 'the7mk2'),
+			'param_name' => 'jsm_posts_per_page',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_more',
+			),
+			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- js Infinite scroll.
+		array(
+			'heading' => __('Total number of posts', 'the7mk2'),
+			'param_name' => 'jsl_posts_total',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_lazy_loading',
+			),
+			'description' => __('Leave empty to display all posts.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Number of posts to display on one page', 'the7mk2'),
+			'param_name' => 'jsl_posts_per_page',
+			'type' => 'dt_number',
+			'value' => '',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_lazy_loading',
+			),
+			'description' => __('Leave empty to use number from wp settings.', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// Posts offset.
+		array(
+			'heading'          => __( 'Posts offset', 'the7mk2' ),
+			'param_name'       => 'posts_offset',
+			'type'             => 'dt_number',
+			'value'            => 0,
+			'min'              => 0,
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'description'      => __( 'Offset for posts query (i.e. 2 means, posts will be displayed starting from the third post).', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// Rest of the settings.
+		// -- Standard
+		array(
+			'heading' => __('Show all pages in paginator', 'the7mk2'),
+			'param_name' => 'st_show_all_pages',
+			'type' => 'dt_switch',
+			'value' => 'n',
+			'options' => array(
+				'Yes' => 'y',
+				'No' => 'n',
+			),
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'standard',
+			),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Gap before pagination', 'the7mk2'),
+			'param_name' => 'st_gap_before_pagination',
+			'type' => 'dt_number',
+			'value' => '',
+			'units' => 'px',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'standard',
+			),
+			'description' => __('Leave empty to use default gap', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- JavaScript pages.
+		array(
+			'heading' => __('Show all pages in paginator', 'the7mk2'),
+			'param_name' => 'jsp_show_all_pages',
+			'type' => 'dt_switch',
+			'value' => 'n',
+			'options' => array(
+				'Yes' => 'y',
+				'No' => 'n',
+			),
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_pagination',
+			),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Gap before pagination', 'the7mk2'),
+			'param_name' => 'jsp_gap_before_pagination',
+			'type' => 'dt_number',
+			'value' => '',
+			'units' => 'px',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_pagination',
+			),
+			'description' => __('Leave empty to use default gap', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		// -- js Load more.
+		array(
+			'heading' => __('Gap before pagination', 'the7mk2'),
+			'param_name' => 'jsm_gap_before_pagination',
+			'type' => 'dt_number',
+			'value' => '',
+			'units' => 'px',
+			'dependency' => array(
+				'element' => 'loading_mode',
+				'value'	=> 'js_more',
+			),
+			'description' => __('Leave empty to use default gap', 'the7mk2'),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
 		array(
 			'heading' => __( 'Categorization & Ordering settings', 'the7mk2' ),
 			'param_name' => 'dt_title',
 			'type' => 'dt_title',
 			'value' => '',
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __('Order', 'the7mk2'),
@@ -921,19 +1120,23 @@ return array(
 				'Descending' => 'desc',
 			),
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
-			'heading' => __('Order by', 'the7mk2'),
-			'param_name' => 'orderby',
-			'type' => 'dropdown',
-			'value' => array(
-				'Date' => 'date',
-				'Name' => 'title',
-				'Rand' => 'rand',
+			'heading'          => __( 'Order by', 'the7mk2' ),
+			'param_name'       => 'orderby',
+			'type'             => 'dropdown',
+			'value'            => array(
+				'Date'          => 'date',
+				'Name'          => 'title',
+				'ID'            => 'ID',
+				'Modified'      => 'modified',
+				'Comment count' => 'comment_count',
+				'Menu order'    => 'menu_order',
+				'Rand'          => 'rand',
 			),
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-			'group' => __( 'List', 'the7mk2' ),
+			'group'            => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __('Show categories filter', 'the7mk2'),
@@ -944,18 +1147,22 @@ return array(
 				'Yes' => 'y',
 				'No' => 'n',
 			),
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
-			'heading' => __('Show name / date ordering', 'the7mk2'),
+			'heading'    => __( 'Show name / date ordering', 'the7mk2' ),
 			'param_name' => 'show_orderby_filter',
-			'type' => 'dt_switch',
-			'value' => 'n',
-			'options' => array(
+			'type'       => 'dt_switch',
+			'value'      => 'n',
+			'options'    => array(
 				'Yes' => 'y',
-				'No' => 'n',
+				'No'  => 'n',
 			),
-			'group' => __( 'List', 'the7mk2' ),
+			'dependency' => array(
+				'element' => 'orderby',
+				'value'   => array( 'date', 'title' ),
+			),
+			'group'      => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __('Show asc. / desc. ordering', 'the7mk2'),
@@ -966,7 +1173,20 @@ return array(
 				'Yes' => 'y',
 				'No' => 'n',
 			),
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
+		),
+		array(
+			'heading' => __('Categorization position', 'the7mk2'),
+			'param_name' => 'filter_position',
+			'type' => 'dropdown',
+			'std' => 'center',
+			'value' => array(
+				'Center' => 'center',
+				'Left' => 'left',
+				'Right' => 'right',
+			),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __( 'Gap below categorization & ordering', 'the7mk2' ),
@@ -975,21 +1195,21 @@ return array(
 			'value' => '',
 			'units' => 'px',
 			'description' => __('Leave empty to use default gap', 'the7mk2'),
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __( 'Categorization, ordering & pagination colors', 'the7mk2' ),
 			'param_name' => 'dt_title',
 			'type' => 'dt_title',
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __('Font color', 'the7mk2'),
 			'param_name' => 'navigation_font_color',
 			'type' => 'colorpicker',
 			'value' => '',
-			'description' => __( 'Leave empty to use headers color.', 'the7mk2' ),
-			'group' => __( 'List', 'the7mk2' ),
+			'description' => __( 'Leave empty to use headings color.', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 		array(
 			'heading' => __('Accent color', 'the7mk2'),
@@ -997,7 +1217,7 @@ return array(
 			'type' => 'colorpicker',
 			'value' => '',
 			'description' => __( 'Leave empty to use accent color.', 'the7mk2' ),
-			'group' => __( 'List', 'the7mk2' ),
+			'group' => __( 'Pagination & Categorization', 'the7mk2' ),
 		),
 	),
 );

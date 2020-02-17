@@ -398,6 +398,13 @@ $DT_META_BOXES[] = array(
 			'type'             => 'image_advanced_mk2',
 			'max_file_uploads' => 1,
 		),
+
+		array(
+			'name'             => _x( 'High-DPI (retina) favicon:', 'backend metabox', 'the7mk2' ),
+			'id'               => "{$prefix}favicon_hd",
+			'type'             => 'image_advanced_mk2',
+			'max_file_uploads' => 1,
+		),
 	),
     'only_on' => array( 'template' => array( 'template-microsite.php' ) ),
 );

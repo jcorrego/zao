@@ -25,12 +25,8 @@ class DT_Shortcode_Accordion extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( 'dt_item', array($this, 'shortcode_item') );
         add_shortcode( 'dt_accordion', array($this, 'shortcode_accordion') );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
     }
 
     public function shortcode_accordion( $atts, $content = null ) {
@@ -42,7 +38,7 @@ class DT_Shortcode_Accordion extends DT_Shortcode {
     public function shortcode_item( $atts, $content = null ) {
        $attributes = shortcode_atts( array(
             'title'         => '',
-        ), $atts );
+        ), $atts, 'dt_item' );
         
         $attributes['title'] = wp_kses($attributes['title'], array());
         

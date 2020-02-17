@@ -23,6 +23,7 @@
 .hover-scale .rollover-project:after,
 .hover-style-two.content-align-bottom .rollover-project:after,
 .portfolio-shortcode.enable-bg-rollover .post-thumbnail-rollover:after,
+.albums-shortcode.enable-bg-rollover .post-thumbnail-rollover:after,
 .enable-bg-rollover.hover-scale article:after {
 	background-color: @project-rollover-bg-color;
 	.background-gradient (@startColor: @project-rollover-bg-color, @endColor: @project-rollover-bg-color-2);
@@ -78,20 +79,28 @@
 /* # Buttons on rollover
 ================================================== */
 
-
-.links-container > a {
-	.accent-portfolio-icons & {
-		background-color: @accent-bg-color;
-	}
-	.accent-portfolio-icons.accent-gradient & {
-		.background-gradient (@startColor: @accent-bg-color, @endColor: @accent-bg-color-2);
-	}
-}
 .rollover-thumbnails span:first-child i {
 	.accent-bg-mixin;
 }
 .gallery-zoom-ico {
-	.gallery-shortcode & {
+	.gallery-shortcode &,
+	.blog-shortcode &,
+	.blog-carousel-shortcode & {
+		& span,
+		&:before {
+			color: @accent-bg-color;
+		}
+		border-color: @accent-bg-color;
+		.dt-icon-bg-on& {
+			background-color: @accent-bg-color;
+			.accent-gradient & {
+				.background-gradient (@startColor: @accent-bg-color, @endColor: @accent-bg-color-2);
+			}
+		}
+	}
+}
+.album-zoom-ico {
+	.albums-shortcode & {
 		& span {
 			color: @accent-bg-color;
 		}

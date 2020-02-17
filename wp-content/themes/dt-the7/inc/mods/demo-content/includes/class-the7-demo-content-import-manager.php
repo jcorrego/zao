@@ -13,6 +13,11 @@ class The7_Demo_Content_Import_Manager {
 	/**
 	 * @var array
 	 */
+	protected $demo;
+
+	/**
+	 * @var array
+	 */
 	protected $errors = array();
 
 	/**
@@ -29,20 +34,22 @@ class The7_Demo_Content_Import_Manager {
 	 * DT_Dummy_Import_Manager constructor.
 	 *
 	 * @param string $content_dir
+	 * @param array  $demo
 	 */
-	public function __construct( $content_dir ) {
+	public function __construct( $content_dir, $demo ) {
 		$this->content_dir = trailingslashit( $content_dir );
+		$this->demo        = $demo;
 	}
 
 	/**
 	 * Downloads demo content package.
 	 */
-	public function download_dummy() {
+	public function download_dummy( $source ) {
 		$item              = basename( $this->content_dir );
 		$code              = presscore_get_purchase_code();
 		$download_dir      = dirname( $this->content_dir );
 		$the7_remote_api   = new The7_demo_Content_Remote_Server_API();
-		$download_response = $the7_remote_api->download_dummy( $item, $code, $download_dir );
+		$download_response = $the7_remote_api->download_dummy( $item, $code, $download_dir, $source );
 
 		if ( is_wp_error( $download_response ) ) {
 			$error_code = $download_response->get_error_code();
@@ -106,7 +113,7 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 	 */
 	public function import_one_post() {
 		if ( empty( $_POST['post_to_import'] ) ) {
-			return true;
+			return 0;
 		}
 
 		$import_options = array(
@@ -122,14 +129,17 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 		ob_start();
 		$this->import_file( $this->content_dir . 'full-content.xml', $import_options );
 		ob_end_clean();
+
+		return $this->importer_get_processed_post( (int) $_POST['post_to_import'] );
 	}
 
 	public function wp_import_one_post_filter( $posts ) {
 		$post_id  = $_POST['post_to_import'];
 		$post_ids = array();
 		foreach ( $posts as $post ) {
-			array_push( $post_ids, $post['post_id'] );
+			$post_ids[] = $post['post_id'];
 		}
+
 		$single_post[] = $posts[ array_search( $post_id, $post_ids ) ];
 
 		return $single_post;
@@ -244,6 +254,7 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 		$this->do_wc_compatibility_actions( $file_name );
 
 		add_filter( 'wp_import_post_meta', array( $this, 'wp_import_post_meta_filter' ) );
+		add_filter( 'wxr_menu_item_args', array( $this, 'menu_item_args_filter' ) );
 
 		$this->importer_obj = new The7_Demo_Content_Import();
 
@@ -299,6 +310,27 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 		$responce['data']     = $availablePosts;
 
 		return $responce;
+	}
+
+	/**
+	 * Filter menu item args.
+	 *
+	 * Replace demo-relative urls with site-relative.
+	 *
+	 * @since 7.4.1
+	 *
+	 * @param array $args
+	 *
+	 * @return array
+	 */
+	public function menu_item_args_filter( $args ) {
+		$home_url  = home_url( '/' );
+		$demo_path = parse_url( $this->demo['link'], PHP_URL_PATH );
+		if ( $demo_path !== '/' ) {
+			$args['menu-item-url'] = preg_replace( "#^{$demo_path}(.*)#", "{$home_url}$1", $args['menu-item-url'] );
+		}
+
+		return $args;
 	}
 
 	/**
@@ -596,6 +628,27 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 	}
 
 	/**
+	 * Import The7 Font Awesome.
+	 *
+	 * @return bool
+	 */
+	public function import_the7_fontawesome() {
+		$site_meta = $this->get_site_meta();
+
+		if ( empty( $site_meta['the7_fontawesome_version'] ) ) {
+			return false;
+		}
+
+		if ( $site_meta['the7_fontawesome_version'] === 'fa5' ) {
+			The7_Icon_Manager::enable_fontawesome5();
+		} else {
+			The7_Icon_Manager::enable_fontawesome4();
+		}
+
+		return true;
+	}
+
+	/**
 	 * Import revoluton slider sliders.
 	 */
 	public function import_rev_sliders() {
@@ -605,13 +658,135 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 			return;
 		}
 
-		include_once 'class-the7-demo-content-revslider-importer.php';
+		include_once dirname( __FILE__ ) . '/class-the7-demo-content-revslider-importer.php';
 		$rev_slider_importer = new The7_Demo_Content_Revslider_Importer();
 
-		$rev_sliders = (array) $site_meta['revolution_sliders'];
-		foreach ( $rev_sliders as $rev_slider ) {
-			$rev_slider_importer->import_slider( $this->content_dir . "{$rev_slider}.zip" );
+		foreach ( (array) $site_meta['revolution_sliders'] as $rev_slider ) {
+			$rev_slider_importer->import_slider( $rev_slider, $this->content_dir . "{$rev_slider}.zip" );
 		}
+	}
+
+	public function import_elementor_settings() {
+		$site_meta = $this->get_site_meta();
+
+		if ( empty( $site_meta['elementor'] ) ) {
+			return;
+		}
+
+		$elementor_settings_to_import = array(
+			'elementor_scheme_color',
+			'elementor_scheme_typography',
+			'elementor_scheme_color-picker',
+			'elementor_cpt_support',
+			'elementor_disable_color_schemes',
+			'elementor_disable_typography_schemes',
+			'elementor_viewport_lg',
+			'elementor_viewport_md',
+		);
+
+		if ( class_exists( 'Elementor\Core\Settings\General\Model' ) ) {
+			$model_controls = Elementor\Core\Settings\General\Model::get_controls_list();
+
+			foreach ( $model_controls as $tab_name => $sections ) {
+
+				foreach ( $sections as $section_name => $section_data ) {
+
+					foreach ( $section_data['controls'] as $control_name => $control_data ) {
+						$elementor_settings_to_import[] = $control_name;
+					}
+				}
+			}
+		}
+
+		$elementor_settings_to_import = array_unique( $elementor_settings_to_import );
+		foreach ( $elementor_settings_to_import as $elementor_setting ) {
+			if ( isset( $site_meta['elementor'][ $elementor_setting ] ) ) {
+				update_option( $elementor_setting, $site_meta['elementor'][ $elementor_setting ] );
+			} else {
+				delete_option( $elementor_setting );
+			}
+		}
+
+		Elementor\Plugin::$instance->files_manager->clear_cache();
+	}
+
+	public function import_tinvwl_settings() {
+		$site_meta = $this->get_site_meta();
+
+		if ( empty( $site_meta['ti_wish_list_settings'] ) ) {
+			return;
+		}
+
+		if ( ! class_exists( 'TInvWL_Admin_Settings_General' ) || ! defined( 'TINVWL_PREFIX' ) ) {
+			return;
+		}
+
+		$ti_settings_object = TInvWL_Admin_Settings_General::instance();
+		$ti_settings_declaration = (array) $ti_settings_object->constructor_data();
+		$settings_to_import      = $site_meta['ti_wish_list_settings'];
+		foreach ( $ti_settings_declaration as $settings_group ) {
+			$option_id = TINVWL_PREFIX . '-' . $settings_group['id'];
+			if ( array_key_exists( $option_id, $settings_to_import ) ) {
+				update_option( $option_id, $settings_to_import[ $option_id ] );
+			}
+		}
+	}
+
+	public function import_woocommerce_settings() {
+		$site_meta = $this->get_site_meta();
+
+		if ( empty( $site_meta['woocommerce'] ) ) {
+			return;
+		}
+
+		if ( ! function_exists( 'WC' ) ) {
+			return;
+		}
+
+		$woocommerce_meta = (array) $site_meta['woocommerce'];
+
+		$woocommerce_page_settings = wp_parse_args(
+			$woocommerce_meta,
+			array(
+				'woocommerce_shop_page_id'      => false,
+				'woocommerce_cart_page_id'      => false,
+				'woocommerce_checkout_page_id'  => false,
+				'woocommerce_myaccount_page_id' => false,
+				'woocommerce_terms_page_id'     => false,
+			)
+		);
+		foreach ( $woocommerce_page_settings as $opt_id => $post_id ) {
+			if ( ! $post_id ) {
+				continue;
+			}
+
+			$imported_post_id = $this->importer_get_processed_post( $post_id );
+			if ( $imported_post_id ) {
+				$post_id = $imported_post_id;
+			}
+
+			update_option( $opt_id, $post_id );
+		}
+
+		$wc_image_settings = array(
+			'woocommerce_single_image_width',
+			'woocommerce_thumbnail_image_width',
+			'woocommerce_thumbnail_cropping',
+			'woocommerce_thumbnail_cropping_custom_width',
+			'woocommerce_thumbnail_cropping_custom_height',
+		);
+
+		$options_to_export = [];
+		foreach ( $wc_image_settings as $wc_option ) {
+			if ( isset( $woocommerce_meta[ $wc_option ] ) ) {
+				update_option( $wc_option, $woocommerce_meta[ $wc_option ] );
+			}
+		}
+
+		// Clear any unwanted data and flush rules.
+		update_option( 'woocommerce_queue_flush_rewrite_rules', 'yes' );
+		WC()->query->init_query_vars();
+		WC()->query->add_endpoints();
 	}
 
 	/**
@@ -753,7 +928,7 @@ If the problem persists, please don\'t hesitate to contact our <a href="%s" targ
 			return $this->importer_obj->processed_posts[ $post_id ];
 		}
 
-		return false;
+		return 0;
 	}
 
 	/**

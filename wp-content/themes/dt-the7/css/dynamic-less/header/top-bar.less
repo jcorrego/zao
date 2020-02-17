@@ -5,6 +5,11 @@
 /*Top bar background & lines -> Solid background*/
 .top-bar-bg {
 	background: @top-bg-color @top-bg-image @top-bg-repeat @top-bg-position-x @top-bg-position-y;
+	#phantom &,
+	.sticky-on &,
+	.sticky-top-line-on & {
+		background: @top-bg-color @top-bg-image @top-bg-repeat @top-bg-position-x @top-bg-position-y !important;
+	}
 }
 
 /*Top bar background & lines -> Content-width line/Full-width line*/
@@ -16,11 +21,21 @@
 /*Top & bottom paddings*/
 .top-bar {
 	min-height: @top-bar-height;
-	padding: @top-bar-padding-top @top-bar-side-paddings @top-bar-padding-bottom;
+	padding: @top-bar-padding-top @top-bar-padding-right @top-bar-padding-bottom @top-bar-padding-left;
+	.masthead:not(.side-header):not(.side-header-menu-icon) & {
+		max-width: calc(@content-width);
+		.header-width (@content-width);
+		margin: 0 auto;
+	}
+	
+	.masthead:not(.side-header).full-width &,
+	.masthead.side-header-menu-icon {
+		max-width: 100%;
+	}
 }
 /*Top bar font color*/
 .top-bar,
-.top-bar a,
+.top-bar a:not(.wpml-ls-link):not(.wpml-ls-item-toggle),
 .top-bar .mini-nav .customSelect,
 .top-bar .mini-nav a:hover,
 .header-bottom-bar a {
@@ -28,7 +43,7 @@
 }
 
 .mini-contacts,
-.mini-nav > ul > li > a,
+.mini-nav > ul:not(.mini-sub-nav) > li > a,
 .mini-login,
 .mini-login .submit,
 .mini-search .submit,

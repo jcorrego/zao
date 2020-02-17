@@ -261,5 +261,17 @@
                 <attribute encoding="allow_html_tags">fancytext_strings</attribute>
             </attributes>
         </shortcode>
+        <shortcode>
+			<tag>ultimate_video</tag>
+			<attributes>
+				<attribute>yt_channel_text</attribute>
+			</attributes>
+		</shortcode>
+		<shortcode>
+			<tag>ultimate_ribbon</tag>
+			<attributes>
+				<attribute>ribbon_msg</attribute>
+			</attributes>
+		</shortcode>
 	</shortcodes>
 </wpml-config>

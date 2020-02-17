@@ -8,7 +8,7 @@ class WCCT_Compatibility_With_WOOMULTI_CURRENCY {
 		/**
 		 * Checking If Multi Currency Plugin is installed or not
 		 */
-		if ( false === defined( 'WOOMULTI_CURRENCY_VERSION' ) ) {
+		if ( false === defined( 'WOOMULTI_CURRENCY_VERSION' ) && false === defined( 'WOOMULTI_CURRENCY_F_VERSION' ) ) {
 			return;
 		}
 
@@ -25,6 +25,3 @@ class WCCT_Compatibility_With_WOOMULTI_CURRENCY {
 }
 
 new WCCT_Compatibility_With_WOOMULTI_CURRENCY();
-
-
-

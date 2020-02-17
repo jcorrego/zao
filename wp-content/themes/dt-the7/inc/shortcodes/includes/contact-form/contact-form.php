@@ -27,9 +27,6 @@ class DT_Shortcode_ContactForm extends DT_Shortcode {
 
 	protected function __construct() {
 		add_shortcode( 'dt_contact_form', array( $this, 'shortcode' ) );
-
-		// add shortcode button
-		$tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename( dirname( __FILE__ ) ), false, 4 );
 	}
 
 	public function shortcode( $atts, $content = null ) {
@@ -41,7 +38,7 @@ class DT_Shortcode_ContactForm extends DT_Shortcode {
 			'button_title'   => 'Send message',
 			'terms'          => 'n',
 			'terms_msg'      => '',
-		), $atts ), EXTR_OVERWRITE );
+		), $atts, 'dt_contact_form' ), EXTR_OVERWRITE );
 
 		if ( ! class_exists( 'Presscore_Inc_Widgets_ContactForm' ) ) {
 			return '';

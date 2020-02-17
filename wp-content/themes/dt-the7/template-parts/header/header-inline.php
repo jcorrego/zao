@@ -2,15 +2,16 @@
 /**
  * Inline header.
  *
- * @package the7
- * @since 3.0.0
+ * @since   3.0.0
+ * @package The7/Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 
-<div <?php presscore_header_class( 'masthead inline-header' ); presscore_header_inline_style(); ?> role="banner">
+<div <?php presscore_header_class( 'masthead inline-header' ); ?> <?php presscore_header_inline_style(); ?> role="banner">
 
 	<?php presscore_get_template_part( 'theme', 'header/top-bar' ); ?>
 

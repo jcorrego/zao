@@ -85,7 +85,7 @@ if ( ! function_exists( 'presscore_comment' ) ) :
 					</div><!-- .comment-content -->
 
 					<?php
-					$icon = '<i class="fa fa-reply" aria-hidden="true"></i>&nbsp;';
+					$icon = '<i class="dt-icon-the7-misc-099" aria-hidden="true"></i>&nbsp;';
 
 					comment_reply_link(array_merge( $args, array(
 						'add_below' => 'div-comment',

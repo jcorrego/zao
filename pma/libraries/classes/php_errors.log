@@ -1,0 +1,1 @@
+[16-Jun-2019 09:08:57 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/forge/zaomakeup.com.co/pma/libraries/classes/Bookmark.php on line 8

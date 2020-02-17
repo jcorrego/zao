@@ -48,7 +48,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_testimonials',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_testim_masonry_editor_ico.gif', 98, 104 ),
-	                'title'  => _x( 'Testimonials', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Testimonials', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -100,7 +100,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_testimonials',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_testim_carousel_editor_ico.gif', 131, 104 ),
-	                'title'  => _x( 'Testimonials slider', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Testimonials slider', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -152,7 +152,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials', false ) ) {
 				'loading_effect' => 'none'
 			);
 
-			$attributes = shortcode_atts( $default_atts, $atts );
+			$attributes = shortcode_atts( $default_atts, $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['type'] = sanitize_key( $attributes['type'] );

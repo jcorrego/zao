@@ -258,10 +258,15 @@ $DT_META_BOXES['dt_page_box-post_options'] = array(
 	'fields' 	=> array(
 
 		// Back button
-		Presscore_Meta_Box_Field_Template::get_as_array( 'select pages', array(
-			'name'		=> _x('Back button:', 'backend metabox', 'the7mk2'),
-			'id'		=> "{$prefix}back_button",
-		) ),
+		array(
+			'name'  => _x( 'Back button url:', 'backend metabox', 'the7mk2' ),
+			// Translators: %s link to theme options.
+			'desc'  => sprintf( _x( 'Leave empty to use link from %s.', 'backend metabox', 'the7mk2' ), '<a href="' . admin_url( 'admin.php?page=of-blog-and-portfolio-menu&tab=blog-tab&mark=general-post_back_button_url#section-general-show_back_button_in_post' ) . '" target="_blank">' . _x( 'Theme Options', 'backend metabox', 'the7mk2' ) . '</a>' ),
+			'id'    => "{$prefix}back_button",
+			'type'  => 'text',
+			'std'   => '',
+			'class' => 'widefat',
+		),
 
 		// Hide featured image on post page
 		array(

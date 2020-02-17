@@ -151,7 +151,6 @@ class Presscore_Inc_Widgets_TestimonialsSlider extends WP_Widget {
 			<input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" class="widefat" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr($instance['title']); ?>" />
 		</p>
 
-		<p>
 			<strong><?php _ex('Category:', 'widget', 'dt-the7-core'); ?></strong><br />
 			<?php if( !is_wp_error($terms) ): ?>
 
@@ -176,7 +175,6 @@ class Presscore_Inc_Widgets_TestimonialsSlider extends WP_Widget {
 
 			<?php endif; ?>
 
-		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show_avatar' ); ?>"><?php echo _ex('Show image:', 'widget',  'dt-the7-core'); ?></label>
 			<input id="<?php echo $this->get_field_id( 'show_avatar' ); ?>" type="checkbox" name="<?php echo $this->get_field_name('show_avatar'); ?>[]" value="1" <?php checked( $instance['show_avatar'] ); ?> />
@@ -184,7 +182,7 @@ class Presscore_Inc_Widgets_TestimonialsSlider extends WP_Widget {
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'show' ); ?>"><?php _ex('Number of testimonials:', 'widget', 'dt-the7-core'); ?></label>
-			<input id="<?php echo $this->get_field_id( 'show' ); ?>" name="<?php echo $this->get_field_name( 'show' ); ?>" value="<?php echo esc_attr($instance['show']); ?>" size="2" maxlength="2" />
+			<input type="number" id="<?php echo $this->get_field_id( 'show' ); ?>" name="<?php echo $this->get_field_name( 'show' ); ?>" value="<?php echo esc_attr($instance['show']); ?>" />
 		</p>
 
 		<p>
@@ -196,7 +194,7 @@ class Presscore_Inc_Widgets_TestimonialsSlider extends WP_Widget {
 			</select>
 		</p>
 
-		</p>
+		<p>
 			<label>
 			<input name="<?php echo $this->get_field_name( 'order' ); ?>" value="ASC" type="radio" <?php checked( $instance['order'], 'ASC' ); ?> /><?php _ex('Ascending', 'widget', 'dt-the7-core'); ?>
 			</label>
@@ -206,8 +204,11 @@ class Presscore_Inc_Widgets_TestimonialsSlider extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'autoslide' ); ?>"><?php _ex('Autoslide:', 'widget',  'dt-the7-core'); ?></label>
-			<input type="text" id="<?php echo $this->get_field_id( 'autoslide' ); ?>" class="widefat" name="<?php echo $this->get_field_name( 'autoslide' ); ?>" value="<?php echo esc_attr($instance['autoslide']); ?>" />
+			<label for="<?php echo $this->get_field_id( 'autoslide' ); ?>"><?php _ex('Autoslide (ms):', 'widget',  'dt-the7-core'); ?></label>
+			<input type="number" id="<?php echo $this->get_field_id( 'autoslide' ); ?>" name="<?php echo $this->get_field_name( 'autoslide' ); ?>" value="<?php echo esc_attr($instance['autoslide']); ?>" step="100"/>
+			<small style=" display: inline-block; color: gray;"><?php
+			_ex( 'To disable autoslide just set it to 0.', 'widget', 'dt-the7-core' );
+			?></small>
 		</p>
 
 		<div style="clear: both;"></div>

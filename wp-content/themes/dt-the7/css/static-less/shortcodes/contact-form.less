@@ -37,6 +37,10 @@ input[type="button"] {
 	width: 100%;
 }
 
+.the7-g-captcha {
+	margin-bottom: 20px;
+}
+
 .form-message {
 	display: block;
 	margin-bottom: 10px;
@@ -65,7 +69,6 @@ textarea {
 	-webkit-appearance:	none;
 	-moz-appearance:	none;
 	-ms-appearance:		none;
-	-o-appearance:		none;
 	appearance:			none;
 }
 
@@ -104,11 +107,15 @@ textarea {
 		right: 0;
 		margin-top: -5px;
 		width: 10px;
-		font-family: 'Font Awesome 5 Free';
-	  	font-weight: 900;
+		font-family: 'icomoon-the7-font';
+	    speak: none;
+	    font-style: normal;
+	    font-weight: normal;
+	    font-variant: normal;
+	    text-transform: none;
 	  	font-size: 10px;
 	  	line-height: 1;
-		content: "\f00d";
+		content: "\eb01";
 	}
 }
 
@@ -150,26 +157,15 @@ textarea {
 	    padding: 15px 20px 15px 65px;
 	    z-index: 9999;
 	    overflow: hidden;
-	     -webkit-transform: translate3d(200px, -50%, 0);
-        -ms-transform: translate3d(200px, -50%, 0);
         transform: translate3d(200px, -50%, 0);
-         -webkit-animation: slide-in-message, slide-out-message;
         animation: slide-in-message, slide-out-message;
-        -webkit-animation-duration: 1.2s, 1.1s;
         animation-duration: 1.2s, 1.1s;
-       -webkit-animation-delay: .4s, 9s;
         animation-delay: .4s, 9s;
-        -webkit-animation-fill-mode: forwards;
         animation-fill-mode: forwards;
-        -webkit-animation-timing-function: ease;
         animation-timing-function: ease;
 	    font-weight: bold;
 	    box-sizing: border-box;
-	    // & a,
-	    // & a:hover {
-	    // 	color: #fff;
-
-	    // }
+	  
 	    &:before {
 	    	position: absolute;
 	    	.flex-display(@display: flex);

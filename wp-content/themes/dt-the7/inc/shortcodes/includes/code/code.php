@@ -22,12 +22,8 @@ class DT_Shortcode_Code extends DT_Shortcode {
 	}
 
 	protected function __construct() {
-
 		add_shortcode( 'dt_code', array($this, 'shortcode_prepare') );
 		add_shortcode( 'dt_code_final', array($this, 'shortcode') );
-
-		// add shortcode button
-		$tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)) );
 	}
 
 	public function shortcode_prepare( $atts, $content = null ) {

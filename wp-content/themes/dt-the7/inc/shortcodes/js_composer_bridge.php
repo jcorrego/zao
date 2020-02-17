@@ -65,7 +65,7 @@ add_filter( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'custom_css_accordion', 10, 3 );
  */
 
 if ( The7_Admin_Dashboard_Settings::get( 'rows' ) ) {
-	include_once dirname( __FILE__ ) . '/vc_row_js_composer_bridge.php';
+	include_once dirname( __FILE__ ) . '/vc-bridges/the7-vc-row-bridge.php';
 }
 
 /**
@@ -227,13 +227,47 @@ $param = WPBMap::getParam('vc_progress_bar', 'bgcolor');
 $param['value'] = array( 'Accent' => 'accent-bg', 'Custom' => 'custom' );
 WPBMap::mutateParam('vc_progress_bar', $param);
 
+$animation_options = array(
+	'label'  => 'The7 animations',
+	'values' => array_diff( presscore_get_vc_animation_options(), array(
+		'',
+		'bounceIn',
+		'bounceInDown',
+		'bounceInLeft',
+		'bounceInRight',
+		'bounceInUp',
+		'fadeIn',
+		'fadeInDown',
+		'fadeInDownBig',
+		'fadeInLeft',
+		'fadeInLeftBig',
+		'fadeInRight',
+		'fadeInRightBig',
+		'fadeInUp',
+		'fadeInUpBig',
+		'flipInX',
+		'flipInY',
+		'rotateIn',
+		'rotateInDownLeft',
+		'rotateInDownRight',
+		'rotateInUpLeft',
+		'rotateInUpRight',
+		'rollIn',
+		'zoomIn',
+		'zoomInDown',
+		'zoomInLeft',
+		'zoomInRight',
+		'zoomInUp',
+	) ),
+);
+
 /**
  * VC Column text.
  */
 
 // add custom animation
 $param = WPBMap::getParam('vc_column_text', 'css_animation');
-$param['value'] = presscore_get_vc_animation_options();
+$param['settings']['custom'][] = $animation_options;
 WPBMap::mutateParam('vc_column_text', $param);
 
 /**
@@ -242,7 +276,7 @@ WPBMap::mutateParam('vc_column_text', $param);
 
 // add custom animation
 $param = WPBMap::getParam('vc_message', 'css_animation');
-$param['value'] = presscore_get_vc_animation_options();
+$param['settings']['custom'][] = $animation_options;
 WPBMap::mutateParam('vc_message', $param);
 
 /**
@@ -251,7 +285,7 @@ WPBMap::mutateParam('vc_message', $param);
 
 // add custom animation
 $param = WPBMap::getParam('vc_single_image', 'css_animation');
-$param['value'] = presscore_get_vc_animation_options();
+$param['settings']['custom'][] = $animation_options;
 WPBMap::mutateParam('vc_single_image', $param);
 
 // replace pretty photo with theme popup
@@ -288,6 +322,19 @@ vc_add_param("vc_single_image", array(
 	"heading" => __("Lazy loading", 'the7mk2'),
 	"param_name" => "lazy_loading",
 ));
+
+/**
+ * @since 7.3.3
+ */
+vc_add_param( 'vc_single_image', array(
+	'type'       => 'checkbox',
+	'heading'    => __( 'Nofollow', 'the7mk2' ),
+	'param_name' => 'rel_no_follow',
+	'dependency' => array(
+		'element' => 'onclick',
+		'value'   => array( 'img_link_large', 'custom_link' ),
+	),
+) );
 
 /**
  * VC Accordion.
@@ -372,8 +419,12 @@ vc_lean_map( 'dt_carousel', null, dirname( __FILE__ ) . '/vc-bridges/the7-carous
 vc_lean_map( 'dt_default_button', null, dirname( __FILE__ ) . '/vc-bridges/the7-default-button-bridge.php' );
 vc_lean_map( 'dt_soc_icons', null, dirname( __FILE__ ) . '/vc-bridges/the7-social-icons-bridge.php' );
 vc_lean_map( 'dt_single_soc_icon', null, dirname( __FILE__ ) . '/vc-bridges/the7-social-icon-bridge.php' );
+vc_lean_map( 'dt_icon', null, dirname( __FILE__ ) . '/vc-bridges/the7-icon-bridge.php' );
+vc_lean_map( 'dt_icon_text', null, dirname( __FILE__ ) . '/vc-bridges/the7-text-with-icon-bridge.php' );
 vc_lean_map( 'dt_gallery_masonry', null, dirname( __FILE__ ) . '/vc-bridges/the7-media-gallery-masonry-bridge.php' );
 vc_lean_map( 'dt_media_gallery_carousel', null, dirname( __FILE__ ) . '/vc-bridges/the7-media-gallery-carousel-bridge.php' );
 
-include dirname( __FILE__ ) . '/wc_js_composer_bridge.php';
-
+if ( dt_is_woocommerce_enabled() ) {
+	vc_lean_map( 'dt_products_carousel', null, dirname( __FILE__ ) . '/vc-bridges/the7-products-carousel-bridge.php' );
+	vc_lean_map( 'dt_products_masonry', null, dirname( __FILE__ ) . '/vc-bridges/the7-products-masonry-bridge.php' );
+}

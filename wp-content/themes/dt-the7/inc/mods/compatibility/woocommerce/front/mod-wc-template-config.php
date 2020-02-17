@@ -71,34 +71,13 @@ if ( ! function_exists( 'dt_woocommerce_configure_template' ) ) :
 
 		// Replace theme breadcrumbs.
 		add_filter( 'presscore_get_breadcrumbs-html', 'dt_woocommerce_replace_theme_breadcrumbs', 20, 2 );
+
+		// Fix fancy titles for archives.
+		if ( is_product_taxonomy() ) {
+			add_action( 'presscore_config_base_init', array( $mod_wc_config, 'fix_fancy_title_for_archives' ) );
+		}
 	}
 
 	add_action( 'get_header', 'dt_woocommerce_configure_template', 5 );
-
-endif;
-
-if ( ! function_exists( 'dt_woocommerce_configure_archive_templates' ) ) :
-
-	/**
-	 * This function configure sidebar and footer as for the 'shop' woocommerce page.
-	 *
-	 * @param string $name
-	 */
-	function dt_woocommerce_configure_archive_templates( $name = '' ) {
-		if ( 'shop' !== $name ) {
-			return;
-		}
-
-		if ( is_product_category() || is_product_tag() ) {
-			$post_id = wc_get_page_id( 'shop' );
-			if ( $post_id ) {
-				presscore_get_config()->set( 'post_id', $post_id );
-				presscore_config_populate_sidebar_and_footer_options();
-				presscore_get_config()->set( 'post_id', null );
-			}
-		}
-	}
-
-	add_action( 'get_header', 'dt_woocommerce_configure_archive_templates', 20 );
 
 endif;

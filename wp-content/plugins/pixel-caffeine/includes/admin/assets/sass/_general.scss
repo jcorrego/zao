@@ -619,6 +619,43 @@ input {
   .data-group .value {
     @include make-sm-column(10);
   }
+
+  @media screen and (min-width: $screen-md-min) {
+    .multiple-fields-inline {
+      &.select-input {
+        @include flexbox();
+
+        .control-wrap {
+          &:first-child {
+            width: 25%;
+          }
+
+          &:last-child {
+            width: 75%;
+          }
+        }
+      }
+
+      .controls-wrap {
+        @include flexbox();
+
+        .control-wrap {
+          &.w25 {
+            width: 25%;
+          }
+
+          &.w33 {
+            width: 33%;
+          }
+        }
+      }
+
+      .field-helper {
+        margin-left: 16.6666667%;
+        padding-left: 15px;
+      }
+    }
+  }
 }
 
 .form-horizontal-inline {
@@ -1062,7 +1099,7 @@ p {
     }
   }
 
-  &.btn-naked, {
+  &.btn-naked {
     background: transparent;
     box-shadow: none;
     color: lighten($black, 20%);

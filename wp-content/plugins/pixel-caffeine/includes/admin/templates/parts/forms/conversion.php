@@ -31,6 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<option value="page_visit"<# if ( 'page_visit' == data.trigger ) { #> selected="selected"<# } #>><?php _e( 'Page visit', 'pixel-caffeine' ) ?></option>
 			<option value="link_click"<# if ( 'link_click' == data.trigger ) { #> selected="selected"<# } #>><?php _e( 'Link click', 'pixel-caffeine' ) ?></option>
 			<option value="css_selector"<# if ( 'css_selector' == data.trigger ) { #> selected="selected"<# } #>><?php _e( 'CSS Selector', 'pixel-caffeine' ) ?></option>
+			<option value="js_event"<# if ( 'js_event' == data.trigger ) { #> selected="selected"<# } #>><?php _e( 'JS Event', 'pixel-caffeine' ) ?></option>
 		</select>
 		<div class="field-helper">
 			<?php $page->print_field_error( 'event_trigger_on', '<span class="help-block help-block-error">', '</span>' ) ?>
@@ -41,10 +42,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- Show only if link_click or page_visit are selected in the previous select -->
 <div class="form-group event_trigger_on-page_visit event_trigger_on-link_click<?php $page->field_class( 'event_url' ) ?>">
 	<label for="event_url" class="control-label"><?php _e( 'URL', 'pixel-caffeine' ) ?></label>
-	<div class="control-wrap">
-		<input type="text" class="form-control" name="event_url" id="event_url" value="{{{ data.url }}}" placeholder="<?php _e( 'URL', 'pixel-caffeine' ) ?>">
-		<div class="field-helper">
-			<?php $page->print_field_error( 'event_url', '<span class="help-block help-block-error">', '</span>' ) ?>
+	<div class="multiple-fields-inline select-input">
+		<div class="control-wrap">
+			<select name="event_url_condition" id="event_url_condition" class="form-control js-dep">
+				<option value="contains"<# if ( 'contains' == data.url_condition ) { #> selected="selected"<# } #>><?php _e( 'Contains', 'pixel-caffeine' ) ?></option>
+				<option value="exact"<# if ( 'exact' == data.url_condition ) { #> selected="selected"<# } #>><?php _e( 'Is Exact', 'pixel-caffeine' ) ?></option>
+			</select>
+		</div>
+		<div class="control-wrap">
+			<input type="text" class="form-control" name="event_url" id="event_url" value="{{{ data.url }}}" placeholder="<?php _e( 'URL', 'pixel-caffeine' ) ?>">
+			<div class="field-helper">
+				<?php $page->print_field_error( 'event_url', '<span class="help-block help-block-error">', '</span>' ) ?>
+			</div>
 		</div>
 	</div>
 </div>
@@ -56,6 +65,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<input type="text" class="form-control" name="event_css" id="event_css" value="{{{ data.css }}}" placeholder="<?php _e( 'CSS', 'pixel-caffeine' ) ?>">
 		<div class="field-helper">
 			<?php $page->print_field_error( 'event_css', '<span class="help-block help-block-error">', '</span>' ) ?>
+		</div>
+	</div>
+</div>
+<div class="form-group event_trigger_on-js_event<?php $page->field_class( 'js_event_name' ) ?>">
+	<label for="js_event_name" class="control-label"><?php _e( 'JS Event', 'pixel-caffeine' ) ?></label>
+	<div class="multiple-fields-inline">
+		<div class="controls-wrap">
+			<div class="control-wrap w33">
+				<input type="text" class="form-control" name="event_js_event_element" id="event_js_event_element" value="{{{ data.js_event_element }}}" placeholder="<?php _e( 'Element by jQuery/CSS selector (`.element` or `#element` or `#element .child`)', 'pixel-caffeine' ) ?>">
+				<div class="field-helper">
+					<?php $page->print_field_error( 'event_js_event_element', '<span class="help-block help-block-error">', '</span>' ) ?>
+				</div>
+			</div>
+			<div class="control-wrap">
+				<input type="text" class="form-control" name="event_js_event_name" id="event_js_event_name" value="{{{ data.js_event_name }}}" placeholder="<?php _e( 'JS Event name', 'pixel-caffeine' ) ?>">
+				<div class="field-helper">
+					<?php $page->print_field_error( 'event_js_event_name', '<span class="help-block help-block-error">', '</span>' ) ?>
+				</div>
+			</div>
+		</div>
+		<div class="field-helper">
+			<small class="text"><?php _e( 'It will be translated in `jQuery(" field1 content ").on(" field2 content ")`', 'pixel-caffeine' ) ?></small>
 		</div>
 	</div>
 </div>
@@ -152,6 +183,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</select>
 				<div class="field-helper">
 					<?php $page->print_field_error( 'event_field_currency', '<span class="help-block help-block-error">', '</span>' ) ?>
+				</div>
+			</div>
+		</div>
+		<div class="form-group event-field predicted_ltv-field<?php $page->field_class( 'event_field_predicted_ltv' ) ?>">
+			<label for="event_field_predicted_ltv" class="control-label"><?php _e( 'Predicted lifetime value', 'pixel-caffeine' ) ?></label>
+			<div class="control-wrap">
+				<input type="text" class="form-control" name="event_field_predicted_ltv" id="event_field_predicted_ltv" value="{{{ data.params.predicted_ltv }}}" placeholder="<?php _e( 'Predicted lifetime value', 'pixel-caffeine' ) ?>">
+				<div class="field-helper">
+					<?php $page->print_field_error( 'event_field_predicted_ltv', '<span class="help-block help-block-error">', '</span>' ) ?>
 				</div>
 			</div>
 		</div>

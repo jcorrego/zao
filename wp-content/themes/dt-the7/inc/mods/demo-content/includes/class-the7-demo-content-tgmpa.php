@@ -29,6 +29,11 @@ class The7_Demo_Content_TGMPA implements The7_Demo_Content_Plugins_Checker_Inter
 	public function is_plugins_active( $plugins = array() ) {
 		global $the7_tgmpa;
 
+		if ( ! $the7_tgmpa && class_exists( 'Presscore_Modules_TGMPAModule' ) ) {
+			Presscore_Modules_TGMPAModule::init_the7_tgmpa();
+			Presscore_Modules_TGMPAModule::register_plugins_action();
+		}
+
 		$this->inactive_plugins = $this->plugins_to_install = array();
 
 		if ( $plugins ) {

@@ -14,14 +14,19 @@ if ( ! class_exists( 'THE7_RWMB_File_Advanced_Field' ) )
 		 */
 		static function admin_enqueue_scripts()
 		{
+			static $vars_localized;
+
 			parent::admin_enqueue_scripts();
 
 			// Make sure scripts for new media uploader in WordPress 3.5 is enqueued
 			wp_enqueue_media();
 			wp_enqueue_script( 'the7-mb-file-advanced', THE7_RWMB_JS_URL . 'file-advanced.js', array( 'jquery', 'underscore' ), THE7_RWMB_VER, true );
-			wp_localize_script( 'the7-mb-file-advanced', 'the7mbFileAdvanced', array(
-				'frameTitle' => __( 'Select Files', 'the7mk2' ),
-			) );
+			if ( ! $vars_localized ) {
+				wp_localize_script( 'the7-mb-file-advanced', 'the7mbFileAdvanced', array(
+					'frameTitle' => __( 'Select Files', 'the7mk2' ),
+				) );
+				$vars_localized = true;
+			}
 		}
 
 		/**

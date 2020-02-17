@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 
-	class DT_Shortcode_GalleryMasonry extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_GalleryMasonry extends The7pt_Shortcode_With_Inline_CSS {
 
 		/**
 		 * @var DT_Shortcode_GalleryMasonry
@@ -43,7 +43,7 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 				'image_sizing'                   => 'proportional',
 				'resized_image_dimensions'       => '1x1',
 				'image_scale_animation_on_hover' => 'quick_scale',
-				'image_hover_bg_color'           => 'solid_rollover_bg',
+				'image_hover_bg_color'           => 'default',
 				'image_border_radius'            => '0px',
 				'image_decoration'   			 => 'none',
 				'shadow_h_length'    			 => '0px',
@@ -51,10 +51,8 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 				'shadow_blur_radius' 			 => '12px',
 				'shadow_spread'      			 => '3px',
 				'shadow_color'       			 => 'rgba(0,0,0,.25)',
-				'custom_rollover_bg_color'       => '',
-				'custom_rollover_bg_color_2'     => '',
-				'custom_rollover_bg_color_1'     => '',
-				'custom_rollover_gradient_deg'   => '135deg',
+				'custom_rollover_bg_color'       => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
 				'hover_animation'                => 'fade',
 				'responsiveness'                 => 'browser_width_based',
 				'bwb_columns'                    => 'desktop:6|h_tablet:4|v_tablet:3|phone:2',
@@ -77,7 +75,7 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 				'order'                          => 'desc',
 				'orderby'                        => 'date',
 				'show_zoom'                      => 'y',
-				'gallery_image_zoom_icon'        => 'icon-im-hover-001',
+				'gallery_image_zoom_icon'        => 'icomoon-the7-font-the7-zoom-06',
 				'project_icon_size'              => '32px',
 				'dt_project_icon'                => '',
 				'project_icon_bg_size'           => '44px',
@@ -145,7 +143,7 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 
 			echo '<div ' . $this->container_class( 'gallery-shortcode album-gallery-shortcode dt-gallery-container' ) . presscore_masonry_container_data_atts( $data_atts_str ) . '>';
 
-			presscore_remove_lazy_load_attrs();
+			presscore_add_masonry_lazy_load_attrs();
 
 				echo '<div ' . $this->iso_container_class() . '>';
 					do_action( 'presscore_before_post' );
@@ -159,10 +157,6 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 						//'select' => $this->atts['select'],
 						'category' => $this->atts['category']
 					) );
-					$visibility = 'visible';
-					if ( $data_post_limit >= 0 && $dt_query->current_post >= $data_post_limit ) {
-						$visibility = 'hidden';
-					}
 					$post_class_array = array(
 						'post',
 						'visible',
@@ -171,7 +165,7 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 					while( $dt_query->have_posts() ) { 
 						$dt_query->the_post();
 						$img_id = get_the_ID();
-						echo '<div ' . presscore_tpl_masonry_item_wrap_class( $visibility ) . presscore_tpl_masonry_item_wrap_data_attr() . '>';
+						echo '<div ' . presscore_tpl_masonry_item_wrap_class(  ) . presscore_tpl_masonry_item_wrap_data_attr() . '>';
 						
 							echo '<article ' . $this->post_class( $post_class_array ) . '>';
 
@@ -235,7 +229,7 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 					}
 				echo '</div><!-- iso-container|iso-grid -->';
 
-				presscore_add_lazy_load_attrs();
+				presscore_remove_masonry_lazy_load_attrs();
 
 				if ( 'disabled' == $loading_mode ) {
 				// Do not output pagination.
@@ -436,17 +430,26 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage   = new Presscore_Lib_SimpleBag();
-			$factory   = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'gallery-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
 			$less_vars->add_pixel_number( 'media-image-border-radius', $this->get_att( 'image_border_radius' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-1', $this->get_att( 'custom_rollover_bg_color_1', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-2', $this->get_att( 'custom_rollover_bg_color_2', '~""' ) );
-			$less_vars->add_number( 'rollover-gradient-deg', $this->get_att( 'custom_rollover_gradient_deg' ) );
+
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
 
 			if ( 'browser_width_based' === $this->get_att( 'responsiveness' ) ) {
 				$columns_attributes = the7_shortcode_add_responsive_columns_data_attributes( array(), $this->get_att( 'bwb_columns' ) );
@@ -507,7 +510,7 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 			return $this->vc_inline_dummy( array(
 				'class' => 'dt_vc-gallery_masonry',
 				'img'   => array( PRESSCORE_SHORTCODES_URI . '/images/icon-media-gallery-grid.png', 32, 32 ),
-				'title' => _x( 'Gallery masonry & grid', 'vc inline dummy', 'the7mk2' ),
+				'title' => _x( 'Gallery masonry & grid', 'vc inline dummy', 'dt-the7-core' ),
 				'style' => array( 'height' => 'auto' ),
 			) );
 		}
@@ -563,6 +566,9 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 			if ( $args['number'] ) {
 				$media_args['posts_per_page'] = $posts_per_page ;
 			}
+			if ( 'standard' === $pagination_mode ) {
+				$media_args['paged'] = dt_get_paged_var();
+			}
 
 			return new WP_Query( $media_args );
 		}
@@ -588,7 +594,6 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 					'posts_per_page'   => $posts_per_page,
 					'post_type'        => $post_type,
 					'post_status'      => 'publish',
-					'paged'            => dt_get_paged_var(),
 					'suppress_filters' => false,
 					'post__in'         => $post_ids,
 				);
@@ -681,7 +686,6 @@ if ( ! class_exists( 'DT_Shortcode_GalleryMasonry', false ) ):
 
 				$query_args['orderby'] = $config->get( 'orderby' );
 				$query_args['order'] = $config->get( 'order' );
-				$query_args['paged'] = dt_get_paged_var();
 			} else {
 				// JS pagination.
 				$query_args['orderby'] = $this->get_att( 'orderby' );

@@ -1,14 +1,11 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	'weight'      => -1,
 	'name'        => __( 'Fancy Media', 'the7mk2' ),
-	'description' => __( 'Image or video from Media Library', 'the7mk2' ),
+	'description' => __( 'Images from Media Library', 'the7mk2' ),
 	'base'        => 'dt_fancy_image',
 	'icon'        => 'dt_vc_ico_fancy_image',
 	'class'       => 'dt_vc_sc_fancy_image',
@@ -86,6 +83,13 @@ return array(
 		array(
 			'type'             => 'textfield',
 			'heading'          => __( 'Video URL', 'the7mk2' ),
+			'description'      => wpautop( __(
+				"Make sure you add the actual URL of the video and not the share URL.
+				Youtube: https://www.youtube.com/watch?v=l-epKcOA7RQ
+				Vimeo: https://vimeo.com/94502406
+				",
+				'the7mk2'
+			) ),
 			'admin_label'      => true,
 			'param_name'       => 'media',
 			'value'            => '',
@@ -100,6 +104,7 @@ return array(
 		array(
 			'type'             => 'dropdown',
 			'heading'          => __( 'On click action', 'the7mk2' ),
+			'description'      => __( 'It works if the image is set.', 'the7mk2' ),
 			'param_name'       => 'onclick',
 			'value'            => array(
 				'None'             => 'none',
@@ -134,30 +139,19 @@ return array(
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 		array(
-			'type'       => 'dt_switch',
-			'heading'    => __( 'Enable image hovers', 'the7mk2' ),
-			'param_name' => 'image_hovers',
-			'value'      => 'true',
-			'options'    => array(
+			'type'             => 'dt_switch',
+			'heading'          => __( 'Nofollow', 'the7mk2' ),
+			'param_name'       => 'nofollow',
+			'value'            => 'false',
+			'options'          => array(
 				'Yes' => 'true',
 				'No'  => 'false',
 			),
-			'dependency' => array(
+			'dependency'       => array(
 				'element' => 'onclick',
-				'value'   => array( 'lightbox', 'custom_link' ),
+				'value'   => array( 'custom_link' ),
 			),
-		),
-		// @TODO: Compatibility? Maybe delete.
-		array(
-			'type'             => 'dropdown',
-			'heading'          => __( 'Style', 'the7mk2' ),
-			'param_name'       => 'style',
-			'value'            => array(
-				'Full-width media'                     => '1',
-				'Media with padding & outline'         => '2',
-				'Media with padding & background fill' => '3',
-			),
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt-force-hidden',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 		array(
 			'type'             => 'textfield',
@@ -188,22 +182,6 @@ return array(
 			'value'            => '',
 			'units'            => 'px',
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
-		),
-		// @TODO: Compatibility? Maybe delete.
-		array(
-			'type'             => 'textfield',
-			'heading'          => __( 'Padding', 'the7mk2' ),
-			'param_name'       => 'padding',
-			'value'            => '',
-			'description'      => __( 'In pixels.', 'the7mk2' ),
-			'dependency'       => array(
-				'element' => 'style',
-				'value'   => array(
-					'2',
-					'3',
-				),
-			),
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt-force-hidden',
 		),
 		// @TODO: Compatibility? Maybe delete.
 		array(
@@ -252,6 +230,18 @@ return array(
 				'Right'  => 'right',
 			),
 			'description'      => __( 'Please note: narrow image with left or right alignment will be wrapped by the text below.', 'the7mk2' ),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+		),
+		array(
+			'type'             => 'dropdown',
+			'heading'          => __( 'Caption', 'the7mk2' ),
+			'param_name'       => 'caption',
+			'std'              => 'description',
+			'value'            => array(
+				'Off'                      => 'off',
+				'On'                       => 'on',
+				'Show description instead' => 'description',
+			),
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 		array(
@@ -318,6 +308,201 @@ return array(
 				'value'   => 'shadow',
 			),
 		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'    => __( 'Show icon on image hover', 'the7mk2' ),
+			'param_name' => 'show_zoom',
+			'type'       => 'dt_switch',
+			'value'      => 'n',
+			'options'    => array(
+				'Yes' => 'y',
+				'No'  => 'n',
+			),
+			'dependency' => array(
+				'element' => 'onclick',
+				'value'   => array( 'lightbox', 'custom_link' ),
+			),
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			"heading"    => __( "Choose icon", "the7mk2" ),
+			"param_name" => "dt_icon",
+			"type"       => "dt_soc_icon_manager",
+			"value"      => "Defaults-heart",
+			'dependency' => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Icon Size & Background', 'the7mk2' ),
+			'param_name'       => 'dt_project_icon_title',
+			'type'             => 'dt_title',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Icon size', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_size',
+			'type'             => 'dt_number',
+			'value'            => '32px',
+			'units'            => 'px',
+			'dependency' => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Icon color', 'the7mk2' ),
+			'description'      => __( 'Live empty to use accent color.', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_color',
+			'type'             => 'colorpicker',
+			'value'            => 'rgba(255,255,255,1)',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Background size', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_bg_size',
+			'type'             => 'dt_number',
+			'value'            => '44px',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Paint background', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_bg',
+			'type'             => 'dt_switch',
+			'value'            => 'n',
+			'options'          => array(
+				'Yes' => 'y',
+				'No'  => 'n',
+			),
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Background color', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_bg_color',
+			'type'             => 'colorpicker',
+			'value'            => 'rgba(255,255,255,0.3)',
+			'dependency'       => array(
+				'element' => 'rollover_icon_bg',
+				'value'   => 'y',
+			),
+			'description'      => __( 'Live empty to use accent color.', 'the7mk2' ),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Border radius', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_border_radius',
+			'type'             => 'dt_number',
+			'value'            => '100px',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Border width', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_border_width',
+			'type'             => 'dt_number',
+			'value'            => '0',
+			'units'            => 'px',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+		array(
+			'group'      => __( 'Icon', 'the7mk2' ),
+			'heading'          => __( 'Border color', 'the7mk2' ),
+			'description'      => __( 'Live empty to use accent color.', 'the7mk2' ),
+			'param_name'       => 'rollover_icon_border_color',
+			'type'             => 'colorpicker',
+			'value'            => '',
+			'dependency'       => array(
+				'element' => 'show_zoom',
+				'value'   => 'y',
+			),
+			'edit_field_class' => 'the7-icons-dependent vc_col-xs-12',
+		),
+
+		array(
+			'heading'          => __( 'Hover background color', 'dt-the7-core' ),
+			'param_name'       => 'image_hover_bg_color',
+			'type'             => 'dropdown',
+			'std'              => 'default',
+			'value'            => array(
+				'Disabled'    => 'disabled',
+				'Default'     => 'default',
+				'Mono color' => 'solid_rollover_bg',
+				'Gradient'    => 'gradient_rollover_bg',
+			),
+			'dependency' => array(
+				'element' => 'onclick',
+				'value'   => array( 'lightbox', 'custom_link' ),
+			),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+		),
+		array(
+			'heading'		=> __('Background color', 'dt-the7-core'),
+			'param_name'	=> 'custom_rollover_bg_color',
+			'type'			=> 'colorpicker',
+			'value'			=> 'rgba(0,0,0,0.5)',
+			'dependency'	=> array(
+				'element'	=> 'image_hover_bg_color',
+				'value' => array( 'solid_rollover_bg' ),
+			),
+		),
+		array(
+			'heading' => __('Scale animation on hover', 'dt-the7-core'),
+			'param_name' => 'image_scale_animation_on_hover',
+			'type' => 'dropdown',
+			'std' => 'disabled',
+			'value' => array(
+				'Disabled' => 'disabled',
+				'Quick scale' => 'quick_scale',
+				'Slow scale' => 'slow_scale',
+			),
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+		),
+		array(
+			'heading'    => __( 'Gradient', 'dt-the7-core' ),
+			'param_name' => 'custom_rollover_bg_gradient',
+			'type'       => 'dt_gradient_picker',
+			'value'      => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+			'dependency' => array(
+				'element' => 'image_hover_bg_color',
+				'value'   => 'gradient_rollover_bg',
+			),
+		),
+		
 		array(
 			'type'             => 'dropdown',
 			'heading'          => __( 'Animation', 'the7mk2' ),

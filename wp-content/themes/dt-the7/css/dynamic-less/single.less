@@ -163,10 +163,12 @@
 }
 .post-navigation .nav-links {
 	.transparent-border-mixin;
-	& i[class^="fa"] {
+	& i[class^="icomoon-the7"],
+	& [class^="dt-icon-"] {
 		color: fade(@h1-color, 12%);
 	}
-	& a i[class^="fa"]:hover {
+	& a i[class^="icomoon-the7"]:hover,
+	& a [class^="dt-icon-"]:hover {
 		color: fade(@h1-color, 23%);
 	}
 	& a .post-title:hover {

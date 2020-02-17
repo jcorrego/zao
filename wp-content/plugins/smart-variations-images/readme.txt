@@ -1,457 +1,381 @@
-=== Smart Variations Images ===
-Contributors: drosendo
-Donate link: https://goo.gl/EPQAsA
-Tags: WooCommerce, images variations, gallery, woocommerce variations, woocommerce variations images, woocommerce images
-Requires at least: 4.5.0
-Tested up to: 4.9.6
-Stable tag: 3.2.20
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+=== Smart Variations Images for WooCommerce ===
+Contributors: drosendo, freemius
+Tags: woocommerce variations, additional images, product variations, image gallery, WooCommerce swatches
+Requires at least: 4.0.0
+Tested up to: 5.3.2
+Stable tag: 4.0.51
 
-Want your images to switch according to the select variation? Smart Variations Images for WooCommerce makes adding custom images to variations a breeze!
+This plugin allows the user to assign additional variation images as WooCommerce product variations and swap them accordingly.
 
 == Description ==
 
+=== How To SVI works and Setup ===
 
-By default WooCommerce will only swap the main variation image when you select a product variation, not the gallery images below it. 
+[youtube https://youtu.be/QMV8XBeub_o]
 
-Want your images to switch according to the select variation? Smart Variations Images for WooCommerce makes adding custom images to variations a breeze!
+Smart Variations Images is packed with the essential features to optimise your WooCommerce product image gallery and boost your sales.
 
-This extension allows visitors to your online store to be able to swap different gallery images when they select a product variation. 
-Adding this feature will let visitors see different images of a product variation all in the same color and style.
+By default WooCommerce will only swap the main variation image when you select a product variation, not the gallery images below it.
 
-This extension will allow the use of multiple images per variation, and simplifies it! How?
-Instead of upload one image per variation, upload all the variation images to the product gallery and for each image choose the corresponding slug of the variation on the dropdown.
-As quick and simple as that!
+This extension allows visitors to your online store to be able to swap different gallery images when they select a product variation.
+Adding this feature will let visitors see different images of a product variation all in the same color and style. 
 
-<h4>PRO Version</h4>
+= FREE FEATURES OF SMART VARIATIONS IMAGES =
+[Live Demo](http://svi.rosendo.pt/free) | [Support](https://wordpress.org/support/plugin/smart-variations-images/)
+
 <ul>
 <li>Main Image/thumbnails swap on choose variation</li>
-<li>Multiple Images for Variation</li>
-<li>Multiple Images Upload for Variation (Bulk)</li>
-<li>Ability to assign images to a <b>Combination of Variations</b>.</li>
-<li>Ability to use same image across multiple variations.</li>
-<li>Allow same image to be shared across different products with diferent variations</li>
-<li>Show Variation as Cart Image</li>
-<li>Ligthbox prettyPhoto & photoswipe</li>
-<li>Advanced Slider (Navigation Arrows & Color + Thumbnail Positions) - Fully Responsive</li>
-<li>Advanced Magnifier Lens (Lens Style & Size + Lens Border Color + Zoom Type & Effects)</li>
-<li>Extra Thumbnail Options (Disabled Thumbnails + Select Swap + Thumbnail Click Swap + Keep Thumbnails Visible)</li>
-<li>Extra Layout Fixes (Add Custom CSS Classes + Remove Image Class)</li>
-<li>WPML Compatible</li>
-<li>Responsive</li>
-<li>Priority Support</li>
-</ul>
-
-Try the PRO version: <a href="http://svi.rosendo.pt/pro" target="_blank">PRO VERSION DEMO</a>
-
-<strong>WooCommerce 3.0+ Ready</strong>
-
-<h4>Free version Features</h4>
-<ul>
-<li>Multiple Images for Variation</li>
-<li>Magnifier Lens</li>
-<li>Ligthbox</li>
-<li>Main Image/thumbnails swap on choose variation</li>
+<li>Multiple Images for single Variation</li>
+<li>Show one Variation Images Under Swacthes/dropdowns</li>
+<li>Show 2 Variations galleries on product loop pages</li>
+<li>Simple Slider</li>
+<li>Simple Magnifier Lens </li>
+<li>Simple Ligthbox</li>
 <li>Custom Thumbnail Columns</li>
 <li>Hidden Thumbnails</li>
 <li>WPML Compatible</li>
 <li>Responsive</li>
 </ul>
 
-<strong>Read the FAQ and Screenshots before posting in support!</strong>
 
-Check out a demo at: <a href="http://svi.rosendo.pt/free" target="_blank">svi.rosendo.pt/free</a>
+<h4>Requirements</h4>
+<ul>
+<li>PHP 5.6.30 or later</li>
+<li>ReduxFramework Plugin to manage the options</li>
+<li>WordPress 4.0 or later</li>
+</ul>
+
+<strong>WooCommerce 3.0+ Ready</strong>
 
 <strong>Please give your review!</strong> Good or bad all is welcomed!
 
-Visit ROSENDO for more information http://www.rosendo.pt
+= PREMIUM FEATURES OF SMART VARIATIONS IMAGES =
+[Live Demo](http://svi.rosendo.pt/pro) | [Upgrade to PRO](https://www.smart-variations.com/smart-variations-images-pro/) | [Support](https://www.smart-variations.com/)
+
+Go PRO to access a full set of features to further optimise your WooCommerce product image gallery and boost your sales.
+
+<ul>
+<li>Main Image/thumbnails swap on choose variation</li>
+<li>Multiple Images for Variation</li>
+<li>Ability to assign images to a <b>Multiple Variations</b>.</li>
+<li>Ability to use same image across multiple variations.</li>
+<li>Allow same image to be shared across different products with diferent variations</li>
+<li>Show Variation Images Under Swacthes/dropdowns</li>
+<li>Variations on product loop</li>
+<li>Show Variation as Cart Image</li>
+<li>Show Variation in admin order</li>
+<li>Show Variation in email order</li>
+<li>Ligthbox</li>
+<li>Stacked Image display - Fully Responsive</li>
+<li>Advanced Slider (Navigation Arrows & Color + Thumbnail Positions and more) - Fully Responsive</li>
+<li>Advanced Magnifier Lens (Lens Style & Size + Lens Border Color + Zoom Type & Effects and more)</li>
+<li>Extra Thumbnail Options (Disabled Thumbnails + Select Swap + Thumbnail Click Swap + Keep Thumbnails Visible)</li>
+<li>Extra Layout Fixes (Add Custom CSS Classes + Remove Image Class)</li>
+<li>Import/Export handling</li>
+<li>WPML Compatible</li>
+<li>Responsive</li>
+<li>Priority Support</li>
+</ul>
+
+
+Visit [SMART VARIATIONS](https://www.smart-variations.com/smart-variations-images-pro) for more information 
 
 == Installation ==
 
 1. Upload the entire `smart-variations-images` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. On your product assign the product attributes and save
-4. Go to Product Gallery and upload/choose your images
-5. Assign the slugs to be used for the variation images for each of the image and save.
-6. When you are ready to take the variation swapping online go to WooCommerce > SVI and activate SVI to run on the front-end
-6. Good luck with sales :)
-
+3. Install required plugin called ReduxFramework, this is a options framework for WordPress that allow the user to choose what options wants activated for SVI
+4. Go to WooCommerce > SVI and enable SVI to work in the front-end
+5. On your product go to SVI Variations Gallery and setup the galleries according to the variations you want
+6. Save the product
+7. Good luck with sales :)
 
 == Frequently Asked Questions ==
 
-= The plugin doesn't work with my theme =
+= Is it compatible with any Theme? =
 
-Themes that follow the default WooCommerce implementation will usually work with this plugin. However, some themes use an unorthodox method to add their own lightbox/slider, which breaks the hooks this plugin needs.
+Yes! Themes that follow the default WooCommerce implementation will usually work with this plugin. However, some themes use an unorthodox method to add their own lightbox/slider, which breaks the hooks this plugin needs.
+SVI was tested with the mos popular themes like OceanWP / Astra / Flatsome / Avada / Storefront / WR Nitro / Divi / BeTheme / Zerif Lite / Hestia / Shopisle and more.
 
-= The plugin works but messes up the styling of the images =
+= Does it support page builders?  =
 
-You can try several options here.
+SVI is not compatible with custom product pages built with Builders (ex: Visual Composer, UX, Builder, Unyson, etc.), these Builders completely take over the design and hooks of the pages running them, so if a builder is applied to a product page SVI will not be accessible.
 
-1. Go to WooCommerce > SVI (Smart Variations Images) and activate or deactivate the option "Enable WooCommerce default product image"
-2. Disable other plugins that change the Product image default behavior.
-3. Read the Support Threads.
-
+Although if you need it, I can probably figure something out!
 
 = How do I configure it to work? =
 
-1. Assign your product Attributes and click "Save attributes"
-2. Create the variations you need, and click "Publish" or "Save as draft"
-3. Go to the WooCommerce Product Gallery and upload/choose the images you are going to use
-4. For EACH image assign the slug/variation to be used for the variation images swap
-5. Publish you product
+1. Create a product and build it's attributes & variations
+2. Go to "SVI Variations Gallery" tab and setup the galleries according to the variations you want displayed
+3. Save the product
+4. Go to WooCommerce > SVI > Global TAB and "Enable SVI" so that is works on the Front-End
+5. Good luck with sales :)
+6. What the video if have doubts (https://youtu.be/QMV8XBeub_o)
 
-You can skip steps 1 and 2 if your product is already setup with Attributes and Variations.
+= What Browsers does SVI support =
+
+SVI doesn’t support IE since is no longer maintained by Microsoft since at least 2015. and it doesn’t support ecmascript. [READ MORE](microsoft.com/en-us/windowsforbusiness/end-of-ie-support)
+
+SVI is tested to run on:
+– Microsoft EDGE
+– Safari
+– Chrome
+– Firefox
+
+= What happens to my theme default gallery display =
+
+SVI replaces your default theme settings/options for the image & thumbnails area so don’t expect to use any of your theme features for this area. 
+Otherwise SVI wouldn’t be able to do the magic. Each theme has is own structure and wouldn't be feasible to create all the available layouts combinations on the same plugin so SVI just had to build is own layout.
 
 == Screenshots ==
 
-1. Add images to your Product Gallery
-2. Choose the images to be used and select the "slug" of the variation in the "Variation Slug" field.
-3. Hides all other images that don't match the variation, and show only the default color, if no default is chosen, the gallery is hidden.
-4. On change the variation, images in the gallery also change to match the variation. The image in the gallery when click should show in the bigger image(above).
-4. Lens Zoom in action (activate it in WooCommerce > SVI (Smart Variations Images)
+1. Display Images according to variation
+2. Ligthbox
+3. Setup the combinations
+4. ReduxFramework to manage the options
+5. Display variations under Variations Select
+6. Display variations on Product Loop Pages
+
+
 
 == Changelog ==
 
-= 3.2.20 =
-* Improved for multisite integration
+= 4.0.51 =
+* Code clean up
+* Added compatibility to WC 3.9.1
+* Fix SVI thumbnails missing value
+* Fix possible null values and convert to empty string
 
-= 3.2.19 =
-* Updated Version support
 
-= 3.2.18 =
-* Fixed lens not loading Full image
+= 4.0.50 =
+* Fix possible error on extra whitespace on save product data
+* Fix compatibility with WPML and Cyrillic language 
+* Fix possible missing type on cart validation
+* Added compatibility to WC 3.9
 
-= 3.2.17 =
-* update Readme
-* removed duplicate function of plugin woocommerce_show_product_images
+
+
+= 4.0.49 =
+* Lens fix for mobile.
+* Improved compatibility on reading product data
+* Added support for WordPress 5.3.2
+
+= 4.0.48 =
+* WooCommerce compatibility 3.8.1
+* Fix Cannot declare class VUE_SVI
+* Fix notice message on order Email
+* Fix proper display of srcset attribute
+* Added option to show Title attribute in image
+
+
+= 4.0.47 =
+* WordPress 5.3 compatibility
+* Added SVI catch method for JS developers : svi_method 
+
+
+
+= 4.0.46 =
+* Feature simplify creation of SVI galleries via Variations TAB
+* Improvement: Flatsome has-hover effect
+* Freemius SDK update 2.3.1
+
+= 4.0.45 =
+* Optimize custom attribute sanitation
+* Fix DIVI compatibility duo to prevent multiple SVI galleries show
+
+= 4.0.44 =
+* Optimize Admin CSS to fix compatibility with pointer-event rules
+
+
+= 4.0.43 =
+* WordPress update version compatibility
+
+= 4.0.42 =
+* Code improvement
+* Changed to laravelMixs
+* Added IE 11 support
+
+
+= 4.0.41 =
+* Improved attributes sanitation
+
+
+= 4.0.40 =
+* Improved Attribute matching including Custom & Global
+* Cleanup DOM data
+* Product admin gallery improvements
+
+
+= 4.0.39 =
+* Fix import slug matching for WPML
+* Swiper update
+
+= 4.0.38 =
+* Fix WPML compatibility
+* Improved support for Export via WooCommerce tool
+* Added ability to Show/hide srcset attribute in images
+* Code cleanup
+
+
+= 4.0.37 =
+* Added warning for missmatching attributes
+* cleaning error messages
+* Cleaning JS
+
+= 4.0.36 =
+* Fix Showcase Images under Variations from not showing
+
+= 4.0.35 =
+* Missing file causing fatal error
+
+= 4.0.34 =
+* Better compatibility with themes
+* Added support for WooCommerce 3.7.0
+* Vendor cleanup
+
+= 4.0.33 =
+* Code cleanup
+
+
+= 4.0.32 =
+* Code cleanup
+
+
+= 4.0.31 =
+* Improved matching for Keep thumbnails visible option with 
 * Fix warning messages
+* Added simple slider to free version
+* Added Variations galleries to be displayed in product loop pages
 
 
-= 3.2.16 =
-* Minor fix for notices showing in admin
-* Added Multisite compatibility
+= 4.0.30 =
+* Fix Jetpack lazyLoad compatibility
+* Fix invalid argument supplied for foreach()
 
-= 3.2.15 =
-* Minor fix for notices showing in admin
 
-= 3.2.14 =
-* Fix for possible encoded characters
+= 4.0.29 =
+* Fix warning messages
+* Fix findsummary not present from causing infinite loop for search
+* Freemius SDK update
 
-= 3.2.13 =
-* Updated new options
+= 4.0.28 =
+* Added support for Export via WooCommerce tool
+* Improved product save method
 
-= 3.2.12 =
-* Added extra option for theme compatibility case jQuery Imageloaded is used by theme and creates conflict
-* Code optimization for retro-compatibility
 
-= 3.2.11 =
-* Localized all JS
-* Fix prevent duplicate Image showing in gallery
-* Fix possible conflict with other themes/plugins adding variation selects in other places
+= 4.0.27 =
+* Prevent notice error
+* Fix create duplicate not properly cleaning up
+* Feature Showcase Images under Variations
 
 
-= 3.2.10 =
-* Added support for UNICODE chars
+= 4.0.26 =
+* Prevent notice error of missing post->id
 
-= 3.2.9 =
-* Fix variations only loading last match
 
-= 3.2.8 =
-* Fix: White area on loading/swapping images
-* Fix: Image flicker when main image already in use
-* Fix: Main image not showing in Thumbnail images
-* Code cleanup
+= 4.0.25 =
+* Fix static shortcode usage fix
 
-= 3.2.7 =
-* Fix: Single image not loading
+= 4.0.24 =
+* Added ability to filter images before display, apply_filters('svi_gallery_images')
+* Prevent Fatal errors with free version if installed
+* Support for other product types besides the default ones
+* Fix access for shortcode handling
+* [PRO] Improved quickview support
 
-= 3.2.6 =
-* Fixed thumbnails being hidden if no matches occurs
-* Fixed no titles appearing on ligthbox
-* Improvment: Variation select for images in admin showing more results than needed
-* Code cleanup
+= 4.0.23 =
+* Fix PhotoSwipe element from showing when not called
+* Improved PhotoSwipe Load
+* PRO slider hide navigation arrows if not needed
 
-= 3.2.5 =
-* Fixed: Duplicate Image where product is variable and with 1 image
+= 4.0.22 =
+* Fix Disable SVI option on product from not showing any image
 
-= 3.2.4 =
-* Added: Fallback if no Main image get 1st Thumbnail image
-* Improvement: Order thumbnails correctly First/last
-* Fix: Duplicate thumbs with main image
-* Fix: If no main image set in variations, notice error prevent images loading
-* Fix: Hidden thumbnails not showing thumbnails in single product pages
-* Cleanup
+= 4.0.21 =
+* Further improvement for vendor.js faster load times
 
-= 3.2.3 =
-* Fix: Show only variations for select
-* Fix: WPML translation on non variations
+= 4.0.20 =
+* Fix incorrect install message
 
-= 3.2.2 =
-* Minor fix: Added missing thumbnail options
-* Minor fix: Lens not Round
-* Minor fix: If missing srcset skip to prevent images not loading
-+ Code Clean Up
-
-= 3.2.1 =
-* Added missing slug
-
-= 3.2 =
-* Full code rewrite
-* WooCommerce 2.7 Compatible
-* Improvement: Better theme integration
-* Improvement: WPML Compatibility
-* Improvement: Faster Image loading
-* Removed: Included ReduxFramework plugin form SVI to require install for better compatibility
-* Added: Pre-loader on page load
-* Minor Fixes
+= 4.0.19 =
+* Optimized vendor file
+* Improvement to detect proper attributes_form
 
-= 3.1.8.11 =
-* Added fallback if main image not present
-* Cleared JS messages for showing
+= 4.0.18 =
+* Fix Prevent jQuery conflict with some themes
+* PRO added Stacked Images layout
 
-= 3.1.8.10 =
-* Added fallback if no images present
-* Faster loading of images
+= 4.0.17 =
+* PRO fix Slider time display
+* Fix Multisite license control
 
-= 3.1.8.9 =
-* Fixed fallback if default variation has no images attributed
+= 4.0.16 =
+* PRO fix Fallback for Default Gallery if no matching found and Default gallery exists
+* Fix Lens RTL/LTR window position
 
-= 3.1.8.8 =
-* Added fallback if default variation has no image attributed
+= 4.0.15 =
+* PRO fix Slider autoHeigth
+* PRO fix Fallback for Default Gallery if no matching found and Default gallery exists
 
-= 3.1.8.7 =
-* Fix correct variation not loading if default variation predefined
-* Not showing correct variation if variation with "any value" exist
-* Fix clear  button not showign default images
+= 4.0.14 =
+* Fix Admin Warning
+* Fix Dismiss alert not hide after dismissal
 
-= 3.1.8.6 =
-* Minor fix for themes over writing main image, fallback.
+= 4.0.13 =
+* Thumbnails css Fix
+* Readme update
 
-= 3.1.8.5 =
-* minor fix for some theme breaking up main image
+= 4.0.12 =
+* Security Fix
+* Fix possible WPML mismatch
+* PRO improved variation matching
+* PRO Fix Keep Thumbnails
 
-= 3.1.8.4 =
-* Fix custom variation with spaces not being loaded properly
-
-= 3.1.8.3 =
-* Fix Ligthbox not showing correct clicked image on Ligthbox open
-
-= 3.1.8.2 =
-* Fix Lens and Ligthbox not loading Full image
-* Fix Clear button duplicating images after 2nd clear
-
-= 3.1.8.1 =
-* JS clean up
-
-= 3.1.8 =
-* Prevent duplicate images from showing
-* Fixed double quotes breaking image load, changed JS code
-* Preload images so they swap faster
-
-= 3.1.7 =
-* Fixed JS issue when not detecting object
-* Fixed double quotes issue preventing images from getting loaded properly
-
-= 3.1.6 =
-* Removed comments
-
-= 3.1.5 =
-* Stable Version JS cleanUp
-* Return to native WooCommerce Ligthbox
-* I'm sorry about the previous problems that occurred during the latest update.
-
-= 3.1.4 =
-* Fixed issue with hidding admin bar
-* Fixed issue not displaying single products
-* Fixed issue Custom variations not swapping
-
-= 3.1.3 =
-* Added Missing thumbnails options
-
-= 3.1.2 =
-* Fixed minor issue throwing fatal error for old PHP versions. Please use PHP 5.6.
-
-= 3.1.1 =
-* Added missing files
-
-= 3.1 =
-* Full code rewrite
-* Better theme integration
-* WPML Compatible
-* New Ligthbox
-* Faster response
-
-= 3.0.1 =
-* Minor CSS fix with margins
-* Deleted uneeded files
-
-= 3.0 =
-* Major release
-* New UI for admin now with ReduxFramework
-* Lens with Loader
-* Faster response
-* Better compatibility
-
-= 2.0.9 =
-* Fallback support for variations using "all options"
-
-= 2.0.8 =
-* Fixed warning message when WooCommerce not active, It was calling wrong function, thanks to @moyen03 for reporting it
-
-= 2.0.7 =
-* Added feature to Hide thumbnails on load and show after variation has been selected.
-
-= 2.0.6 =
-* Code cleanup
-
-= 2.0.5 =
-* Code cleanup
-* Promotion 25% for the first 100!
-
-= 2.0.4 =
-* Fix bug with ligthbox poping Ligthbox in some themes
-* Fix incorrect thumnails display with collumns
-* Added new Pro Features content
-
-= 2.0.3 =
-* Fixed bug issue related with long variations not showing prices.
-* Fix incorrect thumnails display with collumns
-
-= 2.0.2 =
-* Minor fix for Lens showing duplicate images
-* Fix Lens to load Original Image
-* Fix conflicts that may cause Lens not to work properly
-
-= 2.0.1 =
-* Minor fix for Lens showing duplicate images
-* SVI PRO Update now WPML compatible
-
-= 2.0 =
-* Wordpress 4.5 compatible
-* Complete code rewrite
-* Better theme compatibility
-* Clean code
-* SVI PRO update
-* Better lens
-* Better ligthbox
-
-= 1.5.8 =
-* Fixed Columns display after reset
-* Fixed image swap not working in some cases
-
-= 1.5.7 =
-* Fix reset
-* Launch Pro Version
-
-= 1.5.6 =
-* Minor CSS to fix Woocommerce issues hidding images with class has-children.
+= 4.0.11 =
+* Fix bad ajax request causing 500
 
-= 1.5.5 =
-* First: Sorry for all the updates!
-* Fixed issue with ligthbox not working in themes or not setup to work with pretybox (woocommerce default ligthbox)
-* Fixed issue to prevent image to open in blank if no lightbox is activated for variable and single images
-* Code cleanup
-
-= 1.5.4 =
-* Fixed issue of images opening in blank page is not variable product.
-* SVI only loaded in Variable products
-* Code cleanup
-
-= 1.5.3 =
-* Fixed issue in some cases images on swap showed pixelixed
-* Fixed ligthbox issue on preview image not showing images if default product is enabled.
-
-= 1.5.2 =
-* Fixed SVI not overwriting product image page if template has his own files.
-
-= 1.5.1 =
-* Fixed warning messages
-* Fixed changelog typo on version
-* Fixed ligthbox not showing if using default woocomerce product template
-
-= 1.5 =
-* Major realease
-* New settings page. WooCommerce > SVI
-* Better theme compatibility
-* Ligthbox now shows only same variations images
-* Added better transition for thumbnail click
-
-= 1.4.5 =
-* Fix bug with for Wordpress 4.4 not swapping images
-* added optional register with rosendo.pt for news and updates
-
-= 1.4.4 =
-* New Lens Zoom (removed elevateZoom script, less 1 js file yay!)
-* Speed improvements due to new Lens Zoom
-* Clean JS/CSS
-
-= 1.4.3.1 =
-* Minor issue with class naming of thumbnails, first and last class.
-
-= 1.4.3 =
-* Fixed issue with thumbnails when not in order of appearence in product gallery update the swap with primary would not work correctly, thanks to @jamblo for reporting
-* Speed improvements due to fix
-
-= 1.4.2.1 =
-* Fixed minor issue with thumbnail swap with primary not changing link for prettyPhoto Zoom, thanks to @wzshop for reporting
-
-= 1.4.2 =
-* Fixed issue with variation descriptions not showing up, thanks to @jamblo and @Sandeepy02 for reporting
-
-= 1.4.1 =
-* Fixed issue with CSS not loading if woocommerce.css not found, messing up the CSS of the images.
-* Code cleaning
-
-= 1.4 =
-* Added support for "Custom product attributes".
-
-= 1.3.4 =
-* Fixed issue with not showing images to swap on products with no variations. Thanks to parasomnias for alerting.
-
-= 1.3.3 =
-* Fixed issue with Safari when when switch the variation image the image doesn't render properly.
-
-= 1.3.2 =
-* Fixed issue with Lens Zoom not working, due to missing initialization.
-
-= 1.3.1 =
-* Fixed load of images recurring to cache
-* Fixed swaping iamge when not using WOOSVI
-
-= 1.3 =
-* Complete reconstrution of JS to better handle changes.
-* Fixed, no more flickering on "WooCommerce default product image"
-
-= 1.2.1 =
-* Bug fixed, if user has multiple variations and is not using one of them, variation slug in the image would not show up.
-* Added, when user clicks "Clear Selection", update gallery.
-* Speacial thank to @max_Q, for reporting issue and supplying some solution.
-
-= 1.2 =
-* Added option to prevent conflit with other plugins that maybe Removing/Adding action woocommerce_before_single_product_summary and woocommerce_product_thumbnails to insert their own gallery.
-* User can choose to "Enable WooCommerce default product image", SVI will work but may see some flickering when images change, this option is deactivated by default.
-
-= 1.1 =
-* Stable Version
-* Fixed flickering when swapping images
-* Added Lens Zoom Option (activate it in WooCommerce > Configuration > Products Tab > Smart Variations Images)
-
-= 1.0.1 =
-* Revert State, missing files to commit. working version.
-
-= 1.0 =
-* This is a big release. Fixed flickering of images when swaping images. Added a new option for Lens Zoom, activate this option in WooCommerce > Configuration > Products * Tab > Smart Variations Images
-
-= 0.2.2 =
-* Fixed issue where variation would not chagne in Chrome, also if no image variation exist, dont change image.
-
-= 0.2.1 =
-* Fixed Warning message from appearing if WP_DEBUG was true preventing images from showing.
-
-= 0.2 =
-* No longer use of caption field for Variation, new field has been added to replace the caption.
-* Javascript will search for new tag and loop the gallery.
-
-= 0.1 =
-* Just released into the wild.
+= 4.0.10 =
+* Correct image link assets/img/svi-notice.png
+
+= 4.0.9 =
+* Fixed missing files on previous version causing Fatal Error
+
+= 4.0.8 =
+* Fixed caption encoding chars
+* Added option to use Featured Image as pre-loader
+* Fixed possible fatal error on render
+* Removed srcset to improve load speed
+* Added help
+* PRO improved quick view
+
+= 4.0.7 =
+* Fixed thumbnails hidden
+* Fixed error 500 on WooCommerce Status
+
+= 4.0.6 =
+* Fixed Columns not showing properly
+
+= 4.0.5 =
+* Fixed Ligthbox not showing up with lens
+* Fixed Ligthbox arrows no showing
+
+= 4.0.4 =
+* Fixed vertical thumbnails
+* Fixed color lens missing
+* Added Lens Window custom width/height 
+
+= 4.0.3 =
+* Improved install procedure
+* Updated effects
+
+= 4.0.2 =
+* Fix DIVI compatibility
+* Updated Readme
+
+= 4.0.1 =
+* Fix incorrect migration from v3 to v4 for special chars
+
+= 4.0.0 =
+* Complete code re-inveted
+* VUE support
+* Freemius Integration

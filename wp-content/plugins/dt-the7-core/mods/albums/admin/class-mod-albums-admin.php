@@ -35,7 +35,8 @@ class Presscore_Mod_Albums_Admin {
 			'has_archive'           => true, 
 			'hierarchical'          => false,
 			'menu_position'         => 40,
-			'supports'              => array( 'author', 'title', 'thumbnail', 'excerpt', 'editor', 'comments', 'revisions' )
+			'supports'              => array( 'author', 'title', 'thumbnail', 'excerpt', 'editor', 'comments', 'revisions' ),
+			'show_in_rest'          => true,
 		);
 
 		$args = apply_filters( "presscore_post_type_{$post_type}_args", $args );
@@ -65,6 +66,7 @@ class Presscore_Mod_Albums_Admin {
 			'show_ui'               => true,
 			'rewrite'               => true,
 			'show_admin_column'     => true,
+			'show_in_rest'          => true,
 		);
 
 		$args = apply_filters( "presscore_taxonomy_{$taxonomy}_args", $args );

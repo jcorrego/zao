@@ -214,6 +214,10 @@
         }
     }
 </style>
+<?php
+$url = 'https://yithemes.com/themes/plugins/yith-woocommerce-category-accordion';
+?>
+
 <div class="landing">
     <div class="section section-cta section-odd">
         <div class="landing-container">
@@ -221,7 +225,7 @@
                 <p>
                     <?php echo sprintf( __('Upgrade to %1$spremium version%2$s of %1$sYITH WooCommerce category Accordion%2$s to benefit from all features!','yith-woocommerce-category-accordion'),'<span class="highlight">','</span>' );?>
                 </p>
-                <a href="<?php echo $this->get_premium_landing_uri() ?>" target="_blank" class="premium-cta-button button btn">
+                <a href="<?php echo $url; ?>" target="_blank" class="premium-cta-button button btn">
                     <span class="highlight"><?php _e('UPGRADE','yith-woocommerce-category-accordion');?></span>
                     <span><?php _e('to the premium version','yith-woocommerce-category-accordion');?></span>
                 </a>
@@ -331,7 +335,7 @@
                 <p>
                     <?php echo sprintf( __('Upgrade to %1$spremium version%2$s of %1$sYITH WooCommerce category Accordion%2$s to benefit from all features!','yith-woocommerce-category-accordion'),'<span class="highlight">','</span>' );?>
                 </p>
-                <a href="<?php echo $this->get_premium_landing_uri() ?>" target="_blank" class="premium-cta-button button btn">
+                <a href="<?php echo $url; ?>" target="_blank" class="premium-cta-button button btn">
                     <span class="highlight"><?php _e('UPGRADE','yith-woocommerce-category-accordion');?></span>
                     <span><?php _e('to the premium version','yith-woocommerce-category-accordion');?></span>
                 </a>

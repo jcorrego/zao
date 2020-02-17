@@ -1,14 +1,8 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'DT_Shortcode_Breadcrumbs', false ) ) {
-
-	require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-	require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'class-dt-blog-lessvars-manager.php';
 
 	/**
 	 * Class DT_Shortcode_Breadcrumbs
@@ -71,9 +65,7 @@ if ( ! class_exists( 'DT_Shortcode_Breadcrumbs', false ) ) {
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
 			$less_vars->add_keyword( 'unique-breadcrumbs-class-name', $this->get_unique_class(), '~"%s"' );
 

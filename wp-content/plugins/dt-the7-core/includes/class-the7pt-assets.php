@@ -44,17 +44,24 @@ class The7PT_Assets {
 		}
 
 		$register_scripts = array(
-			'the7pt' => array(
-				'src'     => "{$template_uri}/js/post-type{$suffix}.js",
-				'deps'      => array( 'jquery' ),
-				'in_footer' => true,
-			),
 			'the7pt-photo-scroller'    => array(
 				'src'     => "{$template_uri}/js/photo-scroller{$suffix}.js",
 				'deps'      => array( 'jquery' ),
 				'in_footer' => true,
 			),
 		);
+
+		if (
+			! class_exists( 'The7_Admin_Dashboard_Settings' )
+			|| The7_Admin_Dashboard_Settings::get( 'portfolio' )
+			|| The7_Admin_Dashboard_Settings::get( 'albums' )
+		) {
+			$register_scripts['the7pt'] = array(
+				'src'       => "{$template_uri}/js/post-type{$suffix}.js",
+				'deps'      => array( 'jquery' ),
+				'in_footer' => true,
+			);
+		}
 
 		foreach ( $register_scripts as $name => $props ) {
 			wp_register_script( $name, $props['src'], $props['deps'], THE7_VERSION, $props['in_footer'] );
@@ -72,7 +79,7 @@ class The7PT_Assets {
 	 * @return array
 	 */
 	public static function register_dynamic_stylesheet( $dynamic_stylesheets ) {
-		$dynamic_stylesheets['the7pt.less'] = array(
+		$dynamic_stylesheets['the7-elements'] = array(
 			'path' => The7pt()->plugin_path() . 'assets/css/dynamic/post-type-dynamic.less',
 			'src' => 'post-type-dynamic.less',
 		);

@@ -1,15 +1,3 @@
-
-/* #Header layouts
-================================================== */
-//@import "header/header-layouts.less";
-
-@import "header/header-layouts/_horizontal-headers.less";
-@import "header/header-layouts/_vertical-headers.less";
-@import "header/header-layouts/_classic-header.less";
-@import "header/header-layouts/_inline-header.less";
-@import "header/header-layouts/_split-header.less";
-@import "header/header-layouts/_mixed-headers.less";
-
 /* #Top bar
 ================================================== */
 @import "header/top-bar.less";
@@ -57,13 +45,12 @@
 		/*- Line :end*/
 
 		/*- shadow*/
-		.transparent .masthead,
+		.transparent .masthead:not(.side-header),
 		.overlay-navigation .masthead.shadow-decoration:not(.mixed-header) {
-			-webkit-box-shadow: none;
 			box-shadow: none;
 		}
 		.masthead.shadow-decoration:not(.side-header-menu-icon):not(#phantom):not(.masthead-mobile-header) {
-			-webkit-box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.07);
+			
 			box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.07);
 		}
 
@@ -73,7 +60,7 @@
 
 	/* TRANSPARENT HEADER */
 
-		.transparent .masthead {
+		.transparent .masthead:not(.side-header) {
 			background: @header-transparent-bg-color;
 		}
 		.transparent .top-bar-bg {

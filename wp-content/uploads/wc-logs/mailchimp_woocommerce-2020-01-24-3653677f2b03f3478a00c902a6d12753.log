@@ -1,0 +1,4 @@
+2020-01-24T03:35:33+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 2fc08ce604bb506e847b0fa3a8e408ad
+2020-01-24T03:36:27+00:00 NOTICE abandoned_cart.success :: email: maritza781@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=2fc08ce604bb506e847b0fa3a8e408ad
+2020-01-24T03:36:48+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3790
+2020-01-24T03:40:10+00:00 NOTICE order_submit.success :: addStoreOrder :: #3790 :: email: MARITZA781@GMAIL.COM :: abandoned cart deleted [2fc08ce604bb506e847b0fa3a8e408ad]

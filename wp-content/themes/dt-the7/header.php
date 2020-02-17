@@ -2,14 +2,12 @@
 /**
  * Header template.
  *
- * @package The7
  * @since   1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 get_template_part( 'header-single' );
 get_template_part( 'header-main' );

@@ -59,6 +59,10 @@ class Presscore_Mod_Testimonials_Public {
 	}
 
 	public function filter_page_title( $page_title ) {
+		if ( of_get_option( 'show_static_part_of_archive_title' ) === '0' ) {
+			return $page_title;
+		}
+
 		if ( is_post_type_archive( 'dt_testimonials' ) ) {
 			$page_title = __( 'Testimonials:', 'dt-the7-core' );
 		}

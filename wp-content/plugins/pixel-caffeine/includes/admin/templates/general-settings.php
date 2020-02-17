@@ -145,6 +145,22 @@ $highlight_fbpixel = isset( $_GET['ref'] ) && 'fblogin' == $_GET['ref'] && $fb->
 										</div>
 									</div><!-- ./control-wrap -->
 								</div><!-- ./form-group -->
+
+								<div class="form-group">
+									<div class="control-wrap">
+										<div class="checkbox">
+											<label>
+												<input
+													type="checkbox"
+													name="<?php $page->field_name( 'aepc_enable_search_event' ) ?>"
+													id="<?php $page->field_id( 'aepc_enable_search_event' ) ?>"
+													<?php checked( $page->get_value( 'aepc_enable_search_event' ), 'yes' ) ?>>
+												<?php _e( 'Enable Search Event', 'pixel-caffeine' ) ?>
+											</label>
+											<small class="text"><?php _e( 'Enable the automatic tracking of the "Search" event when a user performs a search.', 'pixel-caffeine' ) ?></small>
+										</div>
+									</div><!-- ./control-wrap -->
+								</div><!-- ./form-group -->
 							</div>
 						</div><!-- ./panel-body -->
 					</div><!-- ./panel-settings-set-fb-px -->

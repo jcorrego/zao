@@ -2,14 +2,12 @@
 /**
  * Search results page.
  *
- * @package The7
  * @since   1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $config = presscore_config();
 $config->set( 'template', 'search' );
@@ -19,8 +17,8 @@ $config->set( 'template.layout.type', 'masonry' );
 get_header();
 ?>
 
-    <!-- Content -->
-    <div id="content" class="content" role="main">
+	<!-- Content -->
+	<div id="content" class="content" role="main">
 
 		<?php
 		if ( have_posts() ) {
@@ -30,8 +28,8 @@ get_header();
 		}
 		?>
 
-    </div><!-- #content -->
+	</div><!-- #content -->
 
-<?php do_action( 'presscore_after_content' ) ?>
+<?php do_action( 'presscore_after_content' ); ?>
 
-<?php get_footer() ?>
+<?php get_footer(); ?>

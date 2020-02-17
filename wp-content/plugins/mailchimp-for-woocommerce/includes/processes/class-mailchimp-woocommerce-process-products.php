@@ -15,12 +15,11 @@ class MailChimp_WooCommerce_Process_Products extends MailChimp_WooCommerce_Abstr
      */
     protected $action = 'mailchimp_woocommerce_process_products';
 
-
     public static function push()
     {
         $job = new MailChimp_WooCommerce_Process_Products();
         $job->flagStartSync();
-        wp_queue($job);
+        mailchimp_handle_or_queue($job, 0);
     }
 
 
@@ -34,8 +33,8 @@ class MailChimp_WooCommerce_Process_Products extends MailChimp_WooCommerce_Abstr
 
     /**
      * @param MailChimp_WooCommerce_Product $item
-     *
-     * @return mixed
+     * @return bool|mixed
+     * @throws MailChimp_WooCommerce_RateLimitError
      */
     protected function iterate($item) {
 
@@ -43,24 +42,36 @@ class MailChimp_WooCommerce_Process_Products extends MailChimp_WooCommerce_Abstr
 
             mailchimp_debug('product_sync', "#{$item->getId()}", $item->toArray());
 
-            // need to run the delete option on this before submitting because the API does not support PATCH yet.
-            $this->mailchimp()->deleteStoreProduct($this->store_id, $item->getId());
+            try {
+                // pull the product from Mailchimp first to see what method we need to call next.
+                $mailchimp_product = $this->mailchimp()->getStoreProduct($this->store_id, $item->getId(), true);
+            } catch (\Exception $e) {
+                // if we're getting rate limited, we need to throw this error to re-queue things.
+                if ($e instanceof MailChimp_WooCommerce_RateLimitError) {
+                    mailchimp_error('product_sync.error', mailchimp_error_trace($e, "GET product :: {$item->getId()}"));
+                    throw $e;
+                }
+                $mailchimp_product = false;
+            }
 
-            // add the product.
+            // depending on if it's existing or not - we change the method call
+            $method = $mailchimp_product ? 'updateStoreProduct' : 'addStoreProduct';
+
+            // need to run the delete option on this before submitting because the API does not support PATCH yet.
             try {
                 // make the call
-                $response = $this->mailchimp()->addStoreProduct($this->store_id, $item, false);
-
-                mailchimp_log('product_sync.success', "addStoreProduct :: #{$response->getId()}");
-
+                $response = $this->mailchimp()->{$method}($this->store_id, $item, false);
+                mailchimp_log('product_sync.success', "{$method} :: #{$response->getId()}");
                 return $response;
-
+            } catch (MailChimp_WooCommerce_RateLimitError $e) {
+                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "{$method} :: {$item->getId()}"));
+                throw $e;
             } catch (MailChimp_WooCommerce_ServerError $e) {
-                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "addStoreProduct :: {$item->getId()}"));
+                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "{$method} :: {$item->getId()}"));
             } catch (MailChimp_WooCommerce_Error $e) {
-                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "addStoreProduct :: {$item->getId()}"));
+                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "{$method} :: {$item->getId()}"));
             } catch (Exception $e) {
-                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "addStoreProduct :: {$item->getId()}"));
+                mailchimp_error('product_sync.error', mailchimp_error_trace($e, "{$method} :: {$item->getId()}"));
             }
         }
 
@@ -82,7 +93,7 @@ class MailChimp_WooCommerce_Process_Products extends MailChimp_WooCommerce_Abstr
         // only do this if we're not strictly syncing products ( which is the default ).
         if (!$prevent_order_sync) {
             // since the products are all good, let's sync up the orders now.
-            wp_queue(new MailChimp_WooCommerce_Process_Orders());
+            mailchimp_handle_or_queue(new MailChimp_WooCommerce_Process_Orders());
         }
 
         // since we skipped the orders feed we can delete this option.

@@ -41,7 +41,7 @@ if (!defined('ABSPATH'))
     }
 
     public function wp_footer(){
-         wp_enqueue_script( 'meta-checkbox-js',  $this->get_meta_filter_link(). 'js/checkbox.js', array('jquery'), '', true );
+         wp_enqueue_script( 'meta-checkbox-js',  $this->get_meta_filter_link(). 'js/checkbox.js', array('jquery'),WOOF_VERSION, true );
          //wp_enqueue_style( 'meta-checkbox-css',  $this->get_meta_filter_link(). 'css/checkbox.css' );
     }
     public function get_meta_filter_path(){

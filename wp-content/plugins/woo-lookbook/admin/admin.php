@@ -27,12 +27,11 @@ class WOO_F_LOOKBOOK_Admin_Admin {
 	}
 
 
-
 	/**
 	 * Init Script in Admin
 	 */
 	public function admin_enqueue_scripts() {
-		$page = isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : '';
+		$page = isset( $_REQUEST['page'] ) ? wp_unslash($_REQUEST['page']) : '';
 		if ( $page == 'woocommerce-lookbook-settings' ) {
 			global $wp_scripts;
 			$scripts = $wp_scripts->registered;
@@ -88,7 +87,7 @@ class WOO_F_LOOKBOOK_Admin_Admin {
 	 * @return mixed
 	 */
 	public function settings_link( $links ) {
-		$settings_link = '<a href="edit.php?post_type=woocommerce-lookbook&page=woo-lookbook-settings" title="' . __( 'Settings', 'woo-lookbook' ) . '">' . __( 'Settings', 'woo-lookbook' ) . '</a>';
+		$settings_link = '<a href="edit.php?post_type=woocommerce-lookbook&page=woocommerce-lookbook-settings" title="' . __( 'Settings', 'woo-lookbook' ) . '">' . __( 'Settings', 'woo-lookbook' ) . '</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -162,7 +161,7 @@ class WOO_F_LOOKBOOK_Admin_Admin {
 	public function menu_page() {
 		add_submenu_page(
 			'edit.php?post_type=woocommerce-lookbook',
-			esc_html__( 'WooCommerce Lookbook Setting page', 'woo-lookbook' ),
+			esc_html__( 'LookBook for WooCommerce Setting page', 'woo-lookbook' ),
 			esc_html__( 'Settings', 'woo-lookbook' ),
 			'manage_options',
 			'woocommerce-lookbook-settings',

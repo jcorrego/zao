@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $radios = array(
 
+	'events' => array(),
+
 	'attributes' => array(
 
 		array(
@@ -135,6 +137,26 @@ $radios = array(
 
 );
 
+foreach (AEPC_Track::$standard_events as $event => $attrs) {
+	if ( ! in_array( $event, wp_list_pluck( $radios['ecommerce'], 'id' ) ) ) {
+		$radios['events'][] = array(
+			'id' => $event,
+			'label' => $event,
+			'target' => '.collapse-dpa'
+		);
+	}
+}
+
+foreach ( AEPC_Track::get_conversions_events() as $track ) {
+	if ( ! isset( AEPC_Track::$standard_events[ $track['event'] ] ) ) {
+		$radios['events'][] = array(
+			'id' => $track['event'],
+			'label' => $track['event'],
+			'target' => '.collapse-dpa'
+		);
+	}
+}
+
 ?>
 
 <div class="btn-group btn-group-justified btn-group-toggle btn-group-lg js-main-condition" data-toggle="buttons">
@@ -149,6 +171,7 @@ $radios = array(
 	<label for="" class="control-label">Users based on</label>
 	<div class="control-wrap">
 		<select class="form-control js-collapse" data-parent=".js-collapse-events" name="ca_rule[][event_type]" id="ca_event_type">
+			<option value="events" data-target=".js-events"><?php _e( 'Events', 'pixel-caffeine' ) ?></option>
 			<option value="attributes" data-target=".js-attributes" selected="selected"><?php _e( 'Attributes', 'pixel-caffeine' ) ?></option>
 			<option value="blog" data-target=".js-blog"><?php _e( 'Blog Behaviour', 'pixel-caffeine' ) ?></option>
 			<option value="ecommerce" data-target=".js-ecommerce"><?php _e( 'Ecommerce behaviour', 'pixel-caffeine' ) ?></option>

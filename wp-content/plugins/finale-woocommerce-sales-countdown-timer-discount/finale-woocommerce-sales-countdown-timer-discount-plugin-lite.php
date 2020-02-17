@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Finale - WooCommerce Sales Countdown Timer & Discount Plugin Lite
+ * Plugin Name: Finale Lite - Sales Countdown Timer & Discount for WooCommerce
  * Plugin URI: https://xlplugins.com/finale-woocommerce-sales-countdown-timer-discount-plugin/
  * Description: Finale lets you create scheduled one time or recurring campaigns. It induces urgency with visual elements such as Countdown Timer and Counter Bar to motivate users to place an order.
- * Version: 2.7.0
+ * Version: 2.11.1
  * Author: XLPlugins
  * Author URI: https://www.xlplugins.com
  * Text Domain: finale-woocommerce-sales-countdown-timer-discount
@@ -13,22 +13,22 @@
  * XL: True
  * XLTOOLS: True
  * Requires at least: 4.2.1
- * Tested up to: 5.0.3
+ * Tested up to: 5.3
  * WC requires at least: 3.0
- * WC tested up to: 3.5.4
+ * WC tested up to: 3.8
  *
- * Finale - WooCommerce Sales Countdown Timer & Discount Plugin Lite is free software.
+ * Finale Lite - Sales Countdown Timer & Discount for WooCommerce is free software.
  * You can redistribute it and/or modify it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * Finale - WooCommerce Sales Countdown Timer & Discount Plugin Lite is distributed in the hope that it will be useful,
+ * Finale Lite - Sales Countdown Timer & Discount for WooCommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Finale - WooCommerce Sales Countdown Timer & Discount Plugin Lite. If not, see <http://www.gnu.org/licenses/>.
+ * along with Finale Lite - Sales Countdown Timer & Discount for WooCommerce. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Finale-Lite
  * @Category Core
@@ -44,14 +44,13 @@ if ( ! function_exists( 'wcct_finale_dependency' ) ) {
 	 * @return bool True|False
 	 */
 	function wcct_finale_dependency() {
-
 		$active_plugins = (array) get_option( 'active_plugins', array() );
 
 		if ( is_multisite() ) {
 			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
 		}
 
-		return in_array( 'finale-woocommerce-sales-countdown-timer-discount-plugin/finale-woocommerce-sales-countdown-timer-discount-plugin.php', $active_plugins ) || array_key_exists( 'finale-woocommerce-sales-countdown-timer-discount-plugin/finale-woocommerce-sales-countdown-timer-discount-plugin.php', $active_plugins );
+		return in_array( 'finale-woocommerce-sales-countdown-timer-discount-plugin/finale-woocommerce-sales-countdown-timer-discount-plugin.php', $active_plugins, true ) || array_key_exists( 'finale-woocommerce-sales-countdown-timer-discount-plugin/finale-woocommerce-sales-countdown-timer-discount-plugin.php', $active_plugins );
 	}
 }
 
@@ -171,9 +170,9 @@ if ( ! class_exists( 'WCCT_Core' ) ) :
 
 		public function define_plugin_properties() {
 			/** Defining Constants */
-			define( 'WCCT_VERSION', '2.7.0' );
+			define( 'WCCT_VERSION', '2.11.1' );
 			define( 'WCCT_MIN_WC_VERSION', '3.0' );
-			define( 'WCCT_FULL_NAME', 'Finale - WooCommerce Sales Countdown Timer & Discount Plugin Lite' );
+			define( 'WCCT_FULL_NAME', 'Finale Lite - Sales Countdown Timer & Discount for WooCommerce' );
 			define( 'WCCT_PLUGIN_FILE', __FILE__ );
 			define( 'WCCT_PLUGIN_DIR', __DIR__ );
 			define( 'WCCT_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -285,19 +284,18 @@ if ( ! class_exists( 'WCCT_Core' ) ) :
 			return self::$_registered_entity['active'];
 		}
 
-		public static function register( $shortName, $class, $overrides = null ) {
-
+		public static function register( $short_name, $class, $overrides = null ) {
 			/** Ignore classes that have been marked as inactive */
-			if ( in_array( $class, self::$_registered_entity['inactive'] ) ) {
+			if ( in_array( $class, self::$_registered_entity['inactive'], true ) ) {
 				return;
 			}
 
 			/** Mark classes as active. Override existing active classes if they are supposed to be overridden */
-			$index = array_search( $overrides, self::$_registered_entity['active'] );
-			if ( $index !== false ) {
+			$index = array_search( $overrides, self::$_registered_entity['active'], true );
+			if ( false !== $index ) {
 				self::$_registered_entity['active'][ $index ] = $class;
 			} else {
-				self::$_registered_entity['active'][ $shortName ] = $class;
+				self::$_registered_entity['active'][ $short_name ] = $class;
 			}
 
 			/** Mark overridden classes as inactive. */
@@ -310,7 +308,7 @@ if ( ! class_exists( 'WCCT_Core' ) ) :
 		 * @return null|WCCT_Core
 		 */
 		public static function get_instance() {
-			if ( self::$_instance == null ) {
+			if ( null === self::$_instance ) {
 				self::$_instance = new self;
 			}
 
@@ -332,9 +330,9 @@ if ( ! class_exists( 'WCCT_Core' ) ) :
 		 * @param $plugin
 		 */
 		public function wcct_settings_redirect( $plugin ) {
-			if ( wcct_is_woocommerce_active() && class_exists( 'WooCommerce' ) ) {
-				if ( $plugin == plugin_basename( __FILE__ ) ) {
-					wp_redirect( add_query_arg( array(
+			if ( ! defined( 'WP_CLI' ) && wcct_is_woocommerce_active() && class_exists( 'WooCommerce' ) ) {
+				if ( plugin_basename( __FILE__ ) === $plugin ) {
+					wp_safe_redirect( add_query_arg( array(
 						'page' => 'wc-settings',
 						'tab'  => WCCT_Common::get_wc_settings_tab_slug(),
 					), admin_url( 'admin.php' ) ) );
@@ -345,20 +343,18 @@ if ( ! class_exists( 'WCCT_Core' ) ) :
 
 		/**
 		 * Checking WooCommerce dependency and then loads further
-		 * @return bool false on failure
 		 */
 		public function wcct_init() {
-
 			if ( wcct_is_woocommerce_active() && class_exists( 'WooCommerce' ) ) {
 
 				global $woocommerce;
 				if ( ! version_compare( $woocommerce->version, WCCT_MIN_WC_VERSION, '>=' ) ) {
 					add_action( 'admin_notices', array( $this, 'wcct_wc_version_check_notice' ) );
 
-					return false;
+					return;
 				}
 
-				if ( isset( $_GET['wcct_disable'] ) && $_GET['wcct_disable'] == 'yes' && is_user_logged_in() && current_user_can( 'administrator' ) ) {
+				if ( isset( $_GET['wcct_disable'] ) && 'yes' === $_GET['wcct_disable'] && is_user_logged_in() && current_user_can( 'administrator' ) ) { // WPCS: input var ok, CSRF ok.
 					return;
 				}
 

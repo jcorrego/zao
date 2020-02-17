@@ -1,19 +1,32 @@
 <?php
-/**
- * Class The7_Option_Field_Spacing
- *
- * @package The7
- */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class The7_Option_Field_Spacing
  */
-class The7_Option_Field_Spacing {
+class The7_Option_Field_Spacing extends The7_Option_Field_Abstract {
+
+	public function html() {
+		$field_id = $this->option['id'];
+		$units = 'px';
+		if ( isset( $this->option['units'] ) ) {
+			$units = $this->option['units'];
+		}
+		if ( isset( $this->option['fields'] ) ) {
+			$fields = $this->option['fields'];
+		} else {
+			// Default fields.
+			$fields = array(
+				_x( 'Top', 'theme-options', 'the7mk2' ),
+				_x( 'Right', 'theme-options', 'the7mk2' ),
+				_x( 'Bottom', 'theme-options', 'the7mk2' ),
+				_x( 'Left', 'theme-options', 'the7mk2' ),
+			);
+		}
+
+		return self::static_html( $this->option_name, $field_id, $this->val, $fields, $units );
+	}
 
 	/**
 	 * Return spacing field HTML.
@@ -26,7 +39,7 @@ class The7_Option_Field_Spacing {
 	 *
 	 * @return string
 	 */
-	public static function html( $name, $id, $value, $fields = array(), $units = array( 'px' ) ) {
+	public static function static_html( $name, $id, $value, $fields = array(), $units = array( 'px' ) ) {
 		if ( empty( $fields ) || ! is_array( $fields ) ) {
 			$fields = array( 'Top', 'Right', 'Bottom', 'Left' );
 		}

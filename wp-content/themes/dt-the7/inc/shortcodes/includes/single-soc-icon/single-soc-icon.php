@@ -7,8 +7,6 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Single_Social_Icon', false ) ) {
 
 	class DT_Shortcode_Single_Social_Icon extends DT_Shortcode_With_Inline_Css {
@@ -55,7 +53,7 @@ if ( ! class_exists( 'DT_Shortcode_Single_Social_Icon', false ) ) {
 			$this->get_unique_class();
 
 			$url = '#';
-			$target = $rel = '';
+			$target = $rel = $title = '';
 			if ( $this->atts['link'] ) {
 				if ( function_exists( 'vc_build_link' ) ) {
 					$href = vc_build_link( $this->atts['link'] );
@@ -63,6 +61,7 @@ if ( ! class_exists( 'DT_Shortcode_Single_Social_Icon', false ) ) {
 						$url = $href['url'];
 						$target = ( empty( $href['target'] ) ? '' : sprintf( ' target="%s"', trim( $href['target'] ) ) );
 						$rel = ( empty( $href['rel'] ) ? '' : sprintf( ' rel="%s"', $href['rel'] ) );
+						$title = ( empty( $href['title'] ) ? '' : $href['title'] );
 					}
 				} else {
 					$url = $this->atts['link'];
@@ -71,7 +70,6 @@ if ( ! class_exists( 'DT_Shortcode_Single_Social_Icon', false ) ) {
 			}
 
 			$dt_soc_icon_attr = esc_attr( $this->atts['dt_soc_icon'] );
-			$dt_soc_icon_attr = (string) $dt_soc_icon_attr;
 
 			static $social_icons = null;
 
@@ -90,22 +88,27 @@ if ( ! class_exists( 'DT_Shortcode_Single_Social_Icon', false ) ) {
 				$dt_soc_icon = 'you-tube';
 			} elseif ( in_array( $dt_soc_icon, array( 'tripedvisor', 'tripadvisor' ) ) ) {
 				$dt_soc_icon = 'tripedvisor';
+			} elseif ( $dt_soc_icon === 'google' ) {
+				$dt_soc_icon = '';
 			}
-
-			$dt_soc_icon = array_key_exists( $dt_soc_icon, $social_icons ) ? $dt_soc_icon : '';
 
 			if ( empty($dt_soc_icon) ) {
 				return;
 			}
 
-			$title = esc_attr( $social_icons[ $dt_soc_icon ] );
+			if ( array_key_exists( $dt_soc_icon, $social_icons ) ) {
+				$title = $title ? $title : $social_icons[ $dt_soc_icon ];
+				$icon_class = "soc-font-icon {$dt_soc_icon_attr}";
+			} else {
+				$icon_class = $dt_soc_icon_attr;
+			}
 
 			printf(
 				'<a title="%1$s" href="%2$s" %3$s ><i class="%4$s"></i><span class="screen-reader-text">%1$s</span></a>',
-				$title,
+				esc_attr( $title ),
 				esc_attr( $url ),
 				$target . $rel . $this->get_html_class( array( $dt_soc_icon ) ),
-				"soc-font-icon {$dt_soc_icon_attr}"
+				esc_attr( 'soc-icon ' . $icon_class )
 			);
 		}
 
@@ -151,9 +154,8 @@ if ( ! class_exists( 'DT_Shortcode_Single_Social_Icon', false ) ) {
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name',  $this->get_unique_class(), '~"%s"' );
 
 			$less_vars->add_pixel_number( 'soc-icon-size', $this->get_att( 'soc_icon_size' ) );

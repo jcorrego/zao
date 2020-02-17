@@ -106,6 +106,72 @@ if ( class_exists( 'WP_Filesystem_Direct' ) ) {
 			return parent::rmdir( $folder_path, $recursive );
 		}
 
+		/**
+		 * Overriding as files are not removing after WP 5.3
+		 * Directory is not readable
+		 */
+		public function dirlist( $path, $include_hidden = true, $recursive = false ) {
+			if ( $this->is_file( $path ) ) {
+				$limit_file = basename( $path );
+				$path       = dirname( $path );
+			} else {
+				$limit_file = false;
+			}
+
+			if ( ! $this->is_dir( $path ) ) {
+				return false;
+			}
+
+			$dir = @dir( $path );
+			if ( ! $dir ) {
+				return false;
+			}
+
+			$ret = array();
+
+			while ( false !== ( $entry = $dir->read() ) ) {
+				$struc         = array();
+				$struc['name'] = $entry;
+
+				if ( '.' == $struc['name'] || '..' == $struc['name'] ) {
+					continue;
+				}
+
+				if ( ! $include_hidden && '.' == $struc['name'][0] ) {
+					continue;
+				}
+
+				if ( $limit_file && $struc['name'] != $limit_file ) {
+					continue;
+				}
+
+				$struc['perms']       = $this->gethchmod( $path . '/' . $entry );
+				$struc['permsn']      = $this->getnumchmodfromh( $struc['perms'] );
+				$struc['number']      = false;
+				$struc['owner']       = $this->owner( $path . '/' . $entry );
+				$struc['group']       = $this->group( $path . '/' . $entry );
+				$struc['size']        = $this->size( $path . '/' . $entry );
+				$struc['lastmodunix'] = $this->mtime( $path . '/' . $entry );
+				$struc['lastmod']     = date( 'M j', $struc['lastmodunix'] );
+				$struc['time']        = date( 'h:i:s', $struc['lastmodunix'] );
+				$struc['type']        = $this->is_dir( $path . '/' . $entry ) ? 'd' : 'f';
+
+				if ( 'd' == $struc['type'] ) {
+					if ( $recursive ) {
+						$struc['files'] = $this->dirlist( $path . '/' . $struc['name'], $include_hidden, $recursive );
+					} else {
+						$struc['files'] = array();
+					}
+				}
+
+				$ret[ $struc['name'] ] = $struc;
+			}
+			$dir->close();
+			unset( $dir );
+
+			return $ret;
+		}
+
 		public function exists( $file ) {
 			$file = $this->file_path( $file );
 

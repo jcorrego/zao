@@ -68,8 +68,8 @@ class Wad {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'wad';
-		$this->version = '0.1';
+		$this->plugin_name = 'woo-advanced-discounts';
+		$this->version = WAD_VERSION;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -150,45 +150,58 @@ class Wad {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Wad_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Wad_Admin( $this->get_plugin_name() );
                 
-                $this->loader->add_action( 'init', $plugin_admin, 'init_sessions', 1);
-				$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles',100 );
-				$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts',100 );
-                $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_wad_menu');
-                
-                //Free version ads and others
-                $this->loader->add_action( 'admin_notices', $plugin_admin, 'get_ad_messages' );
-				$this->loader->add_action( 'admin_notices', $plugin_admin, 'get_review_suggestion_notice' );
-				$this->loader->add_action( 'admin_notices', $plugin_admin, 'check_product_list' );
-				
-				
-                // Runs the admin notice ignore function incase a dismiss button has been clicked
-                $this->loader->add_action( 'admin_init', $plugin_admin, 'admin_notice_ignore' );
-                // Runs the admin notice temp ignore function incase a temp dismiss link has been clicked
-                $this->loader->add_action( 'admin_init', $plugin_admin, 'admin_notice_temp_ignore' );
-                $this->loader->add_action( 'admin_init', $plugin_admin, 'wad_redirect' );
-                
-                
-                
-                $discount=new WAD_Discount(FALSE);
-                $this->loader->add_action( 'init', $discount, 'register_cpt_discount' );
-                $this->loader->add_action( 'add_meta_boxes', $discount, 'get_discount_metabox');
-                $this->loader->add_action( 'save_post_o-discount', $discount, 'save_discount');
-                $this->loader->add_action( 'save_post_product', $discount, 'save_discount');
-                $this->loader->add_filter( 'manage_edit-o-discount_columns', $discount, 'get_columns');
-                $this->loader->add_action( 'manage_o-discount_posts_custom_column', $discount, 'get_columns_values', 5, 2);
-                $this->loader->add_action( 'woocommerce_product_write_panel_tabs',$discount, 'get_product_tab_label');
-                $this->loader->add_action( 'woocommerce_product_data_panels', $discount, 'get_product_tab_data');
-                $this->loader->add_action( 'woocommerce_product_meta_end', $discount, 'get_quantity_pricing_tables');
-                
-                $this->loader->add_filter( 'woocommerce_product_data_tabs', $discount, 'get_product_tab_label');
-                
-                $list=new WAD_Products_List(FALSE);
-                $this->loader->add_action( 'init', $list, 'register_cpt_list' );
-                $this->loader->add_action( 'add_meta_boxes', $list, 'get_list_metabox');
-                $this->loader->add_action( 'save_post_o-list', $list, 'save_list');
-                $this->loader->add_action( 'wp_ajax_evaluate-wad-query', $list, 'evaluate_wad_query');
+		$this->loader->add_action( 'init', $plugin_admin, 'init_sessions', 1);
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles',100 );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts',100 );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_wad_menu');
+
+		//Free version ads and others
+		// $this->loader->add_action( 'admin_notices', $plugin_admin, 'get_ad_messages' );
+	//	$this->loader->add_action( 'admin_notices', $plugin_admin, 'get_review_suggestion_notice' );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'check_product_list' );
+
+
+		// Runs the admin notice ignore function incase a dismiss button has been clicked
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'admin_notice_ignore' );
+		// Runs the admin notice temp ignore function incase a temp dismiss link has been clicked
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'admin_notice_temp_ignore' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'wad_redirect' );
+
+		//$this->loader->add_action( 'admin_notices', $plugin_admin, 'get_subscription_notice' );
+		//subscription hook
+		$this->loader->add_action( 'wp_ajax_wad_subscribe', $plugin_admin, 'wad_subscribe');
+		$this->loader->add_action( 'wp_ajax_nopriv_wad_subscribe', $plugin_admin, 'wad_subscribe');
+
+		//hide subscription hook
+		$this->loader->add_action( 'wp_ajax_wad_hide_notice', $plugin_admin, 'wad_hide_notice');
+		$this->loader->add_action( 'wp_ajax_nopriv_wad_hide_notice', $plugin_admin, 'wad_hide_notice');
+			
+		$this->loader->add_action( 'wp_ajax_wad_hide_review', $plugin_admin, 'hide_review');
+		$this->loader->add_action( 'wp_ajax_nopriv_wad_hide_review', $plugin_admin, 'hide_review');
+		
+		$this->loader->add_action( 'wp_ajax_wad_submit_a_review', $plugin_admin, 'hide_review');
+		$this->loader->add_action( 'wp_ajax_nopriv_submit_a_review', $plugin_admin, 'hide_review');
+		
+		$discount=new WAD_Discount(FALSE);
+		$this->loader->add_action( 'init', $discount, 'register_cpt_discount' );
+		$this->loader->add_action( 'add_meta_boxes', $discount, 'get_discount_metabox');
+		$this->loader->add_action( 'save_post_o-discount', $discount, 'save_discount');
+		$this->loader->add_action( 'save_post_product', $discount, 'save_discount');
+		$this->loader->add_filter( 'manage_edit-o-discount_columns', $discount, 'get_columns');
+		$this->loader->add_action( 'manage_o-discount_posts_custom_column', $discount, 'get_columns_values', 5, 2);
+		$this->loader->add_action( 'woocommerce_product_write_panel_tabs',$discount, 'get_product_tab_label');
+		$this->loader->add_action( 'woocommerce_product_data_panels', $discount, 'get_product_tab_data');
+		$this->loader->add_action( 'woocommerce_product_meta_end', $discount, 'get_quantity_pricing_tables');
+
+		$this->loader->add_filter( 'woocommerce_product_data_tabs', $discount, 'get_product_tab_label');
+
+		$list=new WAD_Products_List(FALSE);
+		$this->loader->add_action( 'init', $list, 'register_cpt_list' );
+		$this->loader->add_action( 'add_meta_boxes', $list, 'get_list_metabox');
+		$this->loader->add_action( 'save_post_o-list', $list, 'save_list');
+		$this->loader->add_action( 'wp_ajax_evaluate-wad-query', $list, 'evaluate_wad_query');
 
 	}
 
@@ -201,59 +214,61 @@ class Wad {
 	 */
 	private function define_public_hooks() {
                 $wc_version=  $this->get_wc_version();
-		$plugin_public = new Wad_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Wad_Public( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-                $this->loader->add_action( 'wp_loaded', $plugin_public, 'init_globals' );
-                
-                $discount=new WAD_Discount(false);
-                
-                if( version_compare( $wc_version, "3.0.1", ">=" ) )
-                {
-                    $this->loader->add_filter( 'woocommerce_product_get_sale_price', $discount, 'get_sale_price', 99, 2 );
-                    $this->loader->add_filter( 'woocommerce_product_get_price', $discount, 'get_sale_price', 99, 2 );
-                    
-                    //Variations prices
-                    $this->loader->add_filter( 'woocommerce_product_variation_get_sale_price', $discount, 'get_sale_price', 99, 2 );
-                    $this->loader->add_filter( 'woocommerce_product_variation_get_price', $discount, 'get_sale_price', 99, 2 );
-                    
-                }
-                else
-                {
-                    $this->loader->add_filter( 'woocommerce_get_sale_price', $discount, 'get_sale_price', 99, 2 );
-                    $this->loader->add_filter( 'woocommerce_get_price', $discount, 'get_sale_price', 99, 2 );
-                }
-                $this->loader->add_filter( 'woocommerce_cart_item_name', $discount, 'add_discount_desc_to_products_names', 99, 3 );
-                
+		$this->loader->add_action( 'wp_loaded', $plugin_public, 'init_globals' );
+		
+		$discount=new WAD_Discount(false);
+		
+		if( version_compare( $wc_version, "3.0.1", ">=" ) )
+		{
+			$this->loader->add_filter( 'woocommerce_product_get_sale_price', $discount, 'get_sale_price', 99, 2 );
+			$this->loader->add_filter( 'woocommerce_product_get_price', $discount, 'get_sale_price', 99, 2 );
+			
+			//Variations prices
+			$this->loader->add_filter( 'woocommerce_product_variation_get_sale_price', $discount, 'get_sale_price', 99, 2 );
+			$this->loader->add_filter( 'woocommerce_product_variation_get_price', $discount, 'get_sale_price', 99, 2 );
+			
+		}
+		else
+		{
+			$this->loader->add_filter( 'woocommerce_get_sale_price', $discount, 'get_sale_price', 99, 2 );
+			$this->loader->add_filter( 'woocommerce_get_price', $discount, 'get_sale_price', 99, 2 );
+		}
+		$this->loader->add_filter( 'woocommerce_cart_item_name', $discount, 'add_discount_desc_to_products_names', 99, 3 );
+		
 
-                 //subtotal in mini-cart review
-                 $this->loader->add_filter( 'woocommerce_cart_subtotal', $discount, 'get_cart_subtotal',90, 3 );
-                //Saves the used discounts in the order
-                $this->loader->add_action( 'woocommerce_checkout_update_order_meta', $discount, 'save_used_discounts' );
-                
-                //Makes sure the discounts id to save are initialized on the checkout page
-                $this->loader->add_action( 'posts_selection', $discount, 'initialize_used_discounts_array' );
-                
-                //Variations prices(sale icon for variable products)
-                $this->loader->add_filter( 'woocommerce_variation_prices_sale_price', $discount, 'get_sale_price', 99, 2 );
-                $this->loader->add_filter( 'woocommerce_variation_prices', $discount, 'get_variations_prices', 99, 2 );
-                
-                $this->loader->add_action( 'woocommerce_cart_calculate_fees', $discount, 'woocommerce_custom_surcharge' );
+                //subtotal in mini-cart review
+                $this->loader->add_filter( 'woocommerce_cart_subtotal', $discount, 'get_cart_subtotal',99, 3 );
+		$this->loader->add_action( 'woocommerce_before_mini_cart_contents', $discount, 'update_items_prices');	
+		//Saves the used discounts in the order
+		$this->loader->add_action( 'woocommerce_checkout_update_order_meta', $discount, 'save_used_discounts' );
+		
+		//Makes sure the discounts id to save are initialized on the checkout page
+		$this->loader->add_action( 'posts_selection', $discount, 'initialize_used_discounts_array' );
+		
+		//Variations prices(sale icon for variable products)
+		$this->loader->add_filter( 'woocommerce_variation_prices_sale_price', $discount, 'get_sale_price', 99, 2 );
+		$this->loader->add_filter( 'woocommerce_variation_prices', $discount, 'get_variations_prices', 99, 2 );
+		
+		$this->loader->add_action( 'woocommerce_cart_calculate_fees', $discount, 'woocommerce_custom_surcharge' );
 
-                $this->loader->add_action( 'loop_start', $discount, 'get_loop_data', 99, 2 );
-                $this->loader->add_action( 'woocommerce_before_cart', $discount, 'get_loop_data');
-                $this->loader->add_action( 'woocommerce_before_mini_cart_contents', $discount, 'get_mini_cart_loop_data');
-                $this->loader->add_action( 'woocommerce_checkout_update_order_review', $discount, 'get_loop_data');
-                $this->loader->add_action( 'woocommerce_before_shop_loop', $discount, 'get_loop_data');
-                
-                //Related products
-                $this->loader->add_action( 'woocommerce_before_template_part', $discount, 'prepare_related_products_loop_data', 99, 4 );
-                
-                //Use new algorithm extration in woocommerce shotcodes pages
-                $this->loader->add_filter( 'woocommerce_shortcode_products_query', $discount, 'wad_shortcode_products_pages' );
-                //update product lists when processing to checkout
-                $this->loader->add_action( 'woocommerce_checkout_process', $discount, 'update_product_lists' );
+		$this->loader->add_action( 'loop_start', $discount, 'get_loop_data', 99, 2 );
+		$this->loader->add_action( 'woocommerce_before_cart', $discount, 'get_loop_data' );
+		$this->loader->add_action( 'woocommerce_before_mini_cart_contents', $discount, 'get_cart_loop_data' );
+		$this->loader->add_action( 'woocommerce_checkout_update_order_review', $discount, 'get_loop_data' );
+		$this->loader->add_action( 'woocommerce_before_shop_loop', $discount, 'get_loop_data' );
+		
+		//Related products
+		$this->loader->add_action( 'woocommerce_before_template_part', $discount, 'prepare_related_products_loop_data', 99, 4 );
+		
+		//Use new algorithm extration in woocommerce shotcodes pages
+		$this->loader->add_filter( 'woocommerce_shortcode_products_query', $discount, 'wad_shortcode_products_pages' );
+		//update product lists when processing to checkout
+		$this->loader->add_action( 'woocommerce_checkout_process', $discount, 'update_product_lists' );
+							
 	}
         
         function get_wc_version() {

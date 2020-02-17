@@ -1,0 +1,30 @@
+2020-02-11T02:56:20+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 120
+2020-02-11T02:56:48+00:00 NOTICE member.sync :: Subscribed Member zamira5683.06@gmail.com :: Array
+(
+    [status_if_new] => 1
+    [merge_fields] => Array
+        (
+        )
+
+)
+
+2020-02-11T05:28:01+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 2cd75cfaf227cdf2f857a1782aa695e1
+2020-02-11T05:28:37+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 1b59a15d9bd90638a7d75a21da4002f1
+2020-02-11T05:28:52+00:00 NOTICE abandoned_cart.success :: email: zamira5683.06@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=2cd75cfaf227cdf2f857a1782aa695e1
+2020-02-11T05:28:52+00:00 NOTICE abandoned_cart.success :: email: milkke.094@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=1b59a15d9bd90638a7d75a21da4002f1
+2020-02-11T05:29:14+00:00 NOTICE ac.cart_swap :: Deleted cart [milkke.094@gmail.com] :: ID [1b59a15d9bd90638a7d75a21da4002f1]
+2020-02-11T05:29:15+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 67d5adea7379038ed64aa550e1b9fba0
+2020-02-11T05:29:33+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 120
+2020-02-11T05:29:33+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3947
+2020-02-11T05:31:17+00:00 NOTICE abandoned_cart.success :: email: zami.068@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=67d5adea7379038ed64aa550e1b9fba0
+2020-02-11T05:31:17+00:00 NOTICE member.sync :: Updated Member zamira5683.06@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Cristel
+            [LNAME] => González
+        )
+
+)
+
+2020-02-11T06:50:21+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3947

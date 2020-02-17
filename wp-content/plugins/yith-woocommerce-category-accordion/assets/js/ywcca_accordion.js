@@ -2,7 +2,7 @@ jQuery(document).ready( function($){
 
 
 
-   var widget = $('.widget.widget_yith_wc_category_accordion'),
+   var widget = $('.widget_yith_wc_category_accordion'),
        ul_cont  =   widget.find( 'ul.ywcca_category_accordion_widget' ),
        highlight_cat    =   ul_cont.data( 'highlight_curr_cat' )=='on',
        closed_accordion = ul_cont.data('show_collapse') == 'on',
@@ -42,11 +42,11 @@ jQuery(document).ready( function($){
 
                         if (main.hasClass('closed')) {
                             main.removeClass('closed').addClass('opened');
-                            main.find('i').removeClass('icon-plus').addClass('icon-minus');
+                            main.find('>i').removeClass('icon-plus').addClass('icon-minus');
                         }
                         else {
                             main.removeClass('opened').addClass('closed');
-                            main.find('i').removeClass('icon-minus').addClass('icon-plus');
+                            main.find('>i').removeClass('icon-minus').addClass('icon-plus');
                         }
 
                         e.stopImmediatePropagation();

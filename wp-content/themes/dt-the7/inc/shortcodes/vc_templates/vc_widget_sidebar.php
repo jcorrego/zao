@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $show_bg
  * @var $sidebar_id
  * Shortcode class
- * @var $this WPBakeryShortCode_VC_Widget_sidebar
+ * @var WPBakeryShortCode_Vc_Widget_sidebar $this
  */
 $title = $el_class = $el_id = $sidebar_id = $show_bg = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
@@ -24,6 +24,7 @@ if ( '' === $sidebar_id ) {
 
 $el_class = $this->getExtraClass( $el_class );
 
+// The7: Custom background setting.
 if ( 'true' === $show_bg ) {
 	$el_class .= ' solid-bg';
 }
@@ -52,10 +53,17 @@ if ( ! empty( $el_id ) ) {
 }
 $output = '<div ' . implode( ' ', $wrapper_attributes ) . ' class="' . esc_attr( $css_class ) . '">
 		<div class="wpb_wrapper">
-			' . wpb_widget_title( array( 'title' => $title, 'extraclass' => 'wpb_widgetised_column_heading' ) ) . '
+			' . wpb_widget_title( array(
+	'title' => $title,
+	'extraclass' => 'wpb_widgetised_column_heading',
+) ) . '
 			' . $sidebar_value . '
 		</div>
 	</div>
 ';
 
-echo $output;
+if ( version_compare( WPB_VC_VERSION, '6.0.3', '<' ) ) {
+	echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+} else {
+	return $output;
+}

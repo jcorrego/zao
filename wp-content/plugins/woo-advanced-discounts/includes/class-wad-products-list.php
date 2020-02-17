@@ -34,17 +34,17 @@ class WAD_Products_List {
     public function register_cpt_list() {
 
         $labels = array(
-            'name' => __('List', 'wad'),
-            'singular_name' => __('List', 'wad'),
-            'add_new' => __('New list', 'wad'),
-            'add_new_item' => __('New list', 'wad'),
-            'edit_item' => __('Edit list', 'wad'),
-            'new_item' => __('New list', 'wad'),
-            'view_item' => __('View list', 'wad'),
-            //        'search_items' => __('Search a group', 'wad'),
-            'not_found' => __('No list found', 'wad'),
-            'not_found_in_trash' => __('No list in the trash', 'wad'),
-            'menu_name' => __('Lists', 'wad'),
+            'name' => __('List', 'woo-advanced-discounts'),
+            'singular_name' => __('List', 'woo-advanced-discounts'),
+            'add_new' => __('New list', 'woo-advanced-discounts'),
+            'add_new_item' => __('New list', 'woo-advanced-discounts'),
+            'edit_item' => __('Edit list', 'woo-advanced-discounts'),
+            'new_item' => __('New list', 'woo-advanced-discounts'),
+            'view_item' => __('View list', 'woo-advanced-discounts'),
+            //        'search_items' => __('Search a group', 'woo-advanced-discounts'),
+            'not_found' => __('No list found', 'woo-advanced-discounts'),
+            'not_found_in_trash' => __('No list in the trash', 'woo-advanced-discounts'),
+            'menu_name' => __('Lists', 'woo-advanced-discounts'),
         );
 
         $args = array(
@@ -77,7 +77,7 @@ class WAD_Products_List {
         foreach ($screens as $screen) {
 
             add_meta_box(
-                    'o-list-settings-box', __('List settings', 'wad'), array($this, 'get_list_settings_page'), $screen
+                    'o-list-settings-box', __('List settings', 'woo-advanced-discounts'), array($this, 'get_list_settings_page'), $screen
             );
         }
     }
@@ -96,15 +96,15 @@ class WAD_Products_List {
                     );
             
             $extraction_type = array(
-                'title' => __('Extraction type', 'wad'),
+                'title' => __('Extraction type', 'woo-advanced-discounts'),
                 'name' => 'o-list[type]',
                 'type' => 'radio',
                 'class'=> 'o-list-extraction-type',
                 'default' => 'by-id',
-                'desc' => __('How would you like to specify which products you want to include in the list?', 'wad'),
+                'desc' => __('How would you like to specify which products you want to include in the list?', 'woo-advanced-discounts'),
                 'options' => array(
-                    "by-id" => "By ID",
-                    "custom-request" => "Dynamic request",
+                    "by-id" => __("By ID", "woo-advanced-discounts"),
+                    "custom-request" => __("Dynamic request", "woo-advanced-discounts"),
                 )
             );
             
@@ -120,8 +120,8 @@ class WAD_Products_List {
             }
             
             $ids_list= array(
-                'title' => __('Products IDs', 'wad'),
-                'desc' => __('Values separated by commas', 'wad'),
+                'title' => __('Products IDs', 'woo-advanced-discounts'),
+                'desc' => __('Values separated by commas', 'woo-advanced-discounts'),
                 'name'=>'o-list[ids]',
                 'row_class'=>'extract-by-id-row',
                 'row_css'=> $by_id_css,
@@ -130,8 +130,8 @@ class WAD_Products_List {
             );
             
             $author= array(
-                'title' => __('Author', 'wad'),
-                'desc' => __("Retrieves only the elements created by the specified authors", "wad"),
+                'title' => __('Author', 'woo-advanced-discounts'),
+                'desc' => __("Retrieves only the elements created by the specified authors", "woo-advanced-discounts"),
                 'name'=>'o-list[author__in]',
                 'row_class'=>'extract-by-custom-request-row',
                 'row_css'=>$custom_request_css,
@@ -141,8 +141,8 @@ class WAD_Products_List {
             );
             
             $exclude= array(
-                'title' => __('Exclude', 'wad'),
-                'desc' => __('Excludes the following elements IDs from the results (values separated by commas)', 'wad'),
+                'title' => __('Exclude', 'woo-advanced-discounts'),
+                'desc' => __('Excludes the following elements IDs from the results (values separated by commas)', 'woo-advanced-discounts'),
                 'name'=>'o-list[post__not_in]',
                 'row_class'=>'extract-by-custom-request-row',
                 'row_css'=>$custom_request_css,
@@ -151,28 +151,28 @@ class WAD_Products_List {
             );
             
             $metas_relationship= array(
-                'title' => __('Metas relationship', 'wad'),
+                'title' => __('Metas relationship', 'woo-advanced-discounts'),
                 'name'=>'o-list[meta_query][relation]',
                 'row_class'=>'extract-by-custom-request-row',
                 'row_css'=>$custom_request_css,
                 'type' => 'select',
                 'default' => '',
                 'options' => array(
-                    "AND"=> 'AND',
-                    "OR"=> 'OR'
+                    "AND"=> __('AND', 'woo-advanced-discounts'),
+                    "OR"=> __('OR', 'woo-advanced-discounts')
                     )
             );
             
             $meta_filter_key= array(
-                'title' => __('Key', 'wad'),
+                'title' => __('Key', 'woo-advanced-discounts'),
                 'name'=>'key',
                 'type' => 'text',
                 'default' => '',
             );
             
             $meta_filter_compare= array(
-                'title' => __('Operator', 'wad'),
-                'tip' => __("If the operator  is 'IN', 'NOT IN', 'BETWEEN', or 'NOT BETWEEN', make sure the different values are separated by a comma", "wad"),
+                'title' => __('Operator', 'woo-advanced-discounts'),
+                'tip' => __("If the operator  is 'IN', 'NOT IN', 'BETWEEN', or 'NOT BETWEEN', make sure the different values are separated by a comma", "woo-advanced-discounts"),
                 'name'=>'compare',
                 'type' => 'select',
                 'options'=> array(
@@ -196,14 +196,14 @@ class WAD_Products_List {
             );
             
             $meta_filter_value= array(
-                'title' => __('Value', 'wad'),
+                'title' => __('Value', 'woo-advanced-discounts'),
                 'name'=>'value',
                 'type' => 'text',
                 'default' => '',
             );
             
             $meta_filter_type= array(
-                'title' => __('Type', 'wad'),
+                'title' => __('Type', 'woo-advanced-discounts'),
                 'name'=>'type',
                 'type' => 'select',
                 'options'=> array(
@@ -228,8 +228,8 @@ class WAD_Products_List {
             <?php
             
             $metas_filters= array(
-                'title' => __('Metas', 'wad'),
-                'desc' => __('Filter by metas', 'wad'),
+                'title' => __('Metas', 'woo-advanced-discounts'),
+                'desc' => __('Filter by metas', 'woo-advanced-discounts'),
                 'name'=>'o-list[meta_query][queries]',
                 'row_class'=>'extract-by-custom-request-row',
                 'row_css'=>$custom_request_css,
@@ -238,7 +238,7 @@ class WAD_Products_List {
             );
             
             $taxonomies_relationship= array(
-                'title' => __('Taxonomies relationship', 'wad'),
+                'title' => __('Taxonomies relationship', 'woo-advanced-discounts'),
                 'name'=>'o-list[tax_query][relation]',
                 'row_class'=>'extract-by-custom-request-row',
                 'row_css'=>$custom_request_css,
@@ -251,7 +251,7 @@ class WAD_Products_List {
             );
             
             $taxonomy_filter_key= array(
-                'title' => __('Taxonomy', 'wad'),
+                'title' => __('Taxonomy', 'woo-advanced-discounts'),
                 'name'=>'taxonomy',
                 'type' => 'select',
                 'class'=>'wad-taxonomies-selector',
@@ -259,7 +259,7 @@ class WAD_Products_List {
             );
             
             $taxonomy_filter_operator= array(
-                'title' => __('Operator', 'wad'),
+                'title' => __('Operator', 'woo-advanced-discounts'),
                 'name'=>'operator',
                 'type' => 'select',
                 'options'=> array(
@@ -270,7 +270,7 @@ class WAD_Products_List {
             );
             
             $taxonomy_filter_value= array(
-                'title' => __('Value', 'wad'),
+                'title' => __('Value', 'woo-advanced-discounts'),
                 'name'=>'terms',
                 'type' => 'multiselect',
                 'class' => 'wad-terms-selector',
@@ -278,8 +278,8 @@ class WAD_Products_List {
             );
             
             $taxonomies_filters= array(
-                'title' => __('Taxonomies', 'wad'),
-                'desc' => __('Filter by taxonomies (Categories, Tags, Attributes)', 'wad'),
+                'title' => __('Taxonomies', 'woo-advanced-discounts'),
+                'desc' => __('Filter by taxonomies (Categories, Tags, Attributes)', 'woo-advanced-discounts'),
                 'name'=>'o-list[tax_query][queries]',
                 'row_class'=>'extract-by-custom-request-row',
                 'row_css'=>$custom_request_css,
@@ -305,7 +305,7 @@ class WAD_Products_List {
             echo o_admin_fields($settings);
                     ?>
                 </div>
-                <a id="wad-check-query" class="button mg-top"><?php _e("Evaluate", "wad");?></a>
+                <a id="wad-check-query" class="button mg-top"><?php _e("Evaluate", "woo-advanced-discounts");?></a>
                 <span id="wad-evaluate-loading" class="wad-loading mg-top mg-left" style="display: none;"></span>
                 <div id="debug" class="mg-top"></div>
             <?php
@@ -402,7 +402,7 @@ class WAD_Products_List {
         $parameters=$_POST["data"]["o-list"];
         $args=$this->get_args($parameters);
         $posts=  get_posts($args);
-        $msg=count($posts).__(" result(s) found","acd");
+        $msg=count($posts).__(" result(s) found","woo-advanced-discounts");
         if(count($posts))
         {
             $msg.=": (";
@@ -475,55 +475,76 @@ class WAD_Products_List {
         return $args;
     }
     
-    public function get_products($force_old=false)
-    {
-        global $wad_settings;
-        $to_return=array();
-        $products=array();
-        $variations_ids=array();
+    public function get_products( $force_old = false ) {
+        $new_extraction_algorithm = true;
+        global $wad_products_lists;
+        global $wad_last_products_fetch;
         
-        if(empty($products))
-        {
-            $args=  $this->get_args();
-            global $wad_last_products_fetch;
-            if(empty($wad_last_products_fetch))
-                return array();
-            else if($wad_last_products_fetch && $wad_last_products_fetch!=$this->last_fetch)
-            {
-                //We make sure that the values excluded using the list exclude field are not included again in the last fetch
-                if(isset($args['post__not_in'])&&!empty($args['post__not_in']))
-                {
-                    $wad_last_products_fetch=  array_diff($wad_last_products_fetch, $args['post__not_in']);
-                }
-                if(isset($args["post__in"]))
-                    array_merge ($args["post__in"], $wad_last_products_fetch);
-                else
-                    $args["post__in"]=$wad_last_products_fetch;
+        if ($force_old)
+            $use_new_extraction_aglgorithm = false;
+        else
+            $use_new_extraction_aglgorithm = $new_extraction_algorithm;
 
-                $this->last_fetch=$wad_last_products_fetch;
-                $this->products=false;
-            }
-            else
-                $products=$this->products;
+        if (
+                $use_new_extraction_aglgorithm //New algorithm mode
+                && isset( $wad_products_lists[ $this->id ] ) //We already retrieved products from this list before
+                && $wad_products_lists[ $this->id ][ 'last_fetch' ] == $wad_last_products_fetch //Our last extraction is the same as what we're need to extract now
+            )
+            return $wad_products_lists[ $this->id ][ 'products' ];//We simply return what we already stored without any calculation
+        
+        
+        //If there is no product extracted no need to bother applying any discount here because woocommerce is not looping any product
+        if (empty( $wad_last_products_fetch ))
+                return array();
+        
+//        var_dump("ready for action");
+
+
+        $products = array();
+
+
+        
+        //Force old: useful otherwise the free gifts prices are not removed from the total for example
+        //or to avoid any issue right after the customer clicks on the place order button
+        
+        $args = $this->get_args();
+        if ($use_new_extraction_aglgorithm) {
             
-            if($this->products && $force_old==FALSE)
-            {
-                $products=$this->products;
+            if ($wad_last_products_fetch && $wad_last_products_fetch != $this->last_fetch) {
+                //We make sure that the values excluded using the list exclude field are not included again in the last fetch
+                if (isset( $args[ 'post__not_in' ] ) && !empty( $args[ 'post__not_in' ] )) {
+                    $wad_last_products_fetch = array_diff( $wad_last_products_fetch, $args[ 'post__not_in' ] );
+                }
+                if (isset( $args[ "post__in" ] ))
+                    array_merge( $args[ "post__in" ], $wad_last_products_fetch );
+                else
+                    $args[ "post__in" ] = $wad_last_products_fetch;
+
+                $this->last_fetch = $wad_last_products_fetch;
+                $this->products = false;
+            } else
+                $products = $this->products;
             }
-            else
-            {
-                $products=  get_posts($args);
-                if(!empty($products))
-                {
-                    $to_return=array_map(function($o){ return $o->ID;}, $products);
+            
+        if ($this->products && $force_old == FALSE) {
+            $products = $this->products;
+        } else {
+            $products = get_posts( $args );
+            if (!empty( $products )) {
+                $to_return = array_map( function($o) {
+                        return $o->ID;
+                }, $products );
                     //This will make sure the variations are included for the variable products
-                    $variations_ids= $this->get_request_variations($products);
-                    $this->products=  array_merge($to_return, $variations_ids);
-                    
+                    $variations_ids = $this->get_request_variations( $products );
+                    $this->products = array_merge( $to_return, $variations_ids );
                 }
             }
-        }
         
+
+        $wad_products_lists[ $this->id ] = array(
+            'last_fetch' => $this->last_fetch,
+            'products' => $this->products
+        );
         return $this->products;
     }
     

@@ -32,7 +32,7 @@ if ( ! class_exists( 'DT_Shortcode_List', false ) ) {
 				'dividers'			=> '1',
 				'bullet_position'	=> 'middle',
 				'start'				=> '1'
-			), $atts ) );
+			), $atts, 'dt_list' ) );
 			
 			$style = in_array( $style, array('1', '2', '3') ) ? $style : '1';
 			$bullet_position = in_array( $bullet_position, array('top', 'middle') ) ? $bullet_position : 'middle';
@@ -85,17 +85,17 @@ if ( ! class_exists( 'DT_Shortcode_List', false ) ) {
 
 		public function shortcode_item( $atts, $content = null ) {
 			extract( shortcode_atts( array(
-				'image'         => '',
-			), $atts ) );
-			
-			$image = esc_url($image);
-			
-			if ( isset(self::$atts['style']) && '3' == self::$atts['style'] ) {
+				'image' => '',
+			), $atts, 'dt_list_item' ) );
+
+			$image = esc_url( $image );
+
+			if ( isset( self::$atts['style'] ) && '3' == self::$atts['style'] ) {
 
 				$content = '<div>' . $content . '</div>';
-				
+
 				if ( $image ) {
-					$content = sprintf( '<div><img src="%s" class="list-img" alt="" /></div>%s', $image, $content );
+					$content = sprintf( '<div><img src="%s" class="list-img" alt="%s" /></div>%s', $image, esc_attr( __( 'List item image', 'the7mk2' ) ), $content );
 				}
 
 				$content = '<div class="wf-table">' . $content . '</div>';
@@ -103,7 +103,7 @@ if ( ! class_exists( 'DT_Shortcode_List', false ) ) {
 
 			$output = sprintf( '<li>%s</li>', presscore_remove_wpautop( $content, true ) );
 
-			return $output; 
+			return $output;
 		}
 
 	}

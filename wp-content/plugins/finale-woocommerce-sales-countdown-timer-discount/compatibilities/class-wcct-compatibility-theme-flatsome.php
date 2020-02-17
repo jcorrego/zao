@@ -15,7 +15,7 @@ class WCCT_Compatibility_Theme_Flatsome {
 
 	public function woocommerce_before_template_part( $template_name ) {
 		global $product;
-		if ( 'content-single-product-lightbox.php' == $template_name && $product instanceof WC_Product ) {
+		if ( 'content-single-product-lightbox.php' === $template_name && $product instanceof WC_Product ) {
 			$parent_id = WCCT_Core()->public->wcct_get_product_parent_id( $product );
 
 			WCCT_Core()->public->wcct_get_product_obj( $parent_id );

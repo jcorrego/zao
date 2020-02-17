@@ -47,7 +47,7 @@ class The7RevolutionSlider extends BundledContent {
 	}
 
 	public static function the7_revslider_dashboard_elements( $dashboard_array, $dbvariables ) {
-		$excludeFromDashboard = array( 'rs-support', 'rs-validation', 'rs-newsletter' );
+		$excludeFromDashboard = array( 'rs-support', 'rs-validation', 'rs-newsletter', 'rs-templates');
 		foreach ( $excludeFromDashboard as $dashboard_element ) {
 			if ( isset( $dashboard_array[ $dashboard_element ] ) ) {
 				unset( $dashboard_array[ $dashboard_element ] );

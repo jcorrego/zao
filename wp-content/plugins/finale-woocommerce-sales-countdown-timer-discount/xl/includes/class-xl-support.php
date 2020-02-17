@@ -43,12 +43,10 @@ class XL_Support {
 	 * Prepares the system information report.
 	 *
 	 * @access public
-	 * @return string $report
+	 * @return string|array $report
 	 */
 	public function prepare_system_information_report( $return = false ) {
-
 		global $wpdb, $wp_version;
-
 		$output = array();
 
 		/* Queue up needed information. */
@@ -61,14 +59,13 @@ class XL_Support {
 		$active_plugins         = get_option( 'active_plugins', array() );
 		$active_network_plugins = is_multisite() ? $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->sitemeta} WHERE meta_key=%s", 'active_sitewide_plugins' ) ) : array();
 		$has_log_files          = false;
-
-		$theme               = array();
-		$get_theme_info      = wp_get_theme();
-		$theme['name']       = $get_theme_info->get( 'Name' );
-		$theme['uri']        = $get_theme_info->get( 'ThemeURI' );
-		$theme['version']    = $get_theme_info->get( 'Version' );
-		$theme['author']     = $get_theme_info->get( 'Author' );
-		$theme['author_uri'] = $get_theme_info->get( 'AuthorURI' );
+		$theme                  = array();
+		$get_theme_info         = wp_get_theme();
+		$theme['name']          = $get_theme_info->get( 'Name' );
+		$theme['uri']           = $get_theme_info->get( 'ThemeURI' );
+		$theme['version']       = $get_theme_info->get( 'Version' );
+		$theme['author']        = $get_theme_info->get( 'Author' );
+		$theme['author_uri']    = $get_theme_info->get( 'AuthorURI' );
 
 		/* Begin report. */
 		$report = '#### System Information Report ####' . "\n\n";
@@ -77,19 +74,19 @@ class XL_Support {
 		$report                      .= '*** PHP Information ***' . "\n";
 		$report                      .= 'Version: ' . phpversion() . "\n";
 		$output['php']['phpversion'] = phpversion();
+
 		foreach ( $php_ini_get as $ini_get ) {
 			$report                    .= $ini_get . ': ' . ini_get( $ini_get ) . "\n";
 			$output['php']["$ini_get"] = ini_get( $ini_get );
 		}
-		$report                .= 'cURL Enabled: ' . ( function_exists( 'curl_init' ) ? 'Yes' : 'No' ) . "\n";
-		$output['php']['curl'] = ( function_exists( 'curl_init' ) ? 'Yes' : 'No' );
-		$report                .= 'Mcrypt Enabled: ' . ( function_exists( 'mcrypt_encrypt' ) ? 'Yes' : 'No' ) . "\n";
 
-		$output['php']['mcrypt']   = ( function_exists( 'mcrypt_encrypt' ) ? 'Yes' : 'No' );
-		$report                    .= 'Mbstring Enabled: ' . ( function_exists( 'mb_strlen' ) ? 'Yes' : 'No' ) . "\n";
-		$output['php']['mbstring'] = ( function_exists( 'mb_strlen' ) ? 'Yes' : 'No' );
-		$report                    .= 'Loaded Extensions: ' . implode( ', ', $php_extensions ) . "\n\n";
-
+		$report                              .= 'cURL Enabled: ' . ( function_exists( 'curl_init' ) ? 'Yes' : 'No' ) . "\n";
+		$output['php']['curl']               = ( function_exists( 'curl_init' ) ? 'Yes' : 'No' );
+		$report                              .= 'Mcrypt Enabled: ' . ( function_exists( 'mcrypt_encrypt' ) ? 'Yes' : 'No' ) . "\n";
+		$output['php']['mcrypt']             = ( function_exists( 'mcrypt_encrypt' ) ? 'Yes' : 'No' );
+		$report                              .= 'Mbstring Enabled: ' . ( function_exists( 'mb_strlen' ) ? 'Yes' : 'No' ) . "\n";
+		$output['php']['mbstring']           = ( function_exists( 'mb_strlen' ) ? 'Yes' : 'No' );
+		$report                              .= 'Loaded Extensions: ' . implode( ', ', $php_extensions ) . "\n\n";
 		$output['php']['loaded_extenstions'] = $php_extensions;
 		/* MySQL information. */
 		$report                           .= '*** MySQL Information ***' . "\n";
@@ -110,16 +107,14 @@ class XL_Support {
 		$output['server']['document_root'] = $_SERVER['DOCUMENT_ROOT'];
 
 		/* WordPress information. */
-		$report                              .= '*** WordPress Information ***' . "\n";
-		$report                              .= 'WP_VERSION: ' . ( $wp_version ) . "\n";
-		$output['wordpress']['wp_version']   = $wp_version;
-		$report                              .= 'WP_DEBUG: ' . ( WP_DEBUG ? 'Enabled' : 'Disabled' ) . "\n";
-		$output['wordpress']['wp_debug']     = ( WP_DEBUG ? 'Enabled' : 'Disabled' );
-		$report                              .= 'WP_DEBUG_LOG: ' . ( WP_DEBUG_LOG ? 'Enabled' : 'Disabled' ) . "\n";
-		$output['wordpress']['wp_debug_log'] = ( WP_DEBUG_LOG ? 'Enabled' : 'Disabled' );
-
-		$report .= 'WP_MEMORY_LIMIT: ' . WP_MEMORY_LIMIT . "\n";
-
+		$report                                 .= '*** WordPress Information ***' . "\n";
+		$report                                 .= 'WP_VERSION: ' . ( $wp_version ) . "\n";
+		$output['wordpress']['wp_version']      = $wp_version;
+		$report                                 .= 'WP_DEBUG: ' . ( WP_DEBUG ? 'Enabled' : 'Disabled' ) . "\n";
+		$output['wordpress']['wp_debug']        = ( WP_DEBUG ? 'Enabled' : 'Disabled' );
+		$report                                 .= 'WP_DEBUG_LOG: ' . ( WP_DEBUG_LOG ? 'Enabled' : 'Disabled' ) . "\n";
+		$output['wordpress']['wp_debug_log']    = ( WP_DEBUG_LOG ? 'Enabled' : 'Disabled' );
+		$report                                 .= 'WP_MEMORY_LIMIT: ' . WP_MEMORY_LIMIT . "\n";
 		$output['wordpress']['wp_memory_limit'] = WP_MEMORY_LIMIT;
 		$report                                 .= 'Multisite: ' . ( is_multisite() ? 'Enabled' : 'Disabled' ) . "\n";
 		$output['wordpress']['mutltisite']      = ( is_multisite() ? 'Enabled' : 'Disabled' );
@@ -192,7 +187,8 @@ class XL_Support {
 	}
 
 	/**
-	 * Processing support request
+	 * Blank function nothing to execute
+	 * Exists to support fallback
 	 *
 	 * @param $posted_data
 	 *
@@ -201,79 +197,18 @@ class XL_Support {
 	 * @since 1.0.4
 	 */
 	public function xl_maybe_push_support_request( $posted_data ) {
-		if ( ! $this->validation ) {
-			return;
-		}
-		wp_verify_nonce( $posted_data['nonce'] );
-
-		//check files uploaded
-		$files          = array();
-		$xl_support     = '';
-		$xl_support_url = '';
-		$upload_dir     = wp_upload_dir();
-		$basedir        = $upload_dir['basedir'];
-		$baseurl        = $upload_dir['baseurl'];
-		if ( is_writable( $basedir ) ) {
-			$xl_support     = $basedir . '/xl_support';
-			$xl_support_url = $baseurl . '/xl_support';
-			if ( ! file_exists( $xl_support ) ) {
-				mkdir( $xl_support, 0755, true );
-			}
-		}
-
-		if ( $xl_support != '' && isset( $_FILES ) && count( $_FILES ) > 0 ) {
-			$length = count( $_FILES['xl_required_files']['name'] );
-
-			for ( $i = 0; $i < $length; $i ++ ) {
-				$fileName          = $_FILES['xl_required_files']['name'][ $i ];
-				$fileAr            = explode( '.', $fileName );
-				$extension         = end( $fileAr );
-				$newFile           = md5( $fileName . $i ) . ".{$extension}";
-				$support_dir       = $xl_support . "/{$newFile}";
-				$support_url       = $xl_support_url . "/{$newFile}";
-				$is_files_uploaded = move_uploaded_file( $_FILES['xl_required_files']['tmp_name'][ $i ], $support_dir );
-				if ( $is_files_uploaded ) {
-					$files[] = $support_url;
-				}
-			}
-			if ( count( $files ) > 0 ) {
-				$posted_data['files'] = $files;
-			}
-		}
-
-		$response = XL_API::post_support_request( $posted_data );
-
-		if ( $response->status == 'success' ) {
-			$this->is_submitted = true;
-			XL_admin_notifications::add_notification( array(
-					'support_request_success' => array(
-						'type'           => 'success',
-						'is_dismissable' => true,
-						'content'        => __( '<p> Your Support Request has been submitted successfully. We will contact you shortly. Thank You!</p>', 'xlplugins' ),
-
-					),
-				) );
-		} else {
-			$this->is_submitted = false;
-			XL_admin_notifications::add_notification( array(
-					'support_request_failure' => array(
-						'type'           => 'error',
-						'is_dismissable' => true,
-						'content'        => __( '<p> Unable to submit your request at this moment. Please Try Again Later.</p>', 'xlplugins' ),
-
-					),
-				) );
-		}
+		//
 	}
 
 	/**
 	 * Adding XL Header to tell WordPress to read one extra params while reading plugin's header info. <br/>
 	 * Hooked over `extra_plugin_headers`
-	 * @since 1.0.0
 	 *
 	 * @param array $headers already registered arrays
 	 *
-	 * @return type
+	 * @return
+	 * @since 1.0.0
+	 *
 	 */
 	public function extra_woocommerce_headers( $headers ) {
 		array_push( $headers, 'XL' );

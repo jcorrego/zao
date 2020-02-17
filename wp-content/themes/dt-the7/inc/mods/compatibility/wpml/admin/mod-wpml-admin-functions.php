@@ -37,7 +37,7 @@ if ( ! function_exists( 'dt_wpml_add_theme_options' ) ) {
 		$menu_slug = 'of-wpml-menu';
 		
 		if ( ! array_key_exists( $menu_slug, $files_list ) ) {
-			$files_list[ $menu_slug ] = plugin_dir_path( __FILE__ ) . 'mod-wpml-options.php';
+			$files_list[ $menu_slug ] = dirname( __FILE__ ) . '/mod-wpml-options.php';
 		}
 		return $files_list;
 	}

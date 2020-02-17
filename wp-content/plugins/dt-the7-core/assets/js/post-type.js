@@ -1,5 +1,5 @@
 
-/*3D slideshow*/
+
 jQuery(document).ready(function($){
      
     $.fn.exists = function() {
@@ -284,54 +284,24 @@ jQuery(document).ready(function($){
     
 
     /*!-Hover Direction aware init*/
-    $('.mobile-false .hover-grid .rollover-project, .mobile-false .hover-grid.portfolio-shortcode .post, .mobile-false .hover-grid.album-gallery-shortcode .post').each( function() { $(this).hoverdir(); } );
-    $('.mobile-false .hover-grid-reverse .rollover-project, .mobile-false .hover-grid-reverse.portfolio-shortcode .post, .mobile-false .hover-grid-reverse.album-gallery-shortcode .post ').each( function() { $(this).hoverdir({
+    $('.mobile-false .hover-grid .rollover-project, .mobile-false .hover-grid.portfolio-shortcode .post, .mobile-false .hover-grid.album-gallery-shortcode .post, .mobile-false .hover-grid.albums-shortcode .post').each( function() { $(this).hoverdir(); } );
+    $('.mobile-false .hover-grid-reverse .rollover-project, .mobile-false .hover-grid-reverse.portfolio-shortcode .post, .mobile-false .hover-grid-reverse.album-gallery-shortcode .post, .mobile-false .hover-grid-reverse.albums-shortcode .post ').each( function() { $(this).hoverdir({
         inverse : true
     }); } );
 
-    /*!Append tag </span> for portfolio round links button*/
-    $.fn.hoverLinks = function() {
-        if($(".semitransparent-portfolio-icons").length > 0 || $(".accent-portfolio-icons").length > 0){
-            return this.each(function() {
-                var $img = $(this),
-                    iconHoverTimer;
-                if ($img.hasClass("height-ready")) {
-                    return;
-                }
-                $("<span/>").appendTo($(this));
-
-                $img.on({
-                    mouseenter: function () {
-                        if (0 === $(this).children("span").length) {
-                            var a = $("<span/>").appendTo($(this));
-                            clearTimeout( iconHoverTimer );
-                            iconHoverTimer = setTimeout(function () {
-                                a.addClass("icon-hover")
-                            }, 20)
-                        } else $(this).children("span").addClass("icon-hover")
-                    },
-                    mouseleave: function () {
-                        $(this).children("span").removeClass("icon-hover")
-                    }
-                });
-
-                $img.addClass("height-ready");
-            });
-        }
-    };
-    $(".links-container a").hoverLinks();
-     $.fn.addIconToLinks = function() {
-        return this.each(function() {
+    $.fn.addIconToLinks = function() {
+       return this.each(function() {
             var $icon = $(this);
             if ($icon.hasClass("icon-ready")) {
                 return;
             }
-            $("<span/>").appendTo($(this));
+            $("<span class='icon-portfolio'></span>").appendTo($(this));
 
             $icon.addClass("icon-ready");
         });
     };
-    $(".project-links-container a").addIconToLinks();
+    $(".links-container a").addIconToLinks();
+    
     /*!Trigger click (direct to post) */
     $.fn.forwardToPost = function() {
         return this.each(function() {
@@ -340,26 +310,34 @@ jQuery(document).ready(function($){
                 return;
             };
             $this.on("click", function(){
+                var $this = $(this);
+                var $anchor = $this.find("a").first();
+                var href = $anchor.attr("href");
+
                 if ($this.parents(".ts-wrap").hasClass("ts-interceptClicks")) return;
-                window.location.href = $this.find("a").first().attr("href");
+                if ( $anchor.attr("target") === "_blank" ) {
+                    window.open(href, "_blank");
+                    return false;
+                }
+                window.location.href = href;
                 return false;
             });
             $this.addClass("this-ready");
         });
     };
-    $(".mobile-false .rollover-project.forward-post").forwardToPost();
+    $(".mobile-false .forward-post").forwardToPost();
 
     $.fn.touchforwardToPost = function() {
+        $body.on("touchend", function(e) {
+            $(".mobile-true .rollover-content").removeClass("is-clicked");
+            $(".mobile-true .rollover-project").removeClass("is-clicked");
+        });
         return this.each(function() {
             var $this = $(this);
             if ($this.hasClass("touch-hover-ready")) {
                 return;
             }
 
-            $body.on("touchend", function(e) {
-                $(".mobile-true .rollover-content").removeClass("is-clicked");
-                $(".mobile-true .rollover-project").removeClass("is-clicked");
-            });
             var $this = $(this).find(".rollover-content");
             $this.on("touchstart", function(e) { 
                 origY = e.originalEvent.touches[0].pageY;
@@ -385,7 +363,7 @@ jQuery(document).ready(function($){
             $this.addClass("touch-hover-ready");
         });
     };
-    $(".mobile-true .rollover-project.forward-post").touchforwardToPost();
+    $(".mobile-true .forward-post").touchforwardToPost();
 
     /*!Trigger click on portfolio hover buttons */
     $.fn.followCurentLink = function() {
@@ -443,6 +421,12 @@ jQuery(document).ready(function($){
     $(".mobile-false .rollover-project.rollover-active, .mobile-false .rollover-active,  .mobile-false .buttons-on-img.rollover-active").followCurentLink();
 
     $.fn.touchFollowCurentLink = function() {
+
+        $body.on("touchend", function(e) {
+            $(".mobile-true .rollover-content").removeClass("is-clicked");
+            $(".mobile-true .rollover-active").removeClass("is-clicked");
+            $(".mobile-true .rollover-active").parent("article").removeClass("is-clicked");
+        });
         return this.each(function() {
             if($(this).parents('.content-rollover-layout-list').length > 0 || $(this).parents('.gradient-overlay-layout-list').length > 0){
                 var $this = $(this).parent('article');
@@ -457,11 +441,6 @@ jQuery(document).ready(function($){
                 $thisCategory = $this.find(".portfolio-categories a");
             var alreadyTriggered = false; 
 
-            $body.on("touchend", function(e) {
-                $(".mobile-true .rollover-content").removeClass("is-clicked");
-                $(".mobile-true .rollover-active").removeClass("is-clicked");
-                $(".mobile-true .rollover-active").parent("article").removeClass("is-clicked");
-            });
 
            
             $this.on("touchstart", function(e) { 
@@ -511,6 +490,10 @@ jQuery(document).ready(function($){
     $(".mobile-true .rollover-project.rollover-active, .mobile-true .rollover-active,  .mobile-true .buttons-on-img.rollover-active").touchFollowCurentLink();
 
     $.fn.touchRolloverPostClick = function() {
+        $body.on("touchend", function(e) {
+            $(".mobile-true .post").removeClass("is-clicked");
+        });
+          
         return this.each(function() {
             var $this = $(this);
             // if ($this.hasClass("touch-post-rollover-ready")) {
@@ -520,10 +503,7 @@ jQuery(document).ready(function($){
                 $thisCategory = $this.find(".entry-meta a, .fancy-date a, .fancy-categories a"),
                 $thisOfTop = $this.find(".entry-excerpt").height() + $this.find(".post-details").height();
 
-            $body.on("touchend", function(e) {
-                $(".mobile-true .post").removeClass("is-clicked");
-            });
-          
+           
             $this.on("touchstart", function(e) { 
                 origY = e.originalEvent.touches[0].pageY;
                 origX = e.originalEvent.touches[0].pageX;
@@ -531,7 +511,8 @@ jQuery(document).ready(function($){
             $this.on("touchend", function(e) {
                 var touchEX = e.originalEvent.changedTouches[0].pageX,
                     touchEY = e.originalEvent.changedTouches[0].pageY;
-                if( origY == touchEY || origX == touchEX ){
+              //  if( origY == touchEY || origX == touchEX ){
+                if( origY <= (touchEY+5) && origY >= (touchEY-5) || origX <= touchEX + 5 && origX == touchEX - 5 ){
                     //else {
                          if ($this.hasClass("is-clicked")) {
                              //   window.location.href = $thisSingleLink.attr('href');
@@ -562,15 +543,16 @@ jQuery(document).ready(function($){
     $(".mobile-true .content-rollover-layout-list.portfolio-shortcode .post, .mobile-true .gradient-overlay-layout-list.portfolio-shortcode .post").touchRolloverPostClick();
 
     $.fn.touchHoverImage = function() {
+
+        $body.on("touchend", function(e) {
+            $(".mobile-true .rollover-content").removeClass("is-clicked");
+        });
         return this.each(function() {
             var $img = $(this);
             if ($img.hasClass("hover-ready")) {
                 return;
             }
 
-            $body.on("touchend", function(e) {
-                $(".mobile-true .rollover-content").removeClass("is-clicked");
-            });
             var $this = $(this).find(".rollover-content"),
                 thisPar = $this.parents(".wf-cell");
             $this.on("touchstart", function(e) { 
@@ -602,15 +584,16 @@ jQuery(document).ready(function($){
     $(".mobile-true .buttons-on-img").touchHoverImage();
    
     $.fn.touchScrollerImage = function() {
+
+        $body.on("touchend", function(e) {
+            $(".mobile-true .project-list-media").removeClass("is-clicked");
+        });
         return this.each(function() {
             var $img = $(this);
             if ($img.hasClass("hover-ready")) {
                 return;
             }
 
-            $body.on("touchend", function(e) {
-                $(".mobile-true .project-list-media").removeClass("is-clicked");
-            });
             var $this = $(this),
                 $thisSingleLink = $this.find("a.rollover-click-target").first(),
                 $thisButtonLink = $this.find(".links-container");
@@ -715,7 +698,6 @@ jQuery(document).ready(function($){
                 var alreadyTriggered = false;
 
                 $this.on("click", function(){
-
                     if ($this.parents(".ts-wrap").hasClass("ts-interceptClicks")) return;
 
                     if ( !alreadyTriggered ) {
@@ -728,17 +710,123 @@ jQuery(document).ready(function($){
                 })
                 $this.find($thisCategory).click(function(e) {
 
-                     e.stopPropagation();
+                     e.stopPropagation()
                     window.location.href = $thisCategory.attr('href');
                 });
             }
             $this.addClass("this-ready");
         });
     };
-    $(".mobile-false .dt-albums-template .rollover-project, .mobile-false .dt-albums-shortcode .rollover-project, .mobile-false .dt-albums-template .buttons-on-img, .mobile-false .dt-albums-shortcode .buttons-on-img, .mobile-false .archive .type-dt_gallery .buttons-on-img").triggerAlbumsClick();
+    $(".mobile-false .dt-albums-template .rollover-project, .mobile-false .dt-albums-shortcode .rollover-project, .mobile-false .dt-albums-template .buttons-on-img, .mobile-false .dt-albums-shortcode .buttons-on-img, .mobile-false .archive .type-dt_gallery .buttons-on-img, .mobile-false .albums-shortcode:not(.content-rollover-layout-list):not(.gradient-overlay-layout-list) .post-thumbnail").triggerAlbumsClick();
+    $.fn.triggerOverlayAlbumsClick = function() {
+        return this.each(function() {
+            var $this = $(this);
+            if ($this.hasClass("this-overlay-ready")) {
+                return;
+            }
+            var $thisSingleLink = $this.parents('.post').first().find("a.rollover-click-target, a.dt-pswp-item").first(),
+                $thisCategory = $this.find(".portfolio-categories a, .entry-excerpt a");
+
+
+             if( $thisSingleLink.length > 0 ){
+                $thisSingleLink.on("click", function(event) {
+                    event.preventDefault();
+                   // event.stopPropagation();
+                     if ($thisSingleLink.parents(".ts-wrap").hasClass("ts-interceptClicks")) return;
+
+                    if ( $(this).hasClass('go-to') ) {
+                        window.location.href = $(this).attr('href');
+                    }
+                });
+
+                var alreadyTriggered = false;
+
+                $this.on("click", function(){
+
+                    if ($this.parents(".ts-wrap").hasClass("ts-interceptClicks")) return;
+
+                    if ( !alreadyTriggered ) {
+                        alreadyTriggered = true;
+                        $thisSingleLink.trigger("click");
+
+                        
+                        alreadyTriggered = false;
+                    }
+                    return false;
+                })
+                $this.find($thisCategory).click(function(e) {
+
+                     e.stopPropagation()
+                    window.location.href = $thisCategory.attr('href');
+                });
+            }
+            $this.addClass("this-overlay-ready");
+        });
+    };
+    $(" .mobile-false .albums-shortcode.content-rollover-layout-list .post-entry-content, .mobile-false .albums-shortcode.gradient-overlay-layout-list .post-entry-content").triggerOverlayAlbumsClick();
+
+     $.fn.triggerOverlayAlbumsTouch = function() {
+
+        $body.on("touchend", function(e) {
+            $(".mobile-true .post").removeClass("is-clicked");
+        });
+        return this.each(function() {
+            var $this = $(this);
+            var $thisSingleLink = $this.find("a.rollover-click-target, a.dt-pswp-item").first(),
+                $thisCategory = $this.find(".portfolio-categories a");
+
+
+            $this.on("touchstart", function(e) { 
+                origY = e.originalEvent.touches[0].pageY;
+                origX = e.originalEvent.touches[0].pageX;
+                      
+            });
+            $this.on("touchend", function(e) {
+                var touchEX = e.originalEvent.changedTouches[0].pageX,
+                    touchEY = e.originalEvent.changedTouches[0].pageY;
+                if( origY <= (touchEY+5) && origY >= (touchEY-5) || origX <= touchEX + 5 && origX == touchEX - 5 ){
+                     
+
+                     if ($this.hasClass("is-clicked")) {
+                         //   window.location.href = $thisSingleLink.attr('href');
+                       //  if($this.parents().hasClass("disable-layout-hover")){
+                            if ($thisSingleLink.hasClass('go-to') ) {
+                                window.location.href = $thisSingleLink.attr('href');
+                            }
+                            
+                            // if(e.target.tagName.toLowerCase() === 'a'){
+                            //     $(e.target).trigger("click");
+                            // }else{
+                               $thisSingleLink.trigger("click");
+                           // }
+                            $this.find($thisCategory).click(function(e) {
+
+                                e.stopPropagation()
+                                window.location.href = $thisCategory.attr('href');
+                            });
+
+
+                       // }
+                    } else {
+                        e.preventDefault();
+                        $(".mobile-ture .post").removeClass("is-clicked");
+                        $this.parent().siblings().find(".post").removeClass("is-clicked");
+                        $this.addClass("is-clicked");
+                        return false;
+                    };
+                }
+            })
+                
+        });
+    };
+    $(" .mobile-true .albums-shortcode.content-rollover-layout-list .post, .mobile-true .albums-shortcode.gradient-overlay-layout-list .post").triggerOverlayAlbumsTouch();
+    
 
     /*!Trigger albums click */
     $.fn.triggerAlbumsTouch = function() {
+        $body.on("touchend", function(e) {
+            $(".mobile-true .rollover-content").removeClass("is-clicked");
+        });
         return this.each(function() {
             var $this = $(this);
             if ($this.hasClass("this-touch-ready")) {
@@ -748,9 +836,7 @@ jQuery(document).ready(function($){
             var $thisSingleLink = $this.find("a.rollover-click-target, a.dt-pswp-item").first(),
                 $thisCategory = $this.find(".portfolio-categories a");
 
-                $body.on("touchend", function(e) {
-                $(".mobile-true .rollover-content").removeClass("is-clicked");
-            });
+              
            
 
             if( $thisSingleLink.length > 0 ){
@@ -776,7 +862,7 @@ jQuery(document).ready(function($){
                 $this.on("touchend", function(e) {
                     var touchEX = e.originalEvent.changedTouches[0].pageX,
                         touchEY = e.originalEvent.changedTouches[0].pageY;
-                    if( origY == touchEY || origX == touchEX ){
+                    if( origY <= (touchEY+5) && origY >= (touchEY-5) || origX <= touchEX + 5 && origX == touchEX - 5 ){
 
                         if ($this.parents(".ts-wrap").hasClass("ts-interceptClicks")) return;
 
@@ -798,7 +884,7 @@ jQuery(document).ready(function($){
             $this.addClass("this-touch-ready");
         });
     };
-    $(".mobile-true .dt-albums-template .rollover-project, .mobile-true .dt-albums-shortcode .rollover-project, .mobile-true .dt-albums-template .buttons-on-img, .mobile-true .dt-albums-shortcode .buttons-on-img, .mobile-true .archive .type-dt_gallery .buttons-on-img").triggerAlbumsTouch();
+    $(".mobile-true .dt-albums-template .rollover-project, .mobile-true .dt-albums-shortcode .rollover-project, .mobile-true .dt-albums-template .buttons-on-img, .mobile-true .dt-albums-shortcode .buttons-on-img, .mobile-true .archive .type-dt_gallery .buttons-on-img, .mobile-true .albums-shortcode:not(.content-rollover-layout-list):not(.gradient-overlay-layout-list) .post-thumbnail").triggerAlbumsTouch();
 
         /*!Trigger rollover click*/
     
@@ -826,13 +912,11 @@ jQuery(document).ready(function($){
                     if ($this.parents(".ts-wrap").hasClass("ts-interceptClicks") || $this.parents('.owl-carousel').hasClass("ts-interceptClicks")) return;
 
 
-                    if($(".semitransparent-portfolio-icons").length > 0 || $(".accent-portfolio-icons").length > 0){
-                        $targetClick = $(e.target).parent();
-                    }else{
-                        $targetClick = $(e.target);
-                    }
-                    if($targetClick.hasClass("project-zoom")){
-
+                  
+                    $targetClick = $(e.target);
+                   
+                    if($targetClick.hasClass("project-zoom") || $targetClick.parent('a').hasClass("project-zoom")){ 
+                        console.log($targetClick)
                     }else{
                         if ( !alreadyTriggered ) {
                             alreadyTriggered = true;
@@ -942,7 +1026,7 @@ jQuery(document).ready(function($){
                      *
                      */
                     var $this = $(this),
-                        $img  = ($this.is("img")) ? $this : $(this).find("img").not(".blur-effect").first();
+                        $img  = ($this.is("img")) ? $this : $(this).find("img").first();
 
                     /*
                      *
@@ -1126,101 +1210,65 @@ jQuery(document).ready(function($){
                  * If the user doesn't want full width last row, we check for that here
                  *
                  */
+
+
     /*
-                if(!isNotLast && trackWidth < settings.albumWidth){
-                    if(settings.allowPartialLastRow === true && lastRow === true){
-                        fw = fw;
-                    }else{
-                        fw = fw + (settings.albumWidth - trackWidth);
-                    }
-                }
-    */
+     *
+     * We'll be doing a few things to the image so here we cache the image selector
+     *
+     *
+     */
+    var $img = ( $obj.is("img") ) ? $obj : $obj.find("img").first();
 
-                /*
-                 *
-                 * We'll be doing a few things to the image so here we cache the image selector
-                 *
-                 *
-                 */
-                var $img = ( $obj.is("img") ) ? $obj : $obj.find("img").not(".blur-effect").first();
-
-                /*
-                 *
-                 * Set the width of the image and parent element
-                 * if the resized element is not an image, we apply it to the child image also
-                 *
-                 * We need to check if it's an image as the css borders are only measured on
-                 * images. If the parent is a div, we need make the contained image smaller
-                 * to accommodate the css image borders.
-                 *
-                 */
-                $img.width(fw);
-                if( !$obj.is("img") ){
-                    $obj.width(fw + obj[i][3]);
-                }
-
-
-                /*
-                 *
-                 * Set the height of the image
-                 * if the resized element is not an image, we apply it to the child image also
-                 *
-                 */
-                $img.height(fh);
-                if( !$obj.is("img") ){
-                    $obj.height(fh + obj[i][4]);
-                }
-
-
-                /*
-                 *
-                 * Apply the css extras like padding
-                 *
-                 */
-                if (settings.allowPartialLastRow === false &&  lastRow === true) {
-                    applyModifications($obj, isNotLast, "none");
-                }
-                else {
-                    applyModifications($obj, isNotLast, settings.display);
-                };
-
-
-                /*
-                 *
-                 * Assign the effect to show the image
-                 * Default effect is using jquery and not CSS3 to support more browsers
-                 * Wait until the image is loaded to do this
-                 *
-                 */
     /*
-                $img
-                    .load(function(target) {
-                    return function(){
-                        if( settings.effect == 'default'){
-                            target.animate({opacity: '1'},{duration: settings.fadeSpeed});
-                        } else {
-                            if(settings.direction == 'vertical'){
-                                var sequence = (rownum <= 10  ? rownum : 10);
-                            } else {
-                                var sequence = (i <= 9  ? i+1 : 10);
-                            }
+     *
+     * Set the width of the image and parent element
+     * if the resized element is not an image, we apply it to the child image also
+     *
+     * We need to check if it's an image as the css borders are only measured on
+     * images. If the parent is a div, we need make the contained image smaller
+     * to accommodate the css image borders.
+     *
+     */
+    $img.width(fw);
+    if( !$obj.is("img") ){
+        $obj.width(fw + obj[i][3]);
+    }
 
-                            target.addClass(settings.effect);
-                            target.addClass("effect-duration-" + sequence);
-                        }
-                    }
-                    }($obj))
-    */
-                    /*
-                     * fix for cached or loaded images
-                     * For example if images are loaded in a "window.load" call we need to trigger
-                     * the load call again
-                     */
+
     /*
-                    .each(function() {
-                            if(this.complete) $(this).trigger('load');
-                    });
-    */
+     *
+     * Set the height of the image
+     * if the resized element is not an image, we apply it to the child image also
+     *
+     */
+    $img.height(fh);
+    if( !$obj.is("img") ){
+        $obj.height(fh + obj[i][4]);
+    }
+
+
+    /*
+     *
+     * Apply the css extras like padding
+     *
+     */
+    if (settings.allowPartialLastRow === false &&  lastRow === true) {
+        applyModifications($obj, isNotLast, "none");
+    }
+    else {
+        applyModifications($obj, isNotLast, settings.display);
+    };
+
+
+    /*
+     *
+     * Assign the effect to show the image
+     * Default effect is using jquery and not CSS3 to support more browsers
+     * Wait until the image is loaded to do this
+     *
+     */
+    
 
             }
         }

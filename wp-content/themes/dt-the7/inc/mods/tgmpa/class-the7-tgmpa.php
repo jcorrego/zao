@@ -1,7 +1,17 @@
 <?php
+/**
+ * The7 TGM class.
+ *
+ * @package The7
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'The7_TGMPA' ) ) {
 
+	/**
+	 * Class The7_TGMPA
+	 */
 	class The7_TGMPA extends The7_TGM_Plugin_Activation {
 
 		/**
@@ -17,9 +27,9 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 		 * @return bool
 		 */
 		protected function do_plugin_install() {
-			add_filter( 'upgrader_package_options', array( __CLASS__, 'clear_plugin_destination_filter' ) );
+			add_filter( 'upgrader_package_options', array( $this, 'clear_plugin_destination_filter' ) );
 			$installation_result = parent::do_plugin_install();
-			remove_filter( 'upgrader_package_options', array( __CLASS__, 'clear_plugin_destination_filter' ) );
+			remove_filter( 'upgrader_package_options', array( $this, 'clear_plugin_destination_filter' ) );
 
 			return $installation_result;
 		}
@@ -27,11 +37,11 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 		/**
 		 * Filter $options to clear plugin destination before installation.
 		 *
-		 * @param array $options
+		 * @param array $options TGMPA options.
 		 *
 		 * @return array
 		 */
-		public static function clear_plugin_destination_filter( $options ) {
+		public function clear_plugin_destination_filter( $options ) {
 			$options['clear_destination'] = true;
 
 			return $options;
@@ -73,27 +83,26 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 			$total_required_action_count = 0;
 
 			foreach ( $this->plugins as $slug => $plugin ) {
+				if ( ! $this->is_plugin_installed( $slug ) ) {
+					continue;
+				}
+
 				if ( $this->is_plugin_active( $slug ) && false === $this->does_plugin_have_update( $slug ) ) {
 					continue;
 				}
 
-				if ( ! $this->is_plugin_installed( $slug ) ) {
-					// Do nothing.
-				} else {
-					if ( $this->does_plugin_require_update( $slug ) || false !== $this->does_plugin_have_update( $slug ) ) {
+				if ( $this->does_plugin_require_update( $slug ) || false !== $this->does_plugin_have_update( $slug ) ) {
+					if ( current_user_can( 'update_plugins' ) ) {
+						$update_link_count++;
 
-						if ( current_user_can( 'update_plugins' ) ) {
-							$update_link_count++;
-
-							if ( $this->does_plugin_require_update( $slug ) ) {
-								$message['notice_ask_to_update'][] = $slug;
-							} elseif ( false !== $this->does_plugin_have_update( $slug ) ) {
-								$message['notice_ask_to_update_maybe'][] = $slug;
-							}
+						if ( $this->does_plugin_require_update( $slug ) ) {
+							$message['notice_ask_to_update'][] = $slug;
+						} elseif ( false !== $this->does_plugin_have_update( $slug ) ) {
+							$message['notice_ask_to_update_maybe'][] = $slug;
 						}
-						if ( true === $plugin['required'] ) {
-							$total_required_action_count++;
-						}
+					}
+					if ( true === $plugin['required'] ) {
+						$total_required_action_count++;
 					}
 				}
 			}
@@ -126,7 +135,6 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 						foreach ( $plugin_group as $plugin_slug ) {
 							$linked_plugins[] = $this->get_info_link( $plugin_slug );
 						}
-						unset( $plugin_slug );
 
 						$count          = count( $plugin_group );
 						$linked_plugins = array_map( array( 'TGMPA_Utils', 'wrap_in_em' ), $linked_plugins );
@@ -143,7 +151,6 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 						);
 
 					}
-					unset( $type, $plugin_group, $linked_plugins, $count, $last_plugin, $imploded );
 
 					$rendered .= $this->create_user_action_links_for_notice( $install_link_count, $update_link_count, $activate_link_count, $line_template );
 				}
@@ -165,15 +172,11 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 		 * @return bool True if installable, false otherwise.
 		 */
 		public function is_plugin_installable( $slug ) {
-			$theme_is_activated = presscore_theme_is_activated();
-
-			if ( ! $theme_is_activated && 'external' == $this->plugins[ $slug ]['source_type'] ) {
+			if ( 'external' === $this->plugins[ $slug ]['source_type'] && ! presscore_theme_is_activated() ) {
 				return false;
 			}
 
-			$plugin_is_installed = $this->is_plugin_installed( $slug );
-
-			return ( ! $plugin_is_installed );
+			return ! $this->is_plugin_installed( $slug );
 		}
 
 		/**
@@ -186,23 +189,54 @@ if ( ! class_exists( 'The7_TGMPA' ) ) {
 		 * @return bool True if OK to proceed with update, false otherwise.
 		 */
 		public function is_plugin_updatetable( $slug ) {
-			$theme_is_activated = presscore_theme_is_activated();
-
-			if ( ! $theme_is_activated && 'external' == $this->plugins[ $slug ]['source_type'] ) {
+			if ( 'external' === $this->plugins[ $slug ]['source_type'] && ! presscore_theme_is_activated() ) {
 				return false;
 			}
 
-			$is_updateable = parent::is_plugin_updatetable( $slug );
-
-			return $is_updateable;
+			return parent::is_plugin_updatetable( $slug );
 		}
 
+		/**
+		 * Check if plugin belongs to The7 theme.
+		 *
+		 * @since 2.6.0
+		 *
+		 * @param string $slug Plugin slug.
+		 *
+		 * @return bool True if plugin belong to The7.
+		 */
+		public function is_the7_plugin( $slug ) {
+			if ( ! array_key_exists( $slug, $this->plugins ) ) {
+				return false;
+			}
+
+			if ( $this->plugins[ $slug ]['source_type'] !== 'external' ) {
+				return false;
+			}
+
+			$installed_plugins = $this->get_plugins();
+			$plugin_file_path  = $this->plugins[ $slug ]['file_path'];
+
+			if ( ! isset( $installed_plugins[ $plugin_file_path ]['Name'] ) ) {
+				return false;
+			}
+
+			$plugin_name = strtolower( $installed_plugins[ $plugin_file_path ]['Name'] );
+
+			return strpos( $plugin_name, 'the7' ) === 0;
+		}
+
+		/**
+		 * Return bulk action link.
+		 *
+		 * @return string
+		 */
 		public function get_bulk_action_link() {
 			if ( ! current_user_can( 'install_plugins' ) ) {
 				return '';
 			}
 
-			// For nonce action see TGMPA_List_Table::__construct()
+			// For nonce action see TGMPA_List_Table::__construct().
 			return wp_nonce_url( $this->get_tgmpa_url(), 'bulk-plugins' );
 		}
 

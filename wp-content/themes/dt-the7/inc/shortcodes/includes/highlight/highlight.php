@@ -25,11 +25,7 @@ class DT_Shortcode_Highlight extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( 'dt_highlight', array($this, 'shortcode') );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
     }
 
     public function shortcode( $atts, $content = null ) {
@@ -37,7 +33,7 @@ class DT_Shortcode_Highlight extends DT_Shortcode {
             'color'         => '',
             'text_color'    => '',
             'bg_color'      => ''
-        ), $atts ) );
+        ), $atts, 'dt_highlight' ) );
 
         $button_colors = array(
             'white',

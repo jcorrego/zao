@@ -2,7 +2,7 @@
 if (!defined('ABSPATH'))
     die('No direct access allowed');
 
-//12-06-2018
+//20-09-2019
 final class WOOF_META_FILTER extends WOOF_EXT {
 
     public $type = 'application';
@@ -46,32 +46,43 @@ final class WOOF_META_FILTER extends WOOF_EXT {
             'slider' => array(
                 'key' => 'slider',
                 'title' => __('Slider', 'woocommerce-products-filter'),
-                'hide_if' => 'string',
+                //'hide_if' => 'string',
+                'hide_if' => array('string', 'DATE'),
                 'show_options' => false,
             ),
             'textinput' => array(
                 'key' => 'textinput',
                 'title' => __('Search by text', 'woocommerce-products-filter'),
-                'hide_if' => 'no',
+                //'hide_if' => 'no',
+                'hide_if' => array('DATE'),
                 'show_options' => false,
             ),
             'checkbox' => array(
                 'key' => 'checkbox',
                 'title' => __('Checkbox', 'woocommerce-products-filter'),
-                'hide_if' => 'no',
+                //'hide_if' => 'no',
+                'hide_if' => array('DATE'),
                 'show_options' => false,
             ),
             'select' => array(
                 'key' => 'select',
                 'title' => __('Drop-down', 'woocommerce-products-filter'),
-                'hide_if' => 'no',
+                //'hide_if' => 'no',
+                'hide_if' => array('DATE'),
                 'show_options' => true,
             ),
             'mselect' => array(
                 'key' => 'mselect',
                 'title' => __('Multi Drop-down', 'woocommerce-products-filter'),
-                'hide_if' => 'no',
+                //'hide_if' => 'no',
+                'hide_if' => array('DATE'),
                 'show_options' => true,
+            ),
+            'datepicker' => array(
+                'key' => 'datepicker',
+                'title' => __('Datepicker', 'woocommerce-products-filter'),
+                'hide_if' => array('string'),
+                'show_options' => false,
             ),
         );
 
@@ -84,7 +95,7 @@ final class WOOF_META_FILTER extends WOOF_EXT {
                     continue;
                 }
 
-                if ($counter >= 2) {
+                if ($counter++ >= 2) {
                     break;
                 }
 
@@ -94,7 +105,6 @@ final class WOOF_META_FILTER extends WOOF_EXT {
                 //add_action('woof_print_html_type_' . $key,array($this, 'woof_print_html_type_meta'));
                 //++++
                 $this->conect_activate_meta_filter($key, $val);
-                $counter++;
             }
         }
         //add meta items to structure
@@ -132,7 +142,7 @@ final class WOOF_META_FILTER extends WOOF_EXT {
             $pds_cpt = new WOOF_PDS_CPT();
             $this->excluded_meta = array_merge($pds_cpt->get_internal_meta_keys(), $this->excluded_meta);
         }
-        wp_enqueue_script('woof_qs_admin', $this->get_ext_link() . 'js/admin.js');
+        wp_enqueue_script('woof_qs_admin', $this->get_ext_link() . 'js/admin.js', array(), WOOF_VERSION);
         //***
         global $WOOF;
         $data = array();

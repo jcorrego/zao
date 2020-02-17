@@ -2,14 +2,12 @@
 /**
  * Single post content template.
  *
- * @package The7
  * @since 1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 global $post;
 
@@ -21,18 +19,23 @@ if ( $config->get_bool( 'post.fancy_date.enabled' ) ) {
 }
 ?>
 
-<article id="post-<?php the_ID() ?>" <?php post_class( $post_classes ) ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( $post_classes ); ?>>
 
 	<?php
 	do_action( 'presscore_before_post_content' );
 
 	// Post featured image.
-    presscore_get_template_part( 'theme', 'single-post/post-featured-image' );
+	presscore_get_template_part( 'theme', 'single-post/post-featured-image' );
 
 	// Post content.
 	echo '<div class="entry-content">';
 	the_content();
-	wp_link_pages( array( 'before' => '<div class="page-links">' . __( 'Pages:', 'the7mk2' ), 'after' => '</div>' ) );
+	wp_link_pages(
+		array(
+			'before' => '<div class="page-links">' . __( 'Pages:', 'the7mk2' ),
+			'after'  => '</div>',
+		)
+	);
 	echo '</div>';
 
 	// Post meta.
@@ -45,7 +48,7 @@ if ( $config->get_bool( 'post.fancy_date.enabled' ) ) {
 		echo '<div class="post-meta wf-mobile-collapsed">' . $post_meta . '</div>';
 	}
 
-	presscore_display_share_buttons_for_post( 'post' );
+	the7_display_post_share_buttons( 'post' );
 
 	if ( $config->get( 'post.author_block' ) ) {
 		presscore_display_post_author();

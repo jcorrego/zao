@@ -101,6 +101,67 @@ a.clear-form,
 .shortcode-banner-bg > * {
 	line-height: @base-line-height;
 }
+
+//Gutenberg
+.content .wp-block-quote:not(.is-style-large),
+.content .wp-block-quote.is-style-large {
+	border-color:  @accent-bg-color;
+}
+.wp-block-separator {
+	border-bottom-color: @divider-color;
+}
+.wp-block-quote.is-large,
+.wp-block-quote.is-style-large {
+	&:before,
+	&:after {
+		background: @accent-bg-color;
+	}
+}
+blockquote.has-accent-color,
+.wp-block-pullquote blockquote.has-accent-color,
+.has-accent-color,
+.has-accent-color:hover {
+	color:  @accent-bg-color;
+}
+.has-accent-background-color,
+.wp-block-pullquote.is-style-solid-color.has-accent-background-color {
+  .accent-bg-mixin;
+}
+.wp-block-separator.is-style-dots::before {
+	color: @divider-color;
+}
+.wp-block-cover-image .wp-block-cover-image-text,
+.wp-block-cover-image .wp-block-cover-text,
+.wp-block-cover-image h2,
+.wp-block-cover .wp-block-cover-image-text,
+.wp-block-cover .wp-block-cover-text,
+.wp-block-cover h2 {
+	font: @h3-font-style @h3-font-variant @h3-font-weight @h3-font-size~"/"@h3-line-height @h3-font-family;
+	text-transform: @h3-text-transform;
+}
+.wp-block-categories li a,
+.wp-block-archives li a,
+.wp-block-latest-posts li a {
+	.header-color;
+	&:hover {
+		color:  @accent-bg-color;
+		.accent-gradient & {
+			.text-gradient-text-fill (@startColor: @accent-bg-color, @endColor: @accent-text-color-2);
+	  	}
+	}
+}
+.wp-block-latest-comments__comment-date {
+	color: @secondary-text-color;
+}
+.wp-block-latest-comments__comment-meta a {
+	.header-color;
+	&:hover {
+		color:  @accent-bg-color;
+		.accent-gradient & {
+			.text-gradient-text-fill (@startColor: @accent-bg-color, @endColor: @accent-text-color-2);
+	  	}
+	}
+}
 /* #Alert box
 ================================================== */
 #main .wpb_alert strong {

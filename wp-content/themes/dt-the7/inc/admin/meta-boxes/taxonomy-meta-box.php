@@ -3,13 +3,10 @@
  * Add taxonomies meta boxes.
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 // Load main class.
-require_once PRESSCORE_EXTENSIONS_DIR . '/Tax-meta-class/Tax-meta-class.php';
+require_once PRESSCORE_DIR . '/vendor/Tax-meta-class/Tax-meta-class.php';
 
 class The7_Taxonomy_Meta_Box {
 
@@ -27,7 +24,7 @@ class The7_Taxonomy_Meta_Box {
 	 * The7_Taxonomies_MetaBoxes constructor.
 	 */
 	public function __construct() {
-		$this->lib_uri = PRESSCORE_EXTENSIONS_URI . '/Tax-meta-class';
+		$this->lib_uri = PRESSCORE_URI . '/vendor/Tax-meta-class';
 
 		$this->add_tax_fancy_colors();
 	}

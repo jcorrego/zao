@@ -38,6 +38,11 @@ function woof_init_radios() {
             var slug = jQuery(this).data('slug');
             var name = jQuery(this).attr('name');
             var term_id = jQuery(this).data('term-id');
+			
+			jQuery(this).parents('.woof_list').find('.woof_radio_term_reset').removeClass('woof_radio_term_reset_visible');
+            jQuery(this).parents('.woof_list').find('.woof_radio_term_reset').hide();
+            jQuery(this).parents('li').eq(0).find('.woof_radio_term_reset').eq(0).addClass('woof_radio_term_reset_visible');
+			
             woof_radio_direct_search(term_id, name, slug);
         });
     }
@@ -52,6 +57,10 @@ function woof_init_radios() {
         jQuery(this).removeClass('woof_radio_term_reset_visible');
         return false;
     });
+}
+
+function woof_radio_check_reset(){
+	
 }
 
 function woof_radio_direct_search(term_id, name, slug) {
@@ -81,4 +90,5 @@ function woof_radio_direct_search(term_id, name, slug) {
         woof_submit_link(woof_get_submit_link());
     }
 }
+
 

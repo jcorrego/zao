@@ -84,13 +84,12 @@ class AgileStoreLocator_Public {
 	{
 		
 		//[myshortcode foo="bar" bar="bing"]
-	    //AGILESTORELOCATOR_PLUGIN_PATH.
+	  //AGILESTORELOCATOR_PLUGIN_PATH.
 
 		wp_enqueue_script( $this->AgileStoreLocator.'-script', AGILESTORELOCATOR_URL_PATH . 'public/js/site_script.js', array('jquery'), $this->version, true );
 		
 	    
 		if(!$atts) {
-
 			$atts = array();
 		}
 		
@@ -100,7 +99,7 @@ class AgileStoreLocator_Public {
 		$query   = "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."configs";
 		$configs = $wpdb->get_results($query);
 
-		$all_configs = array();
+		$all_configs = array('target_blank' => '1');
 		
 		foreach($configs as $_config)
 			$all_configs[$_config->key] = $_config->value;
@@ -283,7 +282,7 @@ class AgileStoreLocator_Public {
 
 		
 
-		$query   = "SELECT s.`id`, `title`,  `description`, `street`,  `city`,  `state`, `postal_code`, {$country_field} `lat`,`lng`,`phone`,  `fax`,`email`,`website`,`logo_id`,{$AGILESTORELOCATOR_PREFIX}storelogos.`path`,`open_hours`,
+		$query   = "SELECT s.`id`, `title`,  `description`, `street`,  `city`,  `state`, `postal_code`, {$country_field} `lat`,`lng`,`phone`,  `fax`,`email`,`website`,`logo_id`,{$AGILESTORELOCATOR_PREFIX}storelogos.`path`,`open_hours`,`ordr`,
 					group_concat(category_id) as categories FROM {$AGILESTORELOCATOR_PREFIX}stores as s 
 					LEFT JOIN {$AGILESTORELOCATOR_PREFIX}storelogos ON logo_id = {$AGILESTORELOCATOR_PREFIX}storelogos.id
 					LEFT JOIN {$AGILESTORELOCATOR_PREFIX}stores_categories ON s.`id` = {$AGILESTORELOCATOR_PREFIX}stores_categories.store_id
@@ -291,7 +290,7 @@ class AgileStoreLocator_Public {
 					WHERE (is_disabled is NULL || is_disabled = 0) 
 					GROUP BY s.`id` ";
 
-		$query .= "LIMIT 1000";
+		$query .= "LIMIT 1500";
 
 		
 		$all_results = $wpdb->get_results($query);

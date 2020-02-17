@@ -1,12 +1,13 @@
 <?php
 /**
- * Theme hooks
+ * Theme hooks.
  *
  * @since 1.0.0
+ *
+ * @package The7
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+defined( 'ABSPATH' ) || exit;
 
 add_action( 'get_header', 'presscore_template_config_init', 9 );
 add_action( 'wp_head', 'presscore_tracking_code_in_header_action', 9999 );
@@ -15,8 +16,7 @@ add_filter( 'dt_get_thumb_img-args', 'presscore_add_default_meta_to_images', 15 
 add_filter( 'presscore_post_edit_link', 'presscore_wrap_edit_link_in_p', 15 );
 add_filter( 'presscore_get_category_list-args', 'presscore_filter_categorizer_hash_arg', 15 );
 add_action( 'parse_query', 'presscore_parse_query_for_front_page_categorizer' );
-add_action('init', 'presscore_react_on_categorizer', 15);
-add_filter( 'post_class', 'presscore_add_post_format_classes' );
+add_action( 'init', 'presscore_react_on_categorizer', 15 );
 add_filter( 'the_excerpt', 'presscore_add_password_form_to_excerpts', 99 );
 add_filter( 'excerpt_more', 'presscore_excerpt_more_filter' );
 add_filter( 'teammate_thumbnail_args', 'presscore_set_image_width_based_on_column_width', 15 );
@@ -25,12 +25,11 @@ add_action( 'presscore_before_loop', 'presscore_page_masonry_controller', 25 );
 add_action( 'presscore_before_shortcode_loop', 'presscore_page_masonry_controller', 25 );
 add_action( 'presscore_after_loop', 'presscore_remove_posts_masonry_wrap', 15 );
 add_action( 'presscore_after_shortcode_loop', 'presscore_remove_posts_masonry_wrap', 15 );
-add_action('presscore_after_main_container', 'presscore_add_footer_widgetarea', 15);
-add_action('presscore_after_content', 'presscore_add_sidebar_widgetarea', 15);
-add_action('presscore_before_main_container', 'presscore_fancy_header_controller', 15);
+add_action( 'presscore_after_main_container', 'presscore_add_footer_widgetarea', 15 );
+add_action( 'presscore_after_content', 'presscore_add_sidebar_widgetarea', 15 );
+add_action( 'presscore_before_main_container', 'presscore_fancy_header_controller', 15 );
 add_action( 'presscore_before_main_container', 'presscore_page_title_controller', 16 );
 add_filter( 'post_class', 'presscore_post_class_filter' );
-add_filter( 'presscore_get_category_list', 'presscore_add_sorting_for_category_list', 15 );
 add_filter( 'presscore_get_category_list', 'presscore_add_wrap_for_catgorizer', 16, 2 );
 add_filter( 'dt_portfolio_thumbnail_args', 'presscore_setup_image_proportions', 15 );
 add_filter( 'dt_post_thumbnail_args', 'presscore_setup_image_proportions', 15 );
@@ -38,7 +37,7 @@ add_filter( 'dt_album_title_image_args', 'presscore_setup_image_proportions', 15
 add_filter( 'dt_media_image_args', 'presscore_setup_image_proportions', 15 );
 add_filter( 'presscore_get_images_gallery_hoovered-title_img_args', 'presscore_setup_image_proportions', 15 );
 add_action( 'presscore_body_top', 'presscore_render_fullscreen_overlay' );
-add_action('presscore_before_main_container', 'presscore_slideshow_controller', 15);
+add_action( 'presscore_before_main_container', 'presscore_slideshow_controller', 15 );
 add_action( 'wp_head', 'the7_site_icon', 98 );
 add_action( 'presscore_get_filtered_posts', 'presscore_update_post_thumbnail_cache' );
 add_filter( 'presscore_get_header_elements_list-near_logo_left', 'presscore_empty_classic_header_microwidgets_exception_filter' );
@@ -48,10 +47,10 @@ add_action( 'presscore_before_loop', 'presscore_add_masonry_lazy_load_attrs' );
 add_action( 'presscore_before_shortcode_loop', 'presscore_add_masonry_lazy_load_attrs' );
 add_action( 'presscore_after_loop', 'presscore_remove_masonry_lazy_load_attrs' );
 add_action( 'presscore_after_shortcode_loop', 'presscore_remove_masonry_lazy_load_attrs' );
-add_action( 'wp_head', 'presscore_opengraph_tags' );
 add_action( 'wp_head', 'presscore_pingback_header' );
 add_action( 'presscore_body_top', 'the7_version_comment', 0 );
 add_filter( 'dt_get_resized_img-options', 'the7_setup_speed_img_resize' );
+add_action( 'wp_head', 'presscore_opengraph_tags' );
 
 if ( ! function_exists( 'presscore_template_config_init' ) ) :
 
@@ -80,11 +79,10 @@ if ( ! function_exists( 'presscore_show_navigation_next_prev_posts_titles' ) ) :
 
 	/**
 	 * For blog posts only show next/prev posts titles.
-	 *
 	 */
 	function presscore_show_navigation_next_prev_posts_titles( $args = array() ) {
-		$args['next_post_text']	= '%title';
-		$args['prev_post_text']	= '%title';
+		$args['next_post_text'] = '%title';
+		$args['prev_post_text'] = '%title';
 		return $args;
 	}
 
@@ -100,7 +98,7 @@ if ( ! function_exists( 'presscore_filter_attachment_data' ) ) :
 	function presscore_filter_attachment_data( $attachment_data = array() ) {
 
 		// hide title
-		if ( !empty($attachment_data['ID']) ) {
+		if ( ! empty( $attachment_data['ID'] ) ) {
 			$hide_title = presscore_imagee_title_is_hidden( $attachment_data['ID'] );
 
 			if ( $hide_title ) {
@@ -109,13 +107,13 @@ if ( ! function_exists( 'presscore_filter_attachment_data' ) ) :
 		}
 
 		$defaults = array(
-			'alt' => '',
-			'caption' => '',
+			'alt'         => '',
+			'caption'     => '',
 			'description' => '',
-			'title' => '',
-			'permalink' => '',
-			'video_url' => '',
-			'ID' => '',
+			'title'       => '',
+			'permalink'   => '',
+			'video_url'   => '',
+			'ID'          => '',
 		);
 
 		$image_attachment_data = array_intersect_key( $attachment_data, $defaults );
@@ -136,31 +134,24 @@ if ( ! function_exists( 'presscore_add_default_meta_to_images' ) ) :
 	 * TODO: use proper image attributes i.e. img_title and alt. Change all images wraps.
 	 */
 	function presscore_add_default_meta_to_images( $args = array() ) {
-
-		// add description to images if it's not defined
-		if ( $id = absint($args['img_id']) ) {
-
+		$id = absint( $args['img_id'] );
+		if ( $id ) {
 			$attachment = get_post( $id );
 
 			if ( $attachment ) {
 
 				if ( '' === $args['title'] ) {
-					$args['title'] = esc_attr($attachment->post_title);
+					$args['title'] = esc_attr( $attachment->post_title );
 				}
 
-				// set image description
 				if ( empty( $args['img_description'] ) ) {
 					$args['img_description'] = $attachment->post_content;
 				}
-
 			}
 
 			$hide_title = presscore_imagee_title_is_hidden( $id );
 
-			// use image title instead alt
 			if ( $hide_title ) {
-				// $args['alt'] = get_the_title( $id );
-			// } else {
 				$args['img_title'] = false;
 			}
 		}
@@ -174,9 +165,8 @@ if ( ! function_exists( 'presscore_wrap_edit_link_in_p' ) ) :
 
 	/**
 	 * Wrap edit link in p tag.
-	 *
 	 */
-	function presscore_wrap_edit_link_in_p( $link = '' ){
+	function presscore_wrap_edit_link_in_p( $link = '' ) {
 		if ( $link ) {
 			$link = '<p>' . $link . '</p>';
 		}
@@ -189,15 +179,21 @@ if ( ! function_exists( 'presscore_filter_categorizer_hash_arg' ) ) :
 
 	/**
 	 * Categorizer hash filter.
-	 *
 	 */
 	function presscore_filter_categorizer_hash_arg( $args ) {
 		$config = Presscore_Config::get_instance();
 
-		$order = $config->get('order');
-		$orderby = $config->get('orderby');
+		$order   = $config->get( 'order' );
+		$orderby = $config->get( 'orderby' );
 
-		$hash = add_query_arg( array('term' => '%TERM_ID%', 'orderby' => $orderby, 'order' => $order), get_permalink() );
+		$hash = add_query_arg(
+			array(
+				'term'    => '%TERM_ID%',
+				'orderby' => $orderby,
+				'order'   => $order,
+			),
+			get_permalink()
+		);
 
 		$args['hash'] = $hash;
 
@@ -210,22 +206,21 @@ if ( ! function_exists( 'presscore_parse_query_for_front_page_categorizer' ) ) :
 
 	/**
 	 * Add exceptions for front page templates with category filter.
-	 *
 	 */
 	function presscore_parse_query_for_front_page_categorizer( $query ) {
 
-		if ( $query->is_main_query() && $query->is_home && 'page' == get_option('show_on_front') && get_option('page_on_front') ) {
+		if ( $query->is_main_query() && $query->is_home && 'page' === get_option( 'show_on_front' ) && get_option( 'page_on_front' ) ) {
 
-			$_query = wp_parse_args($query->query);
+			$_query = wp_parse_args( $query->query );
 
-			if ( empty($_query) || !array_diff( array_keys($_query), array('term', 'order', 'orderby', 'page', 'paged', 'preview', 'cpage', 'lang') ) ) {
-				$query->is_page = true;
-				$query->is_home = false;
+			if ( empty( $_query ) || ! array_diff( array_keys( $_query ), array( 'term', 'order', 'orderby', 'page', 'paged', 'preview', 'cpage', 'lang' ) ) ) {
+				$query->is_page     = true;
+				$query->is_home     = false;
 				$query->is_singular = true;
 
-				$query->query_vars['page_id'] = get_option('page_on_front');
-				// Correct <!--nextpage--> for page_on_front
-				if ( !empty($query->query_vars['paged']) ) {
+				$query->query_vars['page_id'] = get_option( 'page_on_front' );
+				// Correct <!--nextpage--> for page_on_front.
+				if ( ! empty( $query->query_vars['paged'] ) ) {
 					$query->query_vars['page'] = $query->query_vars['paged'];
 				}
 			}
@@ -239,20 +234,19 @@ if ( ! function_exists( 'presscore_filter_categorizer_current_arg' ) ) :
 
 	/**
 	 * Categorizer current filter.
-	 *
 	 */
 	function presscore_filter_categorizer_current_arg( $args ) {
-		$config = Presscore_Config::get_instance();
+		$config = presscore_config();
 
-		$display = $config->get('request_display');
+		$display = $config->get( 'request_display' );
 
-		if ( !$display ) {
+		if ( ! $display ) {
 			return $args;
 		}
 
-		if ( 'only' == $display['select'] && !empty($display['terms_ids']) ) {
-			$args['current'] = current($display['terms_ids']);
-		} else if ( 'except' == $display['select'] && 0 == current($display['terms_ids']) ) {
+		if ( 'only' === $display['select'] && ! empty( $display['terms_ids'] ) ) {
+			$args['current'] = current( $display['terms_ids'] );
+		} elseif ( 'except' === $display['select'] && 0 === (int) current( $display['terms_ids'] ) ) {
 			$args['current'] = 'none';
 		}
 		return $args;
@@ -264,7 +258,6 @@ if ( ! function_exists( 'presscore_react_on_categorizer' ) ) :
 
 	/**
 	 * Change config, categorizer.
-	 *
 	 */
 	function presscore_react_on_categorizer() {
 		if ( ! isset( $_REQUEST['term'] ) ) {
@@ -273,13 +266,18 @@ if ( ! function_exists( 'presscore_react_on_categorizer' ) ) :
 
 		$config = presscore_config();
 
-		// sanitize
-		if ( '' == $_REQUEST['term'] ) {
+		if ( '' === $_REQUEST['term'] ) {
 			$display = array();
-		} else if ( 'none' == $_REQUEST['term'] ) {
-			$display = array( 'terms_ids' => array( 0 ), 'select' => 'except' );
+		} elseif ( 'none' === $_REQUEST['term'] ) {
+			$display = array(
+				'terms_ids' => array( 0 ),
+				'select'    => 'except',
+			);
 		} else {
-			$display = array( 'terms_ids' => array( absint( $_REQUEST['term'] ) ), 'select' => 'only' );
+			$display = array(
+				'terms_ids' => array( absint( $_REQUEST['term'] ) ),
+				'select'    => 'only',
+			);
 		}
 		$config->set( 'request_display', $display );
 
@@ -308,60 +306,15 @@ if ( ! function_exists( 'presscore_post_navigation_controller' ) ) :
 	 * Post pagination controller.
 	 */
 	function presscore_post_navigation_controller() {
-		if ( !in_the_loop() ) {
+		if ( ! in_the_loop() ) {
 			return;
 		}
 
 		$show_navigation = presscore_is_post_navigation_enabled();
 
-		// show navigation
 		if ( $show_navigation ) {
 			presscore_post_navigation();
 		}
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_remove_post_format_classes' ) ) :
-
-	/**
-	 * Remove post format classes.
-	 */
-	function presscore_remove_post_format_classes( $classes = array() ) {
-		global $post;
-
-		if ( 'post' != get_post_type( $post ) ) {
-			return $classes;
-		}
-
-		$post_format = get_post_format();
-		if ( !$post_format ) {
-			$post_format = 'standard';
-		}
-
-		return array_diff( $classes, array('format-' . $post_format) );
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_add_post_format_classes' ) ) :
-
-	/**
-	 * Add post format classes to post.
-	 */
-	function presscore_add_post_format_classes( $classes = array() ) {
-		global $post;
-
-		if ( 'post' != get_post_type( $post ) ) {
-			return $classes;
-		}
-
-		$post_format_class = presscore_get_post_format_class();
-		if ( $post_format_class ) {
-			$classes[] = $post_format_class;
-		}
-
-		return array_unique($classes);
 	}
 
 endif;
@@ -391,7 +344,7 @@ if ( ! function_exists( 'presscore_excerpt_more_filter' ) ) :
 	 * @return string
 	 */
 	function presscore_excerpt_more_filter( $more ) {
-	    return '&hellip;';
+		return '&hellip;';
 	}
 
 endif;
@@ -412,8 +365,9 @@ if ( ! function_exists( 'presscore_add_more_anchor' ) ) :
 			$content = preg_replace( '/href=[\'"]?([^\'" >]+)/', ( 'href="$1#more-' . $post->ID ), $content );
 		}
 
-		// added in helpers.php:3120+
+		// Added in helpers.php:3120+.
 		remove_filter( 'presscore_post_details_link', 'presscore_add_more_anchor', 15 );
+
 		return $content;
 	}
 
@@ -444,8 +398,8 @@ if ( ! function_exists( 'presscore_gallery_post_exclude_featured_image_from_gall
 		return $args;
 
 		if ( in_the_loop() && get_post_meta( $post->ID, '_dt_album_options_exclude_featured_image', true ) ) {
-			$args['custom'] = isset($args['custom']) ? $args['custom'] : trim(str_replace( $options['links_rel'], '', $default_args['custom'] ));
-			$args['class'] = $default_args['class'] . ' ignore-feaured-image';
+			$args['custom'] = isset( $args['custom'] ) ? $args['custom'] : trim( str_replace( $options['links_rel'], '', $default_args['custom'] ) );
+			$args['class']  = $default_args['class'] . ' ignore-feaured-image';
 		}
 
 		return $args;
@@ -457,14 +411,16 @@ if ( ! function_exists( 'presscore_set_image_width_based_on_column_width' ) ) :
 
 	/**
 	 * Set image width for testimonials template and shortcode.
-	 *
 	 */
 	function presscore_set_image_width_based_on_column_width( $args = array() ) {
-		$config = Presscore_Config::get_instance();
-		$target_width = $config->get('target_width');
+		$config       = Presscore_Config::get_instance();
+		$target_width = $config->get( 'target_width' );
 
 		if ( $target_width ) {
-			$args['options'] = array( 'w' => round($target_width * 1.5), 'z' => 0 );
+			$args['options'] = array(
+				'w' => round( $target_width * 1.5 ),
+				'z' => 0,
+			);
 		}
 
 		return $args;
@@ -476,16 +432,13 @@ if ( ! function_exists( 'presscore_add_preload_me_class_to_images' ) ) :
 
 	/**
 	 * Add preload-me to every image that created with dt_get_thumb_img().
-	 *
 	 */
 	function presscore_add_preload_me_class_to_images( $args = array() ) {
 		$img_class = $args['img_class'];
-		
-		// clear
-		$img_class = str_replace('preload-me', '', $img_class);
-		
-		// add class
-		$img_class .= ' preload-me';
+
+		$img_class = str_replace( 'preload-me', '', $img_class );
+
+		$img_class        .= ' preload-me';
 		$args['img_class'] = trim( $img_class );
 
 		return $args;
@@ -566,7 +519,7 @@ if ( ! function_exists( 'presscore_add_sidebar_widgetarea' ) ) :
 	 * Add sidebar widgetarea.
 	 */
 	function presscore_add_sidebar_widgetarea() {
-	    do_action( 'the7_before_sidebar_widgets_output' );
+		do_action( 'the7_before_sidebar_widgets_output' );
 		get_sidebar();
 		do_action( 'the7_after_sidebar_widgets_output' );
 	}
@@ -580,12 +533,12 @@ if ( ! function_exists( 'presscore_get_page_content_before' ) ) :
 	 * Used in presscore_page_content_controller
 	 */
 	function presscore_get_page_content_before() {
-	    static $doing_action = false;
+		static $doing_action = false;
 
-	    // Prevent loops.
-	    if ( $doing_action ) {
-	        return;
-        }
+		// Prevent loops.
+		if ( $doing_action ) {
+			return;
+		}
 
 		$doing_action = true;
 		if ( get_the_content() && ! post_password_required() ) {
@@ -608,9 +561,9 @@ if ( ! function_exists( 'presscore_get_page_content_after' ) ) :
 		static $doing_action = false;
 
 		// Prevent loops.
-	    if ( $doing_action ) {
-	        return;
-        }
+		if ( $doing_action ) {
+			return;
+		}
 
 		$doing_action = true;
 		if ( get_the_content() ) {
@@ -646,7 +599,7 @@ if ( ! function_exists( 'presscore_page_content_controller' ) ) :
 		}
 
 		// Only for first page.
-		if ( 'on_first_page' === $display_content && dt_get_paged_var() > 1 ) {
+		if ( 'on_first_page' === $display_content && the7_get_paged_var() > 1 ) {
 			return;
 		}
 
@@ -665,228 +618,13 @@ if ( ! function_exists( 'presscore_fancy_header_controller' ) ) :
 
 	/**
 	 * Fancy header controller.
-	 *
 	 */
 	function presscore_fancy_header_controller() {
-		$config = Presscore_Config::get_instance();
-
-		if ( 'fancy' != $config->get('header_title') ) {
+		if ( 'fancy' !== presscore_config()->get( 'header_title' ) ) {
 			return;
 		}
 
-		/////////////
-		// title //
-		/////////////
-
-		$title = '';
-
-		// TODO apply 'the_title' filter here
-		$custom_title = ( 'generic' == $config->get('fancy_header.title.mode') ) ? presscore_get_page_title() : $config->get('fancy_header.title');
-		if ( $custom_title ) {
-
-			// $title_class = presscore_get_font_size_class( $config->get('fancy_header.title.font.size') );
-			$title_size = $config->get('fancy_header.title.font.size');
-			$title_line_height = $config->get('fancy_header.title.line.height');
-			$title_capitalize = $config->get('fancy_header.title.capitalize') ? 'uppercase' : 'none';
-			$title_class= '';
-			if ( 'accent' == $config->get('fancy_header.title.color.mode') ) {
-				$title_class .= ' color-accent';
-			}
-
-			$title_style = '';
-			if ( 'color' == $config->get('fancy_header.title.color.mode') ) {
-				$title_style = ' style="color: ' . esc_attr( $config->get('fancy_header.title.color') ) . '; font-size: ' . $title_size . 'px; line-height: ' . $title_line_height .'px; text-transform: '. $title_capitalize .';"';
-			}else{
-				$title_style .= ' style=" font-size: ' . $title_size . 'px; line-height: ' . $title_line_height .'px; text-transform: '. $title_capitalize .';"';
-			}
-
-			$custom_title = '<h1 class="fancy-title entry-title' . $title_class . '"' . $title_style . ' ><span>' . strip_tags( $custom_title ) . '</span></h1>';
-
-			$title .= apply_filters( 'presscore_page_title', $custom_title );
-
-		}
-
-		////////////////
-		// subtitle //
-		////////////////
-
-		// TODO apply 'the_title' filter here
-		$sybtitle = $config->get( 'fancy_header.subtitle' );
-		if ( $sybtitle ) {
-
-			$subtitle_class = "";
-			$subtitle_size = $config->get('fancy_header.subtitle.font.size');
-			$subtitle_line_height = $config->get('fancy_header.subtitle.line.height');
-			$subtitle_capitalize = $config->get('fancy_header.subtitle.capitalize') ? 'uppercase' : 'none';
-			if ( 'accent' == $config->get('fancy_header.subtitle.color.mode') ) {
-				$subtitle_class .= ' color-accent';
-			}
-
-			$title .= sprintf( '<h2 class="fancy-subtitle %s"', $subtitle_class );
-
-			if ( 'color' == $config->get('fancy_header.subtitle.color.mode') ) {
-				$title .= ' style="color: ' . esc_attr( $config->get('fancy_header.subtitle.color') ) . '; font-size: ' . $subtitle_size . 'px; line-height: '. $subtitle_line_height .'px; text-transform: '. $subtitle_capitalize .';"';
-			}else{
-				$title .= ' style="font-size: ' . $subtitle_size . 'px; line-height: '. $subtitle_line_height .'px; text-transform: '. $subtitle_capitalize .';"';
-			}
-
-			$title .= '><span>' . strip_tags( $sybtitle ) . '</span></h2>'; 
-
-		}
-
-		// container class
-		$container_classes = array( 'fancy-header' );
-
-		if ( $title ) {
-			$title = '<div class="fancy-title-head hgroup">' . $title . '</div>';
-
-		// if title and subtitle empty
-		} else {
-			$container_classes[] = 'titles-off';
-
-		}
-
-		//////////////////
-		// bredcrumbs //
-		//////////////////
-
-		$breadcrumbs = '';
-		if ( 'enabled' == $config->get( 'fancy_header.breadcrumbs' ) ) {
-
-			$breadcrumbs_args = array(
-				'beforeBreadcrumbs' => '',
-				'afterBreadcrumbs' => ''
-			);
-
-			$breadcrumbs_class = 'breadcrumbs text-small';
-
-			switch ( $config->get( 'fancy_header.breadcrumbs.bg_color' ) ) {
-				case 'black':
-					$breadcrumbs_class .= ' bg-dark breadcrumbs-bg';
-					break;
-
-				case 'white':
-					$breadcrumbs_class .= ' bg-light breadcrumbs-bg';
-					break;
-			}
-
-			$breadcrumbs_args['listAttr'] = ' class="' . $breadcrumbs_class . '"';
-
-			$breadcrumbs_text_color = $config->get( 'fancy_header.breadcrumbs.text_color' );
-			if ( $breadcrumbs_text_color ) {
-				$breadcrumbs_args['listAttr'] .= ' style="color: ' . $breadcrumbs_text_color . ';"';
-			}
-
-			$breadcrumbs = presscore_get_breadcrumbs( $breadcrumbs_args );
-
-		} else {
-			$container_classes[] = 'breadcrumbs-off';
-
-		}
-
-		/////////////////
-		// container //
-		/////////////////
-
-		$content = $title . $breadcrumbs;
-		switch ( $config->get('fancy_header.title.aligment') ) {
-			case 'center': $container_classes[] = 'title-center'; break;
-			case 'right':
-				$container_classes[] = 'title-right';
-				$content = $breadcrumbs . $title;
-				break;
-			case 'all_left':
-				$container_classes[] = 'content-left';
-				break;
-			case 'all_right':
-				$container_classes[] = 'content-right';
-				break;
-			default: $container_classes[] = 'title-left';
-		}
-
-		////////////////
-		// parallax //
-		////////////////
-
-		$data_attr = array();
-		$parallax_speed = $config->get('fancy_header.parallax.speed');
-		if ( $parallax_speed && 'parallax' == $config->get('fancy_header.bg.fixed' )) {
-			$container_classes[] = 'fancy-parallax-bg';
-
-			$data_attr[] = 'data-prlx-speed="' . $parallax_speed . '"';
-		}
-
-		///////////////////////
-		// container style //
-		///////////////////////
-
-		$container_style = array();
-		$overlay_transparent_bg_color = '';
-		if ( $config->get('fancy_header.bg.color') ) {
-			$container_style[] = 'background-color: ' . $config->get('fancy_header.bg.color');
-		}
-
-		if ( $config->get('fancy_header.bg.image') ) {
-
-			$image_meta = wp_get_attachment_image_src( current($config->get('fancy_header.bg.image')), 'full' );
-			if ( $image_meta ) {
-
-				if ( $config->get('fancy_header.bg.fullscreen') ) {
-
-					$bg_size = 'cover';
-					$repeat = 'no-repeat';
-
-				} else {
-
-					$bg_size = 'auto auto';
-					$repeat = $config->get('fancy_header.bg.repeat');
-
-				}
-
-				$container_style[] = "background-size: {$bg_size}";
-				$container_style[] = "background-repeat: {$repeat}";
-				$container_style[] = "background-image: url({$image_meta[0]})";
-
-				$position_x = $config->get('fancy_header.bg.position.x');
-				$position_y = $config->get('fancy_header.bg.position.y');
-				$container_style[] = "background-position: {$position_x} {$position_y}";
-
-				if ( 'fixed' == $config->get('fancy_header.bg.fixed') ) {
-
-					$container_style[] = 'background-attachment: fixed';
-
-				}
-
-			}
-
-		}
-		if ( $config->get('fancy_header.bg.overlay') ) {
-			$overlay_transparent_bg_color = dt_stylesheet_color_hex2rgba( $config->get( 'fancy_header.bg.overlay.color' ), $config->get( 'fancy_header.bg.overlay.opacity' ) );
-			//$container_sub_style[] = 'background-color: ' . esc_attr( $overlay_transparent_bg_color ) . ';" ';
-		}
-
-		/////////////////////
-		// header height //
-		/////////////////////
-
-		$min_h_height = ' style="min-height: ' . $config->get('fancy_header.height') . 'px;"';
-		$container_style[] = 'padding-top: ' . $config->get('fancy_header.padding.top') . '';
-		$container_style[] = 'padding-bottom: ' . $config->get('fancy_header.padding.bottom') . '';
-		//////////////
-		// output //
-		//////////////
-
-		printf(
-			'<header id="fancy-header" class="%1$s" style="%2$s" %3$s>
-			<div class="wf-wrap"%5$s>%4$s</div>
-			<span class="fancy-header-overlay" style="background-color: ' . esc_attr( $overlay_transparent_bg_color ) . ';"></span>
-			</header>',
-			esc_attr( implode( ' ', $container_classes ) ),
-			esc_attr( implode( '; ', $container_style ) ),
-			implode( ' ', $data_attr ),
-			$content,
-			$min_h_height
-		);
+		presscore_get_template_part( 'theme', 'page-title/fancy-title' );
 	}
 
 endif;
@@ -895,14 +633,14 @@ if ( ! function_exists( 'presscore_page_title_controller' ) ) :
 
 	/**
 	 * This function display page title.
-     *
-     * @uses presscore_config()
-     * @uses presscore_is_post_title_enabled()
-     * @uses presscore_is_content_visible()
-     * @uses presscore_get_page_title_wrap_html_class()
-     * @uses presscore_get_page_title_html_class()
-     * @uses presscore_get_page_title()
-     * @uses presscore_get_page_title_breadcrumbs()
+	 *
+	 * @uses presscore_config()
+	 * @uses presscore_is_post_title_enabled()
+	 * @uses presscore_is_content_visible()
+	 * @uses presscore_get_page_title_wrap_html_class()
+	 * @uses presscore_get_page_title_html_class()
+	 * @uses presscore_get_page_title()
+	 * @uses presscore_get_page_title_breadcrumbs()
 	 */
 	function presscore_page_title_controller() {
 		$config = presscore_config();
@@ -917,7 +655,7 @@ if ( ! function_exists( 'presscore_page_title_controller' ) ) :
 		}
 
 		$page_title_wrap_attrs = '';
-		$parallax_speed = $config->get( 'page_title.background.parallax_speed' );
+		$parallax_speed        = $config->get( 'page_title.background.parallax_speed' );
 		if ( $parallax_speed ) {
 			$page_title_wrap_attrs .= ' data-prlx-speed="' . $parallax_speed . '"';
 		}
@@ -926,7 +664,6 @@ if ( ! function_exists( 'presscore_page_title_controller' ) ) :
 			<div class="wf-wrap">
 
 				<?php
-				// get page title
 				if ( $config->get( 'page_title.enabled' ) ) {
 					$page_title = '<div class="page-title-head hgroup"><h1 ' . presscore_get_page_title_html_class() . '>' . presscore_get_page_title() . '</h1></div>';
 				} else {
@@ -934,15 +671,13 @@ if ( ! function_exists( 'presscore_page_title_controller' ) ) :
 				}
 				$page_title = apply_filters( 'presscore_page_title', $page_title );
 
-				// get breadcrumbs
 				if ( $config->get( 'page_title.breadcrumbs.enabled' ) ) {
 					$breadcrumbs = presscore_get_page_title_breadcrumbs();
 				} else {
 					$breadcrumbs = '';
 				}
 
-				// output
-				if ( 'right' == $config->get( 'page_title.align' ) ) {
+				if ( 'right' === $config->get( 'page_title.align' ) ) {
 					echo $breadcrumbs, $page_title;
 				} else {
 					echo $page_title, $breadcrumbs;
@@ -966,9 +701,9 @@ if ( ! function_exists( 'presscore_post_class_filter' ) ) :
 
 		// All public taxonomies for posts filter.
 		$taxonomy = 'category';
-        if ( $post->post_type !== 'post' ) {
-	        $taxonomy = $post->post_type . '_category';
-        }
+		if ( $post->post_type !== 'post' ) {
+			$taxonomy = $post->post_type . '_category';
+		}
 		if ( is_object_in_taxonomy( $post->post_type, $taxonomy ) ) {
 			foreach ( (array) get_the_terms( $post->ID, $taxonomy ) as $term ) {
 				if ( empty( $term->slug ) ) {
@@ -983,23 +718,18 @@ if ( ! function_exists( 'presscore_post_class_filter' ) ) :
 
 		$is_archive = is_search() || is_archive();
 
-		// post preview width
-		if ( !$is_archive && 'wide' == $config->get( 'post.preview.width' ) ) {
+		if ( ! $is_archive && 'wide' === $config->get( 'post.preview.width' ) ) {
 			$classes[] = 'media-wide';
 		}
 
-		// post preview background
 		if ( $config->get( 'post.preview.background.enabled' ) ) {
 			$classes[] = 'bg-on';
 		}
 
 		$current_layout_type = presscore_get_current_layout_type();
 
-		// only for layouts from masonry family
-		if ( 'masonry' == $current_layout_type ) {
-
-			// fullwidth preview background
-			if ( $config->get( 'post.preview.background.enabled' ) && 'fullwidth' == $config->get( 'post.preview.background.style' ) ) {
+		if ( 'masonry' === $current_layout_type ) {
+			if ( $config->get( 'post.preview.background.enabled' ) && 'fullwidth' === $config->get( 'post.preview.background.style' ) ) {
 				$classes[] = 'fullwidth-img';
 			}
 
@@ -1007,11 +737,9 @@ if ( ! function_exists( 'presscore_post_class_filter' ) ) :
 				$classes[] = 'no-img';
 			}
 
-			// preview content alignment
-			if ( 'center' == $config->get( 'post.preview.description.alignment' ) ) {
+			if ( 'center' === $config->get( 'post.preview.description.alignment' ) ) {
 				$classes[] = 'text-centered';
 			}
-
 		}
 
 		if ( ! $config->get( 'post.preview.content.visible' ) ) {
@@ -1019,26 +747,13 @@ if ( ! function_exists( 'presscore_post_class_filter' ) ) :
 		}
 
 		if ( is_single() ) {
-
-			$hentry_key = array_search( 'hentry', $classes );
+			$hentry_key = array_search( 'hentry', $classes, true );
 			if ( $hentry_key !== false ) {
 				unset( $classes[ $hentry_key ] );
 			}
-
 		}
 
 		return $classes;
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_add_sorting_for_category_list' ) ) :
-
-	/**
-	 * Add sorting fields to category list.
-	 */
-	function presscore_add_sorting_for_category_list( $html ) {
-		return $html . presscore_get_categorizer_sorting_fields();
 	}
 
 endif;
@@ -1047,16 +762,12 @@ if ( ! function_exists( 'presscore_add_wrap_for_catgorizer' ) ) :
 
 	/**
 	 * Categorizer wrap.
-	 *
 	 */
 	function presscore_add_wrap_for_catgorizer( $html, $args ) {
 		if ( $html ) {
+			$class = empty( $args['class'] ) ? 'filter' : $args['class'];
 
-			// get class or use default one
-			$class = empty($args['class']) ? 'filter' : $args['class'];
-
-			// wrap categorizer
-			$html = '<div class="' . esc_attr($class) . '">' . $html . '</div>';
+			$html = '<div class="' . esc_attr( $class ) . '">' . $html . '</div>';
 		}
 
 		return $html;
@@ -1067,16 +778,16 @@ endif;
 if ( ! function_exists( 'presscore_add_thumbnail_class_for_masonry' ) ) :
 
 	/**
-     * @deprecated
+	 * @deprecated
 	 * @param array $args
 	 *
 	 * @return array
 	 */
-    function presscore_add_thumbnail_class_for_masonry( $args = array() ) {
-        $args = presscore_setup_image_proportions( $args );
+	function presscore_add_thumbnail_class_for_masonry( $args = array() ) {
+		$args = presscore_setup_image_proportions( $args );
 
-        return $args;
-    }
+		return $args;
+	}
 
 endif;
 
@@ -1085,12 +796,12 @@ if ( ! function_exists( 'presscore_setup_image_proportions' ) ) :
 	/**
 	 * Add proportions to images.
 	 *
-     * @param array $args
-     *
+	 * @param array $args
+	 *
 	 * @return array.
 	 */
 	function presscore_setup_image_proportions( $args = array() ) {
-		$config = presscore_config();
+		$config            = presscore_config();
 		$thumb_proportions = $config->get( 'thumb_proportions' );
 
 		if ( ! $thumb_proportions || 'resize' !== $config->get( 'image_layout' ) ) {
@@ -1098,8 +809,14 @@ if ( ! function_exists( 'presscore_setup_image_proportions' ) ) :
 		}
 
 		if ( is_array( $thumb_proportions ) ) {
-			$thumb_proportions = wp_parse_args( $thumb_proportions, array( 'width' => 1, 'height' => 1 ) );
-			$args['prop'] = the7_get_image_proportion( $thumb_proportions['width'], $thumb_proportions['height'] );
+			$thumb_proportions = wp_parse_args(
+				$thumb_proportions,
+				array(
+					'width'  => 1,
+					'height' => 1,
+				)
+			);
+			$args['prop']      = the7_get_image_proportion( $thumb_proportions['width'], $thumb_proportions['height'] );
 		} else {
 			$args['prop'] = presscore_meta_boxes_get_images_proportions( $thumb_proportions );
 		}
@@ -1116,9 +833,8 @@ if ( ! function_exists( 'presscore_render_fullscreen_overlay' ) ) :
 	 */
 	function presscore_render_fullscreen_overlay() {
 		if ( presscore_config()->get_bool( 'template.beautiful_loading.enabled' ) ) {
-
 			$tpl_args = array();
-			switch( presscore_config()->get( 'template.beautiful_loading.loadr.style' ) ) {
+			switch ( presscore_config()->get( 'template.beautiful_loading.loadr.style' ) ) {
 				case 'square_jelly_box':
 					$tpl_args['load_class'] = 'ring-loader';
 					break;
@@ -1133,7 +849,6 @@ if ( ! function_exists( 'presscore_render_fullscreen_overlay' ) ) :
 			}
 
 			presscore_get_template_part( 'theme', 'loader', null, $tpl_args );
-
 		}
 	}
 
@@ -1143,48 +858,42 @@ if ( ! function_exists( 'presscore_slideshow_controller' ) ) :
 
 	/**
 	 * Slideshow controller.
-	 *
 	 */
 	function presscore_slideshow_controller() {
-		global $post;
-		$config = Presscore_Config::get_instance();
+		$config = presscore_config();
 
-		if ( 'slideshow' != $config->get('header_title') ){
+		if ( 'slideshow' !== $config->get( 'header_title' ) ) {
 			return;
 		}
 
-		// turn off regular titles and breadcrumbs
-		remove_action('presscore_before_main_container', 'presscore_page_title_controller', 16);
+		remove_action( 'presscore_before_main_container', 'presscore_page_title_controller', 16 );
 
-		if ( dt_get_paged_var() > 1 ) {
+		if ( the7_get_paged_var() > 1 ) {
 			return;
 		}
 
-		switch ( $config->get('slideshow_mode') ) {
-
+		switch ( $config->get( 'slideshow_mode' ) ) {
 			case 'revolution':
-				$rev_slider = $config->get('slideshow_revolution_slider');
+				$rev_slider = $config->get( 'slideshow_revolution_slider' );
 
-				if ( $rev_slider && function_exists('putRevSlider') ) {
+				if ( $rev_slider && function_exists( 'putRevSlider' ) ) {
 
 					echo '<div id="main-slideshow">';
 					putRevSlider( $rev_slider );
 					echo '</div>';
 				}
 				break;
-
 			case 'layer':
-				$layer_slider = $config->get('slideshow_layer_slider');
-				$layer_bg_and_paddings = $config->get('slideshow_layer_bg_and_paddings');
+				$layer_slider          = $config->get( 'slideshow_layer_slider' );
+				$layer_bg_and_paddings = $config->get( 'slideshow_layer_bg_and_paddings' );
 
-				if ( $layer_slider && function_exists('layerslider') ) {
+				if ( $layer_slider && function_exists( 'layerslider' ) ) {
 
 					echo '<div id="main-slideshow"' . ( $layer_bg_and_paddings ? ' class="layer-fixed"' : '' ) . '>';
 					layerslider( $layer_slider );
 					echo '</div>';
 				}
-
-		} // switch
+		}
 
 		do_action( 'presscore_do_header_slideshow', $config->get( 'slideshow_mode' ) );
 	}
@@ -1206,16 +915,16 @@ if ( ! function_exists( 'the7_site_icon' ) ) :
 
 		$icons = presscore_get_device_icons();
 		if ( ! $icons ) {
-		    return;
-        }
+			return;
+		}
 
 		echo $icons;
 
 		if ( is_admin() ) {
 			remove_action( 'admin_head', 'wp_site_icon' );
-        } else {
+		} else {
 			remove_action( 'wp_head', 'wp_site_icon', 99 );
-        }
+		}
 	}
 
 endif;
@@ -1246,7 +955,7 @@ if ( ! function_exists( 'presscore_empty_classic_header_microwidgets_exception_f
 	 * @return array
 	 */
 	function presscore_empty_classic_header_microwidgets_exception_filter( $elements ) {
-		if ( ! $elements && 'classic' == presscore_config()->get( 'header.layout' ) ) {
+		if ( ! $elements && 'classic' === presscore_config()->get( 'header.layout' ) ) {
 			$elements = array( 'dummy_element' );
 		}
 		return $elements;
@@ -1278,16 +987,12 @@ if ( ! function_exists( 'presscore_add_images_lazy_loading' ) ) :
 	/**
 	 * Add lazy loading capabilities to images.
 	 *
-	 * @param  array  $args
+	 * @param  array $args
 	 * @return array
 	 */
 	function presscore_add_images_lazy_loading( $args = array() ) {
 		if ( presscore_lazy_loading_enabled() ) {
 			$args['lazy_loading'] = true;
-			$layzr_class = 'lazy-load';
-			$args['img_class'] = ( isset( $args['img_class'] ) ? $args['img_class'] . " {$layzr_class}" : $layzr_class );
-			$layzr_bg_class = 'layzr-bg';
-			$args['class'] = ( isset( $args['class'] ) ? $args['class'] . " {$layzr_bg_class}" : $layzr_bg_class );
 		}
 
 		return $args;
@@ -1334,7 +1039,7 @@ if ( ! function_exists( 'presscore_remove_masonry_lazy_load_attrs' ) ) :
 	 * Remove lazy loading images attributes.
 	 */
 	function presscore_remove_masonry_lazy_load_attrs() {
-		remove_filter( 'dt_get_thumb_img-output', 'presscore_masonry_lazy_loading', 10, 2 );
+		remove_filter( 'dt_get_thumb_img-output', 'presscore_masonry_lazy_loading', 10 );
 	}
 
 endif;
@@ -1347,7 +1052,7 @@ if ( ! function_exists( 'presscore_masonry_lazy_loading' ) ) :
 	 * @since 3.3.0
 	 *
 	 * @param  string $output
-	 * @param  array $args
+	 * @param  array  $args
 	 * @return string
 	 */
 	function presscore_masonry_lazy_loading( $output = '', $args = array() ) {
@@ -1355,7 +1060,7 @@ if ( ! function_exists( 'presscore_masonry_lazy_loading' ) ) :
 		if ( ! empty( $args['lazy_loading'] ) && ! $config->get( 'is_scroller' ) ) {
 			if ( $config->get( 'justified_grid' ) ) {
 				$output = str_replace( 'lazy-load', 'jgrid-lazy-load', $output );
-			} elseif ( in_array( $config->get( 'layout' ), array( 'masonry', 'grid' ) ) ) {
+			} elseif ( in_array( $config->get( 'layout' ), array( 'masonry', 'grid' ), true ) ) {
 				$output = str_replace( 'lazy-load', 'iso-lazy-load', $output );
 			}
 		}
@@ -1369,11 +1074,11 @@ if ( ! function_exists( 'presscore_pingback_header' ) ) :
 	/**
 	 * Add a pingback url auto-discovery header for singularly identifiable articles.
 	 */
-    function presscore_pingback_header() {
-        if ( is_singular() && pings_open() ) {
-            printf( '<link rel="pingback" href="%s">' . "\n", get_bloginfo( 'pingback_url' ) );
-        }
-    }
+	function presscore_pingback_header() {
+		if ( is_singular() && pings_open() ) {
+			printf( '<link rel="pingback" href="%s">' . "\n", get_bloginfo( 'pingback_url' ) );
+		}
+	}
 endif;
 
 if ( ! function_exists( 'presscore_opengraph_tags' ) ) :
@@ -1384,25 +1089,26 @@ if ( ! function_exists( 'presscore_opengraph_tags' ) ) :
 	 * @since   3.7.2
 	 */
 	function presscore_opengraph_tags() {
-		// Stop if wordpress-seo plugin is active.
-		if ( defined( 'WPSEO_VERSION' ) || ! class_exists( 'The7_OpenGraph' ) ) {
+		global $post;
+
+		if ( ! of_get_option( 'the7_opengraph_tags' ) ) {
 			return;
 		}
 
-		global $post;
-		if ( ! $post || is_home() ) {
-		    return;
-        }
+		if ( defined( 'WPSEO_VERSION' ) || ! $post || is_home() || is_archive() || is_search() ) {
+			return;
+		}
 
-        // Fix warnings in php 7.2.x.
-        setup_postdata( $post );
+		// Fix warnings in php 7.2.x.
+		setup_postdata( $post );
 
-		The7_OpenGraph::site_name();
-		The7_OpenGraph::title();
-		The7_OpenGraph::description();
-		The7_OpenGraph::image();
-		The7_OpenGraph::url();
-		The7_OpenGraph::type();
+		$the7_og = new The7_OpenGraph();
+		echo $the7_og->site_name();
+		echo $the7_og->title();
+		echo $the7_og->description();
+		echo $the7_og->image();
+		echo $the7_og->url();
+		echo $the7_og->type();
 	}
 
 endif;
@@ -1411,31 +1117,30 @@ if ( ! function_exists( 'the7_version_comment' ) ) :
 
 	/**
 	 * This function print comment with theme version after body tag.
-     * Used to ease life support.
-     *
-     * @since 5.3.0
+	 * Used to ease life support.
+	 *
+	 * @since 5.3.0
 	 */
-    function the7_version_comment() {
-        echo "<!-- The7 " . THE7_VERSION .  " -->\n";
-    }
+	function the7_version_comment() {
+		echo '<!-- The7 ' . THE7_VERSION . " -->\n";
+	}
 
 endif;
 
 if ( ! function_exists( 'the7_setup_speed_img_resize' ) ) {
 
 	/**
-     * Filter that force aq_resizer do not call getimagesize twice for every image...
-     *
+	 * Filter that force aq_resizer do not call getimagesize twice for every image...
+	 *
 	 * @param array $args
 	 *
 	 * @return array
 	 */
-    function the7_setup_speed_img_resize( $args = array() ) {
-        if ( of_get_option( 'advanced-speed_img_resize', false ) ) {
-            $args['speed_resize'] = true;
-        }
+	function the7_setup_speed_img_resize( $args = array() ) {
+		if ( of_get_option( 'advanced-speed_img_resize', false ) ) {
+			$args['speed_resize'] = true;
+		}
 
-        return $args;
-    }
-
+		return $args;
+	}
 }

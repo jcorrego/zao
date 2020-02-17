@@ -17,6 +17,7 @@ require_once PRESSCORE_SHORTCODES_INCLUDES_DIR . '/class-the7-vc-taxonomy-autoco
 require_once PRESSCORE_SHORTCODES_INCLUDES_DIR . '/class-the7-vc-posts-autocomplete.php';
 require_once PRESSCORE_SHORTCODES_INCLUDES_DIR . '/class-the7-orphaned-shortcodes-handler.php';
 require_once PRESSCORE_SHORTCODES_INCLUDES_DIR . '/shortcodes-functions.php';
+require_once PRESSCORE_SHORTCODES_INCLUDES_DIR . '/abstract-dt-shortcode-with-inline-css.php';
 
 /**
  * Handle shortcodes outside of page content.
@@ -81,7 +82,10 @@ $presscore_shortcodes = array(
 	'soc-icons',
 	'single-soc-icon',
 	'media-gallery-masonry',
-	'media-gallery-carousel'
+	'media-gallery-carousel',
+	'icon',
+	'text-with-icon',
+	'year',
 );
 
 if ( dt_is_woocommerce_enabled() ) {

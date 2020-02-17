@@ -1,18 +1,18 @@
 <?php
 /**
  * Plugin Name: YITH WooCommerce Category Accordion
- * Plugin URI: http://yithemes.com/themes/plugins/yith-woocommerce-category-accordion/
- * Description: YITH WooCommerce Category Accordion allows you to add accordion menu in your pages.
- * Version: 1.0.18
- * Author: YITHEMES
- * Author URI: http://yithemes.com/
+ * Plugin URI: https://yithemes.com/themes/plugins/yith-woocommerce-category-accordion/
+ * Description: With <code><strong>YITH WooCommerce Category Accordion</strong></code>you can add an accordion menu to your sidebars in a few clicks to view product or post categories! <a href ="https://yithemes.com">Get more plugins for your e-commerce shop on <strong>YITH</strong></a>
+ * Version: 1.0.34
+ * Author: YITH
+ * Author URI: https://yithemes.com/
  * Text Domain: yith-woocommerce-category-accordion
  * Domain Path: /languages/
- * WC requires at least: 2.6.0
- * WC tested up to: 3.3.1-rc.1
+ * WC requires at least: 3.3.0
+ * WC tested up to: 3.9
  * @author Your Inspiration Themes
  * @package YITH WooCommerce Category Accordion
- * @version 1.0.18
+ * @version 1.0.34
  */
 
 /*  Copyright 2013  Your Inspiration Themes  (email : plugins@yithemes.com)
@@ -66,7 +66,7 @@ if ( !function_exists( 'yith_plugin_registration_hook' ) ) {
 register_activation_hook( __FILE__, 'yith_plugin_registration_hook' );
 
 if ( !defined( 'YWCCA_VERSION' ) ) {
-    define( 'YWCCA_VERSION', '1.0.18' );
+    define( 'YWCCA_VERSION', '1.0.34' );
 }
 
 if ( !defined( 'YWCCA_FREE_INIT' ) ) {

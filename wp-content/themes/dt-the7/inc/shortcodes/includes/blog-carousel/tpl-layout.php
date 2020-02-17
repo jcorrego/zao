@@ -3,15 +3,12 @@
  * Masonry blog layout template.
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $config = presscore_config();
 ?>
 
-<?php if ( presscore_post_format_supports_media_content( get_post_format() ) && ! empty( $post_media ) ) : ?>
+<?php if ( ! empty( $post_media ) ) : ?>
 
 <div class="post-thumbnail-wrap">
 	<div class="post-thumbnail">

@@ -73,7 +73,7 @@ if ( ! class_exists( 'DT_Shortcode_Button', false ) ) {
 				'button_alignment'       => 'default',
 				'smooth_scroll'          => '',
 				'el_class'               => '',
-			), $atts );
+			), $atts, 'dt_button' );
 
 			$attributes['style'] = sanitize_key( $attributes['style'] );
 			$attributes['size'] = sanitize_key( $attributes['size'] );

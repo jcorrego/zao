@@ -1,0 +1,10 @@
+2020-01-25T13:59:05+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 62af6be6013ab822048d12290508342f
+2020-01-25T14:02:13+00:00 NOTICE abandoned_cart.success :: email: sandraacevedomd@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=62af6be6013ab822048d12290508342f
+2020-01-25T14:04:15+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 62af6be6013ab822048d12290508342f
+2020-01-25T14:04:43+00:00 NOTICE abandoned_cart.success :: email: sandraacevedomd@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=62af6be6013ab822048d12290508342f
+2020-01-25T14:05:07+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 7
+2020-01-25T14:05:07+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3797
+2020-01-25T14:07:08+00:00 NOTICE order_submit.success :: addStoreOrder :: #3797 :: email: sandraacevedomd@gmail.com :: abandoned cart deleted [62af6be6013ab822048d12290508342f]
+2020-01-25T14:09:00+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3797
+2020-01-25T14:09:00+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 7
+2020-01-25T14:11:14+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3797 :: email: sandraacevedomd@gmail.com

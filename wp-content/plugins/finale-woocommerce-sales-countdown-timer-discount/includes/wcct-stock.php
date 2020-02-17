@@ -74,7 +74,7 @@ class WCCT_stock {
 	}
 
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self;
 		}
 
@@ -97,19 +97,19 @@ class WCCT_stock {
 			return $status;
 		}
 
-		if ( ! is_object( $product_obj ) && $product_obj == '' ) {
+		if ( ! is_object( $product_obj ) && '' === $product_obj ) {
 			// WC 2.6 or older
 			$my_product = $product;
 			if ( WCCT_Core()->cart->cart_product_id != 0 ) {
 				$my_product_id = WCCT_Core()->cart->cart_product_id;
 				$my_product    = WCCT_Core()->public->product_obj[ $my_product_id ];
 			} else {
-				if ( isset( $_REQUEST['add-to-cart'] ) ) {
-					$my_product_id                                     = $_REQUEST['add-to-cart'];
+				if ( isset( $_REQUEST['add-to-cart'] ) ) { // WPCS: input var ok, CSRF ok.
+					$my_product_id                                     = $_REQUEST['add-to-cart']; // WPCS: input var ok, CSRF ok.
 					$my_product                                        = wc_get_product( $my_product_id );
 					WCCT_Core()->public->product_obj[ $my_product_id ] = $my_product;
-				} elseif ( isset( $_REQUEST['product_id'] ) ) {
-					$my_product_id                                     = $_REQUEST['product_id'];
+				} elseif ( isset( $_REQUEST['product_id'] ) ) { // WPCS: input var ok, CSRF ok.
+					$my_product_id                                     = $_REQUEST['product_id']; // WPCS: input var ok, CSRF ok.
 					$my_product                                        = wc_get_product( $my_product_id );
 					WCCT_Core()->public->product_obj[ $my_product_id ] = $my_product;
 				} elseif ( is_object( $my_product ) && $my_product instanceof WC_Product ) {
@@ -121,7 +121,12 @@ class WCCT_stock {
 				}
 			}
 		} else {
-			// i.e. WC 3.0
+			/** i.e. WC 3.0 */
+			/** return if it is a bundle */
+			$product_type = $product_obj->get_type();
+			if ( 'yith_bundle' === $product_type ) {
+				return $status;
+			}
 			$my_product_id = WCCT_Core()->public->wcct_get_product_parent_id( $product_obj ); // parent id in case of variable
 			$my_product    = WCCT_Core()->public->wcct_get_product_obj( $my_product_id );
 
@@ -147,14 +152,14 @@ class WCCT_stock {
 
 		if ( false === $status ) {
 			$get_cache_instance = XL_Cache::get_instance();
-			if ( ( 'simple' == $my_product && $my_product->get_type() ) || ( $my_product && $my_product->get_type() == 'subscription' ) ) {
+			if ( ( 'simple' === $my_product && $my_product->get_type() ) || ( $my_product && $my_product->get_type() === 'subscription' ) ) {
 
 				if ( isset( $single_data['goals'] ) && is_array( $single_data['goals'] ) && count( $single_data['goals'] ) > 0 ) {
 					$goals = $single_data['goals'];
 
-					if ( $goals['type'] == 'custom' ) {
+					if ( 'custom' === $goals['type'] ) {
 
-						if ( $goals['allow_backorder'] == 'yes' ) {
+						if ( 'yes' === $goals['allow_backorder'] ) {
 							$status = true;
 						} else {
 
@@ -172,21 +177,19 @@ class WCCT_stock {
 						}
 					}
 				}
-			} elseif ( ( 'variable' == $my_product && $my_product->get_type() ) || ( 'variable-subscription' == $my_product->get_type() && $my_product ) ) {
+			} elseif ( ( 'variable' === $my_product && $my_product->get_type() ) || ( 'variable-subscription' === $my_product->get_type() && $my_product ) ) {
 				if ( isset( $single_data['goals'] ) && is_array( $single_data['goals'] ) && count( $single_data['goals'] ) > 0 ) {
 					$goals = $single_data['goals'];
 					if ( isset( $goals['start_timestamp'] ) ) {
-						if ( $goals['type'] == 'custom' ) {
+						if ( 'custom' === $goals['type'] ) {
 
-							if ( 'yes' == $goals['allow_backorder'] ) {
+							if ( 'yes' === $goals['allow_backorder'] ) {
 								$status = true;
 							} else {
 								if ( $product_obj instanceof WC_Product && $product_obj->is_type( 'variation' ) ) {
 									$wcct_campaign_event_product_stock_state = "_wcct_goaldeal_stock_{$goals['campaign_id']}_{$goals['start_timestamp']}_{$goals['end_timestamp']}";
+									$get_product_state_meta                  = $get_cache_instance->get_cache( $wcct_campaign_event_product_stock_state, 'finale' );
 
-									$wcct_campaign_event_product_stock_state = "_wcct_goaldeal_stock_{$goals['campaign_id']}_{$goals['start_timestamp']}_{$goals['end_timestamp']}";
-
-									$get_product_state_meta = $get_cache_instance->get_cache( $wcct_campaign_event_product_stock_state, 'finale' );
 									if ( false === $get_product_state_meta ) {
 										$get_product_state_meta = get_post_meta( $my_product->get_id(), $wcct_campaign_event_product_stock_state, true );
 										$get_cache_instance->set_cache( $wcct_campaign_event_product_stock_state, $get_product_state_meta, 'finale' );
@@ -226,8 +229,7 @@ class WCCT_stock {
 	 */
 	public function wcct_backorders_allowed( $status, $pid, $product = null ) {
 
-		if ( $product == null ) {
-
+		if ( null === $product ) {
 			$product = WCCT_Core()->public->wcct_get_product_obj( $pid );
 		}
 		if ( WCCT_Core()->public->wcct_restrict_for_booking_oth( $pid ) ) {
@@ -237,22 +239,22 @@ class WCCT_stock {
 		$pid         = WCCT_Core()->public->wcct_get_product_parent_id( $product );
 		$single_data = WCCT_Core()->public->get_single_campaign_pro_data( $pid );
 
-		if ( ( 'simple' == $product->get_type() ) || ( 'subscription' == $product->get_type() ) ) {
+		if ( ( 'simple' === $product->get_type() ) || ( 'subscription' === $product->get_type() ) ) {
 			if ( isset( $single_data['goals'] ) && is_array( $single_data['goals'] ) && count( $single_data['goals'] ) > 0 ) {
 				$goals = $single_data['goals'];
 
-				if ( true == $status && $goals['type'] == 'custom' ) {
+				if ( true === $status && 'custom' === $goals['type'] ) {
 
 					$status = false;
 				}
 			}
 		}
 
-		if ( ( 'variation' == $product->get_type() ) || ( 'subscription_variation' == $product->get_type() ) ) {
+		if ( ( 'variation' === $product->get_type() ) || ( 'subscription_variation' === $product->get_type() ) ) {
 			if ( isset( $single_data['goals'] ) && is_array( $single_data['goals'] ) && count( $single_data['goals'] ) > 0 ) {
 
 				$goals = $single_data['goals'];
-				if ( isset( $goals['start_timestamp'] ) && true == $status && $goals['type'] == 'custom' ) {
+				if ( isset( $goals['start_timestamp'] ) && true === $status && 'custom' === $goals['type'] ) {
 
 					$status = false;
 				}
@@ -279,26 +281,24 @@ class WCCT_stock {
 	 * @return bool
 	 */
 	public function wcct_manage_stock_qty( $qty, $product ) {
-
 		if ( WCCT_Common::$is_executing_rule ) {
 			return $qty;
 		}
-		$product_id = WCCT_Core()->public->wcct_get_product_parent_id( $product );
-
+		$product_id  = WCCT_Core()->public->wcct_get_product_parent_id( $product );
 		$single_data = WCCT_Core()->public->get_single_campaign_pro_data( $product_id );
 
 		if ( empty( $single_data ) ) {
 			return $qty;
 		}
-		$available_qty = false;
 
+		$available_qty   = false;
 		$get_goal_object = WCCT_Core()->public->wcct_get_goal_object( $single_data['goals'], $product_id );
 
 		if ( ! empty( $get_goal_object ) ) {
 			$available_qty = $get_goal_object['quantity'] - $get_goal_object['sold_out'];
 		}
 
-		if ( $available_qty !== false && $get_goal_object['type'] == 'custom' ) {
+		if ( false !== $available_qty && 'custom' === $get_goal_object['type'] ) {
 			$qty = $available_qty;
 		}
 
@@ -315,27 +315,24 @@ class WCCT_stock {
 	 * Specifically for WC 3.0 or greater
 	 */
 	public function wcct_modify_manage_stock( $bool, $product ) {
-
 		if ( WCCT_Common::$is_executing_rule ) {
 			return $bool;
 		}
 
-		$product_id = WCCT_Core()->public->wcct_get_product_parent_id( $product );
-
+		$product_id  = WCCT_Core()->public->wcct_get_product_parent_id( $product );
 		$single_data = WCCT_Core()->public->get_single_campaign_pro_data( $product_id );
 
 		if ( empty( $single_data ) ) {
 			return $bool;
 		}
-		$available_qty = false;
-
+		$available_qty   = false;
 		$get_goal_object = WCCT_Core()->public->wcct_get_goal_object( $single_data['goals'], $product_id );
 
 		if ( ! empty( $get_goal_object ) ) {
 			$available_qty = $get_goal_object['quantity'] - $get_goal_object['sold_out'];
 		}
 
-		if ( $available_qty !== false && $get_goal_object['type'] == 'custom' ) {
+		if ( false !== $available_qty && 'custom' === $get_goal_object['type'] ) {
 			$bool = true;
 		}
 
@@ -351,7 +348,7 @@ class WCCT_stock {
 	 */
 	public function wcct_maybe_save_product_stock_state( $data, $id ) {
 
-		if ( $id != '0' && isset( $data['goals'] ) && is_array( $data['goals'] ) && 'custom' == $data['goals']['type'] ) {
+		if ( $id != '0' && isset( $data['goals'] ) && is_array( $data['goals'] ) && 'custom' === $data['goals']['type'] ) {
 			$wcct_campaign_event_product_stock_state = "_wcct_goaldeal_stock_{$data['goals']['campaign_id']}_{$data['goals']['start_timestamp']}_{$data['goals']['end_timestamp']}";
 
 			$product_main_id = WCCT_Core()->public->wcct_get_product_parent_id( $id );
@@ -386,7 +383,7 @@ class WCCT_stock {
 								}
 							}
 							if ( $all_variation_state && is_array( $all_variation_state ) && count( $all_variation_state ) > 0 ) {
-								update_post_meta( $product_main_id, $wcct_campaign_event_product_stock_state, json_encode( $all_variation_state ) );
+								update_post_meta( $product_main_id, $wcct_campaign_event_product_stock_state, wp_json_encode( $all_variation_state ) );
 							}
 						}
 					}
@@ -440,13 +437,12 @@ class WCCT_stock {
 		if ( $product instanceof WC_Product && $product->is_type( 'variable' ) ) {
 			$data = WCCT_Core()->public->get_single_campaign_pro_data( $product->get_id() );
 
-			if ( isset( $data['goals'] ) && is_array( $data['goals'] ) && 'custom' == $data['goals']['type'] ) {
+			if ( isset( $data['goals'] ) && is_array( $data['goals'] ) && 'custom' === $data['goals']['type'] ) {
 				$wcct_campaign_event_product_stock_state = "_wcct_goaldeal_stock_{$data['goals']['campaign_id']}_{$data['goals']['start_timestamp']}_{$data['goals']['end_timestamp']}";
+				$product_main_id                         = $product->get_id();
+				$get_cache_instance                      = XL_Cache::get_instance();
+				$get_meta                                = $get_cache_instance->get_cache( $wcct_campaign_event_product_stock_state, 'finale' );
 
-				$product_main_id = $product->get_id();
-
-				$get_cache_instance = XL_Cache::get_instance();
-				$get_meta           = $get_cache_instance->get_cache( $wcct_campaign_event_product_stock_state, 'finale' );
 				if ( false === $get_meta ) {
 					$get_meta = get_post_meta( $product_main_id, $wcct_campaign_event_product_stock_state, true );
 					$get_cache_instance->set_cache( $wcct_campaign_event_product_stock_state, $get_meta, 'finale' );
@@ -460,13 +456,14 @@ class WCCT_stock {
 						$get_all_variations = $product->get_available_variations();
 						if ( $get_all_variations && is_array( $get_all_variations ) && count( $get_all_variations ) > 0 ) {
 							$all_variation_state = array();
+
 							foreach ( $get_all_variations as $variation ) {
 								if ( true === $variation['is_in_stock'] ) {
 									array_push( $all_variation_state, $variation['variation_id'] );
 								}
 							}
 							if ( $all_variation_state && is_array( $all_variation_state ) && count( $all_variation_state ) > 0 ) {
-								update_post_meta( $product_main_id, $wcct_campaign_event_product_stock_state, json_encode( $all_variation_state ) );
+								update_post_meta( $product_main_id, $wcct_campaign_event_product_stock_state, wp_json_encode( $all_variation_state ) );
 							}
 						}
 					}
@@ -478,7 +475,6 @@ class WCCT_stock {
 	}
 
 	public function detach_hooks_after_payment( $bool ) {
-
 		$this->detach_hooks();
 
 		return $bool;

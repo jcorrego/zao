@@ -30,7 +30,7 @@ if ( ! function_exists( 'presscore_congif_populate_albums_vars' ) ) :
 		}
 
 		if ( ! $config->get( 'display' ) ) {
-			$display = get_post_meta( $post_id, '_dt_albums_display', true );
+			$display = (array) get_post_meta( $post_id, '_dt_albums_display', true );
 			if ( ! isset( $display['terms_ids'] ) ) {
 				$display['terms_ids'] = null;
 			}
@@ -300,8 +300,8 @@ if ( ! function_exists( 'presscore_congif_populate_single_album_vars' ) ) :
 		$config->set( 'post.navigation.back_button.enabled', $show_back_button );
 
 		if ( $show_back_button ) {
-			$post_back_btn_id = get_post_meta( $post_id, "_dt_album_options_back_button", true );
-			$config->set( 'post.navigation.back_button.target_page_id', $post_back_btn_id ? $post_back_btn_id : of_get_option( 'general-album_back_button_target_page_id', 0 ) );
+			$post_back_url = get_post_meta( $post_id, '_dt_album_options_back_button', true );
+			$config->set( 'post.navigation.back_button.url', $post_back_url ? $post_back_url : of_get_option( 'general-album_back_button_url' ) );
 		}
 
 		$config->set( 'post.navigation.arrows.enabled', of_get_option( 'general-next_prev_in_album', true ) );
@@ -322,7 +322,10 @@ if ( ! function_exists( 'presscore_congif_populate_single_album_vars' ) ) :
 
 		$post_media_type = get_post_meta( $post_id, "{$prefix}type", true );
 		$config->set( 'post.media.type', $post_media_type, 'slideshow' );
-
+		$images_per_page = (int) get_post_meta( $post_id, "{$prefix}images_per_page", true );
+		$images_per_page = ! $images_per_page ? -1 : $images_per_page;
+		$images_per_page = max( -1, $images_per_page );
+		$config->set( 'post.media.images_per_page', $images_per_page, -1 );
 		switch ( $post_media_type ) {
 			case 'photo_scroller':
 				$config->set( 'header_background', 'normal' );

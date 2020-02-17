@@ -34,8 +34,8 @@ class WAD_Discount {
                 $this->rules_verified=true;
                 $this->is_applicable=true;
             }
-                
-            
+
+
             if (!$this->settings)
                 return;
 
@@ -47,6 +47,7 @@ class WAD_Discount {
             if ($list_id) {
                 $this->products_list = new WAD_Products_List($list_id);
             }
+            $this->wad_update_products_list();
         }
     }
 
@@ -56,17 +57,17 @@ class WAD_Discount {
     public function register_cpt_discount() {
 
         $labels = array(
-            'name' => __('Discount', 'wad'),
-            'singular_name' => __('Discount', 'wad'),
-            'add_new' => __('New discount', 'wad'),
-            'add_new_item' => __('New discount', 'wad'),
-            'edit_item' => __('Edit discount', 'wad'),
-            'new_item' => __('New discount', 'wad'),
-            'view_item' => __('View discount', 'wad'),
-            //        'search_items' => __('Search a group', 'wad'),
-            'not_found' => __('No discount found', 'wad'),
-            'not_found_in_trash' => __('No discount in the trash', 'wad'),
-            'menu_name' => __('Discounts', 'wad'),
+            'name' => __('Discount', 'woo-advanced-discounts'),
+            'singular_name' => __('Discount', 'woo-advanced-discounts'),
+            'add_new' => __('New discount', 'woo-advanced-discounts'),
+            'add_new_item' => __('New discount', 'woo-advanced-discounts'),
+            'edit_item' => __('Edit discount', 'woo-advanced-discounts'),
+            'new_item' => __('New discount', 'woo-advanced-discounts'),
+            'view_item' => __('View discount', 'woo-advanced-discounts'),
+            //        'search_items' => __('Search a group', 'woo-advanced-discounts'),
+            'not_found' => __('No discount found', 'woo-advanced-discounts'),
+            'not_found_in_trash' => __('No discount in the trash', 'woo-advanced-discounts'),
+            'menu_name' => __('Discounts', 'woo-advanced-discounts'),
         );
 
         $args = array(
@@ -99,7 +100,7 @@ class WAD_Discount {
         foreach ($screens as $screen) {
 
             add_meta_box(
-                    'o-discount-settings-box', __('Discount settings', 'wad'), array($this, 'get_discount_settings_page'), $screen
+                    'o-discount-settings-box', __('Discount settings', 'woo-advanced-discounts'), array($this, 'get_discount_settings_page'), $screen
             );
         }
     }
@@ -122,7 +123,7 @@ class WAD_Discount {
             jQuery(document).ready(function () {
                 if (jQuery('body').hasClass('post-type-o-discount')){
                 if (jQuery('tr.product-action-row select#products-list').val() === null ){
-                    jQuery("<p><?php _e("You haven't created a products list. You need one in order to apply a discount on multiple products. You can create one $html","wad"); ?></p>").css('color','red').insertAfter( 'tr.product-action-row select#products-list');
+                    jQuery("<p><?php _e("You haven't created a products list. You need one in order to apply a discount on multiple products. You can create one $html","woo-advanced-discounts"); ?></p>").css('color','red').insertAfter( 'tr.product-action-row select#products-list');
                 }
         }
             });
@@ -135,66 +136,76 @@ class WAD_Discount {
                 'id' => 'wad-datasource-container',
             );
             $start_date = array(
-                'title' => __('Start date', 'wad'),
+                'title' => __('Start date', 'woo-advanced-discounts'),
                 'name' => 'o-discount[start-date]',
                 'type' => 'text',
                 'class' => 'o-date',
 //                'custom_attributes' => array("required" => ""),
-                'desc' => __('Date from which the discount is applied.', 'wad'),
+                'desc' => __('Date from which the discount is applied.', 'woo-advanced-discounts'),
                 'default' => '',
             );
 
             $end_date = array(
-                'title' => __('End date', 'wad'),
+                'title' => __('End date', 'woo-advanced-discounts'),
                 'name' => 'o-discount[end-date]',
                 'type' => 'text',
                 'class' => 'o-date',
 //                'custom_attributes' => array("required" => ""),
-                'desc' => __('Date when the discount ends.', 'wad'),
+                'desc' => __('Date when the discount ends.', 'woo-advanced-discounts'),
                 'default' => '',
             );
-            
-            $action = array(
-                'title' => __('Action', 'wad'),
+
+            $discount_actions=$this->get_discounts_actions();
+            $actions_custom_attributes=array();
+            $free_version_actions=array("percentage-off-pprice", "fixed-amount-off-pprice","percentage-off-osubtotal","fixed-amount-off-osubtotal");
+            foreach ($discount_actions as $action_key=>$action)
+            {
+                if(!in_array($action_key, $free_version_actions))
+                    $actions_custom_attributes[$action_key]=array("disabled" => "disabled");
+            }
+
+            $action_label = array(
+                'title' => __('Action', 'woo-advanced-discounts'),
                 'name' => 'o-discount[action]',
                 'type' => 'select',
                 'class' => 'discount-action',
-                'desc' => __('Type of discount to apply.', 'wad'),
+                'desc' => __('Type of discount to apply.', 'woo-advanced-discounts'),
                 'default' => '',
                 'options' => $this->get_discounts_actions(),
+                'options_custom_attributes' => $actions_custom_attributes,
             );
 
             $product_lists = new WAD_Products_List(false);
 
             $products_action = array(
-                'title' => __('Products list', 'wad'),
+                'title' => __('Products list', 'woo-advanced-discounts'),
                 'id' => 'products-list',
                 'name' => 'o-discount[products-list]',
                 'type' => 'select',
                 'row_class' => 'product-action-row',
-                'desc' => __('List of products the selected action applies on', 'wad'),
+                'desc' => __('List of products the selected action applies on', 'woo-advanced-discounts'),
                 'default' => '',
                 'options' => $product_lists->get_all(),
                 'required' => true
             );
-            
+
             $group_by_product = array(
-                'title' => __('Evaluate per product', 'wad'),
+                'title' => __('Evaluate per product', 'woo-advanced-discounts'),
                 'name' => 'o-discount[calculate-per-product]',
                 'type' => 'select',
                 'row_class' => 'product-action-row',
-                'desc' => __('Run the calculations of each product in the list independantly.', 'wad') . "<br><strong style='color: red;'>Beta.</strong>",
+                'desc' => __('Run the calculations of each product in the list independantly.', 'woo-advanced-discounts') . "<br><strong style='color: red;'>Beta.</strong>",
                 'default' => 'no',
                 'options' => array("yes" => "Yes", "no" => "No"),
             );
 
             $disable_on_product_pages = array(
-                'title' => __('Disable on products and shop pages', 'wad'),
+                'title' => __('Disable on products and shop pages', 'woo-advanced-discounts'),
                 'id' => 'products-list',
                 'name' => 'o-discount[disable-on-product-pages]',
                 'type' => 'radio',
                 'row_class' => 'product-action-row',
-                'desc' => __('Disables the display of discounted prices on all pages except cart and checkout', 'wad'),
+                'desc' => __('Disables the display of discounted prices on all pages except cart and checkout', 'woo-advanced-discounts'),
                 'default' => 'no',
                 'options' => array(
                     "yes" => "Yes",
@@ -203,22 +214,22 @@ class WAD_Discount {
             );
 
             $percentage_or_fixed_amount = array(
-                'title' => __('Percentage / Fixed amount', 'wad'),
+                'title' => __('Percentage / Fixed amount', 'woo-advanced-discounts'),
                 'name' => 'o-discount[percentage-or-fixed-amount]',
                 'type' => 'number',
                 'id' => 'percentage-amount',
                 'custom_attributes' => array("step" => "any"),
                 'row_class' => 'percentage-row',
-                'desc' => __('Percentage or fixed amount to apply.', 'wad'),
+                'desc' => __('Percentage or fixed amount to apply.', 'woo-advanced-discounts'),
                 'default' => '',
                 'required' => true
             );
 
             $relationship = array(
-                'title' => __('Rules groups relationship', 'wad'),
+                'title' => __('Rules groups relationship', 'woo-advanced-discounts'),
                 'name' => 'o-discount[relationship]',
                 'type' => 'radio',
-                'desc' => __('AND: All groups rules must be verified to have the discount action applied.', 'wad') . "<br" . __('OR: AT least one group rules must be verified to have the discount action applied.', 'wad'),
+                'desc' => __('AND: All groups rules must be verified to have the discount action applied.', 'woo-advanced-discounts') . "<br" . __('OR: AT least one group rules must be verified to have the discount action applied.', 'woo-advanced-discounts'),
                 'default' => 'AND',
                 'options' => array(
                     "AND" => "AND",
@@ -227,8 +238,8 @@ class WAD_Discount {
             );
 
             $rules = array(
-                'title' => __('Rules', 'wad'),
-                'desc' => __('Allows you to define which rules should be checked in order to apply the discount. Not mandatory.', 'wad'),
+                'title' => __('Rules', 'woo-advanced-discounts'),
+                'desc' => __('Allows you to define which rules should be checked in order to apply the discount. Not mandatory.', 'woo-advanced-discounts'),
                 'name' => 'o-discount[rules]',
                 'type' => 'custom',
                 'callback' => array($this, "get_discount_rules_callback"),
@@ -241,7 +252,7 @@ class WAD_Discount {
                 $end_date,
                 $relationship,
                 $rules,
-                $action,
+                $action_label,
                 $percentage_or_fixed_amount,
                 //$group_by_product,
                 $products_action,
@@ -279,6 +290,27 @@ class WAD_Discount {
                         }
                     }
                     ?>
+                    <option value="email-domain-name" disabled><?php _e("If Customer email domain name (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="previous-order-count" disabled><?php _e("If Previous orders count (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="total-spent-on-shop" disabled><?php _e("If Total spent in shop (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="previously-ordered-products-count" disabled><?php _e("If Previously ordered products count (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="previously-ordered-products-in-list" disabled><?php _e("If Previously ordered products (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="order-subtotal-inc-taxes" disabled><?php _e("If Order subtotal (inc. taxes) (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="different-order-item-count" disabled><?php _e("If Different Order items count (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="order-products" disabled><?php _e("If Order products (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="customer-reviewed-product" disabled><?php _e("If Customer reviewed any product (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="payment-gateway" disabled><?php _e("If Payment gateway (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="billing-country" disabled><?php _e("If Customer billing country (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="billing-state" disabled><?php _e("If Billing state (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="shipping-country" disabled><?php _e("If Shipping country (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="shipping-state" disabled><?php _e("If Shipping state (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="shipping-method" disabled><?php _e("If Shipping method (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="customer-subscribed-mailchimp" disabled><?php _e("If Customer subscribed to Mailchimp list (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="customer-subscribed-sendinblue" disabled><?php _e("If Customer subscribed to a Sendinblue list (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="customer-subscribed-newsletter-plugin" disabled><?php _e("If Customer subscribed to a NewsletterPlugin list (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="customer-following-affiliation-link" disabled><?php _e("If Customer is following an affiliation link (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="customer-group" disabled><?php _e("If Customer belongs to specified groups (Pro feature)", "woo-advanced-discounts"); ?></option>
+                    <option value="shop-currency" disabled><?php _e("If shop currency (Pro feature)", "woo-advanced-discounts"); ?></option>
                 </select>
             </td>
             <td class="operator">
@@ -288,7 +320,7 @@ class WAD_Discount {
                 <?php echo $value_field; ?>
             </td>
             <td class="add">
-                <a class="wad-add-rule button" data-group='{rule-group}'><?php echo __("and", "wad"); ?></a>
+                <a class="wad-add-rule button" data-group='{rule-group}'><?php echo __("and", "woo-advanced-discounts"); ?></a>
             </td>
             <td class="remove">
                 <a class="wad-remove-rule acf-button-remove"></a>
@@ -315,7 +347,7 @@ class WAD_Discount {
         $users_select = get_wad_html_select($field_name . "[]", false, "", $users, $selected_value_arr, true, true);
 
         $text = '<input type="number" name="' . $field_name . '" value="' . $selected_value_str . '" required>';
-        
+
         $values_match = apply_filters("wad_fields_values_match", array(
             "customer-role" => $roles_select,
             "customer" => $users_select,
@@ -332,18 +364,18 @@ class WAD_Discount {
     private function get_operator_fields_match($condition = false, $selected_value = "") {
         $field_name = "o-discount[rules][{rule-group}][{rule-index}][operator]";
         $arrays_operators = array(
-            "IN" => __("IN", "wad"),
-            "NOT IN" => __("NOT IN", "wad"),
+            "IN" => __("IN", "woo-advanced-discounts"),
+            "NOT IN" => __("NOT IN", "woo-advanced-discounts"),
         );
         $arrays_operators_select = get_wad_html_select($field_name, false, "", $arrays_operators, $selected_value);
 
         $number_operators = array(
-            "<" => __("is less than", "wad"),
-            "<=" => __("is less or equal to", "wad"),
-            "==" => __("equals", "wad"),
-            ">" => __("is more than", "wad"),
-            ">=" => __("is more or equal to", "wad"),
-            "%" => __("is a multiple of", "wad"),
+            "<" => __("is less than", "woo-advanced-discounts"),
+            "<=" => __("is less or equal to", "woo-advanced-discounts"),
+            "==" => __("equals", "woo-advanced-discounts"),
+            ">" => __("is more than", "woo-advanced-discounts"),
+            ">=" => __("is more or equal to", "woo-advanced-discounts"),
+            "%" => __("is a multiple of", "woo-advanced-discounts"),
         );
         $number_operators_select = get_wad_html_select($field_name, false, "", $number_operators, $selected_value);
         $operators_match = apply_filters("wad_operators_fields_match", array(
@@ -413,7 +445,7 @@ class WAD_Discount {
             ?>
 
         </div>
-        <a class="button wad-add-group mg-top"><?php _e("Add rules group", "wad"); ?></a>
+        <a class="button wad-add-group mg-top"><?php _e("Add rules group", "woo-advanced-discounts"); ?></a>
         <?php
     }
 
@@ -427,7 +459,7 @@ class WAD_Discount {
             update_post_meta($post_id, $meta_key, $_POST[$meta_key]);
         }
     }
-    
+
     function get_cart_items($item_id = false) {
         global $woocommerce;
         return $woocommerce->cart->get_cart();
@@ -470,7 +502,7 @@ class WAD_Discount {
         $discounts = $wad_discounts;
         $to_widthdraw = 0;
         $to_widthdraw_on_taxes = 0;
-        
+
         $taxable = wc_tax_enabled();
         $prices_inclusing_taxes = get_option('woocommerce_prices_include_tax') == 'yes' ? true : false;
         if ($taxable && $prices_inclusing_taxes)
@@ -479,7 +511,7 @@ class WAD_Discount {
         foreach ($discounts["order"] as $discount_id => $discount) {
             $taxable=false;
             if ($discount->is_applicable()) {
-                
+
                 $percentage = $discount->settings["percentage-or-fixed-amount"] * 100 / $cart_total;
                 $to_widthdraw_on_taxes+=$percentage;
 
@@ -507,14 +539,14 @@ class WAD_Discount {
      * @return type
      */
     function get_cart_item_price($product_id) {
-        
+
         $product = wc_get_product($product_id);
         if (WC()->cart->tax_display_cart == 'excl') {
             $price = wc_get_price_excluding_tax($product);
         } else {
             $price = wc_get_price_including_tax($product);
         }
-        
+
         return $price;
     }
 
@@ -522,7 +554,7 @@ class WAD_Discount {
         global $woocommerce;
         global $wad_settings;
         global $wad_cart_discounts;
-        
+
         $display_individual_discounts = get_proper_value($wad_settings, "individual-cart-discounts", 1);
 
         if (!defined('WAD_INITIALIZED') || (is_admin() && !is_ajax()))
@@ -534,7 +566,7 @@ class WAD_Discount {
 
         if ($discount_ht) {
             if (!$display_individual_discounts)
-                $woocommerce->cart->add_fee(__('Reductions on cart', 'wad'), $discount_ht, $taxable, '');
+                $woocommerce->cart->add_fee(__('Reductions on cart', 'woo-advanced-discounts'), $discount_ht, $taxable, '');
             $wad_cart_discounts = $discount_ttc;
         }
     }
@@ -594,10 +626,10 @@ class WAD_Discount {
 
         //We check if the condition is IN or NOT IN the value
 //        $array_operators=array("IN", "NOT IN");
-        if ($rule["condition"] == "customer-role" || $rule["condition"] == "customer") {
+        if ( $rule["condition"] == "customer") {
 //        if(in_array($rule["operator"], $array_operators))
             if (!is_array($value)) {
-                $error_msg = __("Discount", "wad") . " #$this->id: " . __("Rule ", "wad") . $rule["condition"] . __(" requires at least one parameter selected in the values", "wad");
+                $error_msg = __("Discount", "woo-advanced-discounts") . " #$this->id: " . __("Rule ", "woo-advanced-discounts") . $rule["condition"] . __(" requires at least one parameter selected in the values", "woo-advanced-discounts");
                 echo $error_msg . "<br>";
                 $is_valid = false;
             } else {
@@ -606,6 +638,14 @@ class WAD_Discount {
                     $is_valid = (!$is_valid);
                 }
             }
+
+        } else if($rule["condition"] == "customer-role") {
+            if(is_array($condition))
+                $is_valid = array_intersect($condition, $value);
+            else
+                $is_valid = in_array($condition, $value);
+            if ($rule["operator"] == "NOT IN")
+                $is_valid = (!$is_valid);
             //Checks if the a products is in a list
         } else {
             $operator = isset($rule["operator"])?$rule["operator"]:"";
@@ -639,7 +679,7 @@ class WAD_Discount {
                 $evaluable_condition = $wad_cart_total_without_taxes;
                 break;
             case "order-item-count":
-                $evaluable_condition = wad_get_cart_products_count(); 
+                $evaluable_condition = wad_get_cart_products_count();
                 break;
             default :
                 $evaluable_condition = apply_filters("wad_get_evaluable_condition", false, $rule, $product_id); //false;
@@ -672,13 +712,13 @@ class WAD_Discount {
                 if ($this->settings["relationship"] == "OR" && $is_valid)
                     break;
             }
-            
+
             if($this->evaluable_per_product==FALSE)
             {
                 $this->rules_verified=true;
                 $this->is_applicable=$is_valid;
             }
-            
+
         }
         else
             $is_valid=  $this->is_applicable;
@@ -687,19 +727,30 @@ class WAD_Discount {
 
     function get_discounts_conditions() {
         return apply_filters('wad_get_discounts_conditions', array(
-            "customer-role" => __("If Customer role", "wad"),
-            "customer" => __("If Customer", "wad"),
-            "order-subtotal" => __("If Order subtotal", "wad"),
-            "order-item-count" => __("If Order items count", "wad"),
+            "customer-role" => __("If Customer role", "woo-advanced-discounts"),
+            "customer" => __("If Customer", "woo-advanced-discounts"),
+            "order-subtotal" => __("If Order subtotal", "woo-advanced-discounts"),
+            "order-item-count" => __("If Order items count", "woo-advanced-discounts"),
         ));
     }
 
     function get_discounts_actions() {
         return array(
-            "percentage-off-pprice" => __("Percentage off product price", "wad"),
-            "fixed-amount-off-pprice" => __("Fixed amount off product price", "wad"),
-            "percentage-off-osubtotal" => __("Percentage off order subtotal", "wad"),
-            "fixed-amount-off-osubtotal" => __("Fixed amount off order subtotal", "wad"),
+            "percentage-off-pprice" => __("Percentage off product price", "woo-advanced-discounts"),
+            "fixed-amount-off-pprice" => __("Fixed amount off product price", "woo-advanced-discounts"),
+            "percentage-off-osubtotal" => __("Percentage off order subtotal", "woo-advanced-discounts"),
+            "fixed-amount-off-osubtotal" => __("Fixed amount off order subtotal", "woo-advanced-discounts"),
+            "fixed-pprice" => __("Fixed product price (Pro feature)", "woo-advanced-discounts"),
+            "percentage-off-cprice" => __("Percentage off cheapest product price in cart (Pro feature)", "woo-advanced-discounts"),
+            "fixed-amount-off-cprice" => __("Fixed amount off cheapest product price in cart (Pro feature)", "woo-advanced-discounts"),
+            "percentage-off-lsubtotal" => __("Percentage off product with lowest subtotal in cart (Pro feature)", "woo-advanced-discounts"),
+            "fixed-amount-off-lsubtotal" => __("Fixed amount off product with lowest subtotal in cart (Pro feature)", "woo-advanced-discounts"),
+            "percentage-off-osubtotal-inc-taxes" => __("Percentage off order subtotal (inc. taxes) (Pro feature)", "woo-advanced-discounts"),
+            "fixed-amount-off-osubtotal-inc-taxes" => __("Fixed amount off order subtotal (inc. taxes) (Pro feature)", "woo-advanced-discounts"),
+            "percentage-off-shipping-fee" => __("Percentage off shipping fees (Pro feature)", "woo-advanced-discounts"),
+            "fixed-amount-off-shipping-fee" => __("Fixed amount off shipping fees (Pro feature)", "woo-advanced-discounts"),
+            "fixed-shipping-fee" => __("Fixed shipping fees (Pro feature)", "woo-advanced-discounts"),
+            "free-gift" => __("Free gift (Pro feature)", "woo-advanced-discounts"),
         );
     }
 
@@ -717,18 +768,15 @@ class WAD_Discount {
 
         $pid = wad_get_product_id_to_use($product);
 
+        global $previous_value;
         if (empty($sale_price))
         {
             global $wad_ignore_product_prices_calculations;
             $previous_value=$wad_ignore_product_prices_calculations;
             $wad_ignore_product_prices_calculations=TRUE;
-            $regular_price = $product->get_regular_price();
-            $sale_price= $regular_price;
-            $wad_ignore_product_prices_calculations=$previous_value;
         }
 
         foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
-            $list_products = $discount_obj->products_list->get_products();
             $disable_on_products_pages = get_proper_value($discount_obj->settings, "disable-on-product-pages", "no");
             //Even If the discount is disabled on the shop pages, we force it to be enabled in the minicart even if this minicart is on the shop pages
             if($disable_on_products_pages && did_action('woocommerce_before_mini_cart_contents') && !did_action('woocommerce_after_mini_cart'))
@@ -736,22 +784,28 @@ class WAD_Discount {
 //            if ($disable_on_products_pages == "yes" && (is_singular("product") || is_shop() || is_product_category() || is_front_page()))
             if($disable_on_products_pages == "yes" && (!is_cart() && !is_checkout()))
                 continue;
-            if ($discount_obj->is_applicable($pid) && is_array($list_products) && in_array($pid, $list_products)) {
-                $sale_price = floatval($sale_price) - $discount_obj->get_discount_amount(floatval($sale_price));
-                //We save the discount in the session to use it later when completing the payment
-                if (!in_array($discount_id, $_SESSION["active_discounts"]))
-                    array_push($_SESSION["active_discounts"], $discount_id);
+            if ( $discount_obj->is_applicable( $pid ) ) {
+                $list_products = $discount_obj->products_list->get_products();
+                if( is_array( $list_products ) && in_array( $pid, $list_products ) ) {
+                    $sale_price = floatval( $sale_price ) - $discount_obj->get_discount_amount(floatval( $sale_price ) );
+                    //We save the discount in the session to use it later when completing the payment
+                    if ( ! in_array( $discount_id, $_SESSION["active_discounts"] ) )
+                        array_push( $_SESSION["active_discounts"], $discount_id );
+                }
             }
+        }
+        
+        if ( is_bool($previous_value) ){
+            $wad_ignore_product_prices_calculations=$previous_value;
         }
 
         //We check if there is a quantity pricing in order to apply that discount in the cart or checkout pages
-        if ( !is_product() && !is_shop() ) {
+        if (is_cart() || wad_is_checkout()) {
             $sale_price = $this->apply_quantity_based_discount_if_needed($product, $sale_price);
             // If product's sale price changed, we must update the product too,
             // so that other parties can access it
             $product->sale_price = $sale_price;
-         }
-        $product->sale_price = $sale_price;
+        }
         return $sale_price;
     }
 
@@ -767,17 +821,17 @@ class WAD_Discount {
 
         $pid = wad_get_product_id_to_use($product);
 
-        foreach ($wad_discounts["product"] as $discount_id => $discount_obj) {
+        foreach ( $wad_discounts['product'] as $discount_id => $discount_obj ) {
             $list_products = $discount_obj->products_list->get_products();
-            $disable_on_products_pages = get_proper_value($discount_obj->settings, "disable-on-product-pages", "no");
-            if ($disable_on_products_pages == "yes" && (is_singular("product") || is_shop() || is_product_category() || is_front_page()))
+            $disable_on_products_pages = get_proper_value( $discount_obj->settings, 'disable-on-product-pages', 'no' );
+            if ($disable_on_products_pages == 'yes' && (is_singular('product') || is_shop() || is_product_category() || is_front_page()))
                 continue;
-            if ($discount_obj->is_applicable($pid) && in_array($pid, $list_products)) {
-                $regular_price-=$discount_obj->get_discount_amount($regular_price);
+            if ( $discount_obj->is_applicable( $pid ) && in_array( $pid, $list_products ) ) {
+                $regular_price -= $discount_obj->get_discount_amount( $regular_price );
 
                 //We save the discount in the session to use it later when completing the payment
-                if (!in_array($discount_id, $_SESSION["active_discounts"]) && wad_is_checkout()) {
-                    array_push($_SESSION["active_discounts"], $discount_id);
+                if (!in_array( $discount_id, $_SESSION['active_discounts'] ) && wad_is_checkout() ) {
+                    array_push( $_SESSION['active_discounts'], $discount_id );
                 }
             }
         }
@@ -797,9 +851,9 @@ class WAD_Discount {
         //We check if there is a quantity based discount for this product
         $product_type=$product->get_type();
         $id_to_check = $product->get_id();
-        
-        
-        
+
+
+
         if($product_type=="variation")
         {
             $parent_product=$product->get_parent_id();
@@ -807,14 +861,14 @@ class WAD_Discount {
         }
         else
         {
-            $quantity_pricing = get_post_meta($id_to_check, "o-discount", true);            
+            $quantity_pricing = get_post_meta($id_to_check, "o-discount", true);
         }
 
-        
+
         $products_qties = $this->get_cart_item_quantities();
         $rules_type = get_proper_value($quantity_pricing, "rules-type", "intervals");
         $original_normal_price = $normal_price;
-        
+
         if (!isset($products_qties[$id_to_check]) || empty($quantity_pricing) || !isset($quantity_pricing["enable"]))
         {
             return $normal_price;
@@ -857,7 +911,7 @@ class WAD_Discount {
         }
         return $normal_price;
     }
-    
+
     function add_discount_desc_to_products_names($product_name, $cart_item, $cart_item_key) {
         global $wad_discounts;
         foreach ($wad_discounts["order"] as $discount_id => $discount_obj) {
@@ -869,9 +923,9 @@ class WAD_Discount {
                 if (in_array($cart_item["product_id"], $list_products)) {
                     $nb_gifts = 1;
                     if ($cart_item["quantity"] == 1)
-                        $msg = __("Free gift", "wad");
+                        $msg = __("Free gift", "woo-advanced-discounts");
                     else
-                        $msg = $nb_gifts . __(" offered", "wad");
+                        $msg = $nb_gifts . __(" offered", "woo-advanced-discounts");
                     $product_name.="<br> $msg";
                 }
             }
@@ -897,9 +951,9 @@ class WAD_Discount {
      * @return array
      */
     function get_columns($defaults) {
-        $defaults['wad_start_date'] = __('Start Date', 'wad');
-        $defaults['wad_end_date'] = __('End Date', 'wad');
-        $defaults['wad_active'] = __('Active', 'wad');
+        $defaults['wad_start_date'] = __('Start Date', 'woo-advanced-discounts');
+        $defaults['wad_end_date'] = __('End Date', 'woo-advanced-discounts');
+        $defaults['wad_active'] = __('Active', 'woo-advanced-discounts');
         return $defaults;
     }
 
@@ -951,7 +1005,7 @@ class WAD_Discount {
             return;
 
         $tabs['wad_quantity_pricing'] = array(
-            'label' => __('Quantity Based Pricing', 'wad'),
+            'label' => __('Quantity Based Pricing', 'woo-advanced-discounts'),
             'target' => 'wad_quantity_pricing_data',
             'class' => array(),
         );
@@ -960,7 +1014,7 @@ class WAD_Discount {
 
     function get_product_tab_label_old() {
         ?>
-        <li class="wad_quantity_pricing"><a href="#wad_quantity_pricing_data"><?php _e('Quantity Based Pricing', 'wad'); ?></a></li>
+        <li class="wad_quantity_pricing"><a href="#wad_quantity_pricing_data"><?php _e('Quantity Based Pricing', 'woo-advanced-discounts'); ?></a></li>
         <?php
     }
 
@@ -971,54 +1025,54 @@ class WAD_Discount {
         );
 
         $discount_enabled = array(
-            'title' => __('Enabled', 'wad'),
+            'title' => __('Enabled', 'woo-advanced-discounts'),
             'name' => 'o-discount[enable]',
             'type' => 'checkbox',
             'value' => 1,
-            'desc' => __('Enable/Disable this feature', 'wad'),
+            'desc' => __('Enable/Disable this feature', 'woo-advanced-discounts'),
             'default' => 0
         );
 
         $discount_type = array(
-            'title' => __('Discount type', 'wad'),
+            'title' => __('Discount type', 'woo-advanced-discounts'),
             'name' => 'o-discount[type]',
             'type' => 'radio',
             'options' => array(
-                "percentage" => __("Percentage off product price", "wad"),
-                "fixed" => __("Fixed amount off product price", "wad"),
+                "percentage" => __("Percentage off product price", "woo-advanced-discounts"),
+                "fixed" => __("Fixed amount off product price", "woo-advanced-discounts"),
             ),
             'default' => 'percentage',
-            'desc' => __('Apply a percentage or a fixed amount discount', 'wad'),
+            'desc' => __('Apply a percentage or a fixed amount discount', 'woo-advanced-discounts'),
         );
 
         $rules_types = array(
-            'title' => __('Rules type', 'wad'),
+            'title' => __('Rules type', 'woo-advanced-discounts'),
             'name' => 'o-discount[rules-type]',
             'type' => 'radio',
             'options' => array(
-                "intervals" => __("Intervals", "wad"),
-                "steps" => __("Steps", "wad"),
+                "intervals" => __("Intervals", "woo-advanced-discounts"),
+                "steps" => __("Steps", "woo-advanced-discounts"),
             ),
             'default' => 'intervals',
-            'desc' => __('If Intervals, the intervals rules will be used.<br>If Steps, the steps rules will be used.', 'wad'),
+            'desc' => __('If Intervals, the intervals rules will be used.<br>If Steps, the steps rules will be used.', 'woo-advanced-discounts'),
         );
 
         $min = array(
-            'title' => __('Min', 'wad'),
+            'title' => __('Min', 'woo-advanced-discounts'),
             'name' => 'min',
             'type' => 'number',
             'default' => '',
         );
 
         $max = array(
-            'title' => __('Max', 'wad'),
+            'title' => __('Max', 'woo-advanced-discounts'),
             'name' => 'max',
             'type' => 'number',
             'default' => '',
         );
 
         $discount = array(
-            'title' => __('Discount', 'wad'),
+            'title' => __('Discount', 'woo-advanced-discounts'),
             'name' => 'discount',
             'type' => 'number',
             'custom_attributes' => array("step" => "any"),
@@ -1026,8 +1080,8 @@ class WAD_Discount {
         );
 
         $discount_rules = array(
-            'title' => __('Intervals rules', 'wad'),
-            'desc' => __('If quantity ordered between Min and Max, then the discount specified will be applied. <br>Leave Min or Max empty for any value (joker).', 'wad'),
+            'title' => __('Intervals rules', 'woo-advanced-discounts'),
+            'desc' => __('If quantity ordered between Min and Max, then the discount specified will be applied. <br>Leave Min or Max empty for any value (joker).', 'woo-advanced-discounts'),
             'name' => 'o-discount[rules]',
             'type' => 'repeatable-fields',
             'id' => 'intervals_rules',
@@ -1035,15 +1089,15 @@ class WAD_Discount {
         );
 
         $every = array(
-            'title' => __('Every X items', 'wad'),
+            'title' => __('Every X items', 'woo-advanced-discounts'),
             'name' => 'every',
             'type' => 'number',
             'default' => '',
         );
 
         $discount_rules_steps = array(
-            'title' => __('Steps Rules', 'wad'),
-            'desc' => __('If quantity ordered is a multiple of the step, then the discount specified will be applied.', 'wad'),
+            'title' => __('Steps Rules', 'woo-advanced-discounts'),
+            'desc' => __('If quantity ordered is a multiple of the step, then the discount specified will be applied.', 'woo-advanced-discounts'),
             'name' => 'o-discount[rules-by-step]',
             'type' => 'repeatable-fields',
             'id' => 'steps_rules',
@@ -1080,12 +1134,12 @@ class WAD_Discount {
         $product_obj = wc_get_product($product_id);
         $quantity_pricing = get_post_meta($product_id, "o-discount", true);
         $rules_type = get_proper_value($quantity_pricing, "rules-type", "intervals");
-        
+
         ob_start();
 
         if (isset($quantity_pricing["enable"]) && (isset($quantity_pricing["rules"]) || isset($quantity_pricing["rules-by-step"]))) {
             ?>
-            <h3><?php _e("Quantity based pricing table", "wad"); ?></h3>
+            <h3><?php _e("Quantity based pricing table", "woo-advanced-discounts"); ?></h3>
 
             <?php
             if ($rules_type == "intervals") {
@@ -1125,8 +1179,8 @@ class WAD_Discount {
         <table class="wad-qty-pricing-table" data-id="<?php echo $product_id; ?>" style="<?php echo $style; ?>">
             <thead>
                 <tr>
-                    <th><?php _e("Every multiple of", "wad"); ?></th>
-                    <th><?php _e("Unit Price", "wad"); ?></th>
+                    <th><?php _e("Every multiple of", "woo-advanced-discounts"); ?></th>
+                    <th><?php _e("Unit Price", "woo-advanced-discounts"); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -1158,9 +1212,9 @@ class WAD_Discount {
         <table class="wad-qty-pricing-table" data-id="<?php echo $product_id; ?>" style="<?php echo $style; ?>">
             <thead>
                 <tr>
-                    <th><?php _e("Min", "wad"); ?></th>
-                    <th><?php _e("Max", "wad"); ?></th>
-                    <th><?php _e("Unit Price", "wad"); ?></th>
+                    <th><?php _e("Min", "woo-advanced-discounts"); ?></th>
+                    <th><?php _e("Max", "woo-advanced-discounts"); ?></th>
+                    <th><?php _e("Unit Price", "woo-advanced-discounts"); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -1175,7 +1229,7 @@ class WAD_Discount {
                     ?>
                     <tr>
                         <td><?php echo $rule["min"]; ?></td>
-                        <td><?php if(empty($rule["max"])) _e('And more.', 'wad'); else echo $rule["max"]; ?></td>
+                        <td><?php if(empty($rule["max"])) _e('And more.', 'woo-advanced-discounts'); else echo $rule["max"]; ?></td>
                         <td><?php echo wc_price($price); ?></td>
                     </tr>
                     <?php
@@ -1189,11 +1243,14 @@ class WAD_Discount {
     function get_cart_item_quantities() {
         global $woocommerce;
         $item_qties = array();
-        foreach ($woocommerce->cart->cart_contents as $cart_item) {
-            if (!empty($cart_item["variation_id"]))
-                $item_qties[$cart_item["variation_id"]] = $cart_item["quantity"];
-            else
-                $item_qties[$cart_item["product_id"]] = $cart_item["quantity"];
+        if(isset($woocommerce->cart->cart_contents) && is_array( $woocommerce->cart->cart_contents))
+        {
+            foreach ($woocommerce->cart->cart_contents as $cart_item) {
+                if (!empty($cart_item["variation_id"]))
+                    $item_qties[$cart_item["variation_id"]] = $cart_item["quantity"];
+                else
+                    $item_qties[$cart_item["product_id"]] = $cart_item["quantity"];
+            }
         }
         return $item_qties;
     }
@@ -1227,26 +1284,48 @@ class WAD_Discount {
     function get_cart_subtotal($subtotal, $compound, $all){
         $n_subtotal = 0;
         $items = WC()->cart->get_cart_contents();
-        if (!is_cart() && !is_checkout()){
+        if ( !is_cart() && !wad_is_checkout() ){
             foreach($items as $item => $values) {
-                $price = $this->get_cart_item_price($values['product_id']);
-                //Quantity based pricing have already applied on get_sale_price
-                //$price = $this->apply_quantity_based_discount_if_needed($values['data'], $price);
+                $_product_obj = $values['data'];
+                $product_id = $values['product_id'];
+                if ("variation" == $_product_obj->get_type()){
+                    $product_id = $values['variation_id'];
+                }
+                $price=$_product_obj->get_price();
+
                 $quantity = $values['quantity'];
                 $n_subtotal += $price * $quantity;
             }
             $subtotal = wc_price($n_subtotal);
         }
-        
         return $subtotal;
+    }
+
+    function update_items_prices(){
+        foreach(WC()->cart->get_cart() as $cart_item_key => $cart_item){
+           $product_data = $cart_item['data'];
+           $regular_price = $product_data->get_regular_price();
+           $sale_price = $product_data->get_sale_price();
+           if(!empty($sale_price) && $sale_price<$regular_price)
+             $product_price = $sale_price;
+           else
+             $product_price = $product_data->get_price();
+           $sale_price = $this->apply_quantity_based_discount_if_needed($product_data,$product_price);
+           $product_data->set_price($sale_price);
+        }
+    }
+    
+    public function wad_update_products_list() {
+        global $wad_last_products_fetch;
+        if(!$wad_last_products_fetch)
+            $wad_last_products_fetch = wad_get_cart_products ();
     }
 
     public function get_loop_data($wp_query) {
         global $wad_last_products_fetch;
-        
+
         if(empty($wp_query))
             global $wp_query;
-        //var_dump($wp_query);
         if (is_cart() || is_checkout()) {
             $cart_products = wad_get_cart_products();
             if ($cart_products)
@@ -1256,7 +1335,7 @@ class WAD_Discount {
             if (isset($wp_query->query["post_type"]))
                 $query_post_types = $wp_query->query["post_type"];
             else
-                $query_post_types = array("post");
+                $query_post_types = array("product");
             if (
                     !empty($query_post_types) && (
                     (is_array($query_post_types) && in_array("product", $query_post_types))
@@ -1277,7 +1356,7 @@ class WAD_Discount {
         global $wad_last_products_fetch;
         $wad_last_products_fetch = wad_get_cart_products();
     }
-    
+
     function prepare_related_products_loop_data($template_name, $template_path, $located, $args)
     {
         if($template_name=="single-product/related.php")
@@ -1286,21 +1365,23 @@ class WAD_Discount {
             extract( $args );
             $wad_last_products_fetch = array_map(function($o){ return $o->get_id();}, $related_products);
         }
-        
+
     }
-    
+
     function wad_shortcode_products_pages($args){
         global $wad_last_products_fetch;
-        
+
         $related_products = get_posts($args);
         $wad_last_products_fetch = array_map(function($o){ return $o->ID;}, $related_products);
-        
+
         return $args;
     }
-    
+
     function update_product_lists(){
         global $wad_last_products_fetch;
         $wad_last_products_fetch = wad_get_cart_products();
     }
+
+
 
 }

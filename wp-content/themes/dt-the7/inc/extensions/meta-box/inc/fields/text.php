@@ -17,13 +17,24 @@ if ( ! class_exists( 'THE7_RWMB_Text_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
+			$attributes = array();
+
+			if ( $field['datalist'] ) {
+				$attributes[] = "list='{$field['datalist']['id']}'";
+			}
+
+			if ( isset( $field['placeholder'] ) ) {
+				$attributes[] = sprintf( 'placeholder="%s"', esc_attr( $field['placeholder'] ) );
+			}
+
 			return sprintf(
-				'<input type="text" class="the7-mb-text" name="%s" id="%s" value="%s" size="%s" %s/>%s',
+				'<input type="text" class="the7-mb-text %s" name="%s" id="%s" value="%s" size="%s" %s/>%s',
+				$field['class'],
 				$field['field_name'],
 				$field['id'],
 				$meta,
 				$field['size'],
-				!$field['datalist'] ?  '' : "list='{$field['datalist']['id']}'",
+				implode( ' ', $attributes ),
 				self::datalist_html($field)
 			);
 		}
@@ -39,7 +50,8 @@ if ( ! class_exists( 'THE7_RWMB_Text_Field' ) )
 		{
 			$field = wp_parse_args( $field, array(
 				'size' => 30,
-				'datalist' => false
+				'datalist' => false,
+				'class' => '',
 			) );
 			return $field;
 		}

@@ -5,7 +5,7 @@
 		position: relative;
 		.flex-display(@display: flex);
 		margin-top: 0;
-		.box-sizing (border-box);
+		box-sizing: border-box;
 	}
 		//.top-bar:before,
 		.top-bar:after,
@@ -26,7 +26,7 @@
 		}
 		.top-bar:after {
 			height: 1px;
-			.transparent .top-bar-line-hide& {
+			.transparent .masthead:not(#phantom):not(.sticky-on):not(.sticky-mobile-on):not(.sticky-top-line-on) .top-bar-line-hide& {
 				display: none;
 			}
 		}

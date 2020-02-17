@@ -840,6 +840,12 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 				$extra         = array();
 				$extra['slug'] = $slug; // Needed for potentially renaming of directory name.
 				$source        = $this->get_download_url( $slug );
+
+				// Add requested plugin version.
+				if ( isset( $_GET['ver'] ) && $this->plugin_has_multiple_versions( $slug ) ) {
+					$source = $this->add_plugin_version_query_arg( $source, $slug, wp_unslash( $_GET['ver'] ) );
+				}
+
 				$api           = ( 'repo' === $this->plugins[ $slug ]['source_type'] ) ? $this->get_plugins_api( $slug ) : null;
 				$api           = ( false !== $api ) ? $api : null;
 
@@ -880,6 +886,7 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 				// Perform the action and install the plugin from the $source urldecode().
 				add_filter( 'upgrader_source_selection', array( $this, 'maybe_adjust_source_dir' ), 1, 3 );
 
+				$plugin_is_installed = false;
 				if ( 'update' === $install_type ) {
 					// Inject our info into the update transient.
 					$to_inject                    = array( $slug => $this->plugins[ $slug ] );
@@ -889,6 +896,7 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 					$upgrader->upgrade( $this->plugins[ $slug ]['file_path'] );
 				} else {
 					$upgrader->install( $source );
+					$plugin_is_installed = true;
 				}
 
 				remove_filter( 'upgrader_source_selection', array( $this, 'maybe_adjust_source_dir' ), 1 );
@@ -898,7 +906,7 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 
 				// Only activate plugins if the config option is set to true and the plugin isn't
 				// already active (upgrade).
-				if ( $this->is_automatic && ! $this->is_plugin_active( $slug ) ) {
+				if ( $this->is_automatic && $plugin_is_installed ) {
 					$plugin_activate = $upgrader->plugin_info(); // Grab the plugin info from the Plugin_Upgrader method.
 					if ( false === $this->activate_single_plugin( $plugin_activate, $slug, true ) ) {
 						return true; // Finish execution of the function early as we encountered an error.
@@ -1384,7 +1392,7 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 			$plugin['slug'] = $this->sanitize_key( $plugin['slug'] );
 
 			// Forgive users for using string versions of booleans or floats for version number.
-			$plugin['version']            = (string) $plugin['version'];
+			$plugin['version']            = is_array( $plugin['version'] ) ? array_map( 'strval', $plugin['version'] ) : (string) $plugin['version'];
 			$plugin['source']             = empty( $plugin['source'] ) ? 'repo' : $plugin['source'];
 			$plugin['required']           = TGMPA_Utils::validate_bool( $plugin['required'] );
 			$plugin['force_activation']   = TGMPA_Utils::validate_bool( $plugin['force_activation'] );
@@ -1912,9 +1920,51 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 		 */
 		public function does_plugin_require_update( $slug ) {
 			$installed_version = $this->get_installed_version( $slug );
-			$minimum_version   = $this->plugins[ $slug ]['version'];
+			$required_version  = $this->get_plugin_minimum_version( $slug );
 
-			return version_compare( $minimum_version, $installed_version, '>' );
+			return version_compare( $required_version, $installed_version, '>' );
+		}
+
+		/**
+		 * Return true if plugin have cross version update.
+		 *
+		 * @param string $slug Plugin slug.
+		 *
+		 * @return bool
+		 */
+		public function does_plugin_have_cross_version_update( $slug ) {
+			if ( ! $this->plugin_has_multiple_versions( $slug ) ) {
+				return false;
+			}
+
+			$installed_version = $this->get_installed_version( $slug );
+			$versions          = $this->get_plugin_versions( $slug );
+			array_pop( $versions );
+			foreach ( $versions as $ver ) {
+				if ( version_compare( $installed_version, $ver, '<=' ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * Add plugin version query arg if version is valid.
+		 *
+		 * @param string $url Plugin download url.
+		 * @param string $slug Plugin slug.
+		 * @param string $version Plugin version to download.
+		 *
+		 * @return string
+		 */
+		public function add_plugin_version_query_arg( $url, $slug, $version ) {
+			$plugin_versions = $this->get_plugin_versions( $slug );
+			if ( in_array( $version, $plugin_versions, true ) ) {
+				$url = add_query_arg( 'ver', rawurlencode( $version ), $url );
+			}
+
+			return $url;
 		}
 
 		/**
@@ -1942,6 +1992,89 @@ if ( ! class_exists( 'The7_TGM_Plugin_Activation' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Return registered plugin version.
+		 *
+		 * @param string $slug Plugin slug.
+		 *
+		 * @return string
+		 */
+		public function get_plugin_minimum_version( $slug ) {
+			if ( ! $this->plugin_has_multiple_versions( $slug ) ) {
+				return $this->plugins[ $slug ]['version'];
+			}
+
+			$versions          = $this->get_plugin_versions( $slug );
+			$installed_version = $this->get_installed_version( $slug );
+
+			if ( $installed_version ) {
+				foreach ( $versions as $ver ) {
+					if ( version_compare( $ver, $installed_version, '>=' ) ) {
+						return $ver;
+					}
+				}
+			}
+
+			return $versions[0];
+		}
+
+		/**
+		 * Return latest plugin version.
+		 *
+		 * @param string $slug Plugin slug.
+		 *
+		 * @return string
+		 */
+		public function get_plugin_latest_version( $slug ) {
+			if ( ! $this->plugin_has_multiple_versions( $slug ) ) {
+				return $this->plugins[ $slug ]['version'];
+			}
+
+			$versions = $this->get_plugin_versions( $slug );
+
+			return end( $versions );
+		}
+
+		/**
+		 * Return recommended plugin version.
+		 *
+		 * @param string $slug Plugins slug.
+		 *
+		 * @return string
+		 */
+		public function get_plugin_recommended_version( $slug ) {
+			return $this->plugins[ $slug ]['version'];
+		}
+
+		/**
+		 * Return all available plugin versions.
+		 *
+		 * @param string $slug Plugin slug.
+		 *
+		 * @return array
+		 */
+		public function get_plugin_versions( $slug ) {
+			$versions = array();
+			if ( isset( $this->plugins[ $slug ]['available_versions'] ) ) {
+				$versions = array_values( (array) $this->plugins[ $slug ]['available_versions'] );
+				sort( $versions );
+				reset( $versions );
+			}
+
+			return $versions;
+		}
+
+		/**
+		 * Return true if multiple plugin versions available.
+		 *
+		 * @param string $slug Plugin slug.
+		 *
+		 * @return bool
+		 */
+		public function plugin_has_multiple_versions( $slug ) {
+			return ! empty( $this->plugins[ $slug ]['available_versions'] );
 		}
 
 		/**
@@ -2178,7 +2311,7 @@ if ( ! class_exists( 'The7_TGMPA_List_Table' ) ) {
 		 *
 		 * @since 2.5.0
 		 *
-		 * @var object
+		 * @var The7_TGM_Plugin_Activation
 		 */
 		protected $tgmpa;
 
@@ -2586,16 +2719,38 @@ if ( ! class_exists( 'The7_TGMPA_List_Table' ) ) {
 			}
 
 			if ( ! empty( $item['available_version'] ) ) {
-				$color = '';
-				if ( ! empty( $item['minimum_version'] ) && version_compare( $item['available_version'], $item['minimum_version'], '>=' ) ) {
-					$color = ' color: #71C671; font-weight: bold;';
+				$plugin_has_multiple_versions = $this->tgmpa->plugin_has_multiple_versions( $item['slug'] );
+				if ( $plugin_has_multiple_versions && ! $this->tgmpa->is_plugin_installed( $item['slug'] ) ) {
+					$versions            = '';
+					$recommended_version = $this->tgmpa->get_plugin_recommended_version( $item['slug'] );
+					foreach ( $this->tgmpa->get_plugin_versions( $item['slug'] ) as $version ) {
+						$versions .= sprintf(
+							'<option value="%1$s" %2$s>%3$s</option>',
+							esc_attr( $version ),
+							selected( $recommended_version, $version, false ),
+							esc_html( $version )
+						);
+					}
+					$versions = '<select name="plugin_version[' . esc_attr( $item['slug'] ) . ']" style="min-width: 32px; text-align: right; float: right;">' . $versions . '</select>';
+					$output[] = sprintf( '<p><label>' . __( 'Available version:', 'tgmpa' ) . '%1$s</label></p>', $versions );
+				} else {
+					$color = '';
+					if ( ! empty( $item['minimum_version'] ) && version_compare( $item['available_version'], $item['minimum_version'], '>=' ) ) {
+						$color = ' color: #71C671; font-weight: bold;';
+					}
+					$available_version = $item['available_version'];
+					if ( $plugin_has_multiple_versions ) {
+						$available_version = $this->tgmpa->get_plugin_minimum_version( $item['slug'] );
+					}
+					$output[] = sprintf(
+						'<p><span style="min-width: 32px; text-align: right; float: right;%1$s">%2$s</span>' . __(
+							'Available version:',
+							'tgmpa'
+						) . '</p>',
+						$color,
+						$available_version
+					);
 				}
-
-				$output[] = sprintf(
-					'<p><span style="min-width: 32px; text-align: right; float: right;%1$s">%2$s</span>' . __( 'Available version:', 'tgmpa' ) . '</p>',
-					$color,
-					$item['available_version']
-				);
 			}
 
 			if ( empty( $output ) ) {

@@ -26,11 +26,7 @@ class DT_Shortcode_FancyVideoVc extends DT_Shortcode {
 	}
 
 	protected function __construct() {
-
 		add_shortcode( $this->shortcode_name, array($this, 'shortcode') );
-
-		// add shortcode button
-		// $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
 	}
 
 	public function shortcode( $atts, $content = null ) {
@@ -45,7 +41,7 @@ class DT_Shortcode_FancyVideoVc extends DT_Shortcode {
 			'animation'			=> 'none',
 			'width'				=> '',
 		);
-		$attributes = shortcode_atts( $default_atts, $atts );
+		$attributes = shortcode_atts( $default_atts, $atts, $this->shortcode_name );
 
 		// $attributes['type'] = in_array( $attributes['type'], array('image', 'video') ) ?  $attributes['type'] : $default_atts['type'];
 		$attributes['style'] = sanitize_key( $attributes['style'] );

@@ -1,0 +1,25 @@
+2020-01-28T01:31:47+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 5156da74d22fb0bb877e8f5d1441eaac
+2020-01-28T01:32:34+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3814
+2020-01-28T01:33:38+00:00 NOTICE abandoned_cart.success :: email: dplondono.s@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=5156da74d22fb0bb877e8f5d1441eaac
+2020-01-28T01:38:02+00:00 NOTICE order_submit.success :: addStoreOrder :: #3814 :: email: dplondono.s@gmail.com :: abandoned cart deleted [5156da74d22fb0bb877e8f5d1441eaac]
+2020-01-28T15:17:04+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_SingleCoupon starts in the next minute :: obj_id 3817
+2020-01-28T15:18:26+00:00 NOTICE promo_code.update :: updated promo code greenmuahelena
+2020-01-28T15:19:11+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 115
+2020-01-28T15:19:11+00:00 NOTICE member.sync :: Subscribed Member mensajesparamagdita@gmail.com :: Array
+(
+    [status_if_new] => 1
+    [merge_fields] => Array
+        (
+        )
+
+)
+
+2020-01-28T19:20:25+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 116
+2020-01-28T19:20:44+00:00 NOTICE member.sync :: Updated Member madelynezapata24@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+        )
+
+)
+

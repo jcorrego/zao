@@ -96,17 +96,17 @@
 }
 .wad-admin-notice {
     background: #fff;
-    border-color: #ED494D;
+    border-color: rgb(92, 155, 253);
     border-top: 4px;
     display: block;
     min-height: 68px;
-    padding: 10px 40px 10px 145px;
+    /* padding: 10px 40px 10px 145px; */
     position: relative;
 }
 .wad-notice-logo {
-    clear: both;
+    /* clear: both;
     content: "";
-    display: block;
+    display: block; */
     background-image: url("../images/wad_80x80.png");
     /*background-size: 125px 83px;*/
     background-repeat: no-repeat;
@@ -168,4 +168,123 @@
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     padding: 1px 12px;
+}
+
+
+
+/*osubscription style*/
+#subscription-notice{
+    display:table;
+    width:100%;
+}
+#subscription-notice > div{
+    display:table-cell;
+}
+#plug-logo-text{
+    width:60%;
+}
+#plug-logo-text > *,#subscription-success-notice > *{
+    vertical-align: middle;
+    display: inline-block;
+}
+#plug-sucribe-form{
+    width:40%;
+    padding: 10px 20px;
+    background-color: #eee;
+    border-radius: 0 4px 4px 0;
+}
+#plug-sucribe-form > *{
+    height:30px;
+    vertical-align: middle;
+    display:inline-block;
+}
+#plug-sucribe-form > a{
+    line-height: 28px;
+    padding: 0 10px;
+    cursor:pointer;
+    color:#ccc;
+}
+#plug-sucribe-form #vpc-subscribe{
+    background-color: #00a0d2;
+    border-color: #008EC2;
+    color:#fff;
+}
+#plug-sucribe-form input{
+    min-width: 250px;
+}
+#subscription-success-notice{
+    padding: 15px 20px;
+}
+#subscription-success-notice > img{
+    width:50px;
+    height: 50px;
+    margin-right: 10px
+}
+@media (max-width: 768px) {
+    #subscription-notice > div{
+        display: inline-block;
+        width:100%;
+    }
+    #subscription-notice #plug-logo-text{
+        margin-bottom: 10px;
+    }
+}
+
+.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.menu-icon-vpc-config img{
+    padding: 4px !important;
+    width: 26px;
+}
+
+div#vpc-options-container.postbox{
+  background-color: transparent !important;
+  border: none  !important;
+  box-shadow: none  !important;
+}
+
+div.omodal-content{
+  width: fit-content !important;
+}
+
+table.striped.table-fixed-layout.widefat.repeatable-fields-table{
+  width: auto !important;
+}
+
+table.striped.views.widefat.repeatable-fields-table tbody select,
+table.striped.views.widefat.repeatable-fields-table tbody input{
+  width: auto !important;
+}
+
+#subscription-plan-notice{
+    position: relative;
+    padding-top: 10px;
+}
+#subscription-plan-notice div{
+    display: inline-block;
+    vertical-align: middle;
+}
+#subscription-plan-message{
+    width: 93%;
+    font-weight: 500;
+}
+#subscription-plan-message a{
+    margin-top: -25px;
+    font-weight: 400;
+    text-decoration: none;
+}
+#subscription-plan-message a:before{
+    position: relative;
+    top: 18px;
+    left: -20px;
+    -webkit-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+    text-decoration: none;
+}
+#subscription-plan-logo{
+    width: 6%;
+    padding: 10px 0;
 }

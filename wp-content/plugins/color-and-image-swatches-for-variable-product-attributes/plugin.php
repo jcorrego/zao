@@ -1,21 +1,23 @@
 <?php
 /*
 Plugin Name: Color and Image Swatches for Variable Product Attributes
-Plugin URI: https://www.phoeniixx.com/product/color-image-swatches-woocommerce/
+Plugin URI: http://www.phoeniixx.com
 Description: By using our plugin you can generate color and image swatches to display the available product variable attributes like colors, sizes, styles etc.
-Version: 1.4.2
+Version:2.0.5
 Text Domain: phoen-visual-attributes
-Domain Path: /i18n/languages/
+Domain Path: /languages/
 Author: Phoeniixx
 Author URI: http://www.phoeniixx.com
 WC requires at least: 2.6.0
-WC tested up to: 3.4.4
+WC tested up to: 3.9.0
 */
-
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) 
 {
+
 	if (!class_exists('phoen_attr_color_add_Plugin')) {
 
 		class phoen_attr_color_add_Plugin {
@@ -24,59 +26,85 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 			public function __construct() {
 				
-				require 'classes/class-wc-swatches-product-attribute-images.php';
+				define('PHOEN_ARBPRPLUGURL',plugins_url(  "/", __FILE__));
 				
-				require 'classes/class-wc-swatch-term.php';
+				add_action( 'admin_menu', array( $this, 'phoe_color_swatches_admin_menu' ) ); //for admin menu
+
+				//require 'classes/phoen-old-product-data-option.php';
 				
-				if( is_admin() )
-				{
-					
-					require 'classes/class-admin-setting.php';
-					
-				}
+				//require 'classes/phoen-new-swatches-product-data-tab-option.php'; 
 				
+				require 'classes/phoen-product-attribute-images-class.php';
+				
+				require 'classes/phoen-term-class.php';
+				
+				//$this->product_data_tab = new PHOEN_PRODUCT_CUSTOM_DATA();
 				
 				add_action('init', array(&$this, 'on_init'));
 				
 				add_action( 'admin_enqueue_scripts',array(&$this, 'wp_enqueue_color_picker') );
-
-				register_activation_hook(__FILE__, array( $this, 'color_image_swatches_activation') );
 				
-				$color_image_swatches_check  = get_option( 'color_image_swatches_check' );
-			
-				if( isset($color_image_swatches_check) && $color_image_swatches_check == 1)
+				$this->product_attribute_images = new PHOEN_PRODUCT_ATTRIBUTES_SWATCHES('swatches_id', 'attr_image_size');
+				
+				register_activation_hook(__FILE__, array( $this, 'phoe_color_swatches_activation' ) );
+				
+				add_action( 'wp_head',array(&$this, 'wp_enqueue_select2') );
+				
+				add_action( 'admin_head',array(&$this, 'wp_enqueue_kksjsjk') );
+				
+				add_action( 'wp_ajax_phoen_swatches_add_cart', array( $this, 'phoen_swatches_add_cart' ) );
+
+				add_action( 'wp_ajax_nopriv_phoen_swatches_add_cart', array( $this, 'phoen_swatches_add_cart' ) );
+				
+				$enable_plugin = get_option('enable_plugin');
+				
+				if($enable_plugin==1)
 				{
-					
-					add_filter( 'plugin_action_links_' .  plugin_basename(__FILE__), array( __CLASS__, 'plugin_action_links' ) );
-					
 					add_action( 'woocommerce_locate_template',array(&$this, 'phoen_locate_template'), 20, 5 );
 					
-					$this->product_attribute_images = new WC_attr_image_add_Product_Attribute_Images('swatches_id', 'attr_image_size');
 					
-				}
-
+					//add_filter( 'woocommerce_loop_add_to_cart_link',  array( $this, 'phoen_variation_dropdown_on_shop_page') );
+				}				
+				
+				
 			}
 			
-			function color_image_swatches_activation() {
-					
-				$color_image_swatches_check  = get_option( 'color_image_swatches_check' );
+			public	function phoe_color_swatches_activation() {
 
-				if($color_image_swatches_check == '' )
+				$color_swatches_setting_values =  get_option( 'color_swatches_setting_values' );
+				
+				if($color_swatches_setting_values == '')
 				{
-					update_option( 'color_image_swatches_check', 1 );
+					$array 	= array();
+						
+					$array['swatches_style']  = '1';
+
+					update_option('color_swatches_setting_values', $array);
+				
+					
+					
 				}
-			
+				$enable_plugin = get_option('enable_plugin');
+				
+				if($enable_plugin==''){
+					update_option('enable_plugin', 1);
+				}
 			}
 			
-			public static function plugin_action_links( $links ) {
-				$action_links = array(
-						'settings' => '<a href="' . admin_url( 'admin.php?page=settings_color_image_swatches' ) . '" aria-label="' . esc_attr__( 'View Color And Image Swatches settings', 'phoen-visual-attributes' ) . '">' . esc_html__( 'Settings', 'phoen-visual-attributes' ) . '</a>',
-						'Documentation' => '<a href="'.esc_url("https://www.phoeniixx.com/wp-content/uploads/2018/07/Color-Swatches-Documentation-Pro-1.pdf").'" aria-label="' . esc_attr__( 'Documentation', 'phoen-visual-attributes' ) . '" target="_blank">' . esc_html__( 'Documentation', 'phoen-visual-attributes' ) . '</a>',
-						'Support' => '<a  href="'.esc_url('https://www.phoeniixx.com/').'" aria-label="' . esc_attr__( 'Support', 'phoen-visual-attributes' ) . '" target="_blank">' . esc_html__( 'Support', 'phoen-visual-attributes' ) . '</a>',
-						'premium' => '<a href="'.esc_url('https://www.phoeniixx.com/product/color-image-swatches-woocommerce/').'" aria-label="' . esc_attr__( 'premium', 'phoen-visual-attributes' ) . '" target="_blank">' . esc_html__( 'Premium Version', 'phoen-visual-attributes' ) . '</a>',
-					);
+			
+			public function phoe_color_swatches_admin_menu() {
 
-				return array_merge( $action_links, $links );
+				add_menu_page(__('Color Swatches','phoen-visual-attributes'), __('Color Image Swatches','phoen-visual-attributes'), 'manage_options' , 'phoe_color_swatches_menu_pro' , '' , plugin_dir_url( __FILE__ )."assets/images/logo-wp.png" );
+
+				add_submenu_page('phoe_color_swatches_menu_pro', __('Color Image Swatches','phoen-visual-attributes'), __('Color Image Swatches','phoen-visual-attributes'), 'manage_options', 'phoe_color_swatches_menu_pro', array( $this, 'phoe_color_swatches_menu_pro_func' ) );
+		
+			}
+			
+			public function phoe_color_swatches_menu_pro_func()
+			{
+				
+					require 'classes/admin_settings.php';
+					
 			}
 			
 			public function phoen_locate_template( $template, $template_name, $template_path ) {
@@ -84,11 +112,17 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				global $product;
 
 				if ( strstr( $template, 'variable.php' ) ) {
+
+					//Look within passed path within the theme - this is priority
 					
 					$template = locate_template(
+					
 						array(
+						
 							trailingslashit( 'woocommerce-swatches' ) . 'single-product/variable.php',
+							
 							$template_name
+							
 						)
 					);
 
@@ -105,12 +139,15 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				
 				return $template;
 			}
-			
+				
 			public function wp_enqueue_color_picker( $hook_suffix ) {
+				
 				wp_enqueue_style( 'wp-color-picker' );
+				
 				wp_enqueue_script( 'wp-color-picker');
-				wp_enqueue_script( 'wp-color-picker');
+				
 			}
+			
 			public function on_init() {
 				
 				global $woocommerce;
@@ -127,11 +164,75 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 				add_image_size('attr_image_size', apply_filters('woocommerce_swatches_size_width_default', $image_size['width']), apply_filters('woocommerce_swatches_size_height_default', $image_size['height']), $image_size['crop']);
 			} 
+
+	
+		public function phoen_swatches_add_cart(){
+
+			if( ! isset( $_REQUEST['action'] ) || $_REQUEST['action'] != 'phoen_swatches_add_cart' || ! isset( $_REQUEST['product_id'] ) || ! isset( $_REQUEST['variation_id'] ) ) {
+				die();
+			}
 			
+			$product_id = intval( $_REQUEST['product_id'] );
+			
+			$variation_id = intval( $_REQUEST['variation_id'] );
+			
+			$quantity = isset( $_REQUEST['quantity'] ) ? $_REQUEST['quantity'] : 1;
+
+			parse_str( $_REQUEST['attr'], $attributes );
+
+			// get product status
+			$product_status    = get_post_status( $product_id );
+			
+			if( WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $attributes ) && 'publish' === $product_status ) {
+
+				do_action( 'woocommerce_ajax_added_to_cart', $product_id );
+
+				if ( get_option( 'woocommerce_cart_redirect_after_add' ) == 'yes' ) {
+					wc_add_to_cart_message( $product_id );
+				}
+
+				// Fragments and mini cart are returned
+				WC_AJAX::get_refreshed_fragments();
+				
+			}
+			else {
+
+				// If there was an error adding to the cart, redirect to the product page to show any errors
+				$data = array(
+					'error'       => true,
+					'product_id' => $product_id
+				);
+			}
+			
+			wp_send_json( $data );
+			die();
 		}
 
+			public function wp_enqueue_kksjsjk( $hook_suffix ) {		
+			
+				wp_enqueue_script('wp-color-picker');
+				
+				wp_enqueue_script( 'phoeniixx_alpha_js', PHOEN_ARBPRPLUGURL. "assets/js/wp-color-picker-alpha.js",array('jquery'),'2.0.0',false);
+					
+				wp_enqueue_style( 'wp-color-picker' );
+				
+			}
+				
+			public function wp_enqueue_select2( $hook_suffix ) {
+				
+				wp_enqueue_style( 'phoeniixx_select2_css', PHOEN_ARBPRPLUGURL. "assets/css/select2.css");		
+				
+				wp_enqueue_style( 'phoen_font_awesome_lib112','//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+				
+				wp_enqueue_script( 'phoeniixx_select2_js', PHOEN_ARBPRPLUGURL. "assets/js/select2.js",array('jquery'),'2.21.0',false);
+				
+			}
+			
+		}
+		
 	}
-
+		
 	$GLOBALS['phoen_attr_color_swatches_add'] = new phoen_attr_color_add_Plugin();
 }
+
 ?>

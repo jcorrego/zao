@@ -523,12 +523,16 @@ $DT_META_BOXES[] = array(
 	'priority' 	=> 'high',
 	'fields' 	=> array(
 
-		// Back button
-		Presscore_Meta_Box_Field_Template::get_as_array( 'select pages', array(
-			'name'		=> _x('Back button:', 'backend metabox', 'dt-the7-core'),
-			'id'		=> "{$prefix}back_button",
-			'divider'	=> 'bottom'
-		) ),
+		array(
+			'name'    => _x( 'Back button url:', 'backend metabox', 'dt-the7-core' ),
+			// Translators: %s link to theme options.
+			'desc'  => sprintf( _x( 'Leave empty to use link from %s.', 'backend metabox', 'dt-the7-core' ), '<a href="' . admin_url( 'admin.php?page=of-blog-and-portfolio-menu&tab=gallery-tab&mark=general-album_back_button_url#section-general-show_back_button_in_album' ) . '" target="_blank">' . _x( 'Theme Options', 'backend metabox', 'dt-the7-core' ) . '</a>' ),
+			'id'      => "{$prefix}back_button",
+			'type'    => 'text',
+			'std'     => '',
+			'class'   => 'widefat',
+			'divider' => 'bottom',
+		),
 
 		///////////////////////////
 		// Open slideshow with //
@@ -856,6 +860,15 @@ $DT_META_BOXES[] = array(
 				'grid'		=> array( _x( 'Grid', 'backend metabox', 'dt-the7-core' ), array( 'gallery-grid.gif', 60, 48 ) )
 			)
 		) ),
+
+		array(
+			'name'    => _x( 'Images per page:', 'backend metabox', 'dt-the7-core' ),
+			'desc'    => _x( 'Leave empty to show all images on one page.', 'backend metabox', 'dt-the7-core' ),
+			'id'      => "{$prefix}images_per_page",
+			'type'    => 'text',
+			'std'     => '',
+			'divider' => 'top',
+		),
 
 		// Gap between images
 		Presscore_Meta_Box_Field_Template::get_as_array( 'gap between images', array(

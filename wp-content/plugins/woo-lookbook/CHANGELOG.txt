@@ -1,3 +1,29 @@
+/**1.0.6.5 - 2019.11.16**
+-Fixed: Sanitize input data
+
+/**1.0.6.4 - 2019.10.10**
+-Fixed: Setting link in plugin page
+
+/**1.0.6.3 - 2019.10.07**
+- Updated: Update readme
+
+/**1.0.6.2 - 2019.09.26**
+- Updated: Remove Facebook trademarks
+
+/**1.0.6.1 - 2019.05.10**
+- Updated: Change plugin name
+- Updated: Change premium version url
+
+/**1.0.6 - 2019.04.03**
+- Fixed: Tab JS in backend
+- Updated: Make admin notices dismissible
+
+/**1.0.5.2 - 2018.10.17**/
+- Remove: Upgrade notice
+
+/**1.0.5.1 - 2018.10.15**/
+- Remove: Upgrade notice
+
 /**1.0.5 - 2018.07.05**/
 - Updated: Instagram API
 - Updated: Support class

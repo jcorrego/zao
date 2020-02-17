@@ -31,14 +31,7 @@ class Wad_Public {
      */
     private $plugin_name;
 
-    /**
-     * The version of this plugin.
-     *
-     * @since    0.1
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
-     */
-    private $version;
+
 
     /**
      * Initialize the class and set its properties.
@@ -47,10 +40,10 @@ class Wad_Public {
      * @param      string    $plugin_name       The name of the plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct($plugin_name, $version) {
+    public function __construct($plugin_name) {
 
         $this->plugin_name = $plugin_name;
-        $this->version = $version;
+        
     }
 
     /**
@@ -71,8 +64,8 @@ class Wad_Public {
          * between the defined hooks and the functions defined in this
          * class.
          */
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/wad-public.css', array(), $this->version, 'all');
-        wp_enqueue_style("o-tooltip", WAD_URL . 'public/css/tooltip.min.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/wad-public.css', array(), WAD_VERSION, 'all');
+        wp_enqueue_style("o-tooltip", WAD_URL . 'public/css/tooltip.min.css', array(), WAD_VERSION, 'all');
     }
 
     /**
@@ -93,8 +86,8 @@ class Wad_Public {
          * between the defined hooks and the functions defined in this
          * class.
          */
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/wad-public.js', array('jquery'), $this->version, false);
-        wp_enqueue_script("o-tooltip", WAD_URL . 'public/js/tooltip.min.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/wad-public.js', array('jquery'), WAD_VERSION, false);
+        wp_enqueue_script("o-tooltip", WAD_URL . 'public/js/tooltip.min.js', array('jquery'), WAD_VERSION, false);
     }
 
     function init_globals() {
@@ -104,6 +97,7 @@ class Wad_Public {
         global $wad_user_role;
         global $wad_user_groups;
         global $wad_last_products_fetch;
+        global $wad_products_lists;
         global $wad_ignore_product_prices_calculations;
         global $wad_reviewed_products_by_customer;
         global $wad_cart_total_without_taxes;
@@ -112,6 +106,7 @@ class Wad_Public {
         $wad_ignore_product_prices_calculations=false;
         $wad_user_groups=false;
         $wad_last_products_fetch = false;
+        $wad_products_lists = array();
         $wad_settings = get_option("wad-options");
         $wad_user_role=wad_get_user_role();
         if(class_exists('WooCommerce')){
@@ -120,17 +115,6 @@ class Wad_Public {
                 $cart_count = WC()->cart->get_cart_contents_count();
                 if($cart_count>0){
                     $wad_cart_total_without_taxes=wad_get_cart_total(false);
-                }
-            }
-
-            $cache_enabled=  get_proper_value($wad_settings, "enable-cache", 0);
-            if($cache_enabled)
-            {
-                $cached_discounts = get_transient( 'orion_wad_discounts_transient' );
-                if($cached_discounts)
-                {
-                    $wad_discounts=$cached_discounts;
-                    return;
                 }
             }
 

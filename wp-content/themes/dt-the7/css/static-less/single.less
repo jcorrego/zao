@@ -44,7 +44,6 @@
 			text-decoration: none;
 		}
 		.portfolio-categories a {
-			-webkit-transition: all 0.05s linear 0.05s;
 			transition:      all 0.05s linear 0.05s;
 		}
 		.entry-meta span a,
@@ -217,11 +216,14 @@
 				margin-bottom: 5px;
 				.static-border-radius;
 				.box-sizing (border-box);
-				-webkit-transition: all 200ms ease;
 	   			 transition: all 200ms ease;
-				content: "\f1e0";
-				font-family: 'Font Awesome 5 Free';
-			  	font-weight: 900;
+				content: "\ea04";
+				font-family: 'icomoon-the7-font';
+			    speak: none;
+			    font-style: normal;
+			    font-weight: normal;
+			    font-variant: normal;
+			    text-transform: none;
 			  	font-size: 14px;
 			  	line-height: 1;
 			}
@@ -244,19 +246,17 @@
 		}
 		.show-on-hover & {
 			position: absolute;
+			.flex-flow( column wrap);
 			.horizontal-centering;
 			bottom: 100%;
-			padding: 10px 5px 10px 10px;
+			min-width: 180px;
 			margin-bottom: 10px;
 			background: #fff;
-    		-webkit-box-shadow: 1px 3px 16px 0px rgba(0,0,0,0.3);
 			box-shadow: 1px 3px 16px 0px rgba(0,0,0,0.3);
 			opacity: 0;
 			visibility: hidden;
-			-webkit-transform: translate3d(-50%,10px, 0);
-			    transform: translate3d(-50%,10px, 0);
-			  -webkit-transition: all .25s ease-out;
-			    transition: all .25s ease-out;
+		    transform: translate3d(-50%,10px, 0);
+		    transition: all .25s ease-out;
 			/* CSS Triangle*/
 			&:after {
 				position: absolute;
@@ -287,10 +287,10 @@
 	.show-on-hover:hover .share-buttons {
 		visibility: visible;
 		opacity: 1;
-		 pointer-events: auto;
-		  -webkit-transform: translate3d(-50%,0, 0);
-		          transform: translate3d(-50%,0, 0);
+		pointer-events: auto;
+		transform: translate3d(-50%,0, 0);
 	}
+
 		.share-buttons a {
 			.single-share-box & {
 				display: inline-block;
@@ -298,18 +298,40 @@
 				height: 30px;
 				min-width: 50px;
 				min-height: 30px;
+				:not(.show-on-hover)& {
+					& .social-text {
+						display: none;
+					}
+				}
+				.show-on-hover& {
+					display: block;
+					width: auto;
+					line-height: 1;
+					text-align: left;
+					padding: 10px 5px 10px 10px;
+					& .soc-font-icon {
+						//display: inline-block;
+					}
+				}
 				margin: 0 4px 4px 0;
 				border: 1px solid;
-				font-family: 'Font Awesome 5 Brands';
-			  	font-size: 14px;
+				
+			    text-transform: none;;
+			  	font-size: 16px;
 			  	line-height: 30px;
 				text-decoration: none;
 				text-align: center;
-				-webkit-transition: border-color 200ms ease;
 				transition:      border-color 200ms ease;
 				.box-sizing (border-box);
 				& .icon {
 			  		display: none;
+				}
+				&:before {
+					font-family: 'icomoon-the7-font';
+				    speak: none;
+				    font-style: normal;
+				    font-weight: normal;
+				    font-variant: normal;
 				}
 				&.facebook {
 					border-color: fade(#4c69c7, 30%);
@@ -317,18 +339,17 @@
 						border-color: #4c69c7;
 					}
 					&:before {
-						content: "\f39e";
+						content: "\f106";
 					}
 					color: #4c69c7;
 				}
 				&.twitter {
 					border-color: fade(#2abeeb, 30%);
-					font-size: 15px;
 					&:hover {
 						border-color: #2abeeb;
 					}
 					&:before {
-						content: "\f099";
+						content: "\f127";
 					}
 					color: #2abeeb;
 				}
@@ -338,19 +359,18 @@
 						border-color: #e64235;
 					}
 					&:before {
-						content: "\f0d5";
+						content: "\f110";
 					}
 					color: #e64235;
 				}
 				&.pinterest {
 					
 					border-color: fade(#cf2834, 30%);
-					font-size: 16px;
 					&:hover {
 						border-color: #cf2834;
 					}
 					&:before {
-						content: "\f0d2";
+						content: "\f115";
 					}
 					color: #cf2834;
 				}
@@ -360,20 +380,69 @@
 						border-color: #007bc7;
 					}
 					&:before {
-						content: "\f0e1";
+						content: "\f113";
 					}
 					color: #007bc7;
 				}
 				&.whatsapp {
 					border-color: fade(#36b74d, 30%);
-					font-size: 16px;
 					&:hover {
 						border-color: #36b74d;
 					}
 					&:before {
-						content: "\f232";
+						content: "\f132";
 					}
 					color: #36b74d;
+				}
+			}
+		}
+		.share-buttons a {
+			.show-on-hover & {
+				height: auto;
+				border: none;
+				font-size: 14px;
+    			line-height: 18px !important;
+    			margin: 0;
+    			&:before {
+    				margin-right: 5px;
+    			}
+    			& *,
+    			&:before {
+    				color: #222;
+    			}
+    			&:hover *,
+    			&:hover:before {
+					color:  #fff;
+				}
+    			&.facebook {
+					&:hover {
+						background-color:  #4c69c7;
+					}
+				}
+				&.twitter {
+					&:hover {
+						background-color: #2abeeb;
+					}
+				}
+				&.google {
+					&:hover {
+						background-color: #e64235;
+					}
+				}
+				&.pinterest {
+					&:hover {
+						background-color: #cf2834;
+					}
+				}
+				&.linkedin {
+					&:hover {
+						background-color: #007bc7;
+					}
+				}
+				&.whatsapp {
+					&:hover {
+						background-color: #36b74d;
+					}
 				}
 			}
 		}
@@ -392,7 +461,7 @@
 		border-radius: 50%;
 	}
 	.author-avatar.no-avatar.no-avatar:after {
-	    content: "\f007";
+	    content: "\e502";
 	    font-size: 36px;
 	}
 	.author-description {
@@ -422,8 +491,8 @@
 	padding: 25px 0;
 	border-width: 1px 0 1px 0;
 	border-style: solid;
-	& .back-to-list i[class^="fa"] {
-		font-size: 28px;
+	& .back-to-list [class^="dt-icon-"] {
+		font-size: 24px;
 	}
 }
 	.meta-nav {
@@ -456,7 +525,7 @@
 			position: absolute;
 			left: 0;
 			.vertical-centering;
-			font-size: 42px;
+			font-size: 32px;
 		}
 		& .post-title {
 			.align-self(@align: flex-start);
@@ -480,7 +549,7 @@
 				position: absolute;
 				right: 0;
 				.vertical-centering;
-				font-size: 42px;
+				font-size: 32px;
 			}
 			& .post-title {
 				.align-self(@align: flex-end);
@@ -589,7 +658,6 @@
 		background-color: rgba(0, 0, 0, 0.4);
 		.static-border-radius;
 		background-repeat: no-repeat;
-		-webkit-transition: opacity 200ms ease;
 		transition:      opacity 200ms ease;
 		&:hover {
 			background-color: rgba(0, 0, 0, 0.4);
@@ -601,7 +669,6 @@
 	.slider-post-inner .share-button.entry-share,
 	.images-list-inner .share-button.entry-share {
 		margin: 0 5px 5px 0;
-		background-position: center center;
 		.box-sizing (border-box);
 	}
 
@@ -854,21 +921,31 @@
 		width: 36px;
 		height: 36px;
 		padding: 0;
-		text-indent: -9999px;
+		font-size: 0;
 	}
 	.share-button.entry-share,
 	.btn-project-link,
 	.share-overlay .soc-ico a {
-		-webkit-transition: all 200ms ease;
 		transition:      all 200ms ease;
 	}
 	.photo-scroller .share-button.entry-share,
 	.slider-post-inner .share-button.entry-share,
 	.images-list-inner .share-button.entry-share {
-		.share-button-ico(white);
-	}
-	.share-button-ico(@colour){
-		background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='16px' height='16px' viewBox='0 0 16 16' enable-background='new 0 0 16 16' xml:space='preserve' fill='@{colour}'%3E%3Cpath d='M12.508,10.664c-0.61,0-1.213,0.287-1.663,0.633L6.236,8.531C6.261,8.39,6.289,8.148,6.289,8c0-0.15-0.058-0.39-0.083-0.532l4.64-2.796c0.451,0.347,1.053,0.659,1.663,0.659c1.475,0,2.666-1.194,2.666-2.664C15.174,1.191,13.982,0,12.508,0c-1.472,0-2.665,1.191-2.665,2.667c0,0.149,0.038,0.394,0.064,0.536L5.336,5.945C4.968,5.568,4.257,5.211,3.627,5.203C1.89,5.183,0.826,6.576,0.826,8.049c0,1.472,1.02,2.757,2.759,2.737c0.611-0.01,1.368-0.283,1.797-0.729l4.543,2.726c-0.027,0.141-0.082,0.401-0.082,0.548c0,1.476,1.193,2.669,2.665,2.669c1.475,0,2.666-1.193,2.666-2.669C15.174,11.859,13.982,10.664,12.508,10.664z'/%3E%3C/svg%3E");
+		font-family: 'icomoon-the7-font' !important;
+	    speak: none;
+	    font-style: normal;
+	    font-weight: normal;
+	    font-variant: normal;
+	    text-transform: none;
+	    line-height: 32px;
+	    font-size: 0;
+	    text-decoration: none;
+	    text-align: center;
+	    color: #fff;
+	    &:before {
+	    	content: '\ea04';
+	    	font-size: 16px;
+	    }
 	}
 
 
@@ -885,7 +962,6 @@
 		background-color: #fff;
 		text-align: center;
 		.horizontal-centering;
-		-webkit-box-shadow: 0 0 2px 0 rgba(0,0,0,0.2);
 		box-shadow: 0 0 2px 0 rgba(0,0,0,0.2);
 	}
 	.single-post .project-share-overlay:not(.allways-visible-icons) .soc-ico {

@@ -60,16 +60,18 @@ if ( 'disabled' != $config->get( 'post.media.layout' ) ) {
 				break;
 
 			case 'masonry_grid':
+				$current_page = isset( $_GET['album-page'] ) ? max( (int) $_GET['album-page'], 1 ) : 1;
 				$dt_query = new WP_Query( array(
-					'no_found_rows'     => true,
-					'posts_per_page'    => -1,
-					'post_type'         => 'attachment',
-					'post_mime_type'    => 'image',
-					'post_status'       => 'inherit',
-					'post__in'			=> $media_items,
-					'orderby'			=> 'post__in',
-					'order'				=> 'DESC',
-					'suppress_filters'  => false,
+					'no_found_rows'    => false,
+					'posts_per_page'   => (int) $config->get( 'post.media.images_per_page' ),
+					'paged'            => $current_page,
+					'post_type'        => 'attachment',
+					'post_mime_type'   => 'image',
+					'post_status'      => 'inherit',
+					'post__in'         => $media_items,
+					'orderby'          => 'post__in',
+					'order'            => 'DESC',
+					'suppress_filters' => false,
 				) );
 
 				if ( $dt_query->have_posts() ) {
@@ -84,8 +86,10 @@ if ( 'disabled' != $config->get( 'post.media.layout' ) ) {
 					// fullwidth wrap open
 					if ( $config->get( 'full_width' ) ) { echo '<div class="full-width-wrap">'; }
 
+					echo '<div class="single-gallery-media">';
+
 					// masonry container open
-					echo '<div ' . presscore_masonry_container_class( array( 'wf-container', 'dt-gallery-container', 'single-gallery-media' ) ) . presscore_masonry_container_data_atts() . presscore_get_share_buttons_for_prettyphoto( 'photo' ) . '>';
+					echo '<div ' . presscore_masonry_container_class( array( 'wf-container', 'dt-gallery-container' ) ) . presscore_masonry_container_data_atts() . presscore_get_share_buttons_for_prettyphoto( 'photo' ) . '>';
 
 						if ( of_get_option( 'social_buttons-photo' ) ) {
 							add_filter( 'dt_get_thumb_img-args', 'presscore_mod_albums_share_buttons_link' );
@@ -100,6 +104,14 @@ if ( 'disabled' != $config->get( 'post.media.layout' ) ) {
 						remove_filter( 'dt_get_thumb_img-args', 'presscore_mod_albums_share_buttons_link' );
 
 					// masonry container close
+					echo '</div>';
+
+					echo dt_paginator( $dt_query, array(
+						'class'  => 'paginator',
+						'format' => '?album-page=%#%',
+						'paged'  => $current_page,
+					) );
+
 					echo '</div>';
 
 					// fullwidth wrap close

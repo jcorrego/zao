@@ -12,7 +12,7 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.4.0
+ * @version 3.6.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -27,13 +27,13 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 
 <?php do_action( 'presscore_before_post' ); ?>
 
-<article <?php wc_product_class( 'post' ); ?>>
+<article <?php wc_product_class( 'post visible', $product ); ?>>
 
 	<?php
 	woocommerce_show_product_loop_sale_flash();
-	if('list' === presscore_config()->get( 'layout' )){
+	if ( 'list' === presscore_config()->get( 'layout' ) ) {
 		dt_woocommerce_template_product_desc_for_list();
-	}else {
+	} else {
 		dt_woocommerce_template_product_desc_under();
 	}
 	?>

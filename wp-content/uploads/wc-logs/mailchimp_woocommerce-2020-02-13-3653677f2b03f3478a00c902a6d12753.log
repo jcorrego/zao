@@ -1,0 +1,21 @@
+2020-02-13T01:30:06+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3956
+2020-02-13T01:30:07+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 0bc36beffe5377d627119d1078fdc239
+2020-02-13T01:30:45+00:00 NOTICE abandoned_cart.success :: email: julierg06@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=0bc36beffe5377d627119d1078fdc239
+2020-02-13T01:31:32+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 0bc36beffe5377d627119d1078fdc239
+2020-02-13T01:31:53+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3960
+2020-02-13T01:31:53+00:00 NOTICE abandoned_cart.success :: email: julierg06@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=0bc36beffe5377d627119d1078fdc239
+2020-02-13T01:36:06+00:00 NOTICE order_submit.success :: addStoreOrder :: #3960 :: email: julierg06@hotmail.com
+2020-02-13T03:15:44+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3956
+2020-02-13T16:46:21+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3960
+2020-02-13T16:57:08+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3960 :: email: julierg06@hotmail.com
+2020-02-13T17:14:23+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 118
+2020-02-13T17:15:37+00:00 NOTICE member.sync :: Updated Member isabolivar2@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Isabel Cristina
+            [LNAME] => Bolívar AGUILERA
+        )
+
+)
+

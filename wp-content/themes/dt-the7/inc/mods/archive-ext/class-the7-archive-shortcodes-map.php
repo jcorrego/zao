@@ -20,6 +20,7 @@ class The7_Archive_Shortcodes_Map {
 		'dt_team_masonry'         => 'DT_Shortcode_Team_Masonry',
 		'dt_testimonials_masonry' => 'DT_Shortcode_Testimonials_Masonry',
 		'dt_albums'               => 'DT_Shortcode_Albums',
+		'dt_albums_masonry'       => 'DT_Shortcode_AlbumsMasonry',
 		'dt_albums_jgrid'         => 'DT_Shortcode_Albums_Jgrid',
 	);
 

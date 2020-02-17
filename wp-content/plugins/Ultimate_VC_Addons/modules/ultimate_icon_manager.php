@@ -48,7 +48,7 @@ if ( ! class_exists( 'AIO_Icon_Manager' ) ) {
 			//add_action('admin_menu',array($this,'icon_manager_menu'));
 			$defaults = get_option( 'smile_fonts' );
 			
-			if ( ! $defaults ) {
+			if ( isset( $_GET['install-bsf-fonts'] ) ) {
 				add_action( 'admin_init', array( $this, 'AIO_move_fonts' ) );
 			
 			} else if ( ( isset($defaults['Defaults'] ) && $defaults['Defaults'] == 'Array' ) ) {
@@ -631,6 +631,7 @@ if ( ! class_exists( 'AIO_Icon_Manager' ) ) {
 				$new_file = basename( $file );
 				@copy( $file, $this->vc_fonts . '/' . $new_file );
 			}
+			$fonts = array();
 			$fonts['Defaults'] = array(
 				'include' => sanitize_text_field( trailingslashit( $this->paths['fonts'] ) ) . 'Defaults',
 				'folder'  => sanitize_text_field( trailingslashit( $this->paths['fonts'] ) ) . 'Defaults',
@@ -639,7 +640,10 @@ if ( ! class_exists( 'AIO_Icon_Manager' ) ) {
 			);
 			$defaults          = get_option( 'smile_fonts' );
 			if ( ! $defaults ) {
-				update_option( 'smile_fonts', $fonts );
+				$defaults = array();
+			}
+			if ( empty( $defaults['Defaults'] ) ) {
+				update_option( 'smile_fonts', array_merge( $defaults, $fonts ) );
 			}
 		}// end AIO_move_fonts
 	}// End class

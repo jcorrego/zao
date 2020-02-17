@@ -1,22 +1,15 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	'weight'            => -1,
 	'name'              => __( 'Media Gallery Carousel', 'the7mk2' ),
 	'description'       => __( 'Images from Media Library', 'the7mk2' ),
 	'base'              => 'dt_media_gallery_carousel',
-	'icon'              => 'dt_vc_ico_carousel',
+	'icon'              => 'dt_vc_ico_carousel_media_gallery',
 	'class'             => 'dt_vc_sc_media_gallery_carousel',
 	'category'          => __( 'by Dream-Theme', 'the7mk2' ),
-	'admin_enqueue_css' => array(
-		PRESSCORE_THEME_URI . '/fonts/icomoon-arrows-the7/style.css',
-		PRESSCORE_THEME_URI . '/fonts/icomoon-the7-gallery-32x32/style.css',
-	),
 	'params'            => array(
 		array(
 			'type'        => 'attach_images',
@@ -141,60 +134,34 @@ return array(
 			'heading'          => __( 'Hover background color', 'the7mk2' ),
 			'param_name'       => 'image_hover_bg_color',
 			'type'             => 'dropdown',
-			'std'              => 'solid_rollover_bg',
+			'std'              => 'default',
 			'value'            => array(
-				'Disabled'    => 'disabled',
+				'Disabled'   => 'disabled',
+				'Default'    => 'default',
 				'Mono color' => 'solid_rollover_bg',
-				'Gradient'    => 'gradient_rollover_bg',
+				'Gradient'   => 'gradient_rollover_bg',
 			),
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
-
 		array(
 			'heading'     => __( 'Background color', 'the7mk2' ),
 			'param_name'  => 'custom_rollover_bg_color',
 			'type'        => 'colorpicker',
-			'value'       => '',
+			'value'       => 'rgba(0,0,0,0.5)',
 			'dependency'  => array(
 				'element' => 'image_hover_bg_color',
-				'value'   => array( 'solid_rollover_bg' ),
+				'value'   => 'solid_rollover_bg',
 			),
-			'description' => __( 'Leave empty to use default hover color.', 'the7mk2' ),
 		),
 		array(
-			'heading'     => __( 'Gradient color 1', 'the7mk2' ),
-			'param_name'  => 'custom_rollover_bg_color_1',
-			'type'        => 'colorpicker',
-			'value'       => '',
-			'dependency'  => array(
+			'heading'    => __( 'Gradient', 'the7mk2' ),
+			'param_name' => 'custom_rollover_bg_gradient',
+			'type'       => 'dt_gradient_picker',
+			'value'      => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+			'dependency' => array(
 				'element' => 'image_hover_bg_color',
 				'value'   => 'gradient_rollover_bg',
 			),
-			'description' => __( 'Leave empty to use default hover color.', 'the7mk2' ),
-		),
-		array(
-			'heading'     => __( 'Gradient color 2', 'the7mk2' ),
-			'param_name'  => 'custom_rollover_bg_color_2',
-			'type'        => 'colorpicker',
-			'value'       => '',
-			'dependency'  => array(
-				'element' => 'image_hover_bg_color',
-				'value'   => 'gradient_rollover_bg',
-			),
-			'description' => __( 'Leave empty to use default hover color.', 'the7mk2' ),
-		),
-		array(
-			'heading'          => __( 'Gradient angle', 'the7mk2' ),
-			'param_name'       => 'custom_rollover_gradient_deg',
-			'type'             => 'dt_number',
-			'value'            => '135deg',
-			'units'            => 'deg',
-			'dependency'       => array(
-				'element' => 'image_hover_bg_color',
-				'value'   => 'gradient_rollover_bg',
-			),
-			'description'      => __( '(0 - 360)', 'the7mk2' ),
-			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 
 		array(
@@ -269,6 +236,13 @@ return array(
 			"type" => "dt_number",
 			"value" => "10",
 			"edit_field_class" => "vc_col-xs-12 vc_column dt_row-6",
+		),
+		array(
+			'heading'          => __( 'Stage padding ', 'the7mk2' ),
+			'param_name'       => 'stage_padding',
+			'type'             => 'dt_number',
+			'value'            => '0',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 		array(
 			"heading" => __( "Scrolling", 'the7mk2' ),
@@ -350,7 +324,7 @@ return array(
 			'heading'    => __( 'Choose image zoom icon', 'the7mk2' ),
 			'param_name' => 'gallery_image_zoom_icon',
 			'type'       => 'dt_navigation',
-			'value'      => 'icon-im-hover-001',
+			'value'      => 'icomoon-the7-font-the7-zoom-06',
 			'dependency' => array(
 				'element' => 'show_zoom',
 				'value'   => 'y',

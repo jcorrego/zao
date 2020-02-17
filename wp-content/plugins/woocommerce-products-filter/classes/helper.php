@@ -29,7 +29,9 @@ final class WOOF_HELPER {
     }
 
     public static function escape($value) {
-        return sanitize_text_field(esc_html($value));
+        if(is_string($value)){
+            return sanitize_text_field(esc_html($value));
+        }
     }
 
     public static function parse_ext_data($file_path) {
@@ -213,7 +215,7 @@ final class WOOF_HELPER {
 
         if (empty($string)) {
             if (is_object($taxonomy_info)) {
-                $string = $WOOF->settings['custom_tax_label'][$taxonomy_info->name];
+                $string = stripcslashes($WOOF->settings['custom_tax_label'][$taxonomy_info->name]);
             }
         }
 
@@ -361,8 +363,8 @@ final class WOOF_HELPER {
 			<div class="price_slider_wrapper">
 				<div class="price_slider" style="display:none;"></div>
 				<div class="price_slider_amount">
-					<input type="text" id="min_price" name="min_price" value="' . esc_attr($min_price) . '" data-min="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $min)) . '" placeholder="' . __('Min price', 'woocommerce-products-filter') . '" />
-					<input type="text" id="max_price" name="max_price" value="' . esc_attr($max_price) . '" data-max="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $max)) . '" placeholder="' . __('Max price', 'woocommerce-products-filter') . '" />
+					<input type="text" id="min_price" name="min_price" value="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $min_price)) . '" data-min="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $min)) . '" placeholder="' . __('Min price', 'woocommerce-products-filter') . '" />
+					<input type="text" id="max_price" name="max_price" value="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $max_price)) . '" data-max="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $max)) . '" placeholder="' . __('Max price', 'woocommerce-products-filter') . '" />
 					<button type="submit" class="button">' . __('Filter', 'woocommerce-products-filter') . '</button>
 					<div class="price_label" style="display:none;">
 						' . __('Price:', 'woocommerce-products-filter') . ' <span class="from"></span> &mdash; <span class="to"></span>
@@ -702,7 +704,36 @@ final class WOOF_HELPER {
             update_option('woof_notices', $notices);
         }
     }
+    public static function draw_tooltipe($title,$tooltip_text) {
+        if(!$tooltip_text OR empty($tooltip_text) OR $tooltip_text=='none'){
+            return"";
+        }
 
+        global $WOOF;
+        
+        if(!isset($WOOF->settings['use_tooltip'])){
+            $show_tooltip=1; 
+        }else{
+            $show_tooltip=$WOOF->settings['use_tooltip'];
+        }
+        if(!$show_tooltip){
+            return"";
+        }
+        
+        $tooltip_text=self::wpml_translate(null,stripcslashes(wp_strip_all_tags($tooltip_text)));
+        $toggle_image = ((isset($WOOF->settings['woof_tooltip_img']) AND ! empty($WOOF->settings['woof_tooltip_img'])) ? $WOOF->settings['woof_tooltip_img'] : WOOF_LINK . 'img/woof_info_icon.png');
+        $current_id=uniqid("woof_tooltip_content");
+        ?>
+            <img src="<?php echo $toggle_image ?>" class="woof_tooltip_header" data-tooltip-content="#<?php echo $current_id ?>">
+            <div class="woof_tooltip_templates">
+                <span id="<?php echo $current_id ?>">
+                    <span class="woof_tooltip_title"><?php echo $title ?></span>
+                    <span class="woof_tooltip_text"><?php echo $tooltip_text ?></span>
+                </span>
+            </div>          
+        <?php
+        
+    }
     public static function draw_title_toggle($show, $block_is_closed) {
         if (!$show) {
             return "";
@@ -711,7 +742,6 @@ final class WOOF_HELPER {
         global $WOOF;
         $condition = 'closed';
         $toggle_type = ((isset($WOOF->settings['toggle_type']) AND ! empty($WOOF->settings['toggle_type'])) ? $WOOF->settings['toggle_type'] : 'text');
-
 
         if ($block_is_closed) {
             $toggle_text = ((isset($WOOF->settings['toggle_closed_text']) AND ! empty($WOOF->settings['toggle_closed_text'])) ? self::wpml_translate(null, $WOOF->settings['toggle_closed_text']) : '-');

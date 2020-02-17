@@ -7,8 +7,6 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 
 	class DT_Shortcode_Products_Carousel extends DT_Shortcode_With_Inline_Css {
@@ -61,6 +59,7 @@ if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 				'slides_on_mob' => '1',
 				'adaptive_height' => 'y',
 				'item_space' => '30',
+				'stage_padding' => '0',
 				'speed' => '600',
 				'autoplay' => 'n',
 				'autoplay_speed' => "6000",
@@ -144,6 +143,11 @@ if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 						'post',
 					);
 
+					$lazy_loading_enabled = presscore_lazy_loading_enabled();
+					if ( $lazy_loading_enabled ) {
+						add_filter( 'wp_get_attachment_image_attributes', array( $this, 'add_owl_lazy_loading_class' ), 20 );
+					}
+
 					while ( $query->have_posts() ) : $query->the_post();
 						do_action('presscore_before_post');
 
@@ -158,8 +162,12 @@ if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 						echo '</article>';
 
 						do_action('presscore_after_post');
-					
 					endwhile;
+
+					if ( $lazy_loading_enabled ) {
+						remove_filter( 'wp_get_attachment_image_attributes', array( $this, 'add_owl_lazy_loading_class' ), 20 );
+					}
+
 				endif;
 				if($this->get_att( 'show_products' ) == "top_products"){
 					remove_filter( 'posts_clauses', array( 'WC_Shortcodes', 'order_by_rating_post_clauses' ) );
@@ -284,6 +292,7 @@ if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 				'phone-columns-num' => $this->atts['slides_on_mob'],
 				'auto-height' => ($this->atts['adaptive_height'] === 'y') ? 'true' : 'false',
 				'col-gap' => $this->atts['item_space'],
+				'stage-padding' => $this->atts['stage_padding'],
 				'speed' => $this->atts['speed'],
 				'autoplay' => ($this->atts['autoplay'] === 'y') ? 'true' : 'false',
 				'autoplay_speed' => $this->atts['autoplay_speed'],
@@ -319,22 +328,35 @@ if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 			}
 			$config->set( 'product.preview.add_to_cart.position', 'on_image' );
 		}
+
+		/**
+		 * Add owl lazy loading class.
+		 *
+		 * @param array $attr Image attributes.
+		 *
+		 * @return array
+		 */
+		public function add_owl_lazy_loading_class( $attr ) {
+			if ( isset( $attr['class'] ) ) {
+				$attr['class'] = str_replace( array( 'lazy-load', 'iso-lazy-load' ), 'owl-lazy-load', $attr['class'] );
+			}
+
+			return $attr;
+		}
+
 		/**
 		 * Return array of prepared less vars to insert to less file.
 		 *
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
-			$less_vars->add_keyword( 'unique-shortcode-class-name', 'products-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
+			$less_vars->add_keyword( 'unique-shortcode-class-name', 'products-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
 			$less_vars->add_keyword( 'post-title-color', $this->get_att( 'custom_title_color', '~""') );
 			$less_vars->add_keyword( 'post-content-color', $this->get_att( 'custom_content_color', '~""' ) );
 
 			$less_vars->add_keyword( 'price-color', $this->get_att( 'custom_price_color', '~""' ) );
-			
 
 			$less_vars->add_pixel_number( 'icon-size', $this->get_att( 'arrow_icon_size' ) );
 			$less_vars->add_paddings( array(
@@ -468,7 +490,7 @@ if ( ! class_exists( 'DT_Shortcode_Products_Carousel', false ) ) :
 					}
 					break;
 				case 'sale_products':
-					$product_ids_on_sale = woocommerce_get_product_ids_on_sale();
+					$product_ids_on_sale = wc_get_product_ids_on_sale();
 					$meta_query = array();
 					$meta_query[] = $woocommerce->query->visibility_meta_query();
 					$meta_query[] = $woocommerce->query->stock_status_meta_query();

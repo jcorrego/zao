@@ -44,16 +44,28 @@ class DT_Shortcode_Gallery extends DT_Shortcode {
 	 */
 	public function wp_get_attachment_link_filter( $html, $id = 0, $size = 'thumbnail', $permalink = false, $icon = false, $text = false ) {
 		if ( $permalink ) {
-			$html = str_replace( '<a ', '<a class="rollover" ', $html );
-		} else {
+			return str_replace( '<a ', '<a class="rollover" ', $html );
+		}
+
+		$atts = array(
+			'class' => 'rollover rollover-zoom',
+			'title' => '',
+		);
+		if ( strpos( $html, 'data-elementor' ) === false ) {
 			$attachment = get_post( $id );
 			$thumb_meta = wp_get_attachment_image_src( $id, 'full' );
-			$title = ( presscore_imagee_title_is_hidden( $id ) ? '' : esc_attr( trim( strip_tags( $attachment->post_title ) ) ) );
-			$desc = esc_html( $attachment->post_content );
-			$html = str_replace( '<a ', "<a class='rollover rollover-zoom dt-pswp-item' title='{$title}' data-dt-img-description='{$desc}' data-large_image_width='{$thumb_meta[1]}' data-large_image_height = '{$thumb_meta[2]}'  " , $html );
+			if ( ! presscore_imagee_title_is_hidden( $id ) ) {
+				$atts['title'] = esc_attr( trim( wp_strip_all_tags( $attachment->post_title ) ) );
+			}
+			$atts['data-dt-img-description'] = esc_attr( esc_html( $attachment->post_content ) );
+			$atts['data-large_image_width']  = esc_attr( $thumb_meta[1] );
+			$atts['data-large_image_height'] = esc_attr( $thumb_meta[2] );
+			$atts['class']                   .= ' dt-pswp-item';
 		}
-		//var_dump($thumb_meta);
-		return $html;
+
+		$atts = implode( ' ', presscore_convert_indexed2numeric_array( '=', $atts, '', '"%s"' ) );
+
+		return str_replace( '<a ', "<a $atts", $html );
 	}
 
 	/**
@@ -139,11 +151,11 @@ class DT_Shortcode_Gallery extends DT_Shortcode {
 				break;
 			default:
 				add_filter( 'gallery_style', array( $this, 'gallery_style_filter' ) );
-				add_filter( 'wp_get_attachment_link', array( $this, 'wp_get_attachment_link_filter' ), 5, 6 );
+				add_filter( 'wp_get_attachment_link', array( $this, 'wp_get_attachment_link_filter' ), 20, 6 );
 
 				$output = $this->wp_gallery_shortcode( $attachments, $atts, $instance, $id, $html5 );
 
-				remove_filter( 'wp_get_attachment_link', array( $this, 'wp_get_attachment_link_filter' ), 5, 6 );
+				remove_filter( 'wp_get_attachment_link', array( $this, 'wp_get_attachment_link_filter' ), 20, 6 );
 				remove_filter( 'gallery_style', array( $this, 'gallery_style_filter' ) );
 		}
 
@@ -151,7 +163,7 @@ class DT_Shortcode_Gallery extends DT_Shortcode {
 	}
 
 	/**
-	 * Dender default gallery shortcode html with lightbox.
+	 * Render shortcode html with lightbox.
 	 *
 	 * @param  array $attachments
 	 * @param  array $atts
@@ -214,7 +226,12 @@ class DT_Shortcode_Gallery extends DT_Shortcode {
 			</style>\n\t\t";
 		}
 
-		$size_class = sanitize_html_class( $atts['size'] );
+		if ( is_array( $atts['size'] ) ) {
+			$size_class = sanitize_html_class( implode( 'x', $atts['size'] ) );
+		} else {
+			$size_class = sanitize_html_class( $atts['size'] );
+		}
+
 		$gallery_div = "<div id='$selector' class='gallery galleryid-{$id} gallery-columns-{$columns} gallery-size-{$size_class}'>";
 
 		/**

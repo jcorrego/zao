@@ -274,23 +274,52 @@ if ( ! function_exists( 'presscore_main_container_style' ) ) :
 	 * Print main container inline style if any.
 	 */
 	function presscore_main_container_style() {
-		$style = array();
 		$config = presscore_config();
 
-		$padding_top = $config->get( 'page.top_margin' );
-		if ( $padding_top || $padding_top === '0' ) {
-			$style['padding-top'] = intval( $padding_top ) . 'px';
-		}
+		$padding = array(
+			'padding-top'    => $config->get( 'page.top_margin' ),
+			'padding-bottom' => $config->get( 'page.bottom_margin' ),
+		);
 
-		$padding_bottom = $config->get( 'page.bottom_margin' );
-		if ( $padding_bottom || $padding_bottom === '0' ) {
-			$style['padding-bottom'] = intval( $padding_bottom ) . 'px';
+		$style = array();
+		foreach ( $padding as $prop => $val ) {
+			if ( $val !== '' ) {
+				if ( ! preg_match( '/.*(px|%)$/', $val ) ) {
+					$val .= 'px';
+				}
+
+				$style[ $prop ] = $val;
+			}
 		}
 
 		echo presscore_get_inline_style_attr( $style );
 	}
 
 endif;
+
+if ( ! function_exists( 'the7_main_container_wrap_style' ) ) {
+
+	/**
+	 * Pront horizontal padding for content area.
+	 */
+	function the7_main_container_wrap_style() {
+		$config = presscore_config();
+
+		$padding = array(
+			'padding-right'  => $config->get( 'page.right_margin' ),
+			'padding-left'   => $config->get( 'page.left_margin' ),
+		);
+
+		$style = array();
+		foreach ( $padding as $prop => $val ) {
+			if ( $val !== '' ) {
+				$style[ $prop ] = $val;
+			}
+		}
+
+		echo presscore_get_inline_style_attr( $style );
+	}
+}
 
 if ( ! function_exists( 'presscore_get_post_tags_html' ) ) :
 
@@ -498,17 +527,24 @@ endif;
 if ( ! function_exists( 'presscore_post_details_link' ) ) :
 
 	/**
-	 * PressCore Details button.
+	 * Return details link HTML.
 	 *
-	 * @param int $post_id Post ID.Default is null.
-	 * @param mixed $class Custom classes. May be array or string with classes separated by ' '.
+     * @global $post
+     *
+	 * @param int|null          $post_id   Post ID. Default is null.
+	 * @param array|string|null $class     Custom classes. May be array or string with classes separated by ' '.
+	 * @param string|null       $link_text Link text.
+	 *
+	 * @return string
 	 */
-	function presscore_post_details_link( $post_id = null, $class = array('details', 'more-link'), $link_text = null ) {
+	function presscore_post_details_link( $post_id = null, $class = null, $link_text = null ) {
 		global $post;
 
-		if ( !$post_id && !$post ) {
+		if ( ! $post_id && ! $post ) {
 			return '';
-		}elseif ( !$post_id ) {
+		}
+
+		if ( ! $post_id ) {
 			$post_id = $post->ID;
 		}
 
@@ -516,26 +552,26 @@ if ( ! function_exists( 'presscore_post_details_link' ) ) :
 			return '';
 		}
 
-		if ( ! is_array( $class ) ) {
+		if ( $class === null ) {
+			$class = array(
+				'details',
+				'more-link',
+			);
+		} elseif ( ! is_array( $class ) ) {
 			$class = explode( ' ', $class );
 		}
 
 		$output = '';
-		$url = get_permalink( $post_id );
+		$url    = get_permalink( $post_id );
 
 		if ( $url ) {
-			$output = sprintf(
-				'<a href="%1$s" class="%2$s" rel="nofollow">%3$s</a>',
-				$url,
-				esc_attr( implode( ' ', $class ) ),
-				is_string( $link_text ) ? $link_text : __( 'Details', 'the7mk2' )
-			);
+			$output = sprintf( '<a href="%1$s" class="%2$s" rel="nofollow">%3$s</a>', esc_url( $url ), esc_attr( implode( ' ', $class ) ), is_string( $link_text ) ? $link_text : esc_html__( 'Details', 'the7mk2' ) );
 		}
 
 		return apply_filters( 'presscore_post_details_link', $output, $post_id, $class );
 	}
 
-endif; // presscore_post_details_link
+endif;
 
 if ( ! function_exists( 'presscore_post_edit_link' ) ) :
 
@@ -585,220 +621,6 @@ if ( ! function_exists( 'presscore_post_edit_link' ) ) :
 	}
 
 endif; // presscore_post_edit_link
-
-if ( ! function_exists( 'presscore_display_share_buttons' ) ) :
-
-	/**
-	 * Display share buttons.
-	 */
-	function presscore_display_share_buttons( $place = '', $options = array() ) {
-		$default_options = array(
-			'echo'			=> true,
-			'class'			=> array( 'project-share-overlay' ),
-			'id'			=> null,
-			'title'			=> of_get_option( "social_buttons-{$place}-button_title", '' )
-		);
-		$options = wp_parse_args($options, $default_options);
-
-		$share_buttons = presscore_get_share_buttons_list( $place, $options['id'] );
-
-		if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
-			return '';
-		}
-
-		$class = $options['class'];
-		if ( ! is_array($class) ) {
-			$class = explode( ' ', $class );
-		}
-
-		$title = esc_html( $options['title'] );
-
-		$html =	'<div class="' . esc_attr( implode( ' ', $class ) ) . '">'
-					. presscore_get_button_html( array(
-						'title' => $title ? $title : __( 'Share this', 'the7mk2' ),
-						'href' => '#',
-						'class' => 'share-button entry-share h5-size' . ( $title ? '' : ' no-text' )
-					) )
-					. '<div class="soc-ico">'
-						. implode( '', $share_buttons ) 
-					. '</div>' 
-				. '</div>';
-
-		$html = apply_filters( 'presscore_display_share_buttons', $html );
-
-		if ( $options['echo'] ) {
-			echo $html;
-		}
-		return $html;
-	}
-
-endif; // presscore_display_share_buttons
-
-if ( ! function_exists( 'presscore_display_new_share_buttons' ) ) :
-
-	/**
-	 * Display share buttons.
-	 */
-	function presscore_display_new_share_buttons( $place = '', $options = array() ) {
-		$default_options = array(
-			'echo'			=> true,
-			'class'			=> array( 'single-share-box' ),
-			'id'			=> null,
-			'title'			=> of_get_option( "social_buttons-{$place}-button_title", '' )
-		);
-		$options = wp_parse_args($options, $default_options);
-
-		$share_buttons = presscore_get_share_buttons_list( $place, $options['id'] );
-
-		if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
-			return '';
-		}
-
-		$class = $options['class'];
-		if ( ! is_array( $class ) ) {
-			$class = explode( ' ', $class );
-		}
-
-		$html =	'<div class="' . esc_attr( implode( ' ', $class ) ) . '">'
-		           . '<div class="share-link-description">' . esc_html( $options['title'] ) . '</div>'
-		           . '<div class="share-buttons">'
-		           . implode( '', $share_buttons )
-		           . '</div>'
-		           . '</div>';
-
-		$html = apply_filters( 'presscore_display_share_buttons', $html );
-
-		if ( $options['echo'] ) {
-			echo $html;
-		}
-		return $html;
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_display_share_buttons_for_post' ) ) :
-
-	function presscore_display_share_buttons_for_post( $place = '', $options = array() ) {
-		$defaults = array(
-			'class' => array( 'single-share-box' ),
-		);
-		$options = wp_parse_args( $options, $defaults );
-
-		if ( ! is_array( $options['class'] ) ) {
-			$options['class'] = explode( ' ', $options['class'] );
-		}
-
-		if ( 'on_hover' === of_get_option( 'social_buttons-visibility' ) ) {
-			$options['class'][] = 'show-on-hover';
-		}
-
-		return presscore_display_new_share_buttons( $place, $options );
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_display_share_buttons_for_image' ) ) :
-
-	function presscore_display_share_buttons_for_image( $place = '', $options = array() ) {
-		$default_options = array(
-			'class'			=> array( 'album-share-overlay' ),
-		);
-		$options = wp_parse_args($options, $default_options);
-
-		return presscore_display_share_buttons( $place, $options );
-	}
-
-endif;
-
-if ( ! function_exists( 'presscore_get_share_buttons_list' ) ) :
-
-	function presscore_get_share_buttons_list( $place, $post_id = null ) {
-		global $post;
-		$buttons = of_get_option( 'social_buttons-' . $place, array() );
-
-		if ( empty( $buttons ) ) {
-			return array();
-		}
-
-		// get title
-		if ( ! $post_id ) {
-			$_post = $post;
-			$post_id = $_post->ID;
-		} else {
-			$_post = get_post( $post_id );
-		}
-
-		$t = isset( $_post->post_title ) ? $_post->post_title : '';
-
-		// get permalink
-		$u = get_permalink( $post_id );
-
-		$buttons_list = presscore_themeoptions_get_social_buttons_list();
-		$protocol = is_ssl() ? "https" : "http";
-		$share_buttons = array();
-
-		foreach ( $buttons as $button ) {
-			$esc_url = true;
-			$url = $custom = $icon_class = '';
-			$desc = $buttons_list[ $button ];
-
-			switch ( $button ) {
-				case 'twitter':
-					$icon_class = 'twitter';
-					$url = add_query_arg( array( 'url' => rawurlencode( $u ), 'text' => urlencode( $t ) ), 'https://twitter.com/share' );
-					break;
-				case 'facebook':
-					$icon_class = 'facebook';
-					$url = add_query_arg( array( 'u' => rawurlencode( $u ), 't' => urlencode( $t ) ), 'http://www.facebook.com/sharer.php' );
-					break;
-				case 'google+':
-					$icon_class = 'google';
-					$url = add_query_arg( array( 'url' => rawurlencode( $u ), 'title' => urlencode( $t ) ), $protocol . '://plus.google.com/share' );
-					break;
-				case 'pinterest':
-					$icon_class = 'pinterest pinit-marklet';
-					$url = '//pinterest.com/pin/create/button/';
-					$custom = ' data-pin-config="above" data-pin-do="buttonBookmark"';
-					// if image
-					if ( wp_attachment_is_image( $post_id ) ) {
-						$image = wp_get_attachment_image_src( $post_id, 'full' );
-						if ( ! empty( $image ) ) {
-							$url = add_query_arg( array(
-								'url'         => rawurlencode( $u ),
-								'media'       => rawurlencode( $image[0] ),
-								'description' => rawurlencode( apply_filters( 'get_the_excerpt', $_post->post_content ) )
-							), $url );
-							$custom = ' data-pin-config="above" data-pin-do="buttonPin"';
-							$icon_class = 'pinterest';
-						}
-					}
-					break;
-				case 'linkedin':
-					$bt = get_bloginfo( 'name' );
-					$url = $protocol . '://www.linkedin.com/shareArticle?mini=true&url=' . rawurlencode( $u ) . '&title=' . rawurlencode( $t ) . '&summary=&source=' . rawurlencode( $bt );
-					$icon_class = 'linkedin';
-					break;
-				case 'whatsapp':
-				    $esc_url = false;
-					$url = 'https://api.whatsapp.com/send?text=' . rawurlencode( "{$t} - {$u}" );
-					$custom = ' data-action="share/whatsapp/share"';
-					$icon_class = 'whatsapp';
-					break;
-			}
-
-			if ( $esc_url ) {
-				$url = esc_url( $url );
-			}
-
-			$share_button = '<a class="' . $icon_class . '" href="' . $url . '" title="' . esc_attr( $desc ) . '" target="_blank"' . $custom . '><span class="soc-font-icon"></span><span class="screen-reader-text">' . sprintf( __( 'Share with %s', 'the7mk2' ), $desc ) . '</span></a>';
-
-			$share_buttons[] = apply_filters( 'presscore_share_button', $share_button, $button, $icon_class, $url, $desc, $t, $u );
-		}
-
-		return $share_buttons;
-	}
-
-endif;
 
 if ( ! function_exists( 'presscore_get_avatar' ) ) :
 
@@ -857,28 +679,6 @@ if ( ! function_exists( 'presscore_display_post_author' ) ) :
 	}
 
 endif; // presscore_display_post_author
-
-if ( ! function_exists( 'presscore_set_image_width_options' ) ) :
-
-	function presscore_set_image_width_options() {
-
-		$config = presscore_get_config();
-		$target_image_width = $config->get('post.preview.width.min');
-
-		if ( 'wide' == $config->get( 'post.preview.width' ) && !$config->get('all_the_same_width') ) {
-			$target_image_width *= 3;
-			$image_options = array( 'w' => absint( round( $target_image_width ) ), 'z' => 0, 'hd_convert' => false );
-
-		} else {
-			$target_image_width *= 1.5;
-			$image_options = array( 'w' => absint( round( $target_image_width ) ), 'z' => 0 );
-
-		}
-
-		return $image_options;
-	}
-
-endif;
 
 if ( ! function_exists( 'presscore_set_image_dimesions' ) ) :
 
@@ -1074,8 +874,6 @@ if ( ! function_exists( 'presscore_get_post_attachment_html' ) ) :
 		} else {
 			$class[] = 'video-icon';
 
-			// $blank_image = presscore_get_blank_image();
-
 			$image_args['href'] = $attachment_data['video_url'];
 			$class[] = 'pswp-video';
 
@@ -1118,6 +916,10 @@ if ( ! function_exists( 'presscore_get_button_html' ) ) :
 			$title = '<span>' . $title . '</span>';
 		}
 		unset( $class_parts );
+
+		if ( $options['target'] && strpos( $options['atts'], 'rel="' ) === false ) {
+			$options['atts'] .= ' rel="noopener"';
+		}
 
 		$html = sprintf(
 			'<a href="%1$s" class="%2$s"%3$s>%4$s</a>',
@@ -1226,6 +1028,11 @@ if ( ! function_exists( 'presscore_get_image_with_srcset' ) ) :
 	function presscore_get_image_with_srcset( $regular, $retina, $default, $custom = '', $class = '' ) {
 		$srcset = array();
 
+		$file_extension = pathinfo( $default[0], PATHINFO_EXTENSION );
+		if ( $file_extension === 'svg' ) {
+			return '<img class="' . esc_attr( $class ) . '" src="' . esc_attr( $default[0] ) . '" ' . $custom . ' />';
+		}
+
 		foreach ( array( $regular, $retina ) as $img ) {
 			if ( $img ) {
 				$srcset[] = "{$img[0]} {$img[1]}w";
@@ -1267,7 +1074,6 @@ if ( ! function_exists( 'presscore_get_lazy_image' ) ) :
 			'height' => $height,
 		) );
 
-		$atts['class'] .= ' lazy-load';
 		$atts['data-srcset'] = array();
 		$srcset_type = ( isset( $atts['_srcset_type'] ) && $atts['_srcset_type'] === 'x' ) ? 'x' : 'w';
 		unset( $atts['_srcset_type'] );
@@ -1277,6 +1083,15 @@ if ( ! function_exists( 'presscore_get_lazy_image' ) ) :
 				continue;
 			}
 
+			$file_extension = pathinfo( $_img_src[0], PATHINFO_EXTENSION );
+			if ( $file_extension === 'svg' ) {
+				$atts['src'] = $_img_src[0];
+				$atts = array_filter( $atts );
+				$atts = array_map( 'trim', $atts );
+				$atts = array_map( 'esc_attr', $atts );
+				return '<img ' . implode( ' ', presscore_convert_indexed2numeric_array( '=', $atts, '', '"%s"') ) . ' />';
+			}
+
 			if ( ! isset( $atts['data-src'] ) ) {
 				$atts['data-src'] = $_img_src[0];
             }
@@ -1284,6 +1099,7 @@ if ( ! function_exists( 'presscore_get_lazy_image' ) ) :
 			$atts['data-srcset'][] = $_img_src[0] . ( $srcset_type === 'x' ? " {$i}x" : " {$_img_src[1]}w" );
 			$i ++;
 		}
+		$atts['class'] .= ' lazy-load';
 		$atts['data-srcset'] = implode( ', ', $atts['data-srcset'] );
 
 		$atts = array_filter( $atts );
@@ -1375,13 +1191,11 @@ if ( ! function_exists( 'presscore_get_social_icon' ) ) :
 			'title="' . $title . '"',
 		);
 
-		if ( 'skype' === $icon ) {
-			$url = esc_attr( $url );
-		} else if ( 'mail' === $icon && is_email( $url ) ) {
+		if ( 'mail' === $icon && is_email( $url ) ) {
 			$url = 'mailto:' . esc_attr( $url );
 			$target = '_top';
 		} else {
-			$url = esc_url( $url );
+			$url = esc_attr( $url );
 		}
 
 		$icon_attributes[] = 'href="' . $url . '"';
@@ -1561,135 +1375,6 @@ if ( ! function_exists( 'presscore_bottom_bar_class' ) ) :
 
 endif;
 
-if ( ! function_exists( 'presscore_get_royal_slider' ) ) :
-
-	/**
-	 * Royal media slider.
-	 *
-	 * @param array $media_items Attachments id's array.
-	 * @return string HTML.
-	 */
-	function presscore_get_royal_slider( $attachments_data, $options = array() ) {
-
-		if ( empty( $attachments_data ) ) {
-			return '';
-		}
-
-		presscore_remove_lazy_load_attrs();
-
-		$default_options = array(
-			'echo'      => false,
-			'width'     => null,
-			'height'    => null,
-			'class'     => array(),
-			'style'     => '',
-			'show_info' => array( 'title', 'link', 'description' )
-		);
-		$options = wp_parse_args( $options, $default_options );
-
-		// common classes
-		$options['class'][] = 'royalSlider';
-		$options['class'][] = 'rsShor';
-
-		$container_class = implode(' ', $options['class']);
-
-		$data_attributes = '';
-		if ( !empty($options['width']) ) {
-			$data_attributes .= ' data-width="' . absint($options['width']) . '"';
-		}
-
-		if ( !empty($options['height']) ) {
-			$data_attributes .= ' data-height="' . absint($options['height']) . '"';
-		}
-
-		if ( isset( $options['autoplay'] ) ) {
-			$data_attributes .= ' data-autoslide="' . ( $options['interval'] ? $options['interval'] : $default_options['interval'] ) . '"';
-		}
-
-		if ( isset( $options['interval'] ) ) {
-			$options['interval'] = absint( $options['interval'] );
-			$data_attributes .= ' data-paused="' . ( $options['autoplay'] ? 'false' : 'true' ) . '"';
-		}
-
-		$html = "\n" . '<ul class="' . esc_attr($container_class) . '"' . $data_attributes . $options['style'] . '>';
-
-		foreach ( $attachments_data as $data ) {
-
-			if ( empty($data['full']) ) continue;
-
-			$is_video = !empty( $data['video_url'] );
-
-			$html .= "\n\t" . '<li' . ( ($is_video) ? ' class="rollover-video"' : '' ) . '>';
-
-			$image_args = array(
-				'img_meta' 	=> array( $data['full'], $data['width'], $data['height'] ),
-				'img_id'	=> $data['ID'],
-				'alt'		=> $data['alt'],
-				'title'		=> $data['title'],
-				'caption'	=> $data['caption'],
-				'img_class' => 'rsImg',
-				'custom'	=> '',
-				'class'		=> '',
-				'echo'		=> false,
-				'wrap'		=> '<img %IMG_CLASS% %SRC% %SIZE% %ALT% %CUSTOM% />',
-			);
-
-			if ( $is_video ) {
-				$video_url = remove_query_arg( array('iframe', 'width', 'height'), $data['video_url'] );
-				$image_args['custom'] = 'data-rsVideo="' . esc_url($video_url) . '"';
-			}
-
-			$image = dt_get_thumb_img( $image_args );
-
-			$html .= "\n\t\t" . $image;
-
-			if ( !empty($data['link']) && in_array('link', $options['show_info']) ) {
-				$html .= "\n\t\t" . '<a href="' . $data['link'] . '" class="rsCLink" target="_blank"></a>';
-			}
-
-			$caption_html = '';
-			$links = '';
-
-			if ( in_array('share_buttons', $options['show_info']) ) {
-				$links .= "\n\t\t\t\t" . presscore_display_share_buttons_for_image( 'photo', array(
-					'echo' => false,
-					'id' => $data['ID']
-				) );
-			}
-
-			if ( $links ) {
-				$caption_html .= '<div class="album-content-btn">' . $links . '</div>';
-			}
-
-			if ( !empty($data['title']) && in_array('title', $options['show_info']) ) {
-				$caption_html .= "\n\t\t\t\t" . '<h4>' . esc_html($data['title']) . '</h4>';
-			}
-
-			if ( !empty($data['description']) && in_array('description', $options['show_info']) ) {
-				$caption_html .= "\n\t\t\t\t" . wpautop($data['description']);
-			}
-
-			if ( $caption_html ) {
-				$html .= "\n\t\t" . '<div class="slider-post-caption">' . "\n\t\t\t" . '<div class="slider-post-inner">' . $caption_html . "\n\t\t\t" . '</div>' . "\n\t\t" . '</div>';
-			}
-
-			$html .= '</li>';
-
-		}
-
-		$html .= '</ul>';
-
-		if ( $options['echo'] ) {
-			echo $html;
-		}
-
-		presscore_add_lazy_load_attrs();
-
-		return $html;
-	}
-
-endif; // presscore_get_royal_slider
-
 if ( ! function_exists( 'presscore_get_photo_slider' ) ) :
 
 	/**
@@ -1795,12 +1480,9 @@ if ( ! function_exists( 'presscore_get_photo_slider' ) ) :
 			$caption_html = '';
 
 			if ( in_array('share_buttons', $options['show_info']) ) {
-				$share_btn_html = "\n\t\t\t\t" . presscore_display_share_buttons_for_image( 'photo', array(
-					'echo' => false,
-					'id' => $data['ID']
-				) );
-
-				$caption_html .= '<div class="album-content-btn">' . $share_btn_html . '</div>';
+				ob_start();
+				the7_display_popup_share_buttons( $data['ID'] );
+				$caption_html .= '<div class="album-content-btn">' . "\n\t\t\t\t" . ob_get_clean() . '</div>';
 			}
 
 			if ( !empty($data['title']) && in_array('title', $options['show_info']) ) {
@@ -1903,7 +1585,6 @@ if ( ! function_exists( 'presscore_get_images_list' ) ) :
 			// $media_content = '';
 			if ( $is_video ) {
 
-				// $blank_image = presscore_get_blank_image();
 				$image_args['href'] = $data['video_url'];
 				// $image_args['custom'] = 'data-dt-img-description="' . esc_attr($data['description']) . '"';
 				$image_args['title'] = $data['title'];
@@ -1924,7 +1605,9 @@ if ( ! function_exists( 'presscore_get_images_list' ) ) :
 				}
 
 				if ( $args['show_share_buttons'] ) {
-					$links .= presscore_display_share_buttons_for_image( 'photo', array( 'id' => $data['ID'], 'echo' => false ) );
+					ob_start();
+					the7_display_popup_share_buttons( $data['ID'] );
+					$links .= "\n\t\t\t\t" . ob_get_clean();
 				}
 
 				if ( $links ) {
@@ -1985,7 +1668,6 @@ if ( ! function_exists( 'presscore_get_images_gallery_1' ) ) :
 			'show_only'		=> count( $attachments_data ),
 		);
 		$options = wp_parse_args( $options, $default_options );
-		$blank_image = presscore_get_blank_image();
 
 		$gallery_cols = absint($options['columns']);
 		if ( !$gallery_cols ) {
@@ -2149,7 +1831,7 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 
 		$class = implode( ' ', (array) $options['class'] );
 
-		$small_images = array_slice( $attachments_data, 1 );
+		$small_images = $attachments_data;
 		$big_image = $cover;
 
 		if ( ! is_array($options['attachments_count']) || count($options['attachments_count']) < 2 ) {
@@ -2230,6 +1912,8 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 					$small_image_args['class'] = 'pswp-video dt-pswp-item';
 				}
 
+				$small_image_args['custom'] .= ' aria-label="' . esc_attr__( 'Gallery image', 'dt-the7-core' ) . '"';
+
 				$html .= sprintf( '<a href="%s" title="%s" class="%s" data-large_image_width="' . $data['width'] . '" data-large_image_height = "' . $data['height']. '" data-dt-img-description="%s" %s></a>',
 					esc_url($small_image_args['href']),
 					esc_attr($small_image_args['alt']),
@@ -2277,14 +1961,14 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 			$big_image_args['class'] .= ' dt-gallery-pswp';
 		}
 
+		$big_image_args['custom'] .= ' aria-label="' . esc_attr__( 'Gallery image', 'dt-the7-core' ) . '"';
+
 		$big_image_args = apply_filters('presscore_get_images_gallery_hoovered-title_img_args', $big_image_args, $image_args, $options, $big_image);
 
 		if ( !empty( $big_image['video_url'] ) && !$options['exclude_cover'] ) {
 			$big_image_args['href'] = $big_image['video_url'];
 
 			if ( $options['video_icon'] ) {
-				$blank_image = presscore_get_blank_image();
-
 				$video_link_classes = 'video-icon';
 				if ( empty( $small_images ) ) {
 					$video_link_classes .= ' pswp-video dt-single-pswp dt-pswp-item';
@@ -2308,7 +1992,198 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 
 		$html = $image . $html;
 
-		return $html;
+		return apply_filters( 'presscore_get_images_gallery_hoovered-html', $html );
 	}
 
 endif;
+
+/**
+ * Return share buttons header.
+ *
+ * @param string $place Share buttons context.
+ *
+ * @return string
+ */
+function the7_get_share_buttons_header( $place ) {
+	$header = of_get_option( "social_buttons-{$place}-button_title" );
+	if ( ! $header ) {
+		$header = __( 'Share this', 'the7mk2' );
+	}
+
+	return (string) $header;
+}
+
+/**
+ * Display popup share buttons. Used in sliders.
+ *
+ * @since 7.8.0
+ *
+ * @param null   $image_id   ID of the image to share. If null, then current post will be used instead.
+ * @param string $wrap_class Buttons wrap class.
+ */
+function the7_display_popup_share_buttons( $image_id = null, $wrap_class = 'album-share-overlay' ) {
+	$place         = 'photo';
+	$share_buttons = the7_get_share_buttons_list( $place, $image_id );
+	if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
+		return;
+	}
+
+	presscore_get_template_part(
+		'theme',
+		'share-buttons/popup-share-buttons',
+		null,
+		array(
+			'wrap_class'           => $wrap_class,
+			'share_buttons_header' => the7_get_share_buttons_header( $place ),
+			'share_buttons'        => $share_buttons,
+		)
+	);
+}
+
+/**
+ * Display post share buttons.
+ *
+ * @since 7.8.0
+ *
+ * @param string $place      Share buttons context.
+ * @param null   $post_id    ID of the post to share. If null, then current post will be shared.
+ * @param string $wrap_class Buttons wrap class.
+ */
+function the7_display_post_share_buttons( $place, $post_id = null, $wrap_class = 'single-share-box' ) {
+	$share_buttons = the7_get_share_buttons_list( $place, $post_id );
+	if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
+		return;
+	}
+
+	if ( 'on_hover' === of_get_option( 'social_buttons-visibility' ) ) {
+		$wrap_class .= ' show-on-hover';
+	}
+
+	presscore_get_template_part(
+		'theme',
+		'share-buttons/post-share-buttons',
+		null,
+		array(
+			'wrap_class'           => $wrap_class,
+			'share_buttons_header' => the7_get_share_buttons_header( $place ),
+			'share_buttons'        => $share_buttons,
+		)
+	);
+}
+
+/**
+ * Return share buttons list attached to $place and post with $post_id.
+ *
+ * @since 7.8.0
+ *
+ * @param string $place   Share buttons context.
+ * @param null   $post_id ID of the post to share. If null, then current post will be shared.
+ *
+ * @return array
+ */
+function the7_get_share_buttons_list( $place, $post_id = null ) {
+	global $post;
+
+	$buttons = of_get_option( 'social_buttons-' . $place, array() );
+
+	if ( empty( $buttons ) ) {
+		return array();
+	}
+
+	// get title
+	if ( ! $post_id ) {
+		$_post   = $post;
+		$post_id = $_post->ID;
+	} else {
+		$_post = get_post( $post_id );
+	}
+
+	$t = isset( $_post->post_title ) ? $_post->post_title : '';
+
+	// get permalink
+	$u = get_permalink( $post_id );
+
+	$buttons_list  = presscore_themeoptions_get_social_buttons_list();
+	$protocol      = is_ssl() ? "https" : "http";
+	$share_buttons = array();
+	$title_tpl     = __( 'Share on %s', 'the7mk2' );
+	$buttons       = array_intersect( $buttons, array_keys( $buttons_list ) );
+	foreach ( $buttons as $button ) {
+		$esc_url   = true;
+		$url       = $custom = $icon_class = '';
+		$desc      = $buttons_list[ $button ];
+		$title     = sprintf( $title_tpl, $desc );
+		$alt_title = $title;
+
+		switch ( $button ) {
+			case 'twitter':
+				$icon_class = 'twitter';
+				$url        = add_query_arg(
+					array( 'url' => rawurlencode( $u ), 'text' => urlencode( $t ) ),
+					'https://twitter.com/share'
+				);
+				$alt_title  = __( 'Tweet', 'the7mk2' );
+				break;
+			case 'facebook':
+				$icon_class = 'facebook';
+				$url        = add_query_arg(
+					array( 'u' => rawurlencode( $u ), 't' => urlencode( $t ) ),
+					'http://www.facebook.com/sharer.php'
+				);
+				break;
+			case 'pinterest':
+				$icon_class = 'pinterest pinit-marklet';
+				$url        = '//pinterest.com/pin/create/button/';
+				$custom     = ' data-pin-config="above" data-pin-do="buttonBookmark"';
+				// if image
+				if ( wp_attachment_is_image( $post_id ) ) {
+					$image = wp_get_attachment_image_src( $post_id, 'full' );
+					if ( ! empty( $image ) ) {
+						$url        = add_query_arg(
+							array(
+								'url'         => rawurlencode( $u ),
+								'media'       => rawurlencode( $image[0] ),
+								'description' => rawurlencode(
+									apply_filters( 'get_the_excerpt', $_post->post_content )
+								),
+							),
+							$url
+						);
+						$custom     = ' data-pin-config="above" data-pin-do="buttonPin"';
+						$icon_class = 'pinterest';
+					}
+				}
+				$alt_title = __( 'Pin it', 'the7mk2' );
+				break;
+			case 'linkedin':
+				$bt         = get_bloginfo( 'name' );
+				$url        = $protocol . '://www.linkedin.com/shareArticle?mini=true&url=' . rawurlencode(
+						$u
+					) . '&title=' . rawurlencode( $t ) . '&summary=&source=' . rawurlencode( $bt );
+				$icon_class = 'linkedin';
+				break;
+			case 'whatsapp':
+				$esc_url    = false;
+				$url        = 'https://api.whatsapp.com/send?text=' . rawurlencode( "{$t} - {$u}" );
+				$custom     = ' data-action="share/whatsapp/share"';
+				$icon_class = 'whatsapp';
+				break;
+		}
+
+		if ( $esc_url ) {
+			$url = esc_url( $url );
+		}
+
+		$share_buttons[] = array(
+			'id'          => $button,
+			'url'         => $url,
+			'name'        => $desc,
+			'title'       => $title,
+			'alt_title'   => $alt_title,
+			'icon_class'  => $icon_class,
+			'custom_atts' => $custom,
+		);
+	}
+
+	return (array) apply_filters( 'the7_get_share_buttons_list', $share_buttons, $place, $post_id, $buttons );
+}

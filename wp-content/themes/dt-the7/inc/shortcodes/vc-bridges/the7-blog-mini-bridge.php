@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	"weight" => -1,
@@ -35,20 +32,23 @@ return array(
 			"edit_field_class" => "vc_col-xs-12 vc_column dt_row-6",
 		),
 		array(
-			"heading" => __("Order by", 'the7mk2'),
-			"param_name" => "orderby",
-			"type" => "dropdown",
-			"value" => array(
-				"Date" => "date",
-				"Author" => "author",
-				"Title" => "title",
-				"Slug" => "name",
-				"Date modified" => "modified",
-				"ID" => "id",
-				"Random" => "rand"
+			'heading'          => __( 'Order by', 'the7mk2' ),
+			'param_name'       => 'orderby',
+			'type'             => 'dropdown',
+			'std'              => 'date',
+			'value'            => array(
+				'Author'        => 'author',
+				'Slug'          => 'name',
+				'Date'          => 'date',
+				'Name'          => 'title',
+				'ID'            => 'ID',
+				'Modified'      => 'modified',
+				'Comment count' => 'comment_count',
+				'Menu order'    => 'menu_order',
+				'Rand'          => 'rand',
 			),
-			"description" => __("Select how to sort retrieved posts.", 'the7mk2'),
-			"edit_field_class" => "vc_col-sm-6 vc_column",
+			'description'      => __( 'Select how to sort retrieved posts.', 'the7mk2' ),
+			'edit_field_class' => 'vc_col-sm-6 vc_column',
 		),
 		array(
 			"heading" => __("Order way", 'the7mk2'),

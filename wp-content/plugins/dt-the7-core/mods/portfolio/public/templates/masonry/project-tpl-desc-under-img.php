@@ -23,10 +23,7 @@ switch ( presscore_config()->get( 'post.preview.media.style' ) ) {
 
 		// rollover icons
 		$rollover_content = presscore_project_get_preview_buttons( $image_id );
-
-		if ( 1 == presscore_project_preview_buttons_count() ) {
-			$rollover_class .= ' rollover-active';
-		}
+		$rollover_class = the7pt_get_portfolio_rollover_class();
 		break;
 	case 'slideshow':
 		$image = presscore_get_project_media_slider( array( 'alignnone','owl-carousel', 'dt-owl-carousel-init', 'slider-masonry' ) );

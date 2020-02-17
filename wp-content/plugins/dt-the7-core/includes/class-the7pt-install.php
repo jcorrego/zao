@@ -16,13 +16,67 @@ class The7PT_Install {
 	 * @var array
 	 */
 	private static $update_callbacks = array(
-		'1.11.0' => array(
+		'1.11.0'  => array(
 			'the7_mass_regenerate_short_codes_inline_css',
 			'the7pt_set_db_version_1_11_0',
 		),
-		'1.13.0' => array(
+		'1.13.0'  => array(
 			'the7_mass_regenerate_short_codes_inline_css',
 			'the7pt_set_db_version_1_13_0',
+		),
+		'1.14.0'  => array(
+			'the7pt_update_1_14_0_shortcodes_gradient_backward_compatibility',
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7pt_set_db_version_1_14_0',
+		),
+		'1.15.0'  => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7pt_set_db_version_1_15_0',
+		),
+		'1.18.0'  => array(
+			'the7pt_update_1_18_0_migrate_theme_options',
+			'the7pt_update_1_18_0_portfolio_back_button_migration',
+			'the7pt_update_1_18_0_albums_back_button_migration',
+			'the7pt_set_db_version_1_18_0',
+		),
+		'2.0.0'   => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7pt_set_db_version_2_0_0',
+		),
+		'2.0.0.1' => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7pt_set_db_version_2_0_0_1',
+		),
+		'2.0.2'   => array(
+			'presscore_refresh_dynamic_css',
+			'the7pt_set_db_version_2_0_2',
+		),
+		'2.0.3'   => array(
+			'presscore_refresh_dynamic_css',
+			'the7pt_set_db_version_2_0_3',
+		),
+		'2.0.6'   => array(
+			'presscore_refresh_dynamic_css',
+			'the7pt_set_db_version_2_0_6',
+		),
+		'2.0.7'   => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'presscore_refresh_dynamic_css',
+			'the7pt_set_db_version_2_0_7',
+		),
+		'2.1.0'   => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'presscore_refresh_dynamic_css',
+			'the7pt_set_db_version_2_1_0',
+		),
+		'2.2.0'   => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'presscore_refresh_dynamic_css',
+			'the7pt_set_db_version_2_2_0',
+		),
+		'2.2.4'   => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7pt_set_db_version_2_2_4',
 		),
 	);
 
@@ -93,6 +147,10 @@ class The7PT_Install {
 			return;
 		}
 
+		if ( ! self::$background_updater ) {
+			return;
+		}
+
 		$update_queued = false;
 		$db_update_callbacks = self::get_update_callbacks();
 
@@ -129,7 +187,11 @@ class The7PT_Install {
 	}
 
 	public static function db_is_updating() {
-		return self::$background_updater->is_updating();
+		if ( self::$background_updater ) {
+			return self::$background_updater->is_updating();
+		}
+
+		return false;
 	}
 
 	public static function db_update_is_needed() {

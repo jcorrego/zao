@@ -10,7 +10,7 @@ return array(
 	'base'        => 'dt_small_photos',
 	'name'        => __( 'Photos Scroller (old)', 'dt-the7-core' ),
 	'description' => __( 'Images from Photo Albums post type', 'dt-the7-core' ),
-	'category'    => __( 'The7 Old', 'the7mk2' ),
+	'category'    => __( 'The7 Old', 'dt-the7-core' ),
 	'icon'        => 'dt_vc_ico_photos',
 	'class'       => 'dt_vc_sc_photos',
 	'params'      => array_merge(

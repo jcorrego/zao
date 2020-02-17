@@ -14,16 +14,33 @@
 		}
 	}
 	.dt-shortcode-soc-icons a.dt-icon-bg-on:before,
-	.content .dt-team-shortcode.dt-icon-bg-on .soc-ico a:before {
+	//.dt-team-shortcode.dt-icon-bg-on .soc-ico a:before,
+	.dt-shortcode-icon.dt-icon-bg-on .icon-inner:before,
+	.text-icon.dt-icon-bg-on .icon-inner:before {
 		border-color: @accent-bg-color;
 		background-color: @accent-bg-color;
 		.accent-gradient & {
 			.background-gradient (@startColor: @accent-bg-color, @endColor: @accent-bg-color-2);
 		}
-		// -webkit-box-shadow-color: inset 0px 0px 0px @soc-icon-border-width @accent-bg-color;
-		// box-shadow-color:        inset 0px 0px 0px @soc-icon-border-width @accent-bg-color;
 	}
-	.dt-shortcode-soc-icons a {
+	.dt-team-shortcode.dt-icon-bg-on .soc-ico a:before {
+		.dt-icon-bg-on& { 
+			.content & {
+				background-color: @accent-bg-color;
+			}
+			.accent-gradient .content & {
+				.background-gradient (@startColor: @accent-bg-color, @endColor: @accent-bg-color-2);
+			}
+		}
+		.dt-icon-border-on& {
+			.content & {
+				border-color: @accent-bg-color;
+			}
+		}
+	}
+	.dt-shortcode-soc-icons a,
+	.dt-shortcode-icon,
+	.text-icon {
 		&.dt-icon-border-on:before {
 			border-color: @accent-bg-color;
 		}
@@ -67,7 +84,9 @@
 		}
 	}
 	.dt-shortcode-soc-icons a.dt-icon-hover-bg-on,
-	.content .dt-team-shortcode.dt-icon-hover-bg-on .soc-ico a {
+	//.content .dt-team-shortcode.dt-icon-hover-bg-on .soc-ico a,
+	.dt-shortcode-icon.dt-icon-hover-bg-on .icon-inner,
+	.text-icon.dt-icon-hover-bg-on .icon-inner {
 		&:after {
 			border-color: @accent-bg-color;
 			background-color: @accent-bg-color;
@@ -76,8 +95,25 @@
 			}
 		}
 	}
+	.dt-team-shortcode.dt-icon-bg-on .soc-ico a:after {
+		.dt-icon-hover-bg-on& { 
+			.content & {
+				background-color: @accent-bg-color;
+			}
+			.accent-gradient .content & {
+				.background-gradient (@startColor: @accent-bg-color, @endColor: @accent-bg-color-2);
+			}
+		}
+		.dt-icon-border-hover-on& {
+			.content & {
+				border-color: @accent-bg-color;
+			}
+		}
+	}
 	.dt-shortcode-soc-icons a .soc-font-icon,
-	#main .dt-team-shortcode .soc-ico a .soc-font-icon {
+	#main .dt-team-shortcode .soc-ico a .soc-font-icon,
+	.dt-shortcode-icon .soc-icon,
+	.text-icon .soc-icon {
 
 		color: @accent-bg-color;
 		.accent-gradient & {
@@ -85,7 +121,7 @@
 		}
 	}
 
-	.soc-ico a .soc-font-icon {
+	.soc-ico a:not(:hover) .soc-font-icon {
 		.content & {
 			color: @base-color;
 		}

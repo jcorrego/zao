@@ -4,7 +4,7 @@ Plugin Name: The7 Ultimate Addons for WPBakery Page Builder
 Plugin URI: https://brainstormforce.com/demos/ultimate/
 Author: Brainstorm Force
 Author URI: https://www.brainstormforce.com
-Version: 3.16.25
+Version: 3.19.2
 Description: Includes WPBakery Page Builder premium addon elements like Icon, Info Box, Interactive Banner, Flip Box, Info List & Counter. Best of all - provides A Font Icon Manager allowing users to upload / delete custom icon fonts.
 Text Domain: ultimate_vc
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ if ( ! defined( '__ULTIMATE_ROOT__' ) ) {
 }
 
 if ( ! defined( 'ULTIMATE_VERSION' ) ) {
-	define( 'ULTIMATE_VERSION', '3.16.25' );
+	define( 'ULTIMATE_VERSION', '3.19.2' );
 }
 
 if ( ! defined( 'ULTIMATE_URL' ) ) {
@@ -56,13 +56,11 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 
 		function __construct() {
 
-			$this->brainstorm_as_theme();
-			add_action( 'after_setup_theme', array( $this, 'the7_handle_brainstorm_activation' ), 30 );
 			if ( ! defined( 'WPB_VC_VERSION' ) ) {
 				add_action( 'admin_init', array( $this, 'init_addons' ) );
 				return;
 			}
-
+			add_action('after_setup_theme', array( $this, 'brainstorm_as_theme' ));
 			// Activation hook
 			register_activation_hook( __FILE__, array( $this, 'uvc_plugin_activate' ) );
 
@@ -239,7 +237,7 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 		function init_addons() {
 
 			$required_vc = '3.7';
-			$this->brainstorm_as_theme();
+
 			if ( version_compare( $required_vc, 'WPB_VC_VERSION', '>' ) ) {
 
 				add_action( 'admin_notices', array( $this, 'admin_notice_for_version' ) );
@@ -252,21 +250,19 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 		}
 
 		public function brainstorm_as_theme() {
-			if(defined('BRAINSTORM_THEME_CODE')) return;
-			if(!defined('BRAINSTORM_THEME_ACTIVATED_URL')) define('BRAINSTORM_THEME_ACTIVATED_URL', 'http://repo.the7.io/bundled-content/brainstorm/');
-			if(!defined('BRAINSTORM_THE7'))	define( 'BRAINSTORM_THE7', true);
+			if(defined('ULTIMATE_THEME_INIT')) return;
 			$theme_path = get_template_directory();
-			$js_composer_bundled = "$theme_path/inc/mods/bundled-content/includes/brainstorm/brainstorm.class.php";
-			if ( file_exists( $js_composer_bundled ) ) {
-				require_once( "$theme_path/inc/mods/bundled-content/includes/base.class.php" );
-				require_once( $js_composer_bundled );
-				$bundled_plugin = new The7Brainstorm();
-				if ( $code = $bundled_plugin->isActivatedByTheme() ) {
-					define('BRAINSTORM_THEME_CODE', $code);
+			$theme_core = "$theme_path/inc/extensions/core-functions.php";
+			if ( file_exists( $theme_core ) ) {
+				require_once( $theme_core );
+				if  (function_exists("presscore_is_silence_enabled") && presscore_is_silence_enabled()){
+					define('ULTIMATE_THEME_ACT', true);
+					define('ULTIMATE_THEME_INIT', true);
+					return;
 				}
 			}
+			define('ULTIMATE_THEME_INIT', true);
 		}
-
 
 		function ultimate_plugins_page_link( $links ) {
 			$tutorial_link = '<a href="http://bsf.io/y7ajc" target="_blank">' . __( 'Video Tutorials', 'ultimate_vc' ) . '</a>';
@@ -488,6 +484,9 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 					|| stripos( $post_content, '[ult_team')
 					|| stripos( $post_content, '[ultimate_fancytext')
 					|| stripos( $post_content, '[ult_range_slider')
+					|| stripos( $post_content, '[ultimate_video')
+					|| stripos( $post_content, '[ultimate_ribbon')
+					|| stripos( $post_content, '[ultimate_dual_color')
 					|| $found_ultimate_backgrounds
 				) {
 				return true;
@@ -677,7 +676,7 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 				}
 			}
 
-			$ultimate_global_scripts = bsf_get_option('ultimate_global_scripts');
+			$ultimate_global_scripts = apply_filters( 'ultimate_global_scripts', bsf_get_option('ultimate_global_scripts') );
 			if($ultimate_global_scripts === 'enable') {
 				wp_enqueue_script('ultimate-modernizr');
 				wp_enqueue_script('jquery_ui');
@@ -706,6 +705,7 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 					}
 				wp_enqueue_style("ult-icons");
 				wp_enqueue_style('ultimate-vidcons', UAVC_URL.'assets/fonts/vidcons.css');
+				wp_enqueue_script('ultimate-row-bg', $js_path.'ultimate_bg'.$ext.'.js');
 				wp_enqueue_script('jquery.ytplayer', $js_path.'mb-YTPlayer'.$ext.'.js');
 
 				$Ultimate_Google_Font_Manager = new Ultimate_Google_Font_Manager;
@@ -778,6 +778,7 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 					}
 
 					wp_enqueue_script('ultimate-script');
+					wp_enqueue_script('ultimate-row-bg', $js_path.'ultimate_bg'.$ext.'.js');
 
 					if( stripos( $post_content, '[ultimate_modal') ) {
 						//$modal_fixer = get_option('ultimate_modal_fixer');
@@ -819,6 +820,15 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 					}
 					if( stripos( $post_content, '[ultimate_heading') ) {
 						wp_enqueue_script("ultimate-headings-script");
+					}
+					if( stripos( $post_content, '[ultimate_video') ) {
+						wp_enqueue_script("ultimate-videos-script");
+					}
+					if( stripos( $post_content, '[ultimate_ribbon') ) {
+						wp_enqueue_script("ultimate-ribbons-script");
+					}
+					if( stripos( $post_content, '[ultimate_dual_color') ) {
+						wp_enqueue_script("ultimate-dual-colors-script");
 					}
 					if( stripos( $post_content, '[ultimate_carousel') ) {
 						wp_enqueue_script('ult-slick');
@@ -989,6 +999,15 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 					}
 					if( stripos( $post_content, '[ultimate_heading') ) {
 						wp_enqueue_style("ultimate-headings-style");
+					}
+					if( stripos( $post_content, '[ultimate_video') ) {
+						wp_enqueue_style("ultimate-videos-style");
+					}
+					if( stripos( $post_content, '[ultimate_ribbon') ) {
+						wp_enqueue_style("ultimate-ribbons-style");
+					}
+					if( stripos( $post_content, '[ultimate_dual_color') ) {
+						wp_enqueue_style("ultimate-dual-colors-style");
 					}
 					if( stripos( $post_content, '[ultimate_icons') || stripos( $post_content, '[single_icon')) {
 						wp_enqueue_style('ultimate-animate');
@@ -1192,6 +1211,9 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 				'ultimate_sticky_section',
 				'ultimate_team',
 				'ultimate_range_slider',
+				'ultimate_videos',
+				'ultimate_ribbons',
+				'ultimate_dual_colors',
 			);
 			$ultimate_modules = get_option('ultimate_modules');
 			if(!$ultimate_modules && !is_array($ultimate_modules)){
@@ -1233,58 +1255,6 @@ if ( ! class_exists( 'Ultimate_VC_Addons' ) ) {
 
 			return $uavc_link_attr;
 		}
-
-		public static function the7_handle_brainstorm_activation() {
-			if( !is_admin()) return;
-			$needUpdate = false;
-			$brainstrom_products = get_option( 'brainstrom_products', array() );
-			if (empty($brainstrom_products)) return;
-			if ( function_exists( 'presscore_theme_is_activated' ) && presscore_theme_is_activated() ) {
-				if (!function_exists( 'presscore_get_purchase_code' )) return;
-				$the7_purchase_code = presscore_get_purchase_code();
-				$BRAINSTORM_PRODUCTS = array( 'convertplug' => 14058953, 'ultimate_addon' => 6892199 );
-				//activate plugins
-				foreach ( $brainstrom_products as $type => $products ) {
-
-					foreach ( $products as $id => $product ) {
-						$isActivate = false;
-						if (in_array($id, $BRAINSTORM_PRODUCTS)) {
-							if ( ! array_key_exists( "status", $product ) || ( array_key_exists( "status", $product ) && ( $product['status'] !== 'registered' ) ) ) {
-								//if ( ( array_key_exists( "is_product_free", $product ) && ( $product['is_product_free'] !== 'true' ) ) || ( array_key_exists( "licence_require", $product ) && ( $product['licence_require'] === 'true' ) ) ) {
-									$isActivate = true;
-								//}
-							}
-						}
-						if ($isActivate) {
-							$brainstrom_products[ $type ][ $id ]['purchase_key'] = $the7_purchase_code;
-							$brainstrom_products[ $type ][ $id ]['status'] = 'registered';
-							$brainstrom_products[ $type ][ $id ]['by_the7'] = true;
-							$needUpdate = true;
-						}
-					}
-				}
-			} else { //deactivate plugins
-
-				foreach ( $brainstrom_products as $type => $products ) {
-
-					foreach ( $products as $id => $product ) {
-						if ( array_key_exists( "status", $product ) && ( $product['status'] === 'registered' ) ) {
-							if ( array_key_exists( "by_the7", $product ) ) {
-								$brainstrom_products[ $type ][ $id ]['purchase_key'] = '';
-								$brainstrom_products[ $type ][ $id ]['status'] = '';
-								unset( $brainstrom_products[ $type ][ $id ]['by_the7'] );
-								$needUpdate = true;
-							}
-						}
-					}
-				}
-			}
-			if ( $needUpdate ) {
-				update_option( "cp_show_rebrand_notice", "no" );
-				update_option( 'brainstrom_products', $brainstrom_products );
-			}
-		}
-
 	}//end class
     add_action( 'plugins_loaded', 'uavc_plugin_init' );
 

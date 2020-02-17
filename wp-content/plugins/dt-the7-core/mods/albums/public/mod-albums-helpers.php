@@ -130,6 +130,8 @@ if ( ! function_exists( 'presscore_mod_albums_get_preview_gallery' ) ) :
 		$media_items = $config->get( 'post.media.library' );
 		if ( ! $media_items ) {
 			$media_items = array();
+		} else {
+			$media_items = array_values( (array) $media_items );
 		}
 
 		$open_post = ( 'post' == $config->get( 'post.open_as' ) );

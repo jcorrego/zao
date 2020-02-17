@@ -48,10 +48,10 @@ if ( ! function_exists( 'dt_woocommerce_inject_theme_options' ) ) :
 
 	function dt_woocommerce_inject_theme_options( $options ) {
 		if ( array_key_exists( 'of-header-menu', $options ) ) {
-			$options['of-woocommerce-mod-injected-header-options'] = plugin_dir_path( __FILE__ ) . 'options-inject-in-header.php';
+			$options['of-woocommerce-mod-injected-header-options'] = plugin_dir_path( __FILE__ ) . 'wc-cart-micro-widget-options.php';
 		}
 		if ( array_key_exists( 'of-likebuttons-menu', $options ) ) {
-			$options[] = plugin_dir_path( __FILE__ ) . 'options-inject-in-likebuttons.php';
+			$options[] = plugin_dir_path( __FILE__ ) . 'wc-share-buttons-options.php';
 		}
 		return $options;
 	}
@@ -62,9 +62,9 @@ endif;
 if ( ! function_exists( 'dt_woocommerce_setup_less_vars' ) ) :
 
 	/**
-	 * @param Presscore_Lib_LessVars_Manager $less_vars
+	 * @param The7_Less_Vars_Manager_Interface $less_vars
 	 */
-	function dt_woocommerce_setup_less_vars( $less_vars ) {
+	function dt_woocommerce_setup_less_vars( The7_Less_Vars_Manager_Interface $less_vars ) {
 		$less_vars->add_hex_color(
 			'product-counter-color',
 			of_get_option( 'header-elements-woocommerce_cart-counter-color' )
@@ -87,6 +87,20 @@ if ( ! function_exists( 'dt_woocommerce_setup_less_vars' ) ) :
 				$less_vars->add_keyword( $counter_color_vars[1], $gradient->with_angle( 'left' )->get_string() );
 		}
 		unset( $gradient_obj, $first_color, $gradient, $counter_color_vars );
+
+		$less_vars->add_hex_color(
+			'sub-cart-color',
+			of_get_option( 'header-elements-woocommerce_cart-sub_cart-font-color' )
+		);
+
+ 		$less_vars->add_pixel_number(
+     		'sub-cart-width',
+     		of_get_option( 'header-elements-woocommerce_cart-sub_cart-bg-width' )
+     	);
+		$less_vars->add_rgba_color(
+			'sub-cart-bg',
+			of_get_option( 'header-elements-woocommerce_cart-sub_cart-bg-color' )
+		);
 
 		$less_vars->add_number(
 			'product-img-width',
@@ -125,6 +139,7 @@ if ( ! function_exists( 'dt_woocommerce_setup_less_vars' ) ) :
 			'wc-list-switch-to-mobile',
 			of_get_option( 'woocommerce_list_switch' )
  		);
+
 	}
 	add_action( 'presscore_setup_less_vars', 'dt_woocommerce_setup_less_vars', 20 );
 

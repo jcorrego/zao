@@ -1,8 +1,5 @@
 <?php
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $dummy_status = new The7_Demo_Content_PHPStatus( array(
 	'max_execution_time'  => array(

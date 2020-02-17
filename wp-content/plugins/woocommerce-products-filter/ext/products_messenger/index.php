@@ -291,6 +291,9 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
         if($pos){
             $data['request']=substr($data['request'],0,$pos);
         }
+        if(!is_array($subscr)){
+            $subscr=array();
+        }
 	if (count($subscr) >= $this->subscr_count) {
 	    die('count is max'); // Check limit count on backend
 	}

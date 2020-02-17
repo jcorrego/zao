@@ -83,7 +83,7 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 			case 'wlb_thumbnail':
 				if ( $this->get_data( $post_id, 'image' ) ) {
 					?>
-					<img src="<?php echo wp_get_attachment_image_url( $this->get_data( $post_id, 'image' ) ) ?>" />
+                    <img src="<?php echo wp_get_attachment_image_url( $this->get_data( $post_id, 'image' ) ) ?>"/>
 					<?php
 					//echo $this->get_data( $post_id, 'code' );
 				}
@@ -91,10 +91,11 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 			case 'wlb_shortcode':
 				if ( $this->get_data( $post_id, 'instagram' ) ) {
 					?>
-					<textarea type="text wlb-input" class="wlb-shortcode short-text" readonly>[woocommerce_lookbook_instagram]</textarea>
+                    <textarea type="text wlb-input" class="wlb-shortcode short-text" readonly>[woocommerce_lookbook_instagram]</textarea>
 					<?php
 				} else { ?>
-					<textarea type="text wlb-input" class="wlb-shortcode short-text" readonly>[woocommerce_lookbook id="<?php echo esc_attr( $post_id ) ?>"]</textarea>
+                    <textarea type="text wlb-input" class="wlb-shortcode short-text"
+                              readonly>[woocommerce_lookbook id="<?php echo esc_attr( $post_id ) ?>"]</textarea>
 				<?php }
 				break;
 			case 'wlb_instagram':
@@ -105,12 +106,38 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 			default:
 				$post_status = get_post_field( 'post_status', $post_id );
 				?>
-				<div class="vi-ui mini buttons" data-id="<?php echo esc_attr( $post_id ) ?>">
-					<span data-val="1" class="vi-ui button <?php echo $post_status == 'publish' ? 'green' : '' ?>"><?php echo esc_html__( 'Publish', 'woo-lookbook' ) ?></span>
-					<span data-val="0" class="vi-ui button <?php echo $post_status == 'pending' ? 'orange' : '' ?>"><?php echo esc_html__( 'Pending', 'woo-lookbook' ) ?></span>
-					<span data-val="2" class="vi-ui button <?php echo $post_status == 'draft' ? 'grey' : '' ?>"><?php echo esc_html__( 'Draft', 'woo-lookbook' ) ?></span>
-				</div>
+                <div class="vi-ui mini buttons" data-id="<?php echo esc_attr( $post_id ) ?>">
+                    <span data-val="1"
+                          class="vi-ui button <?php echo $post_status == 'publish' ? 'green' : '' ?>"><?php echo esc_html__( 'Publish', 'woo-lookbook' ) ?></span>
+                    <span data-val="0"
+                          class="vi-ui button <?php echo $post_status == 'pending' ? 'orange' : '' ?>"><?php echo esc_html__( 'Pending', 'woo-lookbook' ) ?></span>
+                    <span data-val="2"
+                          class="vi-ui button <?php echo $post_status == 'draft' ? 'grey' : '' ?>"><?php echo esc_html__( 'Draft', 'woo-lookbook' ) ?></span>
+                </div>
 			<?php
+		}
+	}
+
+	/**
+	 * Get Post Meta
+	 *
+	 * @param $field
+	 *
+	 * @return bool
+	 */
+	private function get_data( $post_id, $field, $default = '' ) {
+
+
+		if ( isset( $this->data[ $post_id ] ) && $this->data[ $post_id ] ) {
+			$params = $this->data[ $post_id ];
+		} else {
+			$this->data[ $post_id ] = get_post_meta( $post_id, 'wlb_params', true );
+			$params                 = $this->data[ $post_id ];
+		}
+		if ( isset( $params[ $field ] ) && $field ) {
+			return $params[ $field ];
+		} else {
+			return $default;
 		}
 	}
 
@@ -160,9 +187,10 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 		$screen = get_current_screen();
 
 		if ( get_post_type() == 'woocommerce-lookbook' && $screen->id == 'edit-woocommerce-lookbook' ) { ?>
-			<div class="alignleft actions">
-				<span class="vi-ui mini button instagram wlb-instagram-sync"><i class="instagram icon"></i><?php echo esc_html__( 'Sync Instagram', 'woo-lookbook' ) ?></span>
-			</div>
+            <div class="alignleft actions">
+                <span class="vi-ui mini button instagram wlb-instagram-sync"><i
+                            class="instagram icon"></i><?php echo esc_html__( 'Sync Instagram', 'woo-lookbook' ) ?></span>
+            </div>
 		<?php }
 	}
 
@@ -175,12 +203,12 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 		$screen = get_current_screen();
 		if ( get_post_type() == 'woocommerce-lookbook' && $screen->id == 'woocommerce-lookbook' ) {
 			?>
-			<div class="wlb-shortcode">
-				<label>
+            <div class="wlb-shortcode">
+                <label>
 					<?php echo esc_html__( 'Shortcode', 'woo-lookbook' ) ?>
-					<input type="text" size="30" value='[woocommerce_lookbook id="<?php echo $post->ID ?>"]' readonly />
-				</label>
-			</div>
+                    <input type="text" size="30" value='[woocommerce_lookbook id="<?php echo $post->ID ?>"]' readonly/>
+                </label>
+            </div>
 		<?php }
 	}
 
@@ -283,13 +311,13 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 	}
 
 	public function render_metabox_node( $post ) { ?>
-		<div class="wlb-table">
+        <div class="wlb-table">
 
 			<?php
 			$product_ids = $this->get_data( $post->ID, 'product_id' );
 			$pos_x       = $this->get_data( $post->ID, 'x' );
 			$pos_y       = $this->get_data( $post->ID, 'y' );
-			if ( count( $product_ids ) && is_array( $product_ids ) ) {
+			if ( is_array( $product_ids ) && count( $product_ids ) ) {
 				foreach ( $product_ids as $k => $product_id ) {
 					if ( $k > 1 ) {
 						break;
@@ -299,40 +327,44 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 					}
 					$product = wc_get_product( $product_id );
 					?>
-					<div class="wlb-data wlb-item-<?php echo esc_attr( $k ) ?>" data-id="<?php echo esc_attr( $k ) ?>">
+                    <div class="wlb-data wlb-item-<?php echo esc_attr( $k ) ?>" data-id="<?php echo esc_attr( $k ) ?>">
 
-						<div class="wlb-field">
-							<select class="wlb-product wlb-product-search" name="wlb_params[product_id][]" data-placeholder="<?php esc_html_e( 'Search your product', 'woo-lookbook' ) ?>">
-								<option value="<?php echo esc_attr( $product->get_id() ) ?>" selected><?php echo esc_html( $product->get_title() ) ?></option>
-							</select>
-						</div>
+                        <div class="wlb-field">
+                            <select class="wlb-product wlb-product-search" name="wlb_params[product_id][]"
+                                    data-placeholder="<?php esc_html_e( 'Search your product', 'woo-lookbook' ) ?>">
+                                <option value="<?php echo esc_attr( $product->get_id() ) ?>"
+                                        selected><?php echo esc_html( $product->get_title() ) ?></option>
+                            </select>
+                        </div>
 
-						<div class="wlb-field">
+                        <div class="wlb-field">
 							<?php esc_html_e( 'X', 'woo-lookbook' ) ?>
-							<input class="wlb-x" type="number" name="wlb_params[x][]" value="<?php echo esc_attr( $pos_x[$k] ) ?>" min="0" max="100" step="0.01" />
+                            <input class="wlb-x" type="number" name="wlb_params[x][]"
+                                   value="<?php echo esc_attr( $pos_x[ $k ] ) ?>" min="0" max="100" step="0.01"/>
 							<?php esc_html_e( 'Y', 'woo-lookbook' ) ?>
-							<input class="wlb-y" type="number" name="wlb_params[y][]" value="<?php echo esc_attr( $pos_y[$k] ) ?>" min="0" max="100" step="0.01" />
-						</div>
-						<span class="wlb-remove">x</span>
+                            <input class="wlb-y" type="number" name="wlb_params[y][]"
+                                   value="<?php echo esc_attr( $pos_y[ $k ] ) ?>" min="0" max="100" step="0.01"/>
+                        </div>
+                        <span class="wlb-remove">x</span>
 
-					</div>
+                    </div>
 				<?php }
 			} ?>
-		</div>
-		<div class="wlb-error"></div>
-		<div>
+        </div>
+        <div class="wlb-error"></div>
+        <div>
 			<?php esc_html_e( 'You are using free version. You add only 2 nodes.', 'woo-lookbook' ) ?>
-			<p>
-				<a class="vi-ui wlb-add-new button blue button-primary" href="https://goo.gl/CAgGU6">
+            <p>
+                <a class="vi-ui wlb-add-new button blue button-primary" href="https://1.envato.market/mV0bM">
 					<?php esc_html_e( 'Upgrade Premium', 'woo-lookbook' ) ?>
-				</a>
-			</p>
-		</div>
-		<p>
+                </a>
+            </p>
+        </div>
+        <p>
 			<span class="vi-ui wlb-add-new button green button-primary">
 				<?php esc_html_e( 'Add node', 'woo-lookbook' ) ?>
 			</span>
-		</p>
+        </p>
 	<?php }
 
 	/**
@@ -358,47 +390,54 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 		$pos_y        = $this->get_data( $post->ID, 'y' );
 		?>
 
-		<!-- Your image container, which can be manipulated with js -->
-		<div class="wlb-image-container">
+        <!-- Your image container, which can be manipulated with js -->
+        <div class="wlb-image-container">
 			<?php
 
-			if ( count( $product_ids ) && is_array( $product_ids ) ) {
+			if ( is_array( $product_ids ) && count( $product_ids ) ) {
 				foreach ( $product_ids as $k => $product_id ) {
 					if ( $k > 1 ) {
 						break;
 					}
-					$x = isset( $pos_x[$k] ) ? $pos_x[$k] : 0;
-					$y = isset( $pos_y[$k] ) ? $pos_y[$k] : 0;
+					$x = isset( $pos_x[ $k ] ) ? $pos_x[ $k ] : 0;
+					$y = isset( $pos_y[ $k ] ) ? $pos_y[ $k ] : 0;
 					?>
-					<span class="wlb-node wlb-node-<?php echo esc_attr( $k ) ?>" data-id="<?php echo esc_attr( $k ) ?>" style="left: <?php echo $x ?>%;top: <?php echo $y ?>%">+</span>
+                    <span class="wlb-node wlb-node-<?php echo esc_attr( $k ) ?>" data-id="<?php echo esc_attr( $k ) ?>"
+                          style="left: <?php echo $x ?>%;top: <?php echo $y ?>%">+</span>
 				<?php }
 			} ?>
 			<?php if ( $you_have_img ) : ?>
-				<img class="wlb-image" src="<?php echo $your_img_src[0] ?>" alt="" style="max-width:100%;" />
+                <img class="wlb-image" src="<?php echo $your_img_src[0] ?>" alt="" style="max-width:100%;"/>
 			<?php endif; ?>
-		</div>
-		<!-- Your add & remove image links -->
-		<div class="hide-if-no-js">
-			<p>
-				<a class="vi-ui button green wlb-upload-img <?php if ( $you_have_img ) {
+        </div>
+        <!-- Your add & remove image links -->
+        <div class="hide-if-no-js">
+            <p>
+                <a class="vi-ui button green wlb-upload-img <?php if ( $you_have_img ) {
 					echo 'hidden';
 				} ?>" href="<?php echo $upload_link ?>">
 					<?php esc_html_e( 'Add Image', 'woo-lookbook' ) ?>
-				</a>
-				<a class="vi-ui button red wlb-delete-img <?php if ( ! $you_have_img ) {
+                </a>
+                <a class="vi-ui button red wlb-delete-img <?php if ( ! $you_have_img ) {
 					echo 'hidden';
 				} ?>" href="#">
 					<?php esc_html_e( 'Remove this image', 'woo-lookbook' ) ?>
-				</a>
-			</p>
-		</>
-		<!-- A hidden input to set and post the chosen image id -->
-		<input class="wlb-image-data" name="wlb_params[image]" type="hidden" value="<?php echo esc_attr( $your_img_id ); ?>" />
-		<input name="wlb_params[instagram]" type="hidden" value="<?php echo esc_attr( $this->get_data( $post->ID, 'instagram' ) ); ?>" />
-		<input name="wlb_params[code]" type="hidden" value="<?php echo esc_attr( $this->get_data( $post->ID, 'code' ) ); ?>" />
-		<input name="wlb_params[date]" type="hidden" value="<?php echo esc_attr( $this->get_data( $post->ID, 'date' ) ); ?>" />
-		<input name="wlb_params[comments]" type="hidden" value="<?php echo esc_attr( $this->get_data( $post->ID, 'comments' ) ); ?>" />
-		<input name="wlb_params[likes]" type="hidden" value="<?php echo esc_attr( $this->get_data( $post->ID, 'likes' ) ); ?>" />
+                </a>
+            </p>
+        </>
+        <!-- A hidden input to set and post the chosen image id -->
+        <input class="wlb-image-data" name="wlb_params[image]" type="hidden"
+               value="<?php echo esc_attr( $your_img_id ); ?>"/>
+        <input name="wlb_params[instagram]" type="hidden"
+               value="<?php echo esc_attr( $this->get_data( $post->ID, 'instagram' ) ); ?>"/>
+        <input name="wlb_params[code]" type="hidden"
+               value="<?php echo esc_attr( $this->get_data( $post->ID, 'code' ) ); ?>"/>
+        <input name="wlb_params[date]" type="hidden"
+               value="<?php echo esc_attr( $this->get_data( $post->ID, 'date' ) ); ?>"/>
+        <input name="wlb_params[comments]" type="hidden"
+               value="<?php echo esc_attr( $this->get_data( $post->ID, 'comments' ) ); ?>"/>
+        <input name="wlb_params[likes]" type="hidden"
+               value="<?php echo esc_attr( $this->get_data( $post->ID, 'likes' ) ); ?>"/>
 
 		<?php
 
@@ -409,8 +448,8 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 	/**
 	 * Handles saving the meta box.
 	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
+	 * @param int $post_id Post ID.
+	 * @param WP_Post $post Post object.
 	 *
 	 * @return null
 	 */
@@ -447,43 +486,20 @@ class WOO_F_LOOKBOOK_Admin_Lookbook {
 		if ( ! isset( $_POST['wlb_params'] ) ) {
 			return;
 		}
-		$data = $_POST['wlb_params'];
+		$data = wc_clean( $_POST['wlb_params'] );
 		if ( is_array( $data ) ) {
 			array_walk_recursive( $data, 'sanitize_text_field' );
 		} else {
 			$data = array();
 		}
 
-		if ( count( $data['product_id'] ) > 1 ) {
+		if ( is_array( $data['product_id'] ) && count( $data['product_id'] ) > 1 ) {
 			$data['product_id'] = array_slice( $data['product_id'], 0, 2 );
 			$data['x']          = array_slice( $data['x'], 0, 2 );
 			$data['y']          = array_slice( $data['y'], 0, 2 );
 
 		}
 		update_post_meta( $post_id, 'wlb_params', $data );
-	}
-
-	/**
-	 * Get Post Meta
-	 *
-	 * @param $field
-	 *
-	 * @return bool
-	 */
-	private function get_data( $post_id, $field, $default = '' ) {
-
-
-		if ( isset( $this->data[$post_id] ) && $this->data[$post_id] ) {
-			$params = $this->data[$post_id];
-		} else {
-			$this->data[$post_id] = get_post_meta( $post_id, 'wlb_params', true );
-			$params               = $this->data[$post_id];
-		}
-		if ( isset( $params[$field] ) && $field ) {
-			return $params[$field];
-		} else {
-			return $default;
-		}
 	}
 
 

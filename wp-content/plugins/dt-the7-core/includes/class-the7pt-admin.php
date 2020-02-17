@@ -26,6 +26,9 @@ class The7PT_Admin {
 		add_filter( 'plugins_api', array( __CLASS__, 'plugin_update_info', ), 10, 3 );
 
         add_action( 'admin_notices', array( __CLASS__, 'display_outdated_theme_notice' ) );
+
+        // Add site health tests.
+        include_once dirname( __FILE__ ) . '/the7pt-site-health-tests.php';
 	}
 
 	/**

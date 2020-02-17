@@ -76,13 +76,18 @@ if ( 'disabled' != $config->get( 'post.media.layout' ) ) {
 			$class = array();
 			$thumb_meta = wp_get_attachment_image_src( $attachment_data['ID'], 'full' );
 			$image_args = array(
-				'img_meta' 	=> array( $attachment_data['full'], $attachment_data['width'], $attachment_data['height'] ),
-				'img_id'	=> empty( $attachment_data['ID'] ) ? $attachment_data['ID'] : 0,
-				'alt'		=> $attachment_data['alt'],
-				'title'		=> $attachment_data['title'],
-				'img_class' => 'preload-me',
-				'custom'	=> ' data-dt-img-description="' . esc_attr($attachment_data['description']) . '" data-large_image_width="' . $thumb_meta[1] . '" data-large_image_height = "' . $thumb_meta[2]. '"',
-				'echo'		=> false,
+				'img_meta'     => array(
+					$attachment_data['full'],
+					$attachment_data['width'],
+					$attachment_data['height'],
+				),
+				'img_id'       => empty( $attachment_data['ID'] ) ? $attachment_data['ID'] : 0,
+				'alt'          => $attachment_data['alt'],
+				'title'        => $attachment_data['title'],
+				'img_class'    => 'preload-me',
+				'custom'       => ' data-dt-img-description="' . esc_attr( $attachment_data['description'] ) . '" data-large_image_width="' . $thumb_meta[1] . '" data-large_image_height = "' . $thumb_meta[2] . '"',
+				'echo'         => false,
+				'lazy_loading' => presscore_lazy_loading_enabled(),
 			);
 
 			if ( $open_thumbnail_in_lightbox ) {
@@ -115,6 +120,7 @@ if ( 'disabled' != $config->get( 'post.media.layout' ) ) {
 				// $blank_image = presscore_get_blank_image();
 
 				$image_args['href'] = $attachment_data['video_url'];
+				$image_args['lazy_loading'] = false;
 				$class[] = 'pswp-video';
 
 				$image_args['wrap'] = '<div class="rollover-video"><img %SRC% %IMG_CLASS% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% %TITLE% %CLASS% %CUSTOM%></a></div>';
@@ -122,7 +128,9 @@ if ( 'disabled' != $config->get( 'post.media.layout' ) ) {
 
 			$image_args['class'] = implode( ' ', $class );
 
+			presscore_remove_lazy_load_attrs();
 			$media_html = dt_get_thumb_img( $image_args );
+			presscore_add_lazy_load_attrs();
 		}
 	}
 

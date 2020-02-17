@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	"weight" => -1,
@@ -12,7 +9,6 @@ return array(
 	"icon" => "dt_vc_ico_products",
 	"class" => "dt_products_carousel",
 	"category" => __('by Dream-Theme', 'the7mk2'),
-	"admin_enqueue_css" => array(get_template_directory_uri().'/fonts/icomoon-arrows-the7/style.css'),
 	"params" => array(
 		// General group.
 		array(
@@ -161,6 +157,13 @@ return array(
 			"type" => "dt_number",
 			"value" => "30",
 			"edit_field_class" => "vc_col-xs-12 vc_column dt_row-6",
+		),
+		array(
+			'heading'          => __( 'Stage padding ', 'the7mk2' ),
+			'param_name'       => 'stage_padding',
+			'type'             => 'dt_number',
+			'value'            => '0',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 		array(
 			"heading" => __("Enable adaptive height", "the7mk2"),

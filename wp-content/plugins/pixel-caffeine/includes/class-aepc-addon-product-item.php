@@ -641,6 +641,27 @@ class AEPC_Addon_Product_Item {
 	}
 
 	/**
+	 * Set the group SKU, useful when the product is a variation
+	 *
+	 * @param string $group_sku
+	 *
+	 * @return self $this
+	 */
+	public function set_group_sku( $group_sku ) {
+		$this->data['group_sku'] = $group_sku;
+		return $this;
+	}
+
+	/**
+	 * Get the group SKU, useful when the product is a variation
+	 *
+	 * @return string
+	 */
+	public function get_group_sku() {
+		return isset( $this->data['group_sku'] ) ? $this->data['group_sku'] : null;
+	}
+
+	/**
 	 * Set the checkout URL where the item may be purchased
 	 *
 	 * @param string $checkout_url

@@ -173,6 +173,10 @@ class XMLWriter implements WriterInterface {
 			'g:custom_label_4' => $item->get_custom_label_4(),
 		);
 
+		if ($required_fields['g:description'] === $optional_fields['g:short_description']) {
+			unset($optional_fields['g:short_description']);
+		}
+
 		/**
 		 * Merge leaving only the not empty optional fields
 		 */

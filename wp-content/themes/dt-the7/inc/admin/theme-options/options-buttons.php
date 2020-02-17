@@ -16,20 +16,20 @@ $options[] = array( 'name' => _x( 'Buttons', 'theme-options', 'the7mk2' ), 'type
 /**
  * Buttons style.
  */
-$options[] = array( 'name' => _x( 'Buttons style', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+$options[] = array( 'name' => _x( 'Buttons decoration', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
 $options['buttons-style'] = array(
-	'name'    => 'Choose buttons style',
+	'name'    => _x( 'Choose decoration', 'theme-options', 'the7mk2' ),
 	'id'      => 'buttons-style',
 	'std'     => 'flat',
 	'type'    => 'images',
 	'class'   => 'small',
 	'options' => array(
-		'flat'     => array(
-			'title' => _x( 'Flat', 'theme-options', 'the7mk2' ),
+		'flat'   => array(
+			'title' => _x( 'None', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/buttons-style-flat.gif',
 		),
-		'3d'       => array(
+		'3d'     => array(
 			'title' => _x( '3D', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/buttons-style-3d.gif',
 		),
@@ -49,21 +49,13 @@ $options['buttons-color_mode'] = array(
 	'name'    => _x( 'Buttons color', 'theme-options', 'the7mk2' ),
 	'id'      => 'buttons-color_mode',
 	'std'     => 'accent',
-	'type'    => 'images',
+	'type'    => 'radio',
 	'class'   => 'small',
 	'options' => array(
-		'accent'   => array(
-			'title' => _x( 'Accent', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'color'    => array(
-			'title' => _x( 'Custom color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom.gif',
-		),
-		'gradient' => array(
-			'title' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom-gradient.gif',
-		),
+		'disabled'   => _x( 'Disabled', 'theme-options', 'the7mk2' ),
+		'accent'   => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'    =>_x( 'Custom color', 'theme-options', 'the7mk2' ),
+		'gradient' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
 	),
 );
 
@@ -95,22 +87,14 @@ $options['buttons-hover_color_mode'] = array(
 	'name'    => _x( 'Buttons hover color', 'theme-options', 'the7mk2' ),
 	'id'      => 'buttons-hover_color_mode',
 	'std'     => 'accent',
-	'type'    => 'images',
+	'type'    => 'radio',
 	'class'   => 'small',
 	'divider' => 'top',
 	'options' => array(
-		'accent'   => array(
-			'title' => _x( 'Accent', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'color'    => array(
-			'title' => _x( 'Custom color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom.gif',
-		),
-		'gradient' => array(
-			'title' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom-gradient.gif',
-		),
+		'disabled'   => _x( 'Disabled', 'theme-options', 'the7mk2' ),
+		'accent'   =>  _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'   => _x( 'Custom color', 'theme-options', 'the7mk2' ),
+		'gradient' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
 	),
 );
 
@@ -137,23 +121,62 @@ $options['buttons-hover_color_gradient'] = array(
 		'value'    => 'gradient',
 	),
 );
-
+$options['buttons-border-color_mode'] = array(
+	'name'    => _x( 'Border color', 'theme-options', 'the7mk2' ),
+	'id'      => 'buttons-border-color_mode',
+	'std'     => 'accent',
+	'type'    => 'radio',
+	'class'   => 'small',
+	'divider' => 'top',
+	'options' => array(
+		'accent'   => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'    =>_x( 'Custom color', 'theme-options', 'the7mk2' ),
+	),
+);
+$options['buttons-border-color'] = array(
+	'name'       => '&nbsp;',
+	'id'         => 'buttons-border-color',
+	'std'        => '#ffffff',
+	'type'       => 'color',
+	'dependency' => array(
+		'field'    => 'buttons-border-color_mode',
+		'operator' => '==',
+		'value'    => 'color',
+	),
+);
+$options['buttons-hover-border-color_mode'] = array(
+	'name'    => _x( 'Border hover color', 'theme-options', 'the7mk2' ),
+	'id'      => 'buttons-hover-border-color_mode',
+	'std'     => 'accent',
+	'type'    => 'radio',
+	'class'   => 'small',
+	'divider' => 'top',
+	'options' => array(
+		'accent'   => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'    =>_x( 'Custom color', 'theme-options', 'the7mk2' ),
+	),
+);
+$options['buttons-hover-border-color'] = array(
+	'name'       => '&nbsp;',
+	'id'         => 'buttons-hover-border-color',
+	'std'        => '#ffffff',
+	'type'       => 'color',
+	'dependency' => array(
+		'field'    => 'buttons-hover-border-color_mode',
+		'operator' => '==',
+		'value'    => 'color',
+	),
+);
 $options['buttons-text_color_mode'] = array(
 	'name'    => _x( 'Text color', 'theme-options', 'the7mk2' ),
 	'id'      => 'buttons-text_color_mode',
 	'std'     => 'color',
-	'type'    => 'images',
+	'type'    => 'radio',
 	'class'   => 'small',
 	'divider' => 'top',
 	'options' => array(
-		'accent' => array(
-			'title' => _x( 'Accent', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'color'  => array(
-			'title' => _x( 'Custom color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom.gif',
-		),
+		'accent' => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'  => _x( 'Custom color', 'theme-options', 'the7mk2' ),
 	),
 );
 
@@ -173,18 +196,12 @@ $options['buttons-text_hover_color_mode'] = array(
 	'name'    => _x( 'Text hover color', 'theme-options', 'the7mk2' ),
 	'id'      => 'buttons-text_hover_color_mode',
 	'std'     => 'color',
-	'type'    => 'images',
+	'type'    => 'radio',
 	'class'   => 'small',
 	'divider' => 'top',
 	'options' => array(
-		'accent' => array(
-			'title' => _x( 'Accent', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'color'  => array(
-			'title' => _x( 'Custom color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom.gif',
-		),
+		'accent' => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'  => _x( 'Custom color', 'theme-options', 'the7mk2' ),
 	),
 );
 
@@ -201,50 +218,142 @@ $options['buttons-text_hover_color'] = array(
 );
 
 /**
- * Small, Medium, Big Buttons.
+ * Small buttons.
  */
 
-foreach ( presscore_themeoptions_get_buttons_defaults() as $id => $opts ) {
+$options[] = array( 'name' => _x( 'Small buttons', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-	$options[] = array( 'name' => _x( $opts['desc'], 'theme-options', 'the7mk2' ), 'type' => 'block' );
+$options["buttons-s-typography"] = array(
+	'id'   => "buttons-s-typography",
+	'type' => 'typography',
+	'std'  => array(
+		'font_family'    => 'Open Sans',
+		'font_size'      => 12,
+		'text_transform' => 'none',
+	),
+);
 
-	$options["buttons-{$id}_font_family"] = array(
-		'name'  => _x( 'Font-family', 'theme-options', 'the7mk2' ),
-		'id'    => "buttons-{$id}_font_family",
-		'std'   => ! empty( $opts['ff'] ) ? $opts['ff'] : 'Open Sans',
-		'type'  => 'web_fonts',
-		'fonts' => 'all',
-	);
+$options['buttons-s-icon-size'] = array(
+	'name'    => _x( 'Icon size', 'theme-options', 'the7mk2' ),
+	'type'    => 'slider',
+	'id'      => 'buttons-s-icon-size',
+	'std'     => 12,
+	'options' => array( 'min' => 9, 'max' => 120 ),
+);
 
-	$options["buttons-{$id}_font_size"] = array(
-		'name'     => _x( 'Font-size', 'theme-options', 'the7mk2' ),
-		'id'       => "buttons-{$id}_font_size",
-		'std'      => $opts['fs'],
-		'type'     => 'slider',
-		'options'  => array( 'min' => 9, 'max' => 120 ),
-		'sanitize' => 'font_size',
-	);
+$options["buttons-s_padding"] = array(
+	'id'   => "buttons-s_padding",
+	'name' => _x( 'Padding', 'theme-options', 'the7mk2' ),
+	'type' => 'spacing',
+	'std'  => '8px 14px 7px 14px',
+);
 
-	$options["buttons-{$id}_uppercase"] = array(
-		'name' => _x( 'Capitalize', 'theme-options', 'the7mk2' ),
-		'id'   => "buttons-{$id}_uppercase",
-		'type' => 'checkbox',
-		'std'  => $opts['uc'],
-	);
+$options["buttons-s_border_radius"] = array(
+	'name'  => _x( 'Border radius', 'theme-options', 'the7mk2' ),
+	'id'    => "buttons-s_border_radius",
+	'std'   => '4px',
+	'type'  => 'number',
+	'units' => 'px',
+);
 
-	$padding_std                      = sprintf( '%spx %spx %spx %spx', $opts['padding_top'], $opts['padding_right'], $opts['padding_bottom'], $opts['padding_left'] );
-	$options["buttons-{$id}_padding"] = array(
-		'id'   => "buttons-{$id}_padding",
-		'name' => _x( 'Padding', 'theme-options', 'the7mk2' ),
-		'type' => 'spacing',
-		'std'  => $padding_std,
-	);
+$options["buttons-s_border_width"] = array(
+	'name'  => _x( 'Border width', 'theme-options', 'the7mk2' ),
+	'id'    => "buttons-s_border_width",
+	'std'   => '0px',
+	'type'  => 'number',
+	'units' => 'px',
+);
 
-	$options["buttons-{$id}_uppercase"] = array(
-		'name'  => _x( 'Border radius', 'theme-options', 'the7mk2' ),
-		'id'    => "buttons-{$id}_border_radius",
-		'std'   => $opts['border_radius'],
-		'type'  => 'number',
-		'units' => 'px',
-	);
-}
+/**
+ * Medium buttons.
+ */
+
+$options[] = array( 'name' => _x( 'Medium buttons', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+
+$options["buttons-m-typography"] = array(
+	'id'   => "buttons-m-typography",
+	'type' => 'typography',
+	'std'  => array(
+		'font_family'    => 'Open Sans',
+		'font_size'      => 12,
+		'text_transform' => 'none',
+	),
+);
+
+$options['buttons-m-icon-size'] = array(
+	'name'    => _x( 'Icon size', 'theme-options', 'the7mk2' ),
+	'type'    => 'slider',
+	'id'      => 'buttons-m-icon-size',
+	'std'     => 12,
+	'options' => array( 'min' => 9, 'max' => 120 ),
+);
+
+$options["buttons-m_padding"] = array(
+	'id'   => "buttons-m_padding",
+	'name' => _x( 'Padding', 'theme-options', 'the7mk2' ),
+	'type' => 'spacing',
+	'std'  => '12px 18px 11px 18px',
+);
+
+$options["buttons-m_border_radius"] = array(
+	'name'  => _x( 'Border radius', 'theme-options', 'the7mk2' ),
+	'id'    => "buttons-m_border_radius",
+	'std'   => '4px',
+	'type'  => 'number',
+	'units' => 'px',
+);
+
+$options["buttons-m_border_width"] = array(
+	'name'  => _x( 'Border width', 'theme-options', 'the7mk2' ),
+	'id'    => "buttons-m_border_width",
+	'std'   => '0px',
+	'type'  => 'number',
+	'units' => 'px',
+);
+
+/**
+ * Big buttons.
+ */
+
+$options[] = array( 'name' => _x( 'Big buttons', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+
+$options["buttons-l-typography"] = array(
+	'id'   => "buttons-l-typography",
+	'type' => 'typography',
+	'std'  => array(
+		'font_family'    => 'Open Sans',
+		'font_size'      => 12,
+		'text_transform' => 'none',
+	),
+);
+
+$options['buttons-l-icon-size'] = array(
+	'name'    => _x( 'Icon size', 'theme-options', 'the7mk2' ),
+	'type'    => 'slider',
+	'id'      => 'buttons-l-icon-size',
+	'std'     => 12,
+	'options' => array( 'min' => 9, 'max' => 120 ),
+);
+
+$options["buttons-l_padding"] = array(
+	'id'   => "buttons-l_padding",
+	'name' => _x( 'Padding', 'theme-options', 'the7mk2' ),
+	'type' => 'spacing',
+	'std'  => '17px 24px 16px 24px',
+);
+
+$options["buttons-l_border_radius"] = array(
+	'name'  => _x( 'Border radius', 'theme-options', 'the7mk2' ),
+	'id'    => "buttons-l_border_radius",
+	'std'   => '4px',
+	'type'  => 'number',
+	'units' => 'px',
+);
+
+$options["buttons-l_border_width"] = array(
+	'name'  => _x( 'Border width', 'theme-options', 'the7mk2' ),
+	'id'    => "buttons-l_border_width",
+	'std'   => '0px',
+	'type'  => 'number',
+	'units' => 'px',
+);

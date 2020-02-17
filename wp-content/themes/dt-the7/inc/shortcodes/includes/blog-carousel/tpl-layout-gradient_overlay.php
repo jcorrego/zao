@@ -3,15 +3,13 @@
  * Masonry blog layout template.
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $config = presscore_config();
+$show_icon_zoom = '';
 ?>
 
-<?php if ( presscore_post_format_supports_media_content( get_post_format() ) && ! empty( $post_media ) ) : ?>
+<?php if ( ! empty( $post_media ) ) : ?>
 
 <div class="post-thumbnail-wrap">
 	<div class="post-thumbnail">
@@ -33,6 +31,11 @@ $config = presscore_config();
 <div class="post-entry-content">
 
 	<div class="post-head-wrapper">
+		<?php 
+		if ( $config->get( 'blog.show_icon') ) {
+			$show_icon_zoom = '<span class="gallery-zoom-ico ' . ( $config->get( 'blog.show_icon.html' ) ) . '"><span></span></span>';
+		}
+		echo $show_icon_zoom ; ?>
 		<h3 class="entry-title">
 			<a href="<?php the_permalink(); ?>" title="<?php echo the_title_attribute( 'echo=0' ); ?>" rel="bookmark"><?php the_title(); ?></a>
 		</h3>

@@ -65,7 +65,7 @@ if ( ! class_exists( 'DT_Shortcode_CallToAction', false ) ) {
 				 * @deprecated Only for backward compatibility
 				 */
 				'text_align' => 'left',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			$clean_atts['style'] = sanitize_key( $clean_atts['style'] );
 			$clean_atts['background'] = sanitize_key( $clean_atts['background'] );

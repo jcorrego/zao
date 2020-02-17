@@ -94,6 +94,8 @@ class Presscore_Inc_Widgets_Portfolio extends WP_Widget {
 
 			echo '<div class="instagram-photos" data-image-max-width="' . absint( $instance['max_width'] ) . '">';
 
+			presscore_remove_masonry_lazy_load_attrs();
+
 			while( $p_query->have_posts() ) { $p_query->the_post();
 
 				$thumb_id = get_post_thumbnail_id( get_the_ID() );
@@ -129,8 +131,10 @@ class Presscore_Inc_Widgets_Portfolio extends WP_Widget {
 					'wrap'          => "\n" . '<a %HREF% %TITLE% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% ' . image_hwstring( $img_size[0], $img_size[1] ) . ' %ALT% /></a>' . "\n",
 				) );
 
-			} // while have posts
+			}
+
 			wp_reset_postdata();
+			presscore_add_masonry_lazy_load_attrs();
 
 			echo '</div>';
 

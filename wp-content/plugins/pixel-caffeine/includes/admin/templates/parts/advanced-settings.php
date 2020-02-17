@@ -29,6 +29,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="form-group">
 					<div class="control-wrap">
 						<div class="checkbox">
+							<label for="<?php $page->field_id( 'aepc_no_pixel_init' ) ?>">
+								<?php printf( esc_html_x( 'Do not add the %1$sPixel init snippet%2$s', 'pixel-caffeine' ),
+									'<a href="https://developers.facebook.com/docs/facebook-pixel/implementation/" target="_blank">',
+									'</a>',
+									'<strong>',
+									'</strong>'
+								) ?>
+								<input
+									type="checkbox"
+									name="<?php $page->field_name( 'aepc_no_pixel_init' ) ?>"
+									id="<?php $page->field_id( 'aepc_no_pixel_init' ) ?>"
+									<?php checked( $page->get_value( 'aepc_no_pixel_init' ), 'yes' ) ?>>
+							</label>
+						</div>
+					</div><!-- ./control-wrap -->
+				</div><!-- ./form-group -->
+
+				<div class="form-group">
+					<div class="control-wrap">
+						<div class="checkbox">
 							<label for="<?php $page->field_id( 'aepc_force_ids' ) ?>">
 								<?php printf( esc_html_x( 'Force to use product IDs even if there is a SKU defined', 'pixel-caffeine' ),
 									'<strong>',
@@ -109,6 +129,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 									name="<?php $page->field_name( 'aepc_conversions_no_product_group' ) ?>"
 									id="<?php $page->field_id( 'aepc_conversions_no_product_group' ) ?>"
 									<?php checked( $page->get_value( 'aepc_conversions_no_product_group' ), 'yes' ) ?>>
+							</label>
+						</div>
+					</div><!-- ./control-wrap -->
+				</div><!-- ./form-group -->
+
+				<div class="form-group">
+					<div class="control-wrap">
+						<div class="checkbox">
+							<label for="<?php $page->field_id( 'aepc_no_variation_tracking' ) ?>">
+								<?php printf( esc_html_x( 'Do not track %1$svariations%2$s on DPA events and %1$sforce to use the parent ID%2$s when a variation is added to cart and checkout.', '%1$s and %2$s are for strong tag', 'pixel-caffeine' ),
+									'<strong>',
+									'</strong>'
+								) ?>
+								<input
+									type="checkbox"
+									name="<?php $page->field_name( 'aepc_no_variation_tracking' ) ?>"
+									id="<?php $page->field_id( 'aepc_no_variation_tracking' ) ?>"
+									<?php checked( $page->get_value( 'aepc_no_variation_tracking' ), 'yes' ) ?>>
 							</label>
 						</div>
 					</div><!-- ./control-wrap -->

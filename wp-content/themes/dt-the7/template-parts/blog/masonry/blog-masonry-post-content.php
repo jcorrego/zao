@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
 <div class="blog-content wf-td">
 
-	<?php presscore_get_template_part( 'theme', 'blog/blog-post-content-part', get_post_format() ); ?>
+	<?php presscore_get_template_part( 'theme', 'blog/blog-post-content-part' ); ?>
 
 	<?php
 	if ( presscore_get_config()->get( 'show_details' ) ) {

@@ -35,7 +35,6 @@ class WCCT_XL_Support {
 		add_filter( 'extra_plugin_headers', array( $this, 'extra_woocommerce_headers' ) );
 
 		add_filter( 'add_menu_classes', array( $this, 'modify_menu_classes' ) );
-		add_action( 'admin_init', array( $this, 'wcct_xl_parse_request_and_process' ), 15 );
 
 		add_action( 'xl_licenses_submitted', array( $this, 'process_licensing_form' ) );
 		add_action( 'xl_deactivate_request', array( $this, 'maybe_process_deactivation' ) );
@@ -196,26 +195,6 @@ class WCCT_XL_Support {
 		return $menu;
 	}
 
-	public function wcct_xl_parse_request_and_process() {
-		$instance_support = XL_Support::get_instance();
-
-		if ( $this->slug == XL_dashboard::get_expected_slug() && isset( $_POST['xl_submit_support'] ) ) {
-
-			if ( filter_input( INPUT_POST, 'choose_addon' ) == '' || filter_input( INPUT_POST, 'comments' ) == '' ) {
-				$instance_support->validation = false;
-				XL_admin_notifications::add_notification( array(
-					'support_request_failure' => array(
-						'type'           => 'error',
-						'is_dismissable' => true,
-						'content'        => __( '<p> Unable to submit your request.All fields are required. Please ensure that all the fields are filled out.</p>', 'finale-woocommerce-sales-countdown-timer-discount' ),
-					),
-				) );
-			} else {
-				$instance_support->xl_maybe_push_support_request( $_POST );
-			}
-		}
-	}
-
 	public function process_licensing_form( $posted_data ) {
 		if ( isset( $posted_data['license_keys'][ WCCT_PLUGIN_BASENAME ] ) ) {
 			$shortname = $this->edd_slugify_module_name( $this->full_name );
@@ -227,9 +206,9 @@ class WCCT_XL_Support {
 	/**
 	 * License management helper function to create a slug that is friendly with edd
 	 *
-	 * @param type $name
+	 * @param $name
 	 *
-	 * @return type
+	 * @return string
 	 */
 	public function edd_slugify_module_name( $name ) {
 		return preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $name ) ) );
@@ -238,17 +217,17 @@ class WCCT_XL_Support {
 	/**
 	 * Validate is it is for email product deactivation
 	 *
-	 * @param type $posted_data
+	 * @param $posted_data
 	 */
 	public function maybe_process_deactivation( $posted_data ) {
-		if ( isset( $posted_data['filepath'] ) && $posted_data['filepath'] == WCCT_PLUGIN_BASENAME ) {
+		if ( isset( $posted_data['filepath'] ) && $posted_data['filepath'] === WCCT_PLUGIN_BASENAME ) {
 			$this->license_instance->deactivate_license();
 			wp_safe_redirect( 'admin.php?page=' . $posted_data['page'] . '&tab=' . $posted_data['tab'] );
 		}
 	}
 
 	public function wcct_modify_tabs( $tabs ) {
-		if ( $this->slug == XL_dashboard::get_expected_slug() ) {
+		if ( $this->slug === XL_dashboard::get_expected_slug() ) {
 			return array();
 		}
 
@@ -267,7 +246,6 @@ class WCCT_XL_Support {
 	 * Adding WooCommerce sub-menu for global options
 	 */
 	public function add_menus() {
-
 		if ( ! XL_dashboard::$is_core_menu ) {
 
 			add_menu_page( __( 'XLPlugins', 'finale-woocommerce-sales-countdown-timer-discount' ), __( 'XLPlugins', 'finale-woocommerce-sales-countdown-timer-discount' ), 'manage_woocommerce', 'xlplugins', array(

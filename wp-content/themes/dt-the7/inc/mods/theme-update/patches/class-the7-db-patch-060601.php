@@ -51,7 +51,7 @@ class The7_DB_Patch_060601 extends The7_DB_Patch {
 		}
 
 		foreach ( $gradient as $i => $color ) {
-			$color_obj      = new Presscore_Lib_LessVars_Color( $color );
+			$color_obj      = new The7_Less_Vars_Value_Color( $color );
 			$gradient[ $i ] = $opacity === 100 ? $color_obj->get_hex() : $color_obj->opacity( $opacity )->get_rgba();
 		}
 

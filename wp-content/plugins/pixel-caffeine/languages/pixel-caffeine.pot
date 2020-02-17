@@ -1,14 +1,14 @@
-# Copyright (C) 2018 AdEspresso
+# Copyright (C) 2019 AdEspresso
 # This file is distributed under the same license as the Pixel Caffeine package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Pixel Caffeine 2.0.6\n"
+"Project-Id-Version: Pixel Caffeine 2.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/pixel-caffeine\n"
-"POT-Creation-Date: 2018-08-14 07:39:52+00:00\n"
+"POT-Creation-Date: 2019-11-18 10:14:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -57,26 +57,26 @@ msgstr ""
 msgid "iPod"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ajax.php:542
-#: includes/admin/class-aepc-admin-ajax.php:584
-#: includes/admin/class-aepc-admin-ajax.php:617
+#: includes/admin/class-aepc-admin-ajax.php:543
+#: includes/admin/class-aepc-admin-ajax.php:585
+#: includes/admin/class-aepc-admin-ajax.php:618
 msgid "anything"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ajax.php:1025
+#: includes/admin/class-aepc-admin-ajax.php:1026
 msgid "Transients cleared correctly!"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ajax.php:1038
+#: includes/admin/class-aepc-admin-ajax.php:1039
 msgid "Facebook connection reset correctly!"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ajax.php:1051
+#: includes/admin/class-aepc-admin-ajax.php:1052
 #: includes/admin/templates/parts/modals/confirm-refresh-product-feed.php:36
 msgid "OK"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ajax.php:1074
+#: includes/admin/class-aepc-admin-ajax.php:1075
 msgid "All logs are removed."
 msgstr ""
 
@@ -136,12 +136,12 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-aepc-admin-ca.php:392
-#: includes/admin/class-aepc-admin-view.php:1286
+#: includes/admin/class-aepc-admin-view.php:1289
 msgid "Now"
 msgstr ""
 
 #: includes/admin/class-aepc-admin-ca.php:394
-#: includes/admin/class-aepc-admin-view.php:1288
+#: includes/admin/class-aepc-admin-view.php:1291
 #: includes/admin/templates/parts/widgets/news.php:38
 msgid "%s ago"
 msgstr ""
@@ -199,7 +199,7 @@ msgstr[1] ""
 #: includes/admin/class-aepc-admin-ca.php:910
 #: includes/admin/class-aepc-admin-ca.php:923
 #: includes/admin/class-aepc-admin-ca.php:944
-#: includes/admin/class-aepc-admin.php:521
+#: includes/admin/class-aepc-admin.php:532
 msgid "any"
 msgstr ""
 
@@ -239,11 +239,11 @@ msgstr ""
 msgid "nothing"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ca.php:1032
+#: includes/admin/class-aepc-admin-ca.php:1034
 msgid "with"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-ca.php:1042
+#: includes/admin/class-aepc-admin-ca.php:1044
 #: includes/admin/templates/parts/forms/custom-audience.php:172
 #: includes/admin/templates/parts/forms/custom-audience.php:216
 #: includes/admin/templates/parts/forms/custom-audience.php:256
@@ -357,112 +357,113 @@ msgstr ""
 msgid "Manual facebook connection"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:797
+#: includes/admin/class-aepc-admin-view.php:800
+#: includes/admin/templates/parts/forms/conversion.php:48
 msgid "Contains"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:798
+#: includes/admin/class-aepc-admin-view.php:801
 msgid "Not Contains"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:799
+#: includes/admin/class-aepc-admin-view.php:802
 msgid "Is"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:800
+#: includes/admin/class-aepc-admin-view.php:803
 msgid "Not equal"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:801
+#: includes/admin/class-aepc-admin-view.php:804
 msgid "Less than"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:802
+#: includes/admin/class-aepc-admin-view.php:805
 msgid "Less than or equal to"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:803
-#: includes/admin/class-aepc-admin-view.php:804
+#: includes/admin/class-aepc-admin-view.php:806
+#: includes/admin/class-aepc-admin-view.php:807
 msgid "Greater than or equal to"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:846
+#: includes/admin/class-aepc-admin-view.php:849
 msgid "Product Category"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:877
+#: includes/admin/class-aepc-admin-view.php:880
 msgid "Product Tag"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1187
+#: includes/admin/class-aepc-admin-view.php:1190
 msgid "Full Description"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1188
+#: includes/admin/class-aepc-admin-view.php:1191
 msgid "Short Description"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1199
+#: includes/admin/class-aepc-admin-view.php:1202
 msgid "Price excluding tax"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1200
+#: includes/admin/class-aepc-admin-view.php:1203
 msgid "Price including tax"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1211
+#: includes/admin/class-aepc-admin-view.php:1214
 msgid "New"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1212
+#: includes/admin/class-aepc-admin-view.php:1215
 msgid "Refurbished"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1213
+#: includes/admin/class-aepc-admin-view.php:1216
 msgid "Used"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1224
+#: includes/admin/class-aepc-admin-view.php:1227
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1225
+#: includes/admin/class-aepc-admin-view.php:1228
 msgid "Medium"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1226
+#: includes/admin/class-aepc-admin-view.php:1229
 msgid "Large"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1227
+#: includes/admin/class-aepc-admin-view.php:1230
 msgid "Full Size"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1239
+#: includes/admin/class-aepc-admin-view.php:1242
 msgid "Every Sunday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1240
+#: includes/admin/class-aepc-admin-view.php:1243
 msgid "Every Monday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1241
+#: includes/admin/class-aepc-admin-view.php:1244
 msgid "Every Tuesday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1242
+#: includes/admin/class-aepc-admin-view.php:1245
 msgid "Every Wednesday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1243
+#: includes/admin/class-aepc-admin-view.php:1246
 msgid "Every Thursday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1244
+#: includes/admin/class-aepc-admin-view.php:1247
 msgid "Every Friday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin-view.php:1245
+#: includes/admin/class-aepc-admin-view.php:1248
 msgid "Every Saturday"
 msgstr ""
 
@@ -482,158 +483,158 @@ msgstr ""
 msgid "<strong>Some option cannot be saved</strong> Please, check errors below."
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:363
+#: includes/admin/class-aepc-admin.php:370
 msgid "Please, check fields errors below."
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:509
+#: includes/admin/class-aepc-admin.php:520
 msgid ""
 "You have unsaved changes on this page. Do you want to leave this page and "
 "discard your changes or stay on this page?"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:510
+#: includes/admin/class-aepc-admin.php:521
 msgid "You need to save!"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:512
 #: includes/admin/class-aepc-admin.php:523
+#: includes/admin/class-aepc-admin.php:534
 msgid "Saving..."
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:514
+#: includes/admin/class-aepc-admin.php:525
 msgid "Copied!"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:515
+#: includes/admin/class-aepc-admin.php:526
 msgid "No support :("
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:516
+#: includes/admin/class-aepc-admin.php:527
 msgid "Press ⌘-{{{ key }}} to copy"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:517
+#: includes/admin/class-aepc-admin.php:528
 msgid "Press Ctrl-{{{ key }}} to copy"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:518
+#: includes/admin/class-aepc-admin.php:529
 msgid "Press ⌘-{{{ key }}} to cut"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:519
+#: includes/admin/class-aepc-admin.php:530
 msgid "Press Ctrl-{{{ key }}} to cut"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:522
+#: includes/admin/class-aepc-admin.php:533
 msgid "Write the key or select from below"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:524
+#: includes/admin/class-aepc-admin.php:535
 msgid "<strong>Can't add filter</strong> You have to select an event type"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:525
+#: includes/admin/class-aepc-admin.php:536
 msgid "<strong>Can't add filter</strong> You have to define at least one condition"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:527
+#: includes/admin/class-aepc-admin.php:538
 msgid "Select an account ID"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:528
+#: includes/admin/class-aepc-admin.php:539
 msgid "No Ad account found"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:529
+#: includes/admin/class-aepc-admin.php:540
 msgid "No pixel found"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:530
+#: includes/admin/class-aepc-admin.php:541
 msgid "No products feeds found"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:532
+#: includes/admin/class-aepc-admin.php:543
 #: includes/admin/templates/parts/activity-box.php:29
 msgid "Today"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:533
+#: includes/admin/class-aepc-admin.php:544
 #: includes/admin/templates/parts/activity-box.php:30
 msgid "Yesterday"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:534
+#: includes/admin/class-aepc-admin.php:545
 msgid "2 Days"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:535
+#: includes/admin/class-aepc-admin.php:546
 msgid "7 Days"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:536
+#: includes/admin/class-aepc-admin.php:547
 msgid "14 Days"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:700
+#: includes/admin/class-aepc-admin.php:713
 msgid "<strong>RSS Error</strong>: %s"
 msgstr ""
 
-#: includes/admin/class-aepc-admin.php:712
+#: includes/admin/class-aepc-admin.php:725
 msgid ""
 "An error has occurred, which probably means the feed is down. Try again "
 "later."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:154
+#: includes/admin/class-aepc-facebook-adapter.php:150
 msgid "Empty Token"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:164
+#: includes/admin/class-aepc-facebook-adapter.php:160
 msgid "Expired Token"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:172
+#: includes/admin/class-aepc-facebook-adapter.php:168
 msgid "Invalid login, please try again."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:205
+#: includes/admin/class-aepc-facebook-adapter.php:201
 msgid "Please, grant the permissions requested"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:207
+#: includes/admin/class-aepc-facebook-adapter.php:203
 msgid "Please, grant the permissions: %s"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:210
+#: includes/admin/class-aepc-facebook-adapter.php:206
 msgid "Facebook authentication error"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:224
+#: includes/admin/class-aepc-facebook-adapter.php:220
 msgid ""
 "<strong>Facebook connected</strong> Your facebook account is properly "
 "connected now."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:376
+#: includes/admin/class-aepc-facebook-adapter.php:372
 msgid ""
 "Please, connect your facebook account to make operations to the custom "
 "audiences of your Ad account."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:421
+#: includes/admin/class-aepc-facebook-adapter.php:417
 msgid ""
 "Something went wrong during the connection with Facebook API. Please, try "
 "to %1$srefresh the page%2$s."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:434
+#: includes/admin/class-aepc-facebook-adapter.php:430
 msgid ""
 "Cannot save on facebook account because of something gone wrong during "
 "facebook connection."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:440
+#: includes/admin/class-aepc-facebook-adapter.php:436
 msgid ""
 "The request goes in error from your server due by some oldest version of "
 "\"cUrl\" package. Please, ask to your hosting to upgrade it in order to fix "
@@ -642,86 +643,86 @@ msgid ""
 "service, to give their more details about the issue."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:456
+#: includes/admin/class-aepc-facebook-adapter.php:452
 msgid "Facebook connection timed out. Please, login again from %shere%s"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:479
+#: includes/admin/class-aepc-facebook-adapter.php:475
 msgid ""
 "Facebook connection timed out or you need to authorize again. Please, login "
 "again from %shere%s"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:480
+#: includes/admin/class-aepc-facebook-adapter.php:476
 msgid "Permission error: %s"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:481
+#: includes/admin/class-aepc-facebook-adapter.php:477
 msgid "This Ads action requires the user to be admin of the application."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:482
+#: includes/admin/class-aepc-facebook-adapter.php:478
 msgid "This Ads action requires the user to be admin of the ad account."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:483
+#: includes/admin/class-aepc-facebook-adapter.php:479
 msgid ""
 "The ad account is not enabled for usage in Ads API. Please add it in "
 "developers.facebook.com/apps -> select your app -> settings -> advanced -> "
 "advertising accounts -> Ads API."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:484
+#: includes/admin/class-aepc-facebook-adapter.php:480
 msgid "The facebook object you are trying to use does not exist."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:485
+#: includes/admin/class-aepc-facebook-adapter.php:481
 msgid "You have to extend permission for ads_read to complete the action."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:486
+#: includes/admin/class-aepc-facebook-adapter.php:482
 msgid "You have to extend permission for ads_management to complete the action."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:487
+#: includes/admin/class-aepc-facebook-adapter.php:483
 msgid "Failed to update the custom audience."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:488
+#: includes/admin/class-aepc-facebook-adapter.php:484
 msgid "Failed to create lookalike custom audience."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:489
+#: includes/admin/class-aepc-facebook-adapter.php:485
 msgid "Failed to create custom audience on your facebook account."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:490
+#: includes/admin/class-aepc-facebook-adapter.php:486
 msgid ""
 "Terms of service has not been accepted. To accept, go to "
 "https://www.facebook.com/ads/manage/customaudiences/tos.php"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:491
+#: includes/admin/class-aepc-facebook-adapter.php:487
 msgid "Failed to delete custom audience because associated lookalikes exist."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:492
+#: includes/admin/class-aepc-facebook-adapter.php:488
 msgid ""
 "Terms of service has not been accepted. To accept, go to "
 "https://www.facebook.com/customaudiences/app/tos"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:493
+#: includes/admin/class-aepc-facebook-adapter.php:489
 msgid ""
 "The corporate terms of service has not been accepted. To accept, go to "
 "https://business.facebook.com/ads/manage/customaudiences/tos.php"
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:494
+#: includes/admin/class-aepc-facebook-adapter.php:490
 msgid "Specified audience is too small."
 msgstr ""
 
-#: includes/admin/class-aepc-facebook-adapter.php:998
+#: includes/admin/class-aepc-facebook-adapter.php:1012
 msgid ""
 "Unable to create a product catalog because there isn't any business ID "
 "associated to your Ad account."
@@ -811,8 +812,8 @@ msgid "Main Controls"
 msgstr ""
 
 #: includes/admin/templates/dashboard.php:61
-#: includes/admin/templates/parts/forms/conversion.php:217
-#: includes/admin/templates/parts/forms/conversion.php:219
+#: includes/admin/templates/parts/forms/conversion.php:257
+#: includes/admin/templates/parts/forms/conversion.php:259
 msgid "Status"
 msgstr ""
 
@@ -866,7 +867,7 @@ msgid "Custom audiences"
 msgstr ""
 
 #: includes/admin/templates/general-settings.php:44
-#: includes/admin/templates/general-settings.php:159
+#: includes/admin/templates/general-settings.php:175
 #: includes/admin/templates/parts/panels/set-facebook-pixel.php:23
 msgid "Enable"
 msgstr ""
@@ -941,76 +942,86 @@ msgstr ""
 msgid "Enable the advanced matching in the pixels."
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:157
+#: includes/admin/templates/general-settings.php:158
+msgid "Enable Search Event"
+msgstr ""
+
+#: includes/admin/templates/general-settings.php:160
+msgid ""
+"Enable the automatic tracking of the \"Search\" event when a user performs "
+"a search."
+msgstr ""
+
+#: includes/admin/templates/general-settings.php:173
 msgid "Conversions"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:172
+#: includes/admin/templates/general-settings.php:188
 msgid "eCommerce Tracking is ON!"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:174
+#: includes/admin/templates/general-settings.php:190
 msgid "eCommerce Tracking is OFF!"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:182
+#: includes/admin/templates/general-settings.php:198
 msgid "eCommerce plugin detected"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:194
+#: includes/admin/templates/general-settings.php:210
 msgid "Track this eCommerce Conversions"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:195
+#: includes/admin/templates/general-settings.php:211
 msgid ""
 "Enable the DPA event you want to track for your website. Pixel Caffeine "
 "will automatically track it when they should from the supported plugins."
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:209
+#: includes/admin/templates/general-settings.php:225
 msgid "View product"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:222
+#: includes/admin/templates/general-settings.php:238
 msgid "Add to cart"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:235
+#: includes/admin/templates/general-settings.php:251
 msgid "View Checkout"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:248
+#: includes/admin/templates/general-settings.php:264
 msgid "Add payment info"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:261
-#: includes/admin/templates/parts/forms/ca-filter.php:118
+#: includes/admin/templates/general-settings.php:277
+#: includes/admin/templates/parts/forms/ca-filter.php:120
 msgid "Purchase"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:274
-#: includes/admin/templates/parts/forms/ca-filter.php:124
+#: includes/admin/templates/general-settings.php:290
+#: includes/admin/templates/parts/forms/ca-filter.php:126
 msgid "Lead"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:287
-#: includes/admin/templates/parts/forms/ca-filter.php:130
+#: includes/admin/templates/general-settings.php:303
+#: includes/admin/templates/parts/forms/ca-filter.php:132
 msgid "CompleteRegistration"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:297
+#: includes/admin/templates/general-settings.php:313
 msgid "eCommerce plugin not detected"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:299
+#: includes/admin/templates/general-settings.php:315
 msgid "You can still track custom conversions %shere%s"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:304
+#: includes/admin/templates/general-settings.php:320
 msgid "Supported plugins"
 msgstr ""
 
-#: includes/admin/templates/general-settings.php:323
+#: includes/admin/templates/general-settings.php:339
 #: includes/admin/templates/parts/modals/ca-edit.php:51
 #: includes/admin/templates/parts/modals/conversion-edit.php:51
 msgid "Save"
@@ -1036,89 +1047,89 @@ msgstr ""
 msgid "Tracking tools"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:55
-#: includes/admin/templates/parts/advanced-settings.php:81
+#: includes/admin/templates/parts/advanced-settings.php:75
+#: includes/admin/templates/parts/advanced-settings.php:101
 msgid "num"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:68
+#: includes/admin/templates/parts/advanced-settings.php:88
 msgid ""
 "Postpone the events fired on page load. It's useful to avoid to track "
 "bouncing users that spends less time on pages."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:94
+#: includes/admin/templates/parts/advanced-settings.php:114
 msgid ""
 "Postpone the AdvancedEvents pixel that contains data for post ID, post "
 "type, taxonomy, custom fields, so on."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:143
+#: includes/admin/templates/parts/advanced-settings.php:181
 msgid "role"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:156
+#: includes/admin/templates/parts/advanced-settings.php:194
 msgid ""
 "Useful for those roles (such as Administrators) that don't want to track "
 "pixels for themselves."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:169
-#: includes/admin/templates/parts/advanced-settings.php:195
+#: includes/admin/templates/parts/advanced-settings.php:207
+#: includes/admin/templates/parts/advanced-settings.php:233
 msgid "event"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:182
+#: includes/admin/templates/parts/advanced-settings.php:220
 msgid ""
 "Exclude \"value\" and \"currency\" parameters from the specified DPA "
 "standard pixels."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:208
+#: includes/admin/templates/parts/advanced-settings.php:246
 msgid ""
 "Exclude \"content_ids\", \"content_type\" and \"content_name\" parameters "
 "from the specified DPA standard pixels."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:216
+#: includes/admin/templates/parts/advanced-settings.php:254
 msgid "Developers tools"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:224
+#: includes/admin/templates/parts/advanced-settings.php:262
 msgid "Clear transients"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:225
+#: includes/admin/templates/parts/advanced-settings.php:263
 msgid ""
 "Reset all Facebook API cached to better performance. Rarely used, it is "
 "useful to fix some data don't fetched from facebook."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:233
+#: includes/admin/templates/parts/advanced-settings.php:271
 msgid "Enable debug mode"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:240
+#: includes/admin/templates/parts/advanced-settings.php:278
 msgid ""
 "You will be able to have a details dump of pixels events fired, on "
 "javascript console of browser inspector."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:241
+#: includes/admin/templates/parts/advanced-settings.php:279
 msgid "Note:"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:241
+#: includes/admin/templates/parts/advanced-settings.php:279
 msgid ""
 "by activating this mode, the pixels won't be sent to facebook, so a warning "
 "is shown on Facebook Pixel Helper chrome extension."
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:252
+#: includes/admin/templates/parts/advanced-settings.php:290
 msgid "Reset Facebook Connection"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:253
+#: includes/admin/templates/parts/advanced-settings.php:291
 msgid ""
 "Reset facebook connection status when it is blocked by an error (you won't "
 "lose any data)."
@@ -1200,103 +1211,107 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:20
+#: includes/admin/templates/parts/forms/ca-filter.php:22
 msgid "Language"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:26
+#: includes/admin/templates/parts/forms/ca-filter.php:28
 msgid "Referrer"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:32
+#: includes/admin/templates/parts/forms/ca-filter.php:34
 msgid "Login status"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:38
+#: includes/admin/templates/parts/forms/ca-filter.php:40
 msgid "Device type"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:48
-#: includes/admin/templates/parts/forms/ca-filter.php:271
+#: includes/admin/templates/parts/forms/ca-filter.php:50
+#: includes/admin/templates/parts/forms/ca-filter.php:294
 msgid "Categories"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:54
-#: includes/admin/templates/parts/forms/ca-filter.php:291
+#: includes/admin/templates/parts/forms/ca-filter.php:56
+#: includes/admin/templates/parts/forms/ca-filter.php:314
 msgid "Tags"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:60
-#: includes/admin/templates/parts/forms/ca-filter.php:311
+#: includes/admin/templates/parts/forms/ca-filter.php:62
+#: includes/admin/templates/parts/forms/ca-filter.php:334
 msgid "Posts"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:66
-#: includes/admin/templates/parts/forms/ca-filter.php:326
+#: includes/admin/templates/parts/forms/ca-filter.php:68
+#: includes/admin/templates/parts/forms/ca-filter.php:349
 msgid "Pages"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:72
+#: includes/admin/templates/parts/forms/ca-filter.php:74
 msgid "Custom field"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:82
+#: includes/admin/templates/parts/forms/ca-filter.php:84
 msgid "ViewContent"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:88
+#: includes/admin/templates/parts/forms/ca-filter.php:90
 msgid "Search"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:94
+#: includes/admin/templates/parts/forms/ca-filter.php:96
 msgid "AddToCart"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:100
+#: includes/admin/templates/parts/forms/ca-filter.php:102
 msgid "AddToWishlist"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:106
+#: includes/admin/templates/parts/forms/ca-filter.php:108
 msgid "InitiateCheckout"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:112
+#: includes/admin/templates/parts/forms/ca-filter.php:114
 msgid "AddPaymentInfo"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:142
+#: includes/admin/templates/parts/forms/ca-filter.php:164
 msgid "Include"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:145
+#: includes/admin/templates/parts/forms/ca-filter.php:167
 msgid "Exclude"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:152
+#: includes/admin/templates/parts/forms/ca-filter.php:174
+msgid "Events"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/ca-filter.php:175
 msgid "Attributes"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:153
+#: includes/admin/templates/parts/forms/ca-filter.php:176
 msgid "Blog Behaviour"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:154
+#: includes/admin/templates/parts/forms/ca-filter.php:177
 msgid "Ecommerce behaviour"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:218
+#: includes/admin/templates/parts/forms/ca-filter.php:241
 msgid "Language format allowed: en-US, it-IT, etc..."
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:234
+#: includes/admin/templates/parts/forms/ca-filter.php:257
 msgid "Logged in"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:235
+#: includes/admin/templates/parts/forms/ca-filter.php:258
 msgid "Not logged in"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/ca-filter.php:344
+#: includes/admin/templates/parts/forms/ca-filter.php:367
 msgid "Custom field value"
 msgstr ""
 
@@ -1310,7 +1325,7 @@ msgid "Name"
 msgstr ""
 
 #: includes/admin/templates/parts/forms/conversion.php:20
-#: includes/admin/templates/parts/forms/conversion.php:86
+#: includes/admin/templates/parts/forms/conversion.php:117
 msgid "Name..."
 msgstr ""
 
@@ -1324,7 +1339,7 @@ msgid "Page visit"
 msgstr ""
 
 #: includes/admin/templates/parts/forms/conversion.php:32
-#: includes/admin/templates/parts/tables/ce-tracking.php:47
+#: includes/admin/templates/parts/tables/ce-tracking.php:51
 msgid "Link click"
 msgstr ""
 
@@ -1332,104 +1347,134 @@ msgstr ""
 msgid "CSS Selector"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:43
-#: includes/admin/templates/parts/forms/conversion.php:45
+#: includes/admin/templates/parts/forms/conversion.php:34
+#: includes/admin/templates/parts/forms/conversion.php:72
+msgid "JS Event"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:44
+#: includes/admin/templates/parts/forms/conversion.php:53
 #: includes/admin/templates/parts/panels/product-feed/created.php:42
 msgid "URL"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:54
-#: includes/admin/templates/parts/forms/conversion.php:56
+#: includes/admin/templates/parts/forms/conversion.php:49
+msgid "Is Exact"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:63
+#: includes/admin/templates/parts/forms/conversion.php:65
 msgid "CSS"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:65
+#: includes/admin/templates/parts/forms/conversion.php:76
+msgid ""
+"Element by jQuery/CSS selector (`.element` or `#element` or `#element "
+".child`)"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:82
+msgid "JS Event name"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:89
+msgid ""
+"It will be translated in `jQuery(\" field1 content \").on(\" field2 content "
+"\")`"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:96
 msgid "Event"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:84
+#: includes/admin/templates/parts/forms/conversion.php:115
 msgid "Custom Event Name"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:97
+#: includes/admin/templates/parts/forms/conversion.php:128
 msgid "Delay"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:99
+#: includes/admin/templates/parts/forms/conversion.php:130
 msgid "seconds (leave empty for default)"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:108
+#: includes/admin/templates/parts/forms/conversion.php:139
 msgid "Pass Advanced Data"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:124
+#: includes/admin/templates/parts/forms/conversion.php:155
 msgid "Advanced data is ON!"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:126
-#: includes/admin/templates/parts/forms/conversion.php:130
+#: includes/admin/templates/parts/forms/conversion.php:157
+#: includes/admin/templates/parts/forms/conversion.php:161
 msgid "Advanced data is OFF!"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:138
-#: includes/admin/templates/parts/forms/conversion.php:140
-#: includes/admin/templates/parts/forms/conversion.php:235
-#: includes/admin/templates/parts/forms/conversion.php:258
+#: includes/admin/templates/parts/forms/conversion.php:169
+#: includes/admin/templates/parts/forms/conversion.php:171
+#: includes/admin/templates/parts/forms/conversion.php:275
+#: includes/admin/templates/parts/forms/conversion.php:298
 msgid "Value"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:147
+#: includes/admin/templates/parts/forms/conversion.php:178
 msgid "Currency"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:159
-#: includes/admin/templates/parts/forms/conversion.php:161
-msgid "Content Name"
-msgstr ""
-
-#: includes/admin/templates/parts/forms/conversion.php:168
-#: includes/admin/templates/parts/forms/conversion.php:170
-msgid "Content category"
-msgstr ""
-
-#: includes/admin/templates/parts/forms/conversion.php:177
-#: includes/admin/templates/parts/forms/conversion.php:179
-msgid "Content ids"
-msgstr ""
-
-#: includes/admin/templates/parts/forms/conversion.php:186
-msgid "Content Type"
-msgstr ""
-
 #: includes/admin/templates/parts/forms/conversion.php:190
-msgid "Product"
-msgstr ""
-
-#: includes/admin/templates/parts/forms/conversion.php:191
-msgid "Product Group"
+#: includes/admin/templates/parts/forms/conversion.php:192
+msgid "Predicted lifetime value"
 msgstr ""
 
 #: includes/admin/templates/parts/forms/conversion.php:199
 #: includes/admin/templates/parts/forms/conversion.php:201
-msgid "Num items"
+msgid "Content Name"
 msgstr ""
 
 #: includes/admin/templates/parts/forms/conversion.php:208
 #: includes/admin/templates/parts/forms/conversion.php:210
-msgid "Search string"
+msgid "Content category"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:217
+#: includes/admin/templates/parts/forms/conversion.php:219
+msgid "Content ids"
 msgstr ""
 
 #: includes/admin/templates/parts/forms/conversion.php:226
+msgid "Content Type"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:230
+msgid "Product"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:231
+msgid "Product Group"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:239
+#: includes/admin/templates/parts/forms/conversion.php:241
+msgid "Num items"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:248
+#: includes/admin/templates/parts/forms/conversion.php:250
+msgid "Search string"
+msgstr ""
+
+#: includes/admin/templates/parts/forms/conversion.php:266
 msgid "Custom parameters"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:232
-#: includes/admin/templates/parts/forms/conversion.php:255
+#: includes/admin/templates/parts/forms/conversion.php:272
+#: includes/admin/templates/parts/forms/conversion.php:295
 msgid "Key"
 msgstr ""
 
-#: includes/admin/templates/parts/forms/conversion.php:244
+#: includes/admin/templates/parts/forms/conversion.php:284
 msgid "Add parameter"
 msgstr ""
 
@@ -1475,8 +1520,8 @@ msgstr ""
 
 #: includes/admin/templates/parts/forms/custom-audience.php:102
 #: includes/admin/templates/parts/forms/custom-audience.php:125
-#: includes/admin/templates/parts/tables/ce-tracking.php:43
-#: includes/admin/templates/parts/tables/ce-tracking.php:48
+#: includes/admin/templates/parts/tables/ce-tracking.php:44
+#: includes/admin/templates/parts/tables/ce-tracking.php:53
 msgid "URL contains"
 msgstr ""
 
@@ -2054,14 +2099,16 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/templates/parts/tables/ca-list.php:50
-msgid "Not available"
+#: includes/admin/templates/parts/tables/ca-list.php:55
+msgid "Below 1000"
 msgstr ""
 
 #: includes/admin/templates/parts/tables/ca-list.php:57
-msgid ""
-"The custom audience size indicator is not available due to Facebook "
-"policies based on %sAdvertising Principles%s."
+msgid "Size Not Yet Available"
+msgstr ""
+
+#: includes/admin/templates/parts/tables/ca-list.php:58
+msgid "Your audience's size will available about 2-3 days after its creation."
 msgstr ""
 
 #: includes/admin/templates/parts/tables/ce-tracking.php:23
@@ -2076,11 +2123,24 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: includes/admin/templates/parts/tables/ce-tracking.php:52
+#: includes/admin/templates/parts/tables/ce-tracking.php:46
+#: includes/admin/templates/parts/tables/ce-tracking.php:55
+msgid "URL is exact"
+msgstr ""
+
+#: includes/admin/templates/parts/tables/ce-tracking.php:60
 msgid "On click css selector"
 msgstr ""
 
-#: includes/admin/templates/parts/tables/ce-tracking.php:63
+#: includes/admin/templates/parts/tables/ce-tracking.php:65
+msgid "On Javascript Event"
+msgstr ""
+
+#: includes/admin/templates/parts/tables/ce-tracking.php:66
+msgid "<br />When \"%s\" triggers \"%s\""
+msgstr ""
+
+#: includes/admin/templates/parts/tables/ce-tracking.php:76
 msgid "Show code"
 msgstr ""
 
@@ -2578,46 +2638,58 @@ msgstr ""
 
 #: includes/admin/templates/parts/advanced-settings.php:33
 msgctxt "pixel-caffeine"
+msgid "Do not add the %1$sPixel init snippet%2$s"
+msgstr ""
+
+#: includes/admin/templates/parts/advanced-settings.php:53
+msgctxt "pixel-caffeine"
 msgid "Force to use product IDs even if there is a SKU defined"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:51
+#: includes/admin/templates/parts/advanced-settings.php:71
 msgctxt "%1$s is an input text, the other strong tags"
 msgid "Delay %2$sPageView%3$s pixel firing of %1$s seconds"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:77
+#: includes/admin/templates/parts/advanced-settings.php:97
 msgctxt "%1$s is an input text, the other strong tags"
 msgid ""
 "Delay %2$sAdvancedEvents%3$s and %2$sCustom Conversions%3$s pixels firing "
 "of %1$s seconds"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:139
+#: includes/admin/templates/parts/advanced-settings.php:177
 msgctxt "%1$s is an input text, the other strong tags"
 msgid "Don't fire the pixels if the user is logged in as %1$s"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:165
+#: includes/admin/templates/parts/advanced-settings.php:203
 msgctxt "%1$s is an input text, the other strong tags"
 msgid "Don't track \"value\" when following events are fired: %1$s"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:191
+#: includes/admin/templates/parts/advanced-settings.php:229
 msgctxt "%1$s is an input text, the other strong tags"
 msgid ""
 "Don't track \"content_ids\", \"content_type\" and \"content_name\" when "
 "following events are fired: %1$s"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:103
+#: includes/admin/templates/parts/advanced-settings.php:123
 msgctxt "%1$s and %2$s are for strong tag"
 msgid ""
 "Do not track variable products as %1$sproduct_group%2$s in the conversion "
 "events"
 msgstr ""
 
-#: includes/admin/templates/parts/advanced-settings.php:121
+#: includes/admin/templates/parts/advanced-settings.php:141
+msgctxt "%1$s and %2$s are for strong tag"
+msgid ""
+"Do not track %1$svariations%2$s on DPA events and %1$sforce to use the "
+"parent ID%2$s when a variation is added to cart and checkout."
+msgstr ""
+
+#: includes/admin/templates/parts/advanced-settings.php:159
 msgctxt "%1$s and %2$s are for strong tag"
 msgid ""
 "Track %1$sshipping costs%2$s into %1$sPurchase%2$s and "

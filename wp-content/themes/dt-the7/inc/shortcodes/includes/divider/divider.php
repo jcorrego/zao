@@ -29,7 +29,7 @@ if ( ! class_exists( 'DT_Shortcode_Divider', false ) ) {
 		public function shortcode( $atts, $content = null ) {
 			extract( shortcode_atts( array(
 				'style' => 'thin'
-			), $atts ) );
+			), $atts, $this->shortcode_name ) );
 
 			switch( $style ) {
 				case 'thick': $class = 'hr-thick'; break;

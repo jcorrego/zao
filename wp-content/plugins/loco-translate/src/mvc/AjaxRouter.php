@@ -142,6 +142,7 @@ class Loco_mvc_AjaxRouter extends Loco_hooks_Hookable {
 	 */
     private function exitScript( $str, array $headers ){
 	    try {
+            do_action('loco_admin_shutdown');
 	    	Loco_output_Buffer::clear();
 	    	$this->buffer = null;
 		    Loco_output_Buffer::check();
@@ -180,7 +181,7 @@ class Loco_mvc_AjaxRouter extends Loco_hooks_Hookable {
             $json = json_encode( array( 'error' => $e->jsonSerialize(), 'notices' => Loco_error_AdminNotices::destroyAjax() ) );
         }
         catch( Exception $e ){
-            $e = new Loco_error_Exception( $e->getMessage(), $e->getCode() );
+            $e = Loco_error_Exception::convert($e);
             $json = json_encode( array( 'error' => $e->jsonSerialize(), 'notices' => Loco_error_AdminNotices::destroyAjax() ) );
         }
         $this->buffer->discard();

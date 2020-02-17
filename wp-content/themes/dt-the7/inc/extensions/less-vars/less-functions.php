@@ -17,9 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function presscore_compile_less_vars() {
-	// Include custom lessphp functions.
-	require_once 'class-lessphp-functions.php';
-
 	$less_vars = the7_get_new_less_vars_manager();
 
 	do_action( 'presscore_setup_less_vars', $less_vars );
@@ -30,14 +27,30 @@ function presscore_compile_less_vars() {
 if ( ! function_exists( 'the7_get_new_less_vars_manager' ) ) {
 
 	/**
-	 * Factory function for Presscore_Lib_LessVars_Manager.
+	 * Factory for The7_Less_Vars_Manager.
 	 *
 	 * @since 5.7.0
-	 * @return Presscore_Lib_LessVars_Manager
+	 *
+	 * @return The7_Less_Vars_Manager
 	 */
 	function the7_get_new_less_vars_manager() {
-		return new Presscore_Lib_LessVars_Manager( new Presscore_Lib_SimpleBag(), new Presscore_Lib_LessVars_Factory() );
+		return new The7_Less_Vars_Manager( new Presscore_Lib_SimpleBag(), new The7_Less_Vars_Factory() );
 	}
+}
+
+if ( ! function_exists( 'the7_get_new_shortcode_less_vars_manager' ) ) {
+
+	/**
+	 * Factory function for shortcode less manager.
+	 *
+	 * @since 7.7.0
+	 *
+	 * @return The7_Less_Vars_Shortcode_Manager
+	 */
+	function the7_get_new_shortcode_less_vars_manager() {
+		return new The7_Less_Vars_Shortcode_Manager( new Presscore_Lib_SimpleBag(), new The7_Less_Vars_Factory() );
+	}
+
 }
 
 /**
@@ -45,11 +58,11 @@ if ( ! function_exists( 'the7_get_new_less_vars_manager' ) ) {
  *
  * @since 6.6.0
  *
- * @param  Presscore_Lib_LessVars_Manager $less_vars
+ * @param  The7_Less_Vars_Manager_Interface $less_vars
  *
  * @return array Returns array like array( 'first-color', 'seconf-color' )
  */
-function the7_less_get_accent_colors( Presscore_Lib_LessVars_Manager $less_vars ) {
+function the7_less_get_accent_colors( The7_Less_Vars_Manager_Interface $less_vars ) {
 	$accent_less_vars_names = array( 'accent-bg-color', 'accent-bg-color-2' );
 	switch ( of_get_option( 'general-accent_color_mode' ) ) {
 		case 'gradient':

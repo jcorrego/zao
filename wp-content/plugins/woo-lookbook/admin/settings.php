@@ -26,7 +26,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 				'client_secret' => self::get_field( 'ins_client_secret', '' ),
 				'grant_type'    => 'authorization_code',
 				'redirect_uri'  => admin_url( 'edit.php?post_type=woocommerce-lookbook&page=woocommerce-lookbook-settings' ),
-				'code'          => $_GET['code']
+				'code'          => wp_unslash($_GET['code'])
 			);
 			$ch     = curl_init( 'https://api.instagram.com/oauth/access_token' );
 			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
@@ -81,7 +81,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return false;
 		}
-		$data = $_POST['woo_lookbook_params'];
+		$data = wc_clean($_POST['woo_lookbook_params']);
 		if ( is_array( $data ) ) {
 			$data = array_map( 'sanitize_text_field', $data );
 		} else {
@@ -152,7 +152,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 		self::$params = get_option( 'woo_lookbook_params', array() );
 		?>
 		<div class="wrap woo-lookbook">
-			<h2><?php esc_attr_e( 'WooCommerce Lookbook Settings', 'woo-lookbook' ) ?></h2>
+			<h2><?php esc_attr_e( 'LookBook for WooCommerce Settings', 'woo-lookbook' ) ?></h2>
 			<form method="post" action="" class="vi-ui form">
 				<?php echo ent2ncr( self::set_nonce() ) ?>
 
@@ -217,7 +217,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 							</td>
@@ -288,7 +288,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 							</td>
@@ -357,7 +357,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 								<p class="description"><?php esc_html_e( 'Support RTL fully', 'woo-lookbook' ) ?></p>
@@ -494,10 +494,10 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 						<li><?php echo esc_html__( '4. When register application successful. Click Manage button on the right top of
                             Application.', 'woo-lookbook' ) ?>
 						</li>
-						<li><?php echo esc_html__( '5. Copy Client ID and Client Secret to WooCommerce Lookbook Settings page/Instagram then
+						<li><?php echo esc_html__( '5. Copy Client ID and Client Secret to LookBook for WooCommerce Settings page/Instagram then
                             Save Settings', 'woo-lookbook' ) ?>
 						</li>
-						<li><?php echo esc_html__( '6. Click Get Access Token button in WooCommerce Lookbook Settings page.', 'woo-lookbook' ) ?></li>
+						<li><?php echo esc_html__( '6. Click Get Access Token button in LookBook for WooCommerce Settings page.', 'woo-lookbook' ) ?></li>
 						<li>
 							<iframe width="560" height="315" src="https://www.youtube.com/embed/ZWG5hMYH5ZU"
 									frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -611,7 +611,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 								<p class="description"><?php esc_html_e( 'The action will trigger when someone visits your WordPress site.', 'woo-lookbook' ) ?></p>
@@ -624,7 +624,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 								<p class="description"><?php esc_html_e( 'Lookbooks status after images are imported.', 'woo-lookbook' ) ?></p>
@@ -637,7 +637,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 							</td>
@@ -649,7 +649,7 @@ class WOO_F_LOOKBOOK_Admin_Settings {
 								</label>
 							</th>
 							<td>
-								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://goo.gl/CAgGU6">
+								<a class="vi-ui wlb-add-new button blue button-primary" target="_blank" href="https://1.envato.market/mV0bM">
 									<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 								</a>
 								<p class="description"><?php esc_html_e( 'List images are get from API. The fewer quantity sync faster.', 'woo-lookbook' ) ?></p>

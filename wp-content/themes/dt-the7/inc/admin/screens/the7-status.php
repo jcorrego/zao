@@ -49,6 +49,15 @@ global $wp_filesystem;
                         <?php endif ?>
                     </td>
                 </tr>
+				<tr>
+					<td data-export-label="Path to uploads folder"><?php _e( 'Path to uploads folder:', 'the7mk2' ); ?></td>
+					<td>
+						<code><?php
+							$wp_uplodas = wp_get_upload_dir();
+							echo $wp_uplodas['basedir'];
+							?></code>
+					</td>
+				</tr>
                 <tr>
                     <td data-export-label="WP Memory Limit"><?php _e( 'WP Memory Limit:', 'the7mk2' ); ?></td>
                     <td>
@@ -254,8 +263,21 @@ global $wp_filesystem;
                 </thead>
                 <tbody>
                 <tr>
-                    <td data-export-label="Current Version"><?php _e( 'Current Version:', 'the7mk2' ); ?></td>
+                    <td data-export-label="Current Theme Version"><?php _e( 'Current Theme Version:', 'the7mk2' ); ?></td>
                     <td><?php echo THE7_VERSION; ?></td>
+                </tr>
+                <tr>
+                    <td data-export-label="Current DB Version"><?php _e( 'Current DB Version:', 'the7mk2' ); ?></td>
+                    <td>
+		                <?php
+                        if ( version_compare( The7_Install::get_db_version(), PRESSCORE_DB_VERSION, '<' ) ) {
+	                        /* translators: 1: current db version, 2: max db version, */
+                            echo esc_html( sprintf( __( '%1$s, can be upgraded to %2$s', 'the7mk2' ), The7_Install::get_db_version(), PRESSCORE_DB_VERSION ) );
+                        } else {
+	                        echo esc_html( The7_Install::get_db_version() );
+                        }
+		                ?>
+                    </td>
                 </tr>
                 <tr>
                     <td data-export-label="Installation Path"><?php _e( 'Installation Path:', 'the7mk2' ); ?></td>
@@ -269,10 +291,31 @@ global $wp_filesystem;
 						if ( $the7_server_code >= 200 && $the7_server_code < 300 ) {
 							echo '<span class="yes">&#10004;</span>';
 						} else {
-							printf( __( '<span class="error">No</span> Service is temporary unavailable. Please check back later.
-If the issue persists, contact your hosting provider and make sure that %1$s is not blocked.', 'the7mk2' ), 'https://repo.the7.io/' );
+							printf(
+								// translators: %s - remote server url.
+								__(
+									'<span class="error">No</span> Service is temporary unavailable. Please check back later.
+If the issue persists, contact your hosting provider and make sure that %s is not blocked.',
+									'the7mk2'
+								),
+								'https://repo.the7.io/'
+							);
 						}
 						?>
+                    </td>
+                </tr>
+                <tr>
+                    <td data-export-label="Ajax calls with wp_remote_post"><?php esc_html_e( 'Ajax calls with wp_remote_post:', 'the7mk2' ); ?></td>
+                    <td>
+		                <?php
+                        $ajax_url = esc_url_raw( admin_url( 'admin-ajax.php' ) );
+		                $the7_server_code = wp_remote_retrieve_response_code( wp_remote_post( $ajax_url, array( 'decompress' => false ) ) );
+		                if ( $the7_server_code === 400 ) {
+			                echo '<span class="yes">&#10004;</span>';
+		                } else {
+			                printf( __( '<span class="error">No</span><br> Seems that your server is blocking connections to your own site. It may brake theme db update process and lead to style corruption. Please, make sure that remote requests to %s are not blocked.', 'the7mk2' ), $ajax_url );
+		                }
+		                ?>
                     </td>
                 </tr>
 

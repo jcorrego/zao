@@ -1,0 +1,9 @@
+
+Dec 24, 2019 15.36.44: Uncaught Error: Class 'WPMailSMTP\AM_Notification' not found in /home/forge/zaomakeup.com.co/wp-content/plugins/wp-mail-smtp/src/Core.php:414
+Stack trace:
+#0 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(286): WPMailSMTP\Core->init_notifications('')
+#1 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(310): WP_Hook->apply_filters(NULL, Array)
+#2 /home/forge/zaomakeup.com.co/wp-includes/plugin.php(465): WP_Hook->do_action(Array)
+#3 /home/forge/zaomakeup.com.co/wp-admin/admin-ajax.php(45): do_action('admin_init')
+#4 {main}
+  thrown

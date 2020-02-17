@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-11-10 20:33+0530\n"
+"POT-Creation-Date: 2019-10-09 14:17+0530\n"
 "PO-Revision-Date: 2018-05-29 15:01+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
@@ -106,94 +106,91 @@ msgid "Range"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:103
-#: admin/includes/cmb2-countdown-meta-config.php:1041
+#: admin/includes/cmb2-countdown-meta-config.php:1042
 msgid "Advanced"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:113
+#: admin/includes/cmb2-countdown-meta-config.php:114
 msgid "Schedule"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:117
-#: admin/includes/cmb2-countdown-meta-config.php:224
-#: admin/includes/wcct-post-table.php:90 admin/wcct-admin.php:718
-#: includes/wcct-common.php:1208
+#: admin/includes/cmb2-countdown-meta-config.php:118
+#: admin/includes/cmb2-countdown-meta-config.php:225
+#: admin/includes/wcct-post-table.php:90 admin/wcct-admin.php:715
+#: includes/wcct-common.php:1399
 msgid "Type"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:122
+#: admin/includes/cmb2-countdown-meta-config.php:123
 msgid "One Time"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:123
+#: admin/includes/cmb2-countdown-meta-config.php:124
 msgid "Recurring"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:124
+#: admin/includes/cmb2-countdown-meta-config.php:125
 msgid "Evergreen"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:142
+#: admin/includes/cmb2-countdown-meta-config.php:143
 msgid "Start Date & Time"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:153
+#: admin/includes/cmb2-countdown-meta-config.php:154
 msgid "Start Time"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:163
+#: admin/includes/cmb2-countdown-meta-config.php:164
 msgid "End Date & Time"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:175
+#: admin/includes/cmb2-countdown-meta-config.php:176
 msgid "End Time"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:188
-#: admin/includes/wcct-post-table.php:134 includes/wcct-common.php:1307
+#: admin/includes/cmb2-countdown-meta-config.php:189
+#: admin/includes/wcct-post-table.php:134 includes/wcct-common.php:1493
 msgid "Discount"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:192
-#: admin/includes/cmb2-countdown-meta-config.php:257
+#: admin/includes/cmb2-countdown-meta-config.php:193
+#: admin/includes/cmb2-countdown-meta-config.php:258
 msgid "Enable"
-msgstr ""
-
-#: admin/includes/cmb2-countdown-meta-config.php:198
-#: admin/includes/cmb2-countdown-meta-config.php:261
-#: admin/includes/cmb2-countdown-meta-config.php:352
-#: admin/includes/cmb2-countdown-meta-config.php:367
-#: admin/includes/wcct-admin-countdown-options.php:105
-#: admin/includes/wcct-admin-countdown-options.php:116
-#: admin/includes/wcct-admin-countdown-options.php:127
-#: includes/wcct-common.php:1552 includes/wcct-common.php:1558
-#: includes/wcct-common.php:1568 includes/wcct-common.php:1581
-msgid "Yes"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:199
 #: admin/includes/cmb2-countdown-meta-config.php:262
 #: admin/includes/cmb2-countdown-meta-config.php:353
 #: admin/includes/cmb2-countdown-meta-config.php:368
-#: admin/includes/wcct-admin-countdown-options.php:106
-#: admin/includes/wcct-admin-countdown-options.php:117
-#: admin/includes/wcct-admin-countdown-options.php:128
-#: includes/wcct-common.php:1554 includes/wcct-common.php:1560
-#: includes/wcct-common.php:1570 includes/wcct-common.php:1583
+#: admin/includes/wcct-admin-countdown-options.php:104
+#: admin/includes/wcct-admin-countdown-options.php:115
+#: admin/includes/wcct-admin-countdown-options.php:126
+#: admin/includes/wcct-admin-countdown-options.php:137
+#: includes/wcct-common.php:1607 includes/wcct-common.php:1613
+#: includes/wcct-common.php:1623 includes/wcct-common.php:1636
+msgid "Yes"
+msgstr ""
+
+#: admin/includes/cmb2-countdown-meta-config.php:200
+#: admin/includes/cmb2-countdown-meta-config.php:263
+#: admin/includes/cmb2-countdown-meta-config.php:354
+#: admin/includes/cmb2-countdown-meta-config.php:369
+#: admin/includes/wcct-admin-countdown-options.php:105
+#: admin/includes/wcct-admin-countdown-options.php:116
+#: admin/includes/wcct-admin-countdown-options.php:127
+#: admin/includes/wcct-admin-countdown-options.php:138
+#: includes/wcct-common.php:1609 includes/wcct-common.php:1615
+#: includes/wcct-common.php:1625 includes/wcct-common.php:1638
 msgid "No"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:201
+#: admin/includes/cmb2-countdown-meta-config.php:202
 msgid "Pricing Discount"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:211
+#: admin/includes/cmb2-countdown-meta-config.php:212
 msgid "Discount Amount"
-msgstr ""
-
-#: admin/includes/cmb2-countdown-meta-config.php:228
-#, php-format
-msgid "Percentage % on Regular Price"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:229
@@ -202,124 +199,121 @@ msgid "Percentage % on Sale Price"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:230
+#, php-format
+msgid "Percentage % on Regular Price"
+msgstr ""
+
 #: admin/includes/cmb2-countdown-meta-config.php:231
+#: admin/includes/cmb2-countdown-meta-config.php:232
 msgid "Fixed Amount "
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:240
+#: admin/includes/cmb2-countdown-meta-config.php:241
 msgid "Override Discount"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:242
+#: admin/includes/cmb2-countdown-meta-config.php:243
 msgid "Override this discount if Sale is set locally."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:253
-#: admin/includes/wcct-post-table.php:148 includes/wcct-common.php:1311
-#: includes/wcct-common.php:1558 includes/wcct-common.php:1560
+#: admin/includes/cmb2-countdown-meta-config.php:254
+#: admin/includes/wcct-post-table.php:148 includes/wcct-common.php:1497
+#: includes/wcct-common.php:1613 includes/wcct-common.php:1615
 msgid "Inventory"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:265
+#: admin/includes/cmb2-countdown-meta-config.php:266
 msgid "Inventory Goal"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:275
+#: admin/includes/cmb2-countdown-meta-config.php:276
 msgid "Quantity to be Sold"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:280
+#: admin/includes/cmb2-countdown-meta-config.php:281
 msgid "Custom Stock Quantity"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:281
+#: admin/includes/cmb2-countdown-meta-config.php:282
 msgid "Existing Stock Quantity"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:289
+#: admin/includes/cmb2-countdown-meta-config.php:290
 msgid "Same Inventory Label"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:291
+#: admin/includes/cmb2-countdown-meta-config.php:292
 msgid ""
 "This will pick up stock quantity of individual product and applicable when "
 "Manage Stock in product is ON."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:302
+#: admin/includes/cmb2-countdown-meta-config.php:303
 msgid "Quantity"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:318
+#: admin/includes/cmb2-countdown-meta-config.php:319
 msgid "Inventory Advanced HTML"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:320
+#: admin/includes/cmb2-countdown-meta-config.php:321
 msgid ""
 "Custom Quantity is the new overall quantity of a product available for "
 "purchase."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:331
+#: admin/includes/cmb2-countdown-meta-config.php:332
 msgid "Calculate Sold Units (for counter bar)"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:334
-#: admin/includes/cmb2-countdown-meta-config.php:349
+#: admin/includes/cmb2-countdown-meta-config.php:335
+#: admin/includes/cmb2-countdown-meta-config.php:350
 msgid "Need help?"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:334
+#: admin/includes/cmb2-countdown-meta-config.php:335
 msgid "Inventory Sold Units Help"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:334
-#: admin/includes/cmb2-countdown-meta-config.php:349
+#: admin/includes/cmb2-countdown-meta-config.php:335
+#: admin/includes/cmb2-countdown-meta-config.php:350
 msgid "Learn More"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:336
+#: admin/includes/cmb2-countdown-meta-config.php:337
 msgid "Current Occurrence"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:337
+#: admin/includes/cmb2-countdown-meta-config.php:338
 msgid "Overall Campaign"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:346
+#: admin/includes/cmb2-countdown-meta-config.php:347
 msgid "Setup campaign on Out of Stock Products"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:349
+#: admin/includes/cmb2-countdown-meta-config.php:350
 msgid "Setup campaign on Out of Stock Products Help"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:363
+#: admin/includes/cmb2-countdown-meta-config.php:364
 msgid "End Campaign"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:370
+#: admin/includes/cmb2-countdown-meta-config.php:371
 msgid "When all the units set up in the campaign are sold."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:381
+#: admin/includes/cmb2-countdown-meta-config.php:382
 msgid "Elements"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:386
-#: admin/includes/cmb2-countdown-meta-config.php:706
-#: admin/includes/cmb2-countdown-meta-config.php:927
-#: admin/includes/cmb2-countdown-meta-config.php:942
-#: admin/includes/cmb2-countdown-meta-config.php:958
+#: admin/includes/cmb2-countdown-meta-config.php:387
+#: admin/includes/cmb2-countdown-meta-config.php:707
+#: admin/includes/cmb2-countdown-meta-config.php:928
+#: admin/includes/cmb2-countdown-meta-config.php:943
+#: admin/includes/cmb2-countdown-meta-config.php:959
 msgid "Visibility"
-msgstr ""
-
-#: admin/includes/cmb2-countdown-meta-config.php:392
-#: admin/includes/cmb2-countdown-meta-config.php:711
-#: admin/includes/cmb2-countdown-meta-config.php:931
-#: admin/includes/cmb2-countdown-meta-config.php:948
-#: admin/includes/cmb2-countdown-meta-config.php:964
-msgid "Show"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:393
@@ -327,330 +321,338 @@ msgstr ""
 #: admin/includes/cmb2-countdown-meta-config.php:932
 #: admin/includes/cmb2-countdown-meta-config.php:949
 #: admin/includes/cmb2-countdown-meta-config.php:965
+msgid "Show"
+msgstr ""
+
+#: admin/includes/cmb2-countdown-meta-config.php:394
+#: admin/includes/cmb2-countdown-meta-config.php:713
+#: admin/includes/cmb2-countdown-meta-config.php:933
+#: admin/includes/cmb2-countdown-meta-config.php:950
+#: admin/includes/cmb2-countdown-meta-config.php:966
 msgid "Hide"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:396
+#: admin/includes/cmb2-countdown-meta-config.php:397
 msgid "Single Product Countdown Timer"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:406
+#: admin/includes/cmb2-countdown-meta-config.php:407
 msgid "Position"
-msgstr ""
-
-#: admin/includes/cmb2-countdown-meta-config.php:411
-#: admin/includes/cmb2-countdown-meta-config.php:730
-#: includes/wcct-appearance.php:789
-msgid "Above the Title"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:412
 #: admin/includes/cmb2-countdown-meta-config.php:731
-#: includes/wcct-appearance.php:790
-msgid "Below the Title"
+#: includes/wcct-appearance.php:250
+msgid "Above the Title"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:413
 #: admin/includes/cmb2-countdown-meta-config.php:732
-#: includes/wcct-appearance.php:791
-msgid "Below the Review Rating"
+#: includes/wcct-appearance.php:251
+msgid "Below the Title"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:414
 #: admin/includes/cmb2-countdown-meta-config.php:733
-#: includes/wcct-appearance.php:792
-msgid "Below the Price"
+#: includes/wcct-appearance.php:252
+msgid "Below the Review Rating"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:415
 #: admin/includes/cmb2-countdown-meta-config.php:734
-#: includes/wcct-appearance.php:793
-msgid "Below Short Description"
+#: includes/wcct-appearance.php:253
+msgid "Below the Price"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:416
 #: admin/includes/cmb2-countdown-meta-config.php:735
-#: includes/wcct-appearance.php:794
+#: includes/wcct-appearance.php:254
+msgid "Below Short Description"
+msgstr ""
+
+#: admin/includes/cmb2-countdown-meta-config.php:417
+#: admin/includes/cmb2-countdown-meta-config.php:736
+#: includes/wcct-appearance.php:255
 msgid "Below Add to Cart Button"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:434
-#: admin/includes/wcct-post-table.php:159 includes/wcct-common.php:118
-#: includes/wcct-common.php:119 includes/wcct-common.php:1315
-#: includes/wcct-common.php:1568 includes/wcct-common.php:1570
+#: admin/includes/cmb2-countdown-meta-config.php:435
+#: admin/includes/wcct-post-table.php:159 includes/wcct-common.php:123
+#: includes/wcct-common.php:124 includes/wcct-common.php:1501
+#: includes/wcct-common.php:1623 includes/wcct-common.php:1625
 msgid "Countdown Timer"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:437
-#: admin/includes/cmb2-countdown-meta-config.php:762
+#: admin/includes/cmb2-countdown-meta-config.php:438
+#: admin/includes/cmb2-countdown-meta-config.php:763
 msgid "Skins"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:439
+#: admin/includes/cmb2-countdown-meta-config.php:440
 msgid "Round Fill"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:440
+#: admin/includes/cmb2-countdown-meta-config.php:441
 msgid "Round Ghost"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:441
+#: admin/includes/cmb2-countdown-meta-config.php:442
 msgid "Square Fill"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:442
+#: admin/includes/cmb2-countdown-meta-config.php:443
 msgid "Square Ghost"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:443
+#: admin/includes/cmb2-countdown-meta-config.php:444
 msgid "Highlight"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:444
+#: admin/includes/cmb2-countdown-meta-config.php:445
 msgid "Default"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:525
+#: admin/includes/cmb2-countdown-meta-config.php:526
 msgid ""
 "Note: You may need to adjust the default appearance settings in case you "
 "switch the default skin."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:539
-#: admin/includes/cmb2-countdown-meta-config.php:838
+#: admin/includes/cmb2-countdown-meta-config.php:540
+#: admin/includes/cmb2-countdown-meta-config.php:839
 msgid "Background/ Border"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:550
+#: admin/includes/cmb2-countdown-meta-config.php:551
 msgid "Label"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:561
+#: admin/includes/cmb2-countdown-meta-config.php:562
 msgid "Timer Font Size (px)"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:575
+#: admin/includes/cmb2-countdown-meta-config.php:576
 msgid "Label Font Size (px)"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:589
+#: admin/includes/cmb2-countdown-meta-config.php:590
 msgid "Timer Labels"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:590
+#: admin/includes/cmb2-countdown-meta-config.php:591
 msgid "days"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:602
+#: admin/includes/cmb2-countdown-meta-config.php:603
 msgid "hours"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:614
+#: admin/includes/cmb2-countdown-meta-config.php:615
 msgid "minutes"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:626
+#: admin/includes/cmb2-countdown-meta-config.php:627
 msgid "seconds"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:636
+#: admin/includes/cmb2-countdown-meta-config.php:637
 msgid ""
 "{{countdown_timer}}: Outputs the countdown timer. <br/> "
 "{{campaign_start_date}}: Shows campaign start date <br/> "
 "{{campaign_end_date}}: Shows campaign end date"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:638
-#: admin/includes/cmb2-countdown-meta-config.php:875
+#: admin/includes/cmb2-countdown-meta-config.php:639
+#: admin/includes/cmb2-countdown-meta-config.php:876
 msgid "Display"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:649
-#: admin/includes/cmb2-countdown-meta-config.php:886
+#: admin/includes/cmb2-countdown-meta-config.php:650
+#: admin/includes/cmb2-countdown-meta-config.php:887
 msgid "Border Style"
-msgstr ""
-
-#: admin/includes/cmb2-countdown-meta-config.php:651
-#: admin/includes/cmb2-countdown-meta-config.php:888
-msgid "Dotted"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:652
 #: admin/includes/cmb2-countdown-meta-config.php:889
-msgid "Dashed"
+msgid "Dotted"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:653
 #: admin/includes/cmb2-countdown-meta-config.php:890
-msgid "Solid"
+msgid "Dashed"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:654
 #: admin/includes/cmb2-countdown-meta-config.php:891
-msgid "Double"
+msgid "Solid"
 msgstr ""
 
 #: admin/includes/cmb2-countdown-meta-config.php:655
 #: admin/includes/cmb2-countdown-meta-config.php:892
-#: includes/wcct-common.php:1538 includes/wcct-common.php:1548
+msgid "Double"
+msgstr ""
+
+#: admin/includes/cmb2-countdown-meta-config.php:656
+#: admin/includes/cmb2-countdown-meta-config.php:893
+#: includes/wcct-common.php:1593 includes/wcct-common.php:1603
 msgid "None"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:667
-#: admin/includes/cmb2-countdown-meta-config.php:904
+#: admin/includes/cmb2-countdown-meta-config.php:668
+#: admin/includes/cmb2-countdown-meta-config.php:905
 msgid "Border Width (px)"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:681
-#: admin/includes/cmb2-countdown-meta-config.php:918
+#: admin/includes/cmb2-countdown-meta-config.php:682
+#: admin/includes/cmb2-countdown-meta-config.php:919
 msgid "Border Color"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:694
+#: admin/includes/cmb2-countdown-meta-config.php:695
 msgid "Reduce Countdown Timer Size on Mobile (%)"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:715
+#: admin/includes/cmb2-countdown-meta-config.php:716
 msgid "Single Product Counter Bar"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:753
-#: admin/includes/wcct-post-table.php:162 includes/wcct-common.php:1319
-#: includes/wcct-common.php:1581 includes/wcct-common.php:1583
+#: admin/includes/cmb2-countdown-meta-config.php:754
+#: admin/includes/wcct-post-table.php:162 includes/wcct-common.php:1505
+#: includes/wcct-common.php:1636 includes/wcct-common.php:1638
 msgid "Counter Bar"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:783
+#: admin/includes/cmb2-countdown-meta-config.php:784
 msgid "Rounded"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:784
+#: admin/includes/cmb2-countdown-meta-config.php:785
 msgid "Smooth"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:785
+#: admin/includes/cmb2-countdown-meta-config.php:786
 msgid "Sharp"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:788
+#: admin/includes/cmb2-countdown-meta-config.php:789
 msgid "Edges"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:799
+#: admin/includes/cmb2-countdown-meta-config.php:800
 msgid "Left to Right"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:800
+#: admin/includes/cmb2-countdown-meta-config.php:801
 msgid "Right to Left"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:803
+#: admin/includes/cmb2-countdown-meta-config.php:804
 msgid "Direction"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:810
+#: admin/includes/cmb2-countdown-meta-config.php:811
 msgid ""
 "This moves counter bar left to right. Use this when you want to indicate "
 "increase in sales."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:822
+#: admin/includes/cmb2-countdown-meta-config.php:823
 msgid ""
 "This moves counter bar right to left. Use this when you want to indicate "
 "decrease in stocks."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:849
+#: admin/includes/cmb2-countdown-meta-config.php:850
 msgid "Active"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:860
+#: admin/includes/cmb2-countdown-meta-config.php:861
 msgid "Height (px)"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:937
+#: admin/includes/cmb2-countdown-meta-config.php:938
 msgid "Sticky Header"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:953
+#: admin/includes/cmb2-countdown-meta-config.php:954
 msgid "Sticky Footer"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:969
+#: admin/includes/cmb2-countdown-meta-config.php:970
 msgid "Custom Text"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:974
+#: admin/includes/cmb2-countdown-meta-config.php:975
 msgid "CSS"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:978
+#: admin/includes/cmb2-countdown-meta-config.php:979
 msgid "Custom CSS"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:981
+#: admin/includes/cmb2-countdown-meta-config.php:982
 msgid "Enter Custom CSS to modify the visual."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:989
+#: admin/includes/cmb2-countdown-meta-config.php:990
 msgid "Ideas Factory"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1002
+#: admin/includes/cmb2-countdown-meta-config.php:1003
 msgid "Coupons"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1009
+#: admin/includes/cmb2-countdown-meta-config.php:1010
 msgid "COUPON TEXT HERE"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1009
-#: admin/includes/cmb2-countdown-meta-config.php:1048
+#: admin/includes/cmb2-countdown-meta-config.php:1010
+#: admin/includes/cmb2-countdown-meta-config.php:1049
 msgid "Unlock Advanced settings and more awesome features."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1009
-#: admin/includes/cmb2-countdown-meta-config.php:1022
-#: admin/includes/cmb2-countdown-meta-config.php:1035
-#: admin/includes/cmb2-countdown-meta-config.php:1048
+#: admin/includes/cmb2-countdown-meta-config.php:1010
+#: admin/includes/cmb2-countdown-meta-config.php:1023
+#: admin/includes/cmb2-countdown-meta-config.php:1036
+#: admin/includes/cmb2-countdown-meta-config.php:1049
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1015
+#: admin/includes/cmb2-countdown-meta-config.php:1016
 msgid "Events"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1022
+#: admin/includes/cmb2-countdown-meta-config.php:1023
 msgid "Want to Tweak Prices and Inventory During Campaigns?"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1022
+#: admin/includes/cmb2-countdown-meta-config.php:1023
 msgid "Unlock Events and more awesome features."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1028
+#: admin/includes/cmb2-countdown-meta-config.php:1029
 msgid "Actions"
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1035
+#: admin/includes/cmb2-countdown-meta-config.php:1036
 msgid ""
 "Create Genuine Scarcity by changing stock status , product visibility or "
 "hiding Add to Cart during or after campaigns."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1035
+#: admin/includes/cmb2-countdown-meta-config.php:1036
 msgid "Unlock Actions and more awesome features."
 msgstr ""
 
-#: admin/includes/cmb2-countdown-meta-config.php:1048
+#: admin/includes/cmb2-countdown-meta-config.php:1049
 msgid "Fine Tune Campaigns by changing Add to Cart Button Text and much more."
 msgstr ""
 
-#: admin/includes/wcct-admin-cmb2-support.php:46
+#: admin/includes/wcct-admin-cmb2-support.php:47
 msgid "Untitled"
 msgstr ""
 
-#: admin/includes/wcct-admin-cmb2-support.php:79
+#: admin/includes/wcct-admin-cmb2-support.php:82
 msgid "All"
 msgstr ""
 
@@ -658,65 +660,73 @@ msgstr ""
 msgid "Campaign Settings"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:88
+#: admin/includes/wcct-admin-countdown-options.php:87
 msgid "How Have You Built Single Product Pages?"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:89
+#: admin/includes/wcct-admin-countdown-options.php:88
 msgid ""
 "Note: If you previously got snippets from the support team that supported "
 "custom product pages, it is strongly advised to remove those snippets before "
 "you select a setting."
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:93
+#: admin/includes/wcct-admin-countdown-options.php:92
 msgid "Select this if you are using native WooCommerce product pages"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:94
+#: admin/includes/wcct-admin-countdown-options.php:93
 msgid ""
 "Select this is you are using custom Woocommerce product pages ( built using "
 "page builders such as Elementor, Divi Builder, UX-Builder, Beaver Builder "
 "etc)"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:100
+#: admin/includes/wcct-admin-countdown-options.php:99
 msgid "Hide Days"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:101
+#: admin/includes/wcct-admin-countdown-options.php:100
 msgid ""
 "Hide Days in Countdown Timer if the time for the campaign to end is less "
 "than 24 hrs or 1 day"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:111
+#: admin/includes/wcct-admin-countdown-options.php:110
 msgid "Hide Hours"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:112
+#: admin/includes/wcct-admin-countdown-options.php:111
 msgid ""
 "Hide Hours in Countdown Timer if the time for the campaign to end is less "
 "than 60 mins or 1 hour"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:122
+#: admin/includes/wcct-admin-countdown-options.php:121
 msgid "Hide Multiple Countdown Timers"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:123
+#: admin/includes/wcct-admin-countdown-options.php:122
 msgid "If more than 1 countdown timers for a Product then show only first one"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:145
+#: admin/includes/wcct-admin-countdown-options.php:132
+msgid "Reload Page"
+msgstr ""
+
+#: admin/includes/wcct-admin-countdown-options.php:133
+msgid "The current page will reload when countdown timer hits zero."
+msgstr ""
+
+#: admin/includes/wcct-admin-countdown-options.php:155
 msgid "Campaign Shortcodes"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:172
+#: admin/includes/wcct-admin-countdown-options.php:182
 msgid "Campaign Priority"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:188
+#: admin/includes/wcct-admin-countdown-options.php:198
 msgid ""
 "Priority works in ascending order. Lower the priority, higher the chance for "
 "campaign to work. <br/> For Eg: If there are two campaigns A & B with "
@@ -724,11 +734,11 @@ msgid ""
 "campaign B.  "
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:212
+#: admin/includes/wcct-admin-countdown-options.php:222
 msgid "Quick View"
 msgstr ""
 
-#: admin/includes/wcct-admin-countdown-options.php:290
+#: admin/includes/wcct-admin-countdown-options.php:299
 msgid "Finale Insights"
 msgstr ""
 
@@ -736,8 +746,8 @@ msgstr ""
 msgid "No Campaign Available"
 msgstr ""
 
-#: admin/includes/wcct-post-table.php:86 admin/wcct-admin.php:714
-#: includes/wcct-common.php:1202
+#: admin/includes/wcct-post-table.php:86 admin/wcct-admin.php:711
+#: includes/wcct-common.php:1394
 msgid "Fixed Date"
 msgstr ""
 
@@ -749,16 +759,16 @@ msgstr ""
 msgid "Expires On"
 msgstr ""
 
-#: admin/includes/wcct-post-table.php:140 includes/wcct-common.php:1261
+#: admin/includes/wcct-post-table.php:140 includes/wcct-common.php:1447
 msgid "Product Stock"
 msgstr ""
 
-#: admin/includes/wcct-post-table.php:142 includes/wcct-common.php:1258
+#: admin/includes/wcct-post-table.php:142 includes/wcct-common.php:1444
 msgid "Custom Stock"
 msgstr ""
 
-#: admin/includes/wcct-post-table.php:179 admin/wcct-admin.php:680
-#: includes/wcct-common.php:399 includes/wcct-common.php:1292
+#: admin/includes/wcct-post-table.php:179 admin/wcct-admin.php:679
+#: includes/wcct-common.php:403 includes/wcct-common.php:1478
 msgid "Deactivated"
 msgstr ""
 
@@ -778,7 +788,7 @@ msgstr ""
 msgid "Appearance"
 msgstr ""
 
-#: admin/includes/wcct-post-table.php:266 admin/wcct-admin.php:692
+#: admin/includes/wcct-post-table.php:266 admin/wcct-admin.php:690
 msgid "Status"
 msgstr ""
 
@@ -818,7 +828,7 @@ msgstr ""
 msgid "Apply this Campaign when these conditions are matched:"
 msgstr ""
 
-#: admin/views/metabox-rules.php:56 admin/wcct-admin.php:651
+#: admin/views/metabox-rules.php:56 admin/wcct-admin.php:650
 msgid "or"
 msgstr ""
 
@@ -846,23 +856,23 @@ msgstr ""
 msgid "PRO version"
 msgstr ""
 
-#: admin/wcct-admin.php:206
+#: admin/wcct-admin.php:207
 msgid "Countdown Timer + Bar"
 msgstr ""
 
-#: admin/wcct-admin.php:340
+#: admin/wcct-admin.php:339
 msgid "Back to <a href=\""
 msgstr ""
 
-#: admin/wcct-admin.php:343 admin/wcct-admin.php:379
+#: admin/wcct-admin.php:342 admin/wcct-admin.php:379
 msgid "Settings"
 msgstr ""
 
-#: admin/wcct-admin.php:376
+#: admin/wcct-admin.php:375
 msgid "Finale Campaigns"
 msgstr ""
 
-#: admin/wcct-admin.php:378 includes/wcct-common.php:121
+#: admin/wcct-admin.php:377 includes/wcct-common.php:126
 msgid "Add New Campaign"
 msgstr ""
 
@@ -913,6 +923,10 @@ msgid ""
 "every user. Each new user has their own deadline! Now make more money with "
 "personalized, time-limited campaigns instead of standard one-size fits all "
 "campaigns!"
+msgstr ""
+
+#: admin/wcct-admin.php:480
+msgid "(Available in Business Plan)"
 msgstr ""
 
 #: admin/wcct-admin.php:483
@@ -1014,514 +1028,508 @@ msgstr ""
 msgid "Finale Lite: XLPlugins"
 msgstr ""
 
-#: admin/wcct-admin.php:652
+#: admin/wcct-admin.php:651
 msgid "Apply this Campaign when these conditions are matched"
 msgstr ""
 
-#: admin/wcct-admin.php:653
+#: admin/wcct-admin.php:652
 msgid "Remove"
 msgstr ""
 
-#: admin/wcct-admin.php:672
+#: admin/wcct-admin.php:671
 msgid "Activated"
 msgstr ""
 
-#: admin/wcct-admin.php:672 includes/wcct-common.php:696
+#: admin/wcct-admin.php:671 includes/wcct-common.php:817
 msgid "Deactivate"
 msgstr ""
 
-#: admin/wcct-admin.php:680 includes/wcct-common.php:675
-#: includes/wcct-common.php:682
+#: admin/wcct-admin.php:679 includes/wcct-common.php:798
+#: includes/wcct-common.php:803
 msgid "Activate"
 msgstr ""
 
-#: admin/wcct-admin.php:699
+#: admin/wcct-admin.php:697
 msgid "Added on"
 msgstr ""
 
-#: admin/wcct-admin.php:731 includes/wcct-common.php:1221
-#: includes/wcct-common.php:1227
+#: admin/wcct-admin.php:728 includes/wcct-common.php:1412
+#: includes/wcct-common.php:1418
 msgid "Duration"
 msgstr ""
 
-#: admin/wcct-admin.php:783
+#: admin/wcct-admin.php:777
 msgid "Back to"
 msgstr ""
 
-#: admin/wcct-admin.php:783
+#: admin/wcct-admin.php:777
 msgid "settings"
 msgstr ""
 
-#: admin/wcct-admin.php:793
+#: admin/wcct-admin.php:787
 msgid "Countdown timer updated."
 msgstr ""
 
-#: admin/wcct-admin.php:794
+#: admin/wcct-admin.php:788
 msgid "Custom field updated."
 msgstr ""
 
-#: admin/wcct-admin.php:795
+#: admin/wcct-admin.php:789
 msgid "Custom field deleted."
 msgstr ""
 
-#: admin/wcct-admin.php:796 admin/wcct-admin.php:798 admin/wcct-admin.php:800
-#: admin/wcct-admin.php:803
+#: admin/wcct-admin.php:790 admin/wcct-admin.php:792 admin/wcct-admin.php:794
+#: admin/wcct-admin.php:797
 msgid "Countdown timer updated. "
 msgstr ""
 
-#: admin/wcct-admin.php:797
+#: admin/wcct-admin.php:791
 #, php-format
 msgid "Trigger restored to revision from %s"
 msgstr ""
 
-#: admin/wcct-admin.php:799
+#: admin/wcct-admin.php:793
 msgid "Trigger saved. "
 msgstr ""
 
-#: admin/wcct-admin.php:801
+#: admin/wcct-admin.php:795
 #, php-format
 msgid "Trigger scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: admin/wcct-admin.php:802
+#: admin/wcct-admin.php:796
 msgid "Trigger draft updated."
 msgstr ""
 
-#: admin/wcct-admin.php:832
+#: admin/wcct-admin.php:831
 msgid "Unable to Activate"
 msgstr ""
 
-#: admin/wcct-admin.php:862
+#: admin/wcct-admin.php:865
 msgid "Unable to Deactivate"
 msgstr ""
 
-#: admin/wcct-admin.php:974
+#: admin/wcct-admin.php:986
 msgid "Campaigns"
 msgstr ""
 
-#: admin/wcct-admin.php:1056
+#: admin/wcct-admin.php:1077
 #, php-format
 msgid ""
 "<strong>Important:</strong> We have noticed %s activated in your WordPress, "
 "Please reset/delete your cache after making changes to your campaign."
 msgstr ""
 
-#: admin/wcct-admin.php:1085
+#: admin/wcct-admin.php:1106
 #, php-format
 msgid ""
 "If you like the <strong>Finale - WooCommerce Sales Countdown Timer</strong> "
 "plugin, give us a %s rating. A huge thanks in advance!"
 msgstr ""
 
-#: admin/wcct-admin.php:1109
+#: admin/wcct-admin.php:1130
 msgid "Copy"
 msgstr ""
 
-#: admin/wcct-admin.php:1187
+#: admin/wcct-admin.php:1210
 msgid "Unable to Duplicate"
 msgstr ""
 
-#: finale-woocommerce-sales-countdown-timer-discount-plugin-lite.php:385
+#: finale-woocommerce-sales-countdown-timer-discount-plugin-lite.php:387
 #, php-format
 msgid ""
 "<strong> Attention: </strong>Finale requires WooCommerce version %1$s or "
 "greater. Kindly update the WooCommerce plugin."
 msgstr ""
 
-#: finale-woocommerce-sales-countdown-timer-discount-plugin-lite.php:397
+#: finale-woocommerce-sales-countdown-timer-discount-plugin-lite.php:399
 msgid ""
 "WooCommerce is not installed or activated. Finale is a WooCommerce Extension "
 "and would only work if WooCommerce is activated. Please install the "
 "WooCommerce Plugin first."
 msgstr ""
 
-#: includes/wcct-appearance.php:795
+#: includes/wcct-appearance.php:256
 msgid "Below Category and SKU"
 msgstr ""
 
-#: includes/wcct-cart.php:157
+#: includes/wcct-cart.php:161
 #, php-format
 msgid ""
 "Sorry, \"%s\" is not in stock. Please edit your cart and try again. We "
 "apologise for any inconvenience caused."
 msgstr ""
 
-#: includes/wcct-cart.php:185 includes/wcct-cart.php:193
+#: includes/wcct-cart.php:189 includes/wcct-cart.php:196
 #, php-format
 msgid ""
-"Sorry, we do not have enough \"%s\" in stock to fulfill your order (%s in "
-"stock). Please edit your cart and try again. We apologise for any "
+"Sorry, we do not have enough \"%1$s\" in stock to fulfill your order (%2$s "
+"in stock). Please edit your cart and try again. We apologise for any "
 "inconvenience caused."
 msgstr ""
 
-#: includes/wcct-cart.php:230
+#: includes/wcct-cart.php:231
 #, php-format
 msgid ""
-"Sorry, we do not have enough \"%s\" in stock to fulfill your order right "
-"now. Please try again in %d minutes or edit your cart and try again. We "
+"Sorry, we do not have enough \"%1$s\" in stock to fulfill your order right "
+"now. Please try again in %2$d minutes or edit your cart and try again. We "
 "apologise for any inconvenience caused."
 msgstr ""
 
-#: includes/wcct-common.php:120
+#: includes/wcct-common.php:125
 msgid "Add Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:122 includes/wcct-common.php:689
+#: includes/wcct-common.php:127 includes/wcct-common.php:810
 msgid "Edit"
 msgstr ""
 
-#: includes/wcct-common.php:123
+#: includes/wcct-common.php:128
 msgid "Edit Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:124
+#: includes/wcct-common.php:129
 msgid "New Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:125 includes/wcct-common.php:126
+#: includes/wcct-common.php:130 includes/wcct-common.php:131
 msgid "View Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:127
+#: includes/wcct-common.php:132
 msgid "Search Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:128
+#: includes/wcct-common.php:133
 msgid "No Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:129
+#: includes/wcct-common.php:134
 msgid "No Campaign found in trash"
 msgstr ""
 
-#: includes/wcct-common.php:130
+#: includes/wcct-common.php:135
 msgid "Parent Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:384 includes/wcct-common.php:1453
-#: includes/wcct-common.php:1650
+#: includes/wcct-common.php:388 includes/wcct-common.php:1519
+#: includes/wcct-common.php:1719
 msgid "Running"
 msgstr ""
 
-#: includes/wcct-common.php:389 includes/wcct-common.php:1462
-#: includes/wcct-common.php:1659
+#: includes/wcct-common.php:393 includes/wcct-common.php:1525
+#: includes/wcct-common.php:1728
 msgid "Scheduled"
 msgstr ""
 
-#: includes/wcct-common.php:394 includes/wcct-common.php:1459
-#: includes/wcct-common.php:1656
+#: includes/wcct-common.php:398 includes/wcct-common.php:1523
+#: includes/wcct-common.php:1725
 msgid "Finished"
 msgstr ""
 
-#: includes/wcct-common.php:481
+#: includes/wcct-common.php:596
 msgid "Product (suitable when campaign has discounts, inventory etc)"
 msgstr ""
 
-#: includes/wcct-common.php:482
+#: includes/wcct-common.php:597
 msgid "Page"
 msgstr ""
 
-#: includes/wcct-common.php:485
+#: includes/wcct-common.php:600
 msgid "General"
 msgstr ""
 
-#: includes/wcct-common.php:486
+#: includes/wcct-common.php:601
 msgid "Always"
 msgstr ""
 
-#: includes/wcct-common.php:489
+#: includes/wcct-common.php:604
 msgid "All Products"
 msgstr ""
 
-#: includes/wcct-common.php:490
+#: includes/wcct-common.php:605
 msgid "Products"
 msgstr ""
 
-#: includes/wcct-common.php:491
+#: includes/wcct-common.php:606
 msgid "Product Type"
 msgstr ""
 
-#: includes/wcct-common.php:492
+#: includes/wcct-common.php:607
 msgid "Product Category"
 msgstr ""
 
-#: includes/wcct-common.php:493
+#: includes/wcct-common.php:608
 msgid "Product Tags"
 msgstr ""
 
-#: includes/wcct-common.php:494
+#: includes/wcct-common.php:609
 msgid "Product Price"
 msgstr ""
 
-#: includes/wcct-common.php:495
+#: includes/wcct-common.php:610
 msgid "Sale Status"
 msgstr ""
 
-#: includes/wcct-common.php:496
+#: includes/wcct-common.php:611
 msgid "Stock Status"
 msgstr ""
 
-#: includes/wcct-common.php:497
+#: includes/wcct-common.php:612
 msgid "Stock Quantity"
 msgstr ""
 
-#: includes/wcct-common.php:500
+#: includes/wcct-common.php:615
 msgid "All Pages"
 msgstr ""
 
-#: includes/wcct-common.php:501
+#: includes/wcct-common.php:616
 msgid "Specific Page(s)"
 msgstr ""
 
-#: includes/wcct-common.php:502
+#: includes/wcct-common.php:617
 msgid "Home Page (Front Page)"
 msgstr ""
 
-#: includes/wcct-common.php:503
+#: includes/wcct-common.php:618
 msgid "All Product Category Pages"
 msgstr ""
 
-#: includes/wcct-common.php:504
+#: includes/wcct-common.php:619
 msgid "Specific Product Category Page(s)"
 msgstr ""
 
-#: includes/wcct-common.php:505
+#: includes/wcct-common.php:620
 msgid "All Product Tags Pages"
 msgstr ""
 
-#: includes/wcct-common.php:506
+#: includes/wcct-common.php:621
 msgid "Specific Product Tags Page(s)"
 msgstr ""
 
-#: includes/wcct-common.php:508
+#: includes/wcct-common.php:623
 msgid "Geography"
 msgstr ""
 
-#: includes/wcct-common.php:509
+#: includes/wcct-common.php:624
 msgid "Country"
 msgstr ""
 
-#: includes/wcct-common.php:511
+#: includes/wcct-common.php:626
 msgid "Date/Time"
 msgstr ""
 
-#: includes/wcct-common.php:512
+#: includes/wcct-common.php:627
 msgid "Day"
 msgstr ""
 
-#: includes/wcct-common.php:513
+#: includes/wcct-common.php:628
 msgid "Date"
 msgstr ""
 
-#: includes/wcct-common.php:514
+#: includes/wcct-common.php:629
 msgid "Time"
 msgstr ""
 
-#: includes/wcct-common.php:516
+#: includes/wcct-common.php:631
 msgid "Membership"
 msgstr ""
 
-#: includes/wcct-common.php:517
+#: includes/wcct-common.php:632
 msgid "User"
 msgstr ""
 
-#: includes/wcct-common.php:518
+#: includes/wcct-common.php:633
 msgid "Role"
 msgstr ""
 
-#: includes/wcct-common.php:703
+#: includes/wcct-common.php:824
 msgid "Duplicate Campaign"
 msgstr ""
 
-#: includes/wcct-common.php:709
+#: includes/wcct-common.php:830
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/wcct-common.php:754
+#: includes/wcct-common.php:947
 msgid "Disabled"
 msgstr ""
 
-#: includes/wcct-common.php:1162
+#: includes/wcct-common.php:1355
 msgid "WooCommerce"
 msgstr ""
 
-#: includes/wcct-common.php:1299
+#: includes/wcct-common.php:1485
 msgid "Campaign Type"
 msgstr ""
 
-#: includes/wcct-common.php:1303
+#: includes/wcct-common.php:1489
 msgid "Campaign State"
 msgstr ""
 
-#: includes/wcct-common.php:1456 includes/wcct-common.php:1653
+#: includes/wcct-common.php:1521 includes/wcct-common.php:1722
 msgid "Paused"
 msgstr ""
 
-#: includes/wcct-common.php:1529
+#: includes/wcct-common.php:1584
 msgid "Product"
 msgstr ""
 
-#: includes/wcct-common.php:1536 includes/wcct-common.php:1538
+#: includes/wcct-common.php:1591 includes/wcct-common.php:1593
 msgid "Running Campaigns"
 msgstr ""
 
-#: includes/wcct-common.php:1546 includes/wcct-common.php:1548
+#: includes/wcct-common.php:1601 includes/wcct-common.php:1603
 msgid "Non-running Campaigns"
 msgstr ""
 
-#: includes/wcct-common.php:1552 includes/wcct-common.php:1554
+#: includes/wcct-common.php:1607 includes/wcct-common.php:1609
 msgid "Discounts"
 msgstr ""
 
-#: includes/wcct-common.php:1590
+#: includes/wcct-common.php:1647
 #, php-format
 msgid "Unable to see Finale elements? %s"
 msgstr ""
 
-#: includes/wcct-common.php:1900
+#: includes/wcct-common.php:1660
 #, php-format
 msgid "Protected: %s"
 msgstr ""
 
-#: includes/wcct-common.php:1903
+#: includes/wcct-common.php:1663
 #, php-format
 msgid "Private: %s"
 msgstr ""
 
-#: includes/wcct-xl-support.php:110
+#: includes/wcct-xl-support.php:105
 #, php-format
 msgid ""
 "<p>You are <strong>not receiving</strong> Latest Updates, New Features, "
-"Security Updates &amp; Bug Fixes for <strong>%s</strong>. <a href=\"%s"
+"Security Updates &amp; Bug Fixes for <strong>%1$s</strong>. <a href=\"%2$s"
 "\">Click Here To Fix This</a>.</p>"
 msgstr ""
 
-#: includes/wcct-xl-support.php:207
-msgid ""
-"<p> Unable to submit your request.All fields are required. Please ensure "
-"that all the fields are filled out.</p>"
-msgstr ""
-
-#: includes/wcct-xl-support.php:270
+#: includes/wcct-xl-support.php:251
 msgid "XLPlugins"
 msgstr ""
 
-#: includes/wcct-xl-support.php:278
+#: includes/wcct-xl-support.php:258
 msgid "Licenses"
 msgstr ""
 
-#: includes/wcct-xl-support.php:278
+#: includes/wcct-xl-support.php:258
 msgid "License"
 msgstr ""
 
-#: includes/wcct-xl-support.php:455 includes/wcct-xl-support.php:457
+#: includes/wcct-xl-support.php:446 includes/wcct-xl-support.php:448
 msgid "Other"
 msgstr ""
 
-#: includes/wcct-xl-support.php:489
+#: includes/wcct-xl-support.php:480
 msgid "I am going to upgrade to PRO version"
 msgstr ""
 
-#: includes/wcct-xl-support.php:492
+#: includes/wcct-xl-support.php:483
 msgid ""
 "Smart choice! Finale PRO has tons of additional features to boost your "
 "revenue. <a href='"
 msgstr ""
 
-#: includes/wcct-xl-support.php:497
+#: includes/wcct-xl-support.php:488
 msgid ""
 "Countdown Timer or Counter Bar didn't show even while campaign was running"
 msgstr ""
 
-#: includes/wcct-xl-support.php:500
+#: includes/wcct-xl-support.php:491
 msgid ""
 "There could be multiple reasons for this. Take 2 mins and read <a href=\""
 msgstr ""
 
-#: includes/wcct-xl-support.php:504
+#: includes/wcct-xl-support.php:495
 msgid "Expected discount amount didn't appear"
 msgstr ""
 
-#: includes/wcct-xl-support.php:507
+#: includes/wcct-xl-support.php:498
 msgid ""
 "There could be a caching plugin, try clearing Cache.<br/>OR you could be "
 "using other plugins that modify pricing such as currency switcher, "
 "discounting plugin, etc. Then Raise a <a href=\""
 msgstr ""
 
-#: includes/wcct-xl-support.php:511
+#: includes/wcct-xl-support.php:502
 msgid "Campaigns were not restricted as per rules"
 msgstr ""
 
-#: includes/wcct-xl-support.php:514
+#: includes/wcct-xl-support.php:505
 msgid "Raise a <a href=\""
 msgstr ""
 
-#: includes/wcct-xl-support.php:518
+#: includes/wcct-xl-support.php:509
 msgid "Countdown Timer or Counter Bar didn't appear at right positions"
 msgstr ""
 
-#: includes/wcct-xl-support.php:521
+#: includes/wcct-xl-support.php:512
 msgid ""
 "It seems your theme modified the native WooCommerce positions. Take 2 mins "
 "and read <a href=\""
 msgstr ""
 
-#: includes/wcct-xl-support.php:525
+#: includes/wcct-xl-support.php:516
 msgid "Finale Activation caused PHP Errors or blank white screen"
 msgstr ""
 
-#: includes/wcct-xl-support.php:528
+#: includes/wcct-xl-support.php:519
 msgid ""
 "Ensure you have the latest version of WooCommerce & Finale. There could be a "
 "possibility of conflict with other plugins. Raise a <a href=\""
 msgstr ""
 
-#: includes/wcct-xl-support.php:532
+#: includes/wcct-xl-support.php:523
 msgid "Add to Cart wasn't working"
 msgstr ""
 
-#: includes/wcct-xl-support.php:535
+#: includes/wcct-xl-support.php:526
 msgid ""
 "Check Finale's Inventory settings or see if you have order with 'Pending "
 "Payment' state. As they may block product inventory."
 msgstr ""
 
-#: includes/wcct-xl-support.php:539
+#: includes/wcct-xl-support.php:530
 msgid "Troubleshooting conflicts with other plugins"
 msgstr ""
 
-#: includes/wcct-xl-support.php:542
+#: includes/wcct-xl-support.php:533
 msgid "Hope you could resolve conflicts soon."
 msgstr ""
 
-#: includes/wcct-xl-support.php:546
+#: includes/wcct-xl-support.php:537
 msgid "Doing Testing"
 msgstr ""
 
-#: includes/wcct-xl-support.php:549
+#: includes/wcct-xl-support.php:540
 msgid "Hope to see you using it again."
 msgstr ""
 
-#: includes/wcct-xl-support.php:553
+#: includes/wcct-xl-support.php:544
 msgid "I no longer need the plugin"
 msgstr ""
 
-#: includes/wcct-xl-support.php:556
+#: includes/wcct-xl-support.php:547
 msgid ""
 "Sorry to know that! How can we better your experience? We may be able to fix "
 "what we are aware of. Please <a href=\""
 msgstr ""
 
-#: includes/wcct-xl-support.php:569
+#: includes/wcct-xl-support.php:560
 msgid "Finale Lite"
 msgstr ""
 
-#: includes/wcct-xl-support.php:579
+#: includes/wcct-xl-support.php:574
 msgid "Export Finale Campaign"
 msgstr ""
 
-#: includes/wcct-xl-support.php:580
+#: includes/wcct-xl-support.php:576
 msgid "Export Settings"
 msgstr ""
 
@@ -1533,55 +1541,55 @@ msgstr ""
 msgid "Campaign will always display for all visitors on your site."
 msgstr ""
 
-#: rules/inputs/product-select.php:29
+#: rules/inputs/product-select.php:28
 msgid "Search for a product&hellip;"
 msgstr ""
 
-#: rules/rules/base.php:32 rules/rules/products.php:231
+#: rules/rules/base.php:32 rules/rules/products.php:314
 msgid "is equal to"
 msgstr ""
 
-#: rules/rules/base.php:33 rules/rules/products.php:232
+#: rules/rules/base.php:33 rules/rules/products.php:315
 msgid "is not equal to"
 msgstr ""
 
-#: rules/rules/products.php:12 rules/rules/products.php:66
-#: rules/rules/products.php:116 rules/rules/products.php:435
-#: rules/rules/products.php:483
+#: rules/rules/products.php:15 rules/rules/products.php:76
+#: rules/rules/products.php:152 rules/rules/products.php:535
+#: rules/rules/products.php:608
 msgid "is"
 msgstr ""
 
-#: rules/rules/products.php:13 rules/rules/products.php:67
-#: rules/rules/products.php:117 rules/rules/products.php:436
-#: rules/rules/products.php:484
+#: rules/rules/products.php:16 rules/rules/products.php:77
+#: rules/rules/products.php:153 rules/rules/products.php:536
+#: rules/rules/products.php:609
 msgid "is not"
 msgstr ""
 
-#: rules/rules/products.php:162
+#: rules/rules/products.php:224
 msgid "has"
 msgstr ""
 
-#: rules/rules/products.php:163
+#: rules/rules/products.php:225
 msgid "does not have"
 msgstr ""
 
-#: rules/rules/products.php:233
+#: rules/rules/products.php:316
 msgid "is greater than"
 msgstr ""
 
-#: rules/rules/products.php:234
+#: rules/rules/products.php:317
 msgid "is less than"
 msgstr ""
 
-#: rules/rules/products.php:235
+#: rules/rules/products.php:318
 msgid "is greater or equal to"
 msgstr ""
 
-#: rules/rules/products.php:236
+#: rules/rules/products.php:319
 msgid "is less or equal to"
 msgstr ""
 
-#: start.php:35
+#: start.php:26
 msgid ""
 "XL Core should be present in folder 'xl' in order to run this properly. "
 msgstr ""

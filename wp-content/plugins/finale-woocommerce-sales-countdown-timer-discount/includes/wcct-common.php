@@ -51,25 +51,32 @@ class WCCT_Common {
 		// ajax
 		add_action( 'wp_ajax_wcct_close_sticky_bar', array( __CLASS__, 'wcct_close_sticky_bar' ) );
 		add_action( 'wp_ajax_nopriv_wcct_close_sticky_bar', array( __CLASS__, 'wcct_close_sticky_bar' ) );
-
 		add_action( 'wp_ajax_wcct_quick_view_html', array( __CLASS__, 'wcct_quick_view_html' ) );
 
 		add_action( 'wcct_data_setup_done', array( __CLASS__, 'init_header_logs' ), 999 );
-
 		add_action( 'admin_bar_menu', array( __CLASS__, 'toolbar_link_to_xlplugins' ), 999 );
 
 		add_filter( 'wcct_localize_js_data', array( __CLASS__, 'add_license_info' ) );
 
 		add_action( 'wcct_schedule_reset_state', array( __CLASS__, 'process_reset_state' ), 10, 1 );
-
 		add_action( 'plugins_loaded', array( __CLASS__, 'wcct_refresh_timer_ajax_callback' ) );
 
-		add_action( 'init', array( __CLASS__, 'wcct_maybe_clear_cache_using_get_parameter' ) );
+		add_action( 'wp_ajax_wcct_clear_cache', array( __CLASS__, 'wcct_maybe_clear_cache' ) );
+		add_action( 'wp_ajax_nopriv_wcct_clear_cache', array( __CLASS__, 'wcct_maybe_clear_cache' ) );
 
 		/**
 		 * Restoring stock on cancel order
 		 */
 		add_action( 'woocommerce_order_status_cancelled', array( __CLASS__, 'wcct_restore_order_stock' ), 10 );
+
+		/**
+		 * Clear postmeta table for expired campaigns
+		 */
+		add_action( 'admin_init', array( __CLASS__, 'wcct_clear_post_meta_keys_for_expired_campaigns' ), 10 );
+		add_action( 'wcct_clear_goaldeal_stock_meta_keys', array( __CLASS__, 'wcct_clear_goaldeal_stock_meta_keys' ), 10 );
+
+		add_action( 'heartbeat_tick', array( __CLASS__, 'run_cron_fallback' ) );
+		add_action( 'rest_api_init', array( __CLASS__, 'add_plugin_endpoint' ) );
 	}
 
 	public static function wcct_get_date_format() {
@@ -175,11 +182,12 @@ class WCCT_Common {
 
 	/**
 	 * Creates an instance of an input object
-	 * @global type $woocommerce_wcct_rule_inputs
 	 *
-	 * @param type $input_type The slug of the input type to load
+	 * @param $input_type : The slug of the input type to load
 	 *
-	 * @return type An instance of an WCCT_Input object type
+	 * @return: An instance of an WCCT_Input object type
+	 * @global: $woocommerce_wcct_rule_inputs
+	 *
 	 */
 	public static function woocommerce_wcct_rule_get_input_object( $input_type ) {
 		global $woocommerce_wcct_rule_inputs;
@@ -216,7 +224,7 @@ class WCCT_Common {
 
 		$is_ajax = false;
 
-		if ( isset( $_POST['action'] ) && $_POST['action'] == 'wcct_change_rule_type' ) {
+		if ( isset( $_POST['action'] ) && 'wcct_change_rule_type' === $_POST['action'] ) {
 			$is_ajax = true;
 		}
 
@@ -270,11 +278,12 @@ class WCCT_Common {
 
 	/**
 	 * Creates an instance of a rule object
-	 * @global array $woocommerce_wcct_rule_rules
 	 *
-	 * @param type $rule_type The slug of the rule type to load.
+	 * @param $rule_type : The slug of the rule type to load.
 	 *
 	 * @return WCCT_Rule_Base or superclass of WCCT_Rule_Base
+	 * @global array $woocommerce_wcct_rule_rules
+	 *
 	 */
 	public static function woocommerce_wcct_rule_get_rule_object( $rule_type ) {
 		global $woocommerce_wcct_rule_rules;
@@ -290,7 +299,7 @@ class WCCT_Common {
 
 		if ( is_array( $wc_tax ) && count( $wc_tax ) > 0 ) {
 			$wc_tax = array_filter( $wc_tax, function ( $tax_name ) {
-				return ( 'pa_' != substr( $tax_name, 0, 3 ) );
+				return ( 'pa_' !== substr( $tax_name, 0, 3 ) );
 			} );
 		}
 
@@ -299,7 +308,7 @@ class WCCT_Common {
 			$woocommerce_wcct_rule_rules[ $rule_type ] = new $class;
 
 			return $woocommerce_wcct_rule_rules[ $rule_type ];
-		} elseif ( is_array( $wc_tax ) && count( $wc_tax ) > 0 && in_array( $rule_type, $wc_tax ) ) {
+		} elseif ( is_array( $wc_tax ) && count( $wc_tax ) > 0 && in_array( $rule_type, $wc_tax, true ) ) {
 			$tax_rule_class = new WCCT_Rule_WCCT_Product_Tax( $rule_type );
 
 			return $tax_rule_class;
@@ -323,9 +332,8 @@ class WCCT_Common {
 			'operator'  => null,
 		);
 
-		$options     = array_merge( $defaults, $options );
-		$rule_object = self::woocommerce_wcct_rule_get_rule_object( $options['rule_type'] );
-
+		$options              = array_merge( $defaults, $options );
+		$rule_object          = self::woocommerce_wcct_rule_get_rule_object( $options['rule_type'] );
 		$values               = $rule_object->get_possible_rule_values();
 		$operators            = $rule_object->get_possible_rule_operators();
 		$condition_input_type = $rule_object->get_condition_input_type();
@@ -403,9 +411,7 @@ class WCCT_Common {
 	}
 
 	public static function match_groups( $content_id, $productID = 0 ) {
-
-		$display = false;
-
+		$display      = false;
 		$xl_cache_obj = XL_Cache::get_instance();
 
 		if ( $productID ) {
@@ -417,7 +423,7 @@ class WCCT_Common {
 		$cache_data = $xl_cache_obj->get_cache( $cache_key, 'finale' );
 		$cache_data = apply_filters( 'finale_match_group_cached_result', $cache_data, $content_id, $productID );
 		if ( false !== $cache_data ) {
-			$display = ( $cache_data == 'yes' ) ? true : false;
+			$display = ( 'yes' === $cache_data ) ? true : false;
 		} else {
 			do_action( 'wcct_before_apply_rules', $content_id, $productID );
 			self::$is_executing_rule = true;
@@ -469,12 +475,9 @@ class WCCT_Common {
 	}
 
 	public static function get_item_data( $item_id ) {
-		global $wpdb;
-
 		$xl_cache_obj     = XL_Cache::get_instance();
 		$xl_transient_obj = XL_Transient::get_instance();
-
-		$cache_key = 'wcct_countdown_post_meta_' . $item_id;
+		$cache_key        = 'wcct_countdown_post_meta_' . $item_id;
 
 		/** Setting xl cache and transient for Finale single campaign meta */
 		$cache_data = $xl_cache_obj->get_cache( $cache_key, 'finale' );
@@ -499,7 +502,7 @@ class WCCT_Common {
 		if ( $parseObj && is_array( $parseObj ) && count( $parseObj ) > 0 ) {
 			foreach ( $parseObj as $key => $val ) {
 				$newKey = $key;
-				if ( strpos( $key, '_wcct_' ) !== false ) {
+				if ( false !== strpos( $key, '_wcct_' ) ) {
 					$newKey = str_replace( '_wcct_', '', $key );
 				}
 				$fields[ $newKey ] = maybe_unserialize( $val );
@@ -642,25 +645,23 @@ class WCCT_Common {
 		$arr        = array();
 		$wc_tax_obj = get_object_taxonomies( 'product', 'object' );
 		$wc_tax     = array_keys( $wc_tax_obj );
-
-		$exc_cats = array( 'product_type', 'product_visibility', 'product_cat', 'product_tag', 'product_shipping_class' );
-
-		$wc_tax = array_diff( $wc_tax, $exc_cats );
+		$exc_cats   = array( 'product_type', 'product_visibility', 'product_cat', 'product_tag', 'product_shipping_class' );
+		$wc_tax     = array_diff( $wc_tax, $exc_cats );
 
 		if ( is_array( $wc_tax ) && count( $wc_tax ) > 0 ) {
 			$wc_tax = array_filter( $wc_tax, function ( $tax_name ) {
-				return ( 'pa_' != substr( $tax_name, 0, 3 ) );
+				return ( 'pa_' !== substr( $tax_name, 0, 3 ) );
 			} );
 		}
 
-		if ( ! is_array( $wc_tax ) || count( $wc_tax ) == 0 ) {
+		if ( ! is_array( $wc_tax ) || count( $wc_tax ) === 0 ) {
 			return $types;
 		}
 
 		sort( $wc_tax );
 		foreach ( $types[ self::$rule_product_label ] as $key => $name ) {
 			$arr[ $key ] = $name;
-			if ( 'product_tags' == $key ) {
+			if ( 'product_tags' === $key ) {
 				foreach ( $wc_tax as $new_tax ) {
 					$arr[ $new_tax ] = ucwords( $wc_tax_obj[ $new_tax ]->label );
 				}
@@ -691,7 +692,6 @@ class WCCT_Common {
 	 * @param int $post_id Post ID
 	 * @param WP_Post Post Object
 	 *
-	 * @return null
 	 */
 	public static function save_data( $post_id, $post ) {
 		if ( empty( $post_id ) || empty( $post ) ) {
@@ -706,7 +706,7 @@ class WCCT_Common {
 		if ( is_int( wp_is_post_autosave( $post ) ) ) {
 			return;
 		}
-		if ( $post->post_type != self::get_campaign_post_type_slug() ) {
+		if ( self::get_campaign_post_type_slug() !== $post->post_type ) {
 			return;
 		}
 
@@ -723,7 +723,7 @@ class WCCT_Common {
 				'hook'     => $location[1],
 			);
 
-			if ( $settings['hook'] == 'custom' ) {
+			if ( 'custom' === $settings['hook'] ) {
 				$settings['custom_hook']     = $_POST['wcct_settings_location_custom_hook'];
 				$settings['custom_priority'] = $_POST['wcct_settings_location_custom_priority'];
 			} else {
@@ -738,20 +738,18 @@ class WCCT_Common {
 
 		if ( isset( $_POST['wcct_rule'] ) ) {
 			update_post_meta( $post_id, 'wcct_rule', $_POST['wcct_rule'] );
-		} else {
-			//  delete_post_meta($post_id, 'wcct_rule');
 		}
 	}
 
 	public static function get_post_table_data( $trigger = 'all' ) {
-		if ( $trigger == 'all' ) {
+		if ( $trigger === 'all' ) {
 			$args = array(
 				'post_type'        => self::get_campaign_post_type_slug(),
 				'post_status'      => array( 'publish', WCCT_SHORT_SLUG . 'disabled' ),
 				'suppress_filters' => false, //WPML Compatibility
 				'meta_key'         => '_wcct_campaign_menu_order',
-				'orderby'          => 'meta_value_num',
-				'order'            => 'ASC',
+				'orderby'          => 'ID',
+				'order'            => 'DESC',
 				'posts_per_page'   => 20,
 				'paged'            => isset( $_GET['paged'] ) ? $_GET['paged'] : 1,
 
@@ -759,7 +757,7 @@ class WCCT_Common {
 		} else {
 			$meta_q      = array();
 			$post_status = '';
-			if ( $trigger == 'deactivated' ) {
+			if ( $trigger === 'deactivated' ) {
 				$post_status = WCCT_SHORT_SLUG . 'disabled';
 			} else {
 				$meta_q[] = array(
@@ -773,12 +771,12 @@ class WCCT_Common {
 				'post_status'      => array( 'publish', WCCT_SHORT_SLUG . 'disabled' ),
 				'suppress_filters' => false,   //WPML Compatibility
 				'meta_key'         => '_wcct_campaign_menu_order',
-				'orderby'          => 'meta_value_num',
-				'order'            => 'ASC',
+				'orderby'          => 'ID',
+				'order'            => 'DESC',
 				'posts_per_page'   => 20,
 				'paged'            => isset( $_GET['paged'] ) ? $_GET['paged'] : 1,
 			);
-			if ( $post_status != '' ) {
+			if ( $post_status !== '' ) {
 				$args['post_status'] = $post_status;
 			} else {
 				$args['post_status'] = 'publish';
@@ -788,26 +786,22 @@ class WCCT_Common {
 			}
 		}
 
-		$q = new WP_Query( $args );
-
+		$q           = new WP_Query( $args );
 		$found_posts = array();
 		if ( $q->have_posts() ) {
 
 			while ( $q->have_posts() ) {
 				$q->the_post();
-				$status      = get_post_status( get_the_ID() );
-				$row_actions = array();
-
+				$status           = get_post_status( get_the_ID() );
+				$row_actions      = array();
 				$deactivation_url = wp_nonce_url( add_query_arg( 'page', 'wc-settings', add_query_arg( 'tab', self::get_wc_settings_tab_slug(), add_query_arg( 'action', 'wcct-post-deactivate', add_query_arg( 'postid', get_the_ID(), add_query_arg( 'trigger', $trigger ) ), network_admin_url( 'admin.php' ) ) ) ), 'wcct-post-deactivate' );
 
-				if ( $status == WCCT_SHORT_SLUG . 'disabled' ) {
+				if ( $status === WCCT_SHORT_SLUG . 'disabled' ) {
 
-					$text = __( 'Activate', 'finale-woocommerce-sales-countdown-timer-discount' );
-					$link = get_post_permalink( get_the_ID() );
-
+					$text           = __( 'Activate', 'finale-woocommerce-sales-countdown-timer-discount' );
+					$link           = get_post_permalink( get_the_ID() );
 					$activation_url = wp_nonce_url( add_query_arg( 'page', 'wc-settings', add_query_arg( 'tab', self::get_wc_settings_tab_slug(), add_query_arg( 'action', 'wcct-post-activate', add_query_arg( 'postid', get_the_ID(), add_query_arg( 'trigger', $trigger ) ), network_admin_url( 'admin.php' ) ) ) ), 'wcct-post-activate' );
-
-					$row_actions[] = array(
+					$row_actions[]  = array(
 						'action' => 'activate',
 						'text'   => __( 'Activate', 'finale-woocommerce-sales-countdown-timer-discount' ),
 						'link'   => $activation_url,
@@ -864,7 +858,7 @@ class WCCT_Common {
 
 		if ( 'revision' === $post->post_type ) {
 			$action = '';
-		} elseif ( 'display' == $context ) {
+		} elseif ( 'display' === $context ) {
 			$action = '&amp;action=edit';
 		} else {
 			$action = '&action=edit';
@@ -895,8 +889,7 @@ class WCCT_Common {
 	public static function get_post_data( $item_id, $force = false ) {
 		$xl_cache_obj     = XL_Cache::get_instance();
 		$xl_transient_obj = XL_Transient::get_instance();
-
-		$cache_key = 'post_data_' . $item_id;
+		$cache_key        = 'post_data_' . $item_id;
 
 		/** When force enabled */
 		if ( true === $force ) {
@@ -952,7 +945,6 @@ class WCCT_Common {
 	}
 
 	public static function register_post_status() {
-
 		// acf-disabled
 		register_post_status( WCCT_SHORT_SLUG . 'disabled', array(
 			'label'                     => __( 'Disabled', 'finale-woocommerce-sales-countdown-timer-discount' ),
@@ -965,18 +957,19 @@ class WCCT_Common {
 	}
 
 	public static function get_parent_slug( $slug ) {
-
 		foreach ( self::get_campaign_statuses() as $key => $trigger_list ) {
 
 			if ( isset( $trigger_list['triggers'] ) && is_array( $trigger_list['triggers'] ) && count( $trigger_list['triggers'] ) > 0 ) {
 				foreach ( $trigger_list['triggers'] as $trigger ) {
 
-					if ( $trigger['slug'] == $slug ) {
+					if ( $trigger['slug'] === $slug ) {
 						return $key;
 					}
 				}
 			}
 		}
+
+		return '';
 	}
 
 	public static function wcct_get_between( $content, $start, $end ) {
@@ -1020,7 +1013,6 @@ class WCCT_Common {
 	 * @return mixed|string|void
 	 */
 	public static function wc_timezone_string() {
-
 		// if site timezone string exists, return it
 		if ( $timezone = get_option( 'timezone_string' ) ) {
 			return $timezone;
@@ -1037,11 +1029,12 @@ class WCCT_Common {
 
 	/**
 	 * Function to get timezone string based on specified offset
-	 * @see WCCT_Common::wc_timezone_string()
 	 *
 	 * @param $offset
 	 *
 	 * @return string
+	 * @see WCCT_Common::wc_timezone_string()
+	 *
 	 */
 	public static function get_timezone_by_offset( $offset ) {
 		switch ( $offset ) {
@@ -1209,11 +1202,10 @@ class WCCT_Common {
 
 	/**
 	 * Function to get timezone string by checking wp settings
-	 * @deprecated
 	 * @return false|mixed|string|void
+	 * @deprecated
 	 */
 	public static function wc_timezone_string_old() {
-
 		// if site timezone string exists, return it
 		if ( $timezone = get_option( 'timezone_string' ) ) {
 			return $timezone;
@@ -1254,7 +1246,7 @@ class WCCT_Common {
 		$child_stock = 0;
 
 		$WCCT_Campaign = WCCT_Campaign::get_instance();
-		if ( $product->get_type() == 'variation' ) {
+		if ( $product->get_type() === 'variation' ) {
 			$product = wc_get_product( $WCCT_Campaign->wcct_get_product_parent_id( $product ) );
 		}
 
@@ -1262,7 +1254,7 @@ class WCCT_Common {
 		if ( sizeof( $product->get_children() ) > 0 ) {
 			foreach ( $product->get_children() as $child_id ) {
 				$stock_status = get_post_meta( $child_id, '_stock_status', true );
-				if ( $stock_status == 'instock' ) {
+				if ( $stock_status === 'instock' ) {
 					if ( 'yes' === get_post_meta( $child_id, '_manage_stock', true ) ) {
 						$stock       = get_post_meta( $child_id, '_stock', true );
 						$total_stock += max( 0, wc_stock_amount( $stock ) );
@@ -1354,7 +1346,6 @@ class WCCT_Common {
 	}
 
 	public static function check_query_params() {
-
 		$force_debug = filter_input( INPUT_GET, 'wcct_force_debug' );
 
 		if ( $force_debug === 'yes' ) {
@@ -1372,12 +1363,12 @@ class WCCT_Common {
 			return $status;
 		}
 
-		if ( 'all' == $mode ) {
-			if ( ( ( $screen->base == $wc_screen_id . '_page_wc-settings' && isset( $_GET['tab'] ) && $_GET['tab'] == 'xl-countdown-timer' ) || ( $screen->base == 'post' && $screen->post_type == WCCT_Common::get_campaign_post_type_slug() ) ) ) {
+		if ( 'all' === $mode ) {
+			if ( ( ( $screen->base == $wc_screen_id . '_page_wc-settings' && isset( $_GET['tab'] ) && $_GET['tab'] === 'xl-countdown-timer' ) || ( $screen->base == 'post' && $screen->post_type === WCCT_Common::get_campaign_post_type_slug() ) ) ) {
 				$status = true;
 			}
-		} elseif ( 'single' == $mode ) {
-			if ( ( $screen->base == 'post' && $screen->post_type == WCCT_Common::get_campaign_post_type_slug() ) ) {
+		} elseif ( 'single' === $mode ) {
+			if ( ( $screen->base === 'post' && $screen->post_type === WCCT_Common::get_campaign_post_type_slug() ) ) {
 				$status = true;
 			}
 		}
@@ -1388,22 +1379,21 @@ class WCCT_Common {
 	}
 
 	public static function wcct_quick_view_html() {
-
 		$data        = self::get_item_data( $_POST['ID'] );
 		$camp_data   = get_post( $_POST['ID'] );
 		$is_disabled = false;
-		if ( is_object( $camp_data ) && isset( $camp_data->post_status ) && ( WCCT_SHORT_SLUG . 'disabled' == $camp_data->post_status ) ) {
+		if ( is_object( $camp_data ) && isset( $camp_data->post_status ) && ( WCCT_SHORT_SLUG . 'disabled' === $camp_data->post_status ) ) {
 			$is_disabled = true;
 		}
 
 		$data_format = get_option( 'date_format' );
 
-		if ( isset( $data['campaign_fixed_recurring_start_date'] ) && $data['campaign_fixed_recurring_start_date'] != '' ) {
+		if ( isset( $data['campaign_fixed_recurring_start_date'] ) && $data['campaign_fixed_recurring_start_date'] !== '' ) {
 			$start_date    = $data['campaign_fixed_recurring_start_date'];
 			$start_time    = $data['campaign_fixed_recurring_start_time'];
 			$date1         = new Datetime( $start_date . ' ' . $start_time );
 			$campaign_type = '';
-			if ( $data['campaign_type'] == 'fixed_date' ) {
+			if ( $data['campaign_type'] === 'fixed_date' ) {
 				$campaign_type = __( 'Fixed Date', 'finale-woocommerce-sales-countdown-timer-discount' );
 			}
 			$output = '';
@@ -1413,7 +1403,7 @@ class WCCT_Common {
 			}
 			$starts = sprintf( '%s %s<br/>', $date1->format( $data_format ), $start_time );
 			$output .= $starts;
-			if ( $data['campaign_type'] == 'fixed_date' ) {
+			if ( $data['campaign_type'] === 'fixed_date' ) {
 				$end_date      = $data['campaign_fixed_end_date'];
 				$end_time      = $data['campaign_fixed_end_time'];
 				$date2         = new Datetime( $end_date . ' ' . $end_time );
@@ -1423,7 +1413,7 @@ class WCCT_Common {
 				$min           = $interval->format( '%I' );
 				$duration_only = sprintf( '%s %s %s', ( $days > '1' ) ? $days . ' days' : $days . ' day', ( $hrs > '1' ) ? $hrs . ' hrs' : $hrs . ' hr', ( $min > '1' ) ? $min . ' mins' : $min . ' min' );
 				$output        .= '' . __( 'Duration', 'finale-woocommerce-sales-countdown-timer-discount' ) . ': ' . $duration_only;
-			} elseif ( $data['campaign_type'] == 'recurring' ) {
+			} elseif ( $data['campaign_type'] === 'recurring' ) {
 				$durations_day = $data['campaign_recurring_duration_days'];
 				$durations_hrs = $data['campaign_recurring_duration_hrs'];
 				$duration_only = sprintf( '%s %s 0 min', ( $durations_day > '1' ) ? $durations_day . ' days' : $durations_day . ' day', ( $durations_hrs > '1' ) ? $durations_hrs . ' hrs' : $durations_hrs . ' hr' );
@@ -1452,11 +1442,11 @@ class WCCT_Common {
 			array_push( $ticks, 'inventory' );
 
 			$inventory .= ' (';
-			if ( $data['deal_units'] == 'custom' ) {
+			if ( $data['deal_units'] === 'custom' ) {
 
 				$inventory .= __( 'Custom Stock', 'finale-woocommerce-sales-countdown-timer-discount' );
 			}
-			if ( $data['deal_units'] == 'same' ) {
+			if ( $data['deal_units'] === 'same' ) {
 				$inventory .= __( 'Product Stock', 'finale-woocommerce-sales-countdown-timer-discount' );
 			}
 			$inventory .= ')';
@@ -1522,26 +1512,20 @@ class WCCT_Common {
 	}
 
 	public static function wcct_get_campaign_status( $item_id ) {
-		$output = '';
-
-		$data = self::get_item_data( $item_id );
-
+		$output  = '';
+		$data    = self::get_item_data( $item_id );
 		$timings = WCCT_Common::start_end_timestamp( $data );
+
 		extract( $timings );
-		$slug_timing = 'deactivated';
 		if ( $end_date_timestamp > 0 ) {
 			if ( $todayDate >= $start_date_timestamp && $todayDate < $end_date_timestamp ) {
-				$output      = __( 'Running', 'finale-woocommerce-sales-countdown-timer-discount' );
-				$slug_timing = 'running';
+				$output = __( 'Running', 'finale-woocommerce-sales-countdown-timer-discount' );
 			} elseif ( $first_occur && $todayDate <= $rec_intial_end_time ) {
-				$output      = __( 'Paused', 'finale-woocommerce-sales-countdown-timer-discount' );
-				$slug_timing = 'paused';
+				$output = __( 'Paused', 'finale-woocommerce-sales-countdown-timer-discount' );
 			} elseif ( $todayDate > $end_date_timestamp ) {
-				$output      = __( 'Finished', 'finale-woocommerce-sales-countdown-timer-discount' );
-				$slug_timing = 'finished';
+				$output = __( 'Finished', 'finale-woocommerce-sales-countdown-timer-discount' );
 			} elseif ( $start_date_timestamp > $todayDate ) {
-				$output      = __( 'Scheduled', 'finale-woocommerce-sales-countdown-timer-discount' );
-				$slug_timing = 'schedule';
+				$output = __( 'Scheduled', 'finale-woocommerce-sales-countdown-timer-discount' );
 			}
 		}
 
@@ -1554,20 +1538,16 @@ class WCCT_Common {
 		$first_occur          = false;
 		$rec_intial_end_time  = 0;
 
-		if ( isset( $data['campaign_fixed_recurring_start_date'] ) && $data['campaign_fixed_recurring_start_date'] != '' ) {
-			$is_scheduled = false;
-			$start_date   = $data['campaign_fixed_recurring_start_date'];
-			$start_time   = $data['campaign_fixed_recurring_start_time'];
-
+		if ( isset( $data['campaign_fixed_recurring_start_date'] ) && $data['campaign_fixed_recurring_start_date'] !== '' ) {
+			$start_date           = $data['campaign_fixed_recurring_start_date'];
+			$start_time           = $data['campaign_fixed_recurring_start_time'];
 			$start_date_timestamp = self::wcct_get_timestamp_wc_native( $start_date . ' ' . $start_time );
-			$is_paused            = false;
 			$first_occur          = false;
 			$rec_intial_end_time  = 0;
 
-			if ( $data['campaign_type'] == 'fixed_date' ) {
-				$end_date = $data['campaign_fixed_end_date'];
-				$end_time = $data['campaign_fixed_end_time'];
-
+			if ( $data['campaign_type'] === 'fixed_date' ) {
+				$end_date           = $data['campaign_fixed_end_date'];
+				$end_time           = $data['campaign_fixed_end_time'];
 				$end_date_timestamp = self::wcct_get_timestamp_wc_native( $end_date . ' ' . $end_time );
 			}
 		}
@@ -1596,12 +1576,11 @@ class WCCT_Common {
 	 * @since 1.1
 	 */
 	public static function init_header_logs() {
-
 		if ( is_admin() ) {
 			return;
 		}
 
-		if ( ! self::$info_generated && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) && is_object( self::$wcct_post ) && self::$wcct_post->post_type == 'product' ) {
+		if ( ! self::$info_generated && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) && is_object( self::$wcct_post ) && self::$wcct_post->post_type === 'product' ) {
 			wcct_force_log( 'Initializing header info function  Product : ' . self::$wcct_post->ID );
 			$getdata = WCCT_Core()->public->get_single_campaign_pro_data( self::$wcct_post->ID );
 
@@ -1662,7 +1641,7 @@ class WCCT_Common {
 				WCCT_Core()->appearance->add_header_info( __( 'Counter Bar', 'finale-woocommerce-sales-countdown-timer-discount' ) . ': ' . __( 'No', 'finale-woocommerce-sales-countdown-timer-discount' ) );
 			}
 
-			if ( ! isset( $_GET['wcct_positions'] ) || $_GET['wcct_positions'] != 'yes' ) {
+			if ( ! isset( $_GET['wcct_positions'] ) || $_GET['wcct_positions'] !== 'yes' ) {
 				$page_link = add_query_arg( array(
 					'wcct_positions' => 'yes',
 				), get_permalink( self::$wcct_post->ID ) );
@@ -1676,15 +1655,14 @@ class WCCT_Common {
 	}
 
 	public static function get_the_title( $post = 0 ) {
-		$post = self::get_post_data( $post );
-
+		$post  = self::get_post_data( $post );
 		$title = isset( $post->post_title ) ? $post->post_title : '';
 
 		if ( ! is_admin() ) {
 			if ( ! empty( $post->post_password ) ) {
 				$protected_title_format = __( 'Protected: %s' );
 				$title                  = sprintf( $protected_title_format, $title );
-			} elseif ( isset( $post->post_status ) && 'private' == $post->post_status ) {
+			} elseif ( isset( $post->post_status ) && 'private' === $post->post_status ) {
 				$private_title_format = __( 'Private: %s' );
 				$title                = sprintf( $private_title_format, $title );
 			}
@@ -1694,16 +1672,13 @@ class WCCT_Common {
 	}
 
 	public static function toolbar_link_to_xlplugins( $wp_admin_bar ) {
-
 		if ( is_admin() ) {
 			return;
 		}
 
 		$upload_dir = wp_upload_dir();
-
-		$base_url = $upload_dir['baseurl'] . '/' . 'finale-woocommerce-sales-countdown-timer-discount';
-
-		$args = array(
+		$base_url   = $upload_dir['baseurl'] . '/' . 'finale-woocommerce-sales-countdown-timer-discount';
+		$args       = array(
 			'id'    => 'wcct_admin_page_node',
 			'title' => 'XL Finale',
 			'href'  => admin_url( 'admin.php?page=wc-settings&tab=' . WCCT_Common::get_wc_settings_tab_slug() ),
@@ -1736,11 +1711,10 @@ class WCCT_Common {
 	}
 
 	public static function wcct_set_campaign_status( $item_id ) {
-		$output = '';
-
-		$data = WCCT_Common::get_item_data( $item_id );
-
+		$output  = '';
+		$data    = WCCT_Common::get_item_data( $item_id );
 		$timings = WCCT_Common::start_end_timestamp( $data );
+
 		extract( $timings );
 		$slug_timing = 'deactivated';
 		if ( $end_date_timestamp > 0 ) {
@@ -1764,8 +1738,7 @@ class WCCT_Common {
 	}
 
 	public static function wcct_refresh_timer_ajax_callback() {
-
-		if ( ! isset( $_GET['wcct_action'] ) || 'wcct_refreshed_times' != $_GET['wcct_action'] ) {
+		if ( ! isset( $_GET['wcct_action'] ) || 'wcct_refreshed_times' !== $_GET['wcct_action'] ) {
 			return;
 		}
 
@@ -1786,7 +1759,7 @@ class WCCT_Common {
 		$x        = $interval->format( '%R' );
 
 		$is_left = $x;
-		if ( $is_left == '+' ) {
+		if ( $is_left === '+' ) {
 			$total_seconds_left = 0;
 			$total_seconds_left = $total_seconds_left + ( YEAR_IN_SECONDS * $interval->y );
 			$total_seconds_left = $total_seconds_left + ( MONTH_IN_SECONDS * $interval->m );
@@ -1805,13 +1778,14 @@ class WCCT_Common {
 
 	}
 
-	public static function wcct_maybe_clear_cache_using_get_parameter() {
-		if ( isset( $_GET['wcct_clear_cache'] ) && 'yes' == $_GET['wcct_clear_cache'] ) {
-			self::wcct_maybe_clear_cache();
-		}
-	}
-
 	public static function wcct_maybe_clear_cache() {
+		/**
+		 * Clear WordPress cache
+		 */
+		if ( function_exists( 'wp_cache_flush' ) ) {
+			wp_cache_flush();
+		}
+
 		/**
 		 * Checking if wp fastest cache installed
 		 * Clear cache of wp fastest cache
@@ -1821,6 +1795,22 @@ class WCCT_Common {
 			if ( method_exists( $wp_fastest_cache, 'deleteCache' ) ) {
 				$wp_fastest_cache->deleteCache();
 			}
+		}
+
+		/**
+		 * Checking if wp Autoptimize installed
+		 * Clear cache of Autoptimize
+		 */
+		if ( class_exists( 'autoptimizeCache' ) ) {
+			autoptimizeCache::clearall();
+		}
+
+		/**
+		 * Checking if W3Total Cache plugin activated.
+		 * Clear cache of W3Total Cache plugin
+		 */
+		if ( function_exists( 'w3tc_flush_all' ) ) {
+			w3tc_flush_all();
 		}
 
 		/**
@@ -1852,25 +1842,38 @@ class WCCT_Common {
 	public static function wcct_restore_order_stock( $order_id ) {
 		$order = new WC_Order( $order_id );
 
-		if ( ! get_option( 'woocommerce_manage_stock' ) == 'yes' && ! sizeof( $order->get_items() ) > 0 ) {
+		if ( ! get_option( 'woocommerce_manage_stock' ) === 'yes' && ! sizeof( $order->get_items() ) > 0 ) {
 			return;
 		}
 
 		$order_sold_meta = get_post_meta( $order_id, '_wcct_goaldeal_sold_backup', true );
-		if ( is_array( $order_sold_meta ) && count( $order_sold_meta ) > 0 && isset( $order_sold_meta['stock_type'] ) && 'custom' == $order_sold_meta['stock_type'] && isset( $order_sold_meta['sold'] ) && 'y' == $order_sold_meta['sold'] ) {
+
+		if ( is_array( $order_sold_meta ) && count( $order_sold_meta ) > 0 && isset( $order_sold_meta['sold'] ) && 'y' === $order_sold_meta['sold'] ) {
+
+			if ( isset( $order_sold_meta['stock_type'] ) && 'custom' !== $order_sold_meta['stock_type'] ) {
+				return;
+			}
+
 			/* Reducing sold unit */
 			if ( is_array( $order_sold_meta ) && count( $order_sold_meta ) > 0 ) {
 				foreach ( $order_sold_meta as $product_id => $product_data ) {
 					if ( is_array( $product_data ) && count( $product_data ) > 0 ) {
+
+						if ( isset( $product_data['stock_type'] ) && 'custom' !== $product_data['stock_type'] ) {
+							continue;
+						}
+
 						foreach ( $product_data as $meta_key => $value ) {
 							$current = get_post_meta( (int) $product_id, $meta_key, true );
 							$mod     = (int) $current - (int) $value;
+
 							if ( 0 === $mod ) {
 								delete_post_meta( (int) $product_id, $meta_key );
 							} else {
 								update_post_meta( (int) $product_id, $meta_key, $mod );
 								wcct_force_log( "backup: key => {$meta_key} , product id => {$product_id} and updated value " . $mod, 'force1.txt' );
 							}
+
 							unset( $current );
 							unset( $mod );
 						}
@@ -1882,10 +1885,11 @@ class WCCT_Common {
 
 	public static function get_global_default_settings() {
 		$default    = array(
-			'wcct_positions_approach'  => 'new',
-			'wcct_timer_hide_days'     => 'no',
-			'wcct_timer_hide_hrs'      => 'no',
-			'wcct_timer_hide_multiple' => 'no',
+			'wcct_positions_approach'        => 'new',
+			'wcct_timer_hide_days'           => 'no',
+			'wcct_timer_hide_hrs'            => 'no',
+			'wcct_timer_hide_multiple'       => 'no',
+			'wcct_reload_page_on_timer_ends' => 'yes',
 		);
 		$default_db = get_option( 'wcct_global_options', array() );
 		$default    = wp_parse_args( $default_db, $default );
@@ -1918,7 +1922,6 @@ class WCCT_Common {
 	 * @return bool|int|void
 	 */
 	public static function get_post_parent_id( $item_id = '' ) {
-
 		if ( empty( $item_id ) ) {
 			return;
 		}
@@ -1930,5 +1933,100 @@ class WCCT_Common {
 
 		return (int) $post->post_parent;
 	}
+
+	/**
+	 * Schedule cron to clear post meta table
+	 */
+	public static function wcct_clear_post_meta_keys_for_expired_campaigns() {
+		if ( ! wp_next_scheduled( 'wcct_clear_goaldeal_stock_meta_keys' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'hourly', 'wcct_clear_goaldeal_stock_meta_keys' );
+		}
+	}
+
+	/**
+	 * Delete goaldeal stock meta keys
+	 */
+	public static function wcct_clear_goaldeal_stock_meta_keys() {
+		global $wpdb;
+
+		$max_limit = apply_filters( 'wcct_delete_expired_post_meta_keys_limit', 1000 );
+		$stocks    = $wpdb->get_results( $wpdb->prepare( "
+                        SELECT meta_key, meta_id
+                        FROM {$wpdb->prefix}postmeta
+                        WHERE `meta_key` LIKE '%_wcct_goaldeal_%'
+                        AND `meta_key` NOT LIKE '%_wcct_goaldeal_sold%'
+                        ORDER BY meta_id ASC
+                        LIMIT %d, %d
+                        ", 0, $max_limit ) );
+
+		if ( empty( $stocks ) ) {
+			return;
+		}
+
+		$time = time();
+		$ids  = [];
+		foreach ( $stocks as $stock ) {
+			$arr = explode( '_', $stock->meta_key );
+			$arr = array_slice( $arr, - 3, 3 );
+
+			if ( ! is_numeric( $arr[0] ) || ! is_numeric( $arr[1] ) || ! is_numeric( $arr[2] ) ) {
+				continue;
+			}
+
+			if ( $time > $arr[2] ) {
+				$ids[] = $stock->meta_id;
+			}
+		}
+
+		if ( count( $ids ) > 0 ) {
+			$id_count   = count( $ids );
+			$delete_ids = array_fill( 0, $id_count, '%d' );
+			$delete_ids = implode( ', ', $delete_ids );
+
+			$wpdb->query( $wpdb->prepare( "
+                        DELETE 
+                        FROM {$wpdb->prefix}postmeta 
+                        WHERE `meta_id` IN ($delete_ids)
+                        ", $ids ) );
+		}
+	}
+
+	public static function run_cron_fallback() {
+		$time_key     = 'wcct_heartbeat_run';
+
+		if ( true === apply_filters( 'wcct_heartbeat_tick_disable', false ) ) {
+			return;
+		}
+
+		$save_time    = get_option( $time_key, time() );
+		$current_time = time();
+
+		if ( $current_time < $save_time ) {
+			return;
+		}
+
+		$url  = home_url() . '/?rest_route=/finale/v1/delete-finished-keys';
+		$args = [
+			'method'    => 'GET',
+			'body'      => array(),
+			'timeout'   => 0.01,
+			'sslverify' => false,
+		];
+
+		wp_remote_post( $url, $args );
+		update_option( $time_key, ( $current_time + ( 5 * MINUTE_IN_SECONDS ) ) );
+	}
+
+	public static function add_plugin_endpoint() {
+		register_rest_route( 'finale/v1', '/delete-finished-keys', array(
+			'methods'  => WP_REST_Server::READABLE,
+			'callback' => array( __CLASS__, 'run_delete_finished_keys_cron_callbacks' ),
+		) );
+	}
+
+	public static function run_delete_finished_keys_cron_callbacks( WP_REST_Request $request ) {
+		self::wcct_clear_goaldeal_stock_meta_keys();
+	}
+
 
 }

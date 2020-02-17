@@ -86,7 +86,7 @@ class WOO_F_LOOKBOOK_Admin_Product {
 							?>
 						</select>
 						<div class="wlb-description"><?php esc_html_e( 'Select lookbooks to display. You add only 2 lookbooks. To use unlimited', 'woo-lookbook' ) ?>
-							<a target="_blank" href="https://goo.gl/CAgGU6">
+							<a target="_blank" href="https://1.envato.market/mV0bM">
 							<?php esc_html_e( 'Update this feature', 'woo-lookbook' ) ?>
 							</a>
 						</div>
@@ -190,7 +190,7 @@ class WOO_F_LOOKBOOK_Admin_Product {
 	 */
 	public function save_metabox( $post_id, $post ) {
 		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['_wlb_nonce'] ) ? $_POST['_wlb_nonce'] : '';
+		$nonce_name   = isset( $_POST['_wlb_nonce'] ) ? sanitize_text_field($_POST['_wlb_nonce']) : '';
 		$nonce_action = 'wlb_product_metabox_save';
 
 		// Check if nonce is set.
@@ -221,7 +221,7 @@ class WOO_F_LOOKBOOK_Admin_Product {
 		if ( ! isset( $_POST['wlb_params'] ) ) {
 			return;
 		}
-		$data = $_POST['wlb_params'];
+		$data = wc_clean($_POST['wlb_params']);
 		if ( is_array( $data ) ) {
 			array_walk_recursive( $data, 'sanitize_text_field' );
 		} else {

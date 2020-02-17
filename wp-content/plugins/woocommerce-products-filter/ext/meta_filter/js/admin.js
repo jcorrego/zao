@@ -17,7 +17,7 @@ jQuery(function ($) {
             $('#woof_meta_list').prepend(html);
             $('.woof_meta_key_input').val('');
         } else {
-            alert("sometings wrong!!!");
+            alert("someting wrong!!!");
            // woobe_message(lang.meta.enter_key, 'error');
         }
 
@@ -50,6 +50,7 @@ jQuery(function ($) {
                     product_id: id
                 },
                 success: function (keys) {
+                    console.log(keys);
                     if (keys.length > 0) {
                         keys = JSON.parse(keys);
                         var html = $('#woof_meta_li_tpl').html();
@@ -59,13 +60,13 @@ jQuery(function ($) {
                             $('#woof_meta_list').prepend(li);
                         }
                     } else {
-                        alert("sometings wrong!!!");
+                        alert("someting wrong!!!");
                     }
                 }
             });
 
         } else {
-            alert("sometings wrong!!!");
+            alert("someting wrong!!!");
         }
 
         return false;
@@ -112,7 +113,9 @@ jQuery(function ($) {
 		 var value = $(this).val();
 		 var type_selector = $(this).parents('li').find('.woof_meta_view_selector');
 		 var curr_type=$(type_selector).find("option:selected");
-		 if(curr_type.attr("data-hideif")== value){
+                 var hideif=curr_type.attr("data-hideif").split(',');
+                 console.log(jQuery.inArray(value,hideif));
+		 if(jQuery.inArray(value,hideif)!=-1){
 			 curr_type.removeAttr("selected");
 			 $(type_selector).find("options[value='textinput']").attr("selected", "selected");
 			 console.log(type_selector.val("textinput"))
@@ -120,7 +123,8 @@ jQuery(function ($) {
 		 var all_views=$(type_selector).find("option");
 
 		 $.each(all_views, function( index, option ) {
-			 if($(option).attr("data-hideif")== value){
+                         var hideif_option=$(option).attr("data-hideif").split(',');
+			 if(jQuery.inArray(value,hideif_option)!=-1){
 				 $(option).hide();
 			 }else{
 				 $(option).show();

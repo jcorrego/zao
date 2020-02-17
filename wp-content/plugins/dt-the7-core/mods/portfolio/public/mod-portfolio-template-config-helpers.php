@@ -244,8 +244,8 @@ if ( ! function_exists( 'presscore_congif_populate_single_portfolio_vars' ) ) :
 		$config->set( 'post.navigation.back_button.enabled', $show_back_button );
 
 		if ( $show_back_button ) {
-			$post_back_btn_id = get_post_meta( $post_id, "_dt_project_options_back_button", true );
-			$config->set( 'post.navigation.back_button.target_page_id', $post_back_btn_id ? $post_back_btn_id : of_get_option( 'general-project_back_button_target_page_id', 0 ) );
+			$post_back_url = get_post_meta( $post_id, '_dt_project_options_back_button', true );
+			$config->set( 'post.navigation.back_button.url', $post_back_url ? $post_back_url : of_get_option( 'general-project_back_button_url' ) );
 		}
 
 		$config->set( 'post.navigation.arrows.enabled', of_get_option( 'general-next_prev_in_portfolio', 1 ) );

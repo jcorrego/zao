@@ -7,10 +7,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$rollover_class = "";
-if ( 1 == presscore_project_preview_buttons_count() ) {
-		$rollover_class .= ' rollover-active';
-}
+
+$rollover_class = the7pt_get_portfolio_rollover_class();
 $config = presscore_config();
 $target = '';
 if($config->get( 'follow_external_link' )){
@@ -18,29 +16,20 @@ if($config->get( 'follow_external_link' )){
 }
 ?>
 
-<?php if ( presscore_post_format_supports_media_content( get_post_format() ) && ! empty( $post_media ) ) : ?>
+<?php if ( ! empty( $post_media ) ) : ?>
 
 <div class="post-thumbnail-wrap <?php echo $rollover_class; ?> ">
 	<div class="post-thumbnail">
 
 		<?php
-		$rollover_icons = '';
-
-		if ( $config->get( 'show_links' ) ) {
-			$project_link = presscore_get_project_link( 'project-link '. $external_link_icon .'' );
-			if ( $project_link ) {
-				$rollover_icons = $project_link;
-			}
-		}
-		$rollover_icons .= presscore_get_project_rollover_zoom_icon( array( 'popup' => 'single', 'class' => $image_zoom_icon, 'attachment_id' => get_post_thumbnail_id()) );
-		if ( $config->get( 'show_details' ) ) {
-			$rollover_icons .= '<a href=" '. $follow_link .'" target="'. $target . '" class="project-details '. $project_link_icon .'"></a>';
-		}
-		if ( $rollover_icons ) {
-			$rollover_icons = '<div class="project-links-container">' . $rollover_icons . '</div>';
-		};
-
-		 echo $post_media . $rollover_icons;
+		echo $post_media;
+		presscore_get_template_part( 'mod_portfolio_shortcodes', 'portfolio-masonry/tpl-rollover-links', false, array(
+			'project_link_icon'  => $project_link_icon,
+			'external_link_icon' => $external_link_icon,
+			'image_zoom_icon'    => $image_zoom_icon,
+			'follow_link'        => $follow_link,
+			'target'             => $target,
+		) );
 		?>
 
 	</div>

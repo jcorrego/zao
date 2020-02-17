@@ -5,25 +5,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$this_current_version = '5.5';
+$this_current_version = '5.8';
 if ( ! class_exists( 'XL_Common' ) ) {
 
 	class XL_Common {
 
 		public static $is_xl_loaded = false;
 
-		public static $current_version = '5.5';
+		public static $current_version = '5.8';
 
 		public static function include_xl_core() {
 
 			global $xl_ultimate_latest_core_all, $xl_ultimate_latest_core;
-
-			/**
-			 * Reset Loading of Core
-			 */
-			if ( ! is_null( $xl_ultimate_latest_core_all ) ) {
-
-			}
 
 			if ( isset( $xl_ultimate_latest_core_all['latest']['plugin_path'] ) && self::$is_xl_loaded === false ) {
 

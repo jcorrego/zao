@@ -11,15 +11,8 @@ Tags: <?php echo $theme_tags, "\n"; ?>
 Text Domain: the7mk2
 */
 
-.blog .dt-format-gallery .dt-format-gallery-coll.full,
-.archive .dt-format-gallery .dt-format-gallery-coll.full,
-.search .dt-format-gallery .dt-format-gallery-coll.full
-{
-display: none;
-}
-
-
 .wp-caption-text,
 .sticky,
 .gallery-caption,
-.bypostauthor {}
+.bypostauthor,
+.main-page {}

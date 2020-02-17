@@ -7,8 +7,6 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 
 	class DT_Shortcode_Media_Gallery_Carousel extends DT_Shortcode_With_Inline_Css {
@@ -48,7 +46,6 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				'image_sizing' => 'resize',
 				'resized_image_dimensions' => '1x1',
 				'image_scale_animation_on_hover' => 'quick_scale',
-				'image_hover_bg_color' => 'y',
 				'image_border_radius'         	 => '0px',
 				'image_decoration'   			 => 'none',
 				'shadow_h_length'    			 => '0px',
@@ -56,10 +53,9 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				'shadow_blur_radius' 			 => '12px',
 				'shadow_spread'      			 => '3px',
 				'shadow_color'       			 => 'rgba(0,0,0,.25)',
-				'custom_rollover_bg_color'       => '',
-				'custom_rollover_bg_color_2'     => '',
-				'custom_rollover_bg_color_1'     => '',
-				'custom_rollover_gradient_deg'   => '135deg',
+				'image_hover_bg_color' => 'default',
+				'custom_rollover_bg_color'       => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
 				'slide_to_scroll' => 'single',
 				'slides_on_wide_desk' => '6',
 				'slides_on_desk' => '6',
@@ -68,11 +64,12 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				'slides_on_v_tabs' => '3',
 				'slides_on_mob' => '1',
 				'item_space' => '10',
+				'stage_padding' => '0',
 				'speed' => '600',
 				'autoplay' => 'n',
 				'autoplay_speed' => "6000",
 				'show_zoom'                      => 'y',
-				'gallery_image_zoom_icon'        => 'icon-im-hover-001',
+				'gallery_image_zoom_icon'        => 'icomoon-the7-font-the7-zoom-06',
 				'project_icon_size'              => '32px',
 				'dt_project_icon'                => '',
 				'project_icon_bg_size'           => '44px',
@@ -82,7 +79,6 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				'project_icon_border_color'      => '',
 				'project_icon_bg'                => 'n',
 				'project_icon_bg_color'          => 'rgba(255,255,255,0.3)',
-				
 				'arrows' => 'y',
 				'arrow_icon_size' => '18px',
 				'r_arrow_icon_paddings' => '0 0 0 0',
@@ -145,11 +141,27 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				//'post-limit'      => (int) $data_post_limit,
 				//'pagination-mode' => esc_attr( $data_pagination_mode ),
 			);
+
+			$config = presscore_config();
+			$image_is_wide = ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) );
+
 			if ( 'browser_width_based' === $this->get_att( 'responsiveness' ) ) {
-				$data_atts_array          = the7_shortcode_add_responsive_columns_data_attributes( $data_atts_array, $this->get_att( 'bwb_columns' ) );
-				$thumb_img_resize_options = the7_calculate_bwb_image_resize_options( DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) ), $this->get_att( 'gap_between_posts' ) );
+				$data_atts_array          = the7_shortcode_add_responsive_columns_data_attributes(
+					$data_atts_array,
+					$this->get_att( 'bwb_columns' )
+				);
+				$thumb_img_resize_options = the7_calculate_bwb_image_resize_options(
+					DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) ),
+					$this->get_att( 'gap_between_posts' ),
+					$image_is_wide
+				);
 			} else {
-				$thumb_img_resize_options = the7_calculate_columns_based_image_resize_options( $this->get_att( 'pwb_columns' ), $this->get_att( 'pwb_column_min_width' ) );
+				$thumb_img_resize_options = the7_calculate_columns_based_image_resize_options(
+					$this->get_att( 'pwb_column_min_width' ),
+					$config->get( 'template.content.width' ),
+					$this->get_att( 'pwb_columns' ),
+					$image_is_wide
+				);
 			}
 
 			$data_atts_str = presscore_get_inlide_data_attr( $data_atts_array );
@@ -168,6 +180,7 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 
 			global $post;
 
+			$lazy_loading_enabled = presscore_lazy_loading_enabled();
 			while ( $query->have_posts() ) {
 				$query->the_post();
 
@@ -192,6 +205,9 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				) );
 				if ( $video_url ) {
 					$thumb_args = array(
+						'lazy_loading'  => $lazy_loading_enabled,
+						'lazy_class'    => 'owl-lazy-load',
+						'lazy_bg_class' => 'layzr-bg',
 						'wrap'     => '<figure class="post"><a %HREF% %CLASS% %CUSTOM% %TITLE%><img %IMG_CLASS% %SRC% %ALT% %SIZE% /><span class="gallery-rollover">' . $show_icon_zoom . '</span></a></figure>',
 						'href'     => $video_url,
 						'img_meta' => $image_data_array,
@@ -205,6 +221,9 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				} else {
 
 					$thumb_args = array(
+						'lazy_loading'  => $lazy_loading_enabled,
+						'lazy_class'    => 'owl-lazy-load',
+						'lazy_bg_class' => 'layzr-bg',
 						'wrap'     => '<figure class="post"><a %HREF% %CLASS% %CUSTOM% %TITLE%><img %IMG_CLASS% %SRC% %ALT% %SIZE% /><span class="gallery-rollover">' . $show_icon_zoom . '</span></a></figure>',
 						'img_meta' => $image_data_array,
 						'class'    => 'rollover dt-pswp-item',
@@ -226,6 +245,7 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 			}
 			presscore_add_lazy_load_attrs();
 			echo '</div>';
+			presscore_add_lazy_load_attrs();
 
 			do_action( 'presscore_after_shortcode_loop', $this->sc_name, $this->atts );
 		}
@@ -326,6 +346,7 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				'v-tablet-columns-num' => $this->atts['slides_on_v_tabs'],
 				'phone-columns-num' => $this->atts['slides_on_mob'],
 				'col-gap' => $this->atts['item_space'],
+				'stage-padding' => $this->atts['stage_padding'],
 				'speed' => $this->atts['speed'],
 				'autoplay' => ($this->atts['autoplay'] === 'y') ? 'true' : 'false',
 				'autoplay_speed' => $this->atts['autoplay_speed'],
@@ -359,18 +380,26 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'gallery-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
-
-
 			$less_vars->add_pixel_number( 'media-image-border-radius', $this->get_att( 'image_border_radius' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-1', $this->get_att( 'custom_rollover_bg_color_1', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-2', $this->get_att( 'custom_rollover_bg_color_2', '~""' ) );
-			$less_vars->add_number( 'rollover-gradient-deg', $this->get_att( 'custom_rollover_gradient_deg' ));
-		
+
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
+
 			$less_vars->add_pixel_number( 'item-gap',$this->get_att('item_space' ));
 
 			$less_vars->add_pixel_number( 'project-icon-size', $this->get_att( 'project_icon_size' ) );
@@ -447,12 +476,7 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 		}
 
 		protected function get_less_file_name() {
-			// @TODO: Remove in production.
-			$less_file_name = 'gallery-carousel';
-
-			$less_file_path = trailingslashit( get_template_directory() ) . "css/dynamic-less/shortcodes/{$less_file_name}.less";
-
-			return $less_file_path;
+			return get_template_directory(). '/css/dynamic-less/shortcodes/gallery-carousel.less';
 		}
 
 		/**
@@ -469,8 +493,6 @@ if ( ! class_exists( 'DT_Shortcode_Media_Gallery_Carousel', false ) ) :
 				'style' => array( 'height' => 'auto' )
 			) );
 		}
-
-		
 	}
 
 	// create shortcode

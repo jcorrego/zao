@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class The7_Install
@@ -85,6 +82,81 @@ class The7_Install {
 			'the7_mass_regenerate_short_codes_inline_css',
 			'the7_update_693_db_version',
 		),
+		'7.0.0' => array(
+			'the7_update_700_shortcodes_gradient_backward_compatibility',
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7_update_700_db_version',
+		),
+		'7.1.0' => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7_update_710_db_version',
+		),
+		'7.3.0' => array(
+			'the7_update_730_set_fancy_title_zero_top_padding',
+			'the7_update_730_fancy_title_responsiveness_settings',
+			'the7_update_730_db_version',
+		),
+		'7.4.0' => array(
+			'the7_update_740_fancy_title_uppercase_migration',
+			'the7_update_740_db_version',
+		),
+		'7.4.3' => array(
+			'the7_update_743_back_button_migration',
+			'the7_update_743_db_version',
+		),
+		'7.5.0' => array(
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7_update_750_db_version',
+		),
+		'7.6.0' => array(
+			'the7_update_760_mega_menu_migration',
+			'the7_update_760_db_version',
+		),
+		'7.6.2' => array(
+			'the7_update_762_db_version',
+		),
+		'7.7.0' => array(
+			'the7_update_770_shortcodes_blog_backward_compatibility',
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7_update_770_db_version',
+		),
+		'7.7.1' => array(
+			'the7_update_771_shortcodes_blog_backward_compatibility',
+			'the7_update_771_shortcodes_button_backward_compatibility',
+			'the7_mass_regenerate_short_codes_inline_css',
+			'the7_update_771_db_version',
+		),
+		'7.7.2' => array(
+			'the7_update_772_db_version',
+		),
+		'7.7.5' => array(
+			'the7_update_775_fontawesome_compatibility',
+			'the7_update_775_db_version',
+		),
+		'7.7.6' => array(
+			'the7_update_776_db_version',
+		),
+		'7.8.0' => array(
+			'the7_update_780_shortcodes_backward_compatibility',
+			'the7_update_780_db_version',
+		),
+		'7.9.0' => array(
+			'the7_update_790_silence_plugins_purchase_notification',
+			'the7_update_790_db_version',
+		),
+		'7.9.1' => array(
+			'the7_regenerate_fancy_title_css',
+			'the7_update_791_db_version',
+		),
+		'8.0.0' => array(
+			'the7_update_800_db_version',
+		),
+		'8.1.0' => array(
+			'the7_update_810_db_version',
+		),
+		'8.2.0' => array(
+			'the7_update_820_db_version',
+		),
 	);
 
     public static function init() {
@@ -115,6 +187,8 @@ class The7_Install {
 	 */
 	public static function init_background_updater() {
 		include_once( dirname( __FILE__ ) . '/class-the7-background-updater.php' );
+		include_once( dirname( __FILE__ ) . '/the7-update-functions.php' );
+
 		self::$background_updater = new The7_Background_Updater();
 	}
 
@@ -277,6 +351,20 @@ class The7_Install {
 			'6.1.1' => 'The7_DB_Patch_060101',
 			'6.6.0' => 'The7_DB_Patch_060600',
 			'6.6.1' => 'The7_DB_Patch_060601',
+			'7.0.0' => 'The7_DB_Patch_070000',
+			'7.1.0' => 'The7_DB_Patch_070100',
+			'7.3.0' => 'The7_DB_Patch_070300',
+			'7.4.0' => 'The7_DB_Patch_070400',
+			'7.4.3' => 'The7_DB_Patch_070403',
+			'7.6.0' => 'The7_DB_Patch_070600',
+			'7.6.2' => 'The7_DB_Patch_070602',
+			'7.7.1' => 'The7_DB_Patch_070701',
+			'7.7.2' => 'The7_DB_Patch_070702',
+			'7.7.6' => 'The7_DB_Patch_070706',
+			'7.8.0' => 'The7_DB_Patch_070800',
+			'8.0.0' => 'The7_DB_Patch_080000',
+			'8.1.0' => 'The7_DB_Patch_080100',
+			'8.2.0' => 'The7_DB_Patch_080200',
 		);
 
 		$update_options = false;
@@ -289,12 +377,13 @@ class The7_Install {
 				require_once $patches_dir . 'class-' . strtolower( str_replace( '_', '-', $class_name ) ) . '.php';
 			}
 
-			$patch = new $class_name();
-			$options = $patch->apply( $options );
+			$patch          = new $class_name();
+			$options        = $patch->apply( $options );
 			$update_options = true;
 		}
 
 		if ( $update_options ) {
+			The7_Options_Backup::store_options();
 			update_option( optionsframework_get_options_id(), $options );
 			_optionsframework_delete_defaults_cache();
 		}

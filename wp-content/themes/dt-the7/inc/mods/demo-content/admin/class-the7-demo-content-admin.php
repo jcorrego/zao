@@ -70,12 +70,38 @@ class The7_Demo_Content_Admin {
 	}
 
 	/**
+	 * Register scripts.
+	 *
+	 * @since 7.0.0
+	 */
+	public function register_scripts() {
+		the7_register_style( 'the7-import-on-edit-screen', PRESSCORE_ADMIN_URI . '/assets/css/import-on-edit-screen' );
+		the7_register_style( 'the7-demo-content', PRESSCORE_ADMIN_URI . '/assets/css/demo-content', array( 'the7-import-on-edit-screen' ) );
+
+		the7_register_script( 'the7-demo-content', PRESSCORE_ADMIN_URI . '/assets/js/demo-content', array( 'jquery', 'jquery-ui-progressbar' ), false, true );
+	}
+
+	/**
+	 * Enqueue styles for edit screen.
+	 *
+	 * @since 7.0.0
+	 */
+	public function enqueue_edit_screen_scripts() {
+		if ( ! current_user_can( 'switch_themes' ) ) {
+			return;
+		}
+
+		wp_enqueue_style( 'the7-import-on-edit-screen' );
+		$this->enqueue_scripts();
+	}
+
+	/**
 	 * Register the stylesheets for the Dashboard.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name . '-import', PRESSCORE_MODS_URI . '/demo-content/admin/css/dt-dummy-admin.css', array(), THE7_VERSION, 'all' );
+		wp_enqueue_style( 'the7-demo-content' );
 	}
 
 	/**
@@ -84,9 +110,9 @@ class The7_Demo_Content_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		global $the7_tgmpa;
+		global $the7_tgmpa, $typenow;
 
-		wp_enqueue_script( $this->plugin_name . '-import', PRESSCORE_MODS_URI . '/demo-content/admin/js/dt-dummy-admin.js', array( 'jquery' ), THE7_VERSION, false );
+		wp_enqueue_script( 'the7-demo-content' );
 
 		$plugins = array();
 		$plugins_page_url = '';
@@ -99,33 +125,41 @@ class The7_Demo_Content_Admin {
 			}
 		}
 
-		wp_localize_script( $this->plugin_name . '-import', 'dtDummy', array(
+		$post_type_object = get_post_type_object( $typenow ? $typenow : 'post' );
+
+		wp_localize_script( 'the7-demo-content', 'dtDummy', array(
 			'import_nonce' => wp_create_nonce( $this->plugin_name . '_import' ),
 			'status_nonce' => wp_create_nonce( $this->plugin_name . '_php_ini_status' ),
 			'import_msg' => array(
-				'btn_import' => __( 'Importing...', 'the7mk2' ),
-				'msg_import_success' => __( 'Demo content successfully imported.', 'the7mk2' ),
-				'msg_import_fail' => __( 'Import Fail!', 'the7mk2' ),
-				'download_package' => __( 'Downloading package.', 'the7mk2' ),
-				'import_post_types' => __( 'Importing content.', 'the7mk2' ),
-				'import_attachments' => __( 'Importing attachments.', 'the7mk2' ),
-				'import_theme_options' => __( 'Importing theme options.', 'the7mk2' ),
-				'import_rev_sliders' => __( 'Importing slider(s).', 'the7mk2' ),
-				'cleanup' => __( 'Final cleanup.', 'the7mk2' ),
-				'installing_plugin' => __( 'Installing', 'the7mk2' ),
-				'activating_plugin' => __( 'Activating plugin(s)', 'the7mk2' ),
-				'plugins_activated' => __( 'Plugin(s) activated successfully.', 'the7mk2' ),
-				'plugins_installation_error' => __( 'Server error.', 'the7mk2' ),
-				'rid_of_redirects' => __( 'Cleanup after plugins installation.', 'the7mk2' ),
-				'get_posts' => __( 'Parsing content.', 'the7mk2' ),
-				'one_post_importing_msg' => __( 'Importing', 'the7mk2' ),
+				'btn_import'                         => __( 'Importing...', 'the7mk2' ),
+				'msg_import_success'                 => __( 'Demo content successfully imported.', 'the7mk2' ),
+				'msg_import_fail'                    => __( 'Import Fail!', 'the7mk2' ),
+				'download_package'                   => __( 'Downloading package.', 'the7mk2' ),
+				'import_post_types'                  => __( 'Importing content.', 'the7mk2' ),
+				'import_attachments'                 => __( 'Importing attachments.', 'the7mk2' ),
+				'import_theme_options'               => __( 'Importing theme options.', 'the7mk2' ),
+				'import_rev_sliders'                 => __( 'Importing slider(s).', 'the7mk2' ),
+				'cleanup'                            => __( 'Final cleanup.', 'the7mk2' ),
+				'installing_plugin'                  => __( 'Installing', 'the7mk2' ),
+				'activating_plugin'                  => __( 'Activating plugin(s)', 'the7mk2' ),
+				'plugins_activated'                  => __( 'Plugin(s) activated successfully.', 'the7mk2' ),
+				'plugins_installation_error'         => __( 'Server error.', 'the7mk2' ),
+				'rid_of_redirects'                   => __( 'Cleanup after plugins installation.', 'the7mk2' ),
+				'get_posts'                          => __( 'Parsing content.', 'the7mk2' ),
+				'one_post_importing_msg'             => __( 'Importing', 'the7mk2' ),
 				'one_post_importing_choose_posttype' => __( 'Choose post type', 'the7mk2' ),
-				'one_post_importing_choose_post' => __( 'Choose post', 'the7mk2' ),
-				'one_post_importing_import' => __( 'Import post', 'the7mk2' ),
-				'one_post_importing_url_msg' => __( 'example', 'the7mk2' ),
+				'one_post_importing_choose_post'     => __( 'Choose post', 'the7mk2' ),
+				'one_post_importing_import'          => __( 'Import post', 'the7mk2' ),
+				'one_post_importing_url_msg'         => __( 'example', 'the7mk2' ),
+				'one_post_importing_success'         => __( 'Demo page successfully imported.', 'the7mk2' ),
+				'cannot_found_page_by_url_error'     => esc_html( sprintf( __( '%%url%% is not a %s or does not exist.', 'the7mk2' ), strtolower( $post_type_object->labels->singular_name ) ) ),
+				'cannot_get_posts_list_error'        => esc_html( __( 'Cannot get posts lists from package.', 'the7mk2' ) ),
+				'invalid_url_error'                  => wp_kses( sprintf( __( 'Provided URL (link) is not valid. Please copy a valid URL (link) from one of %s.', 'the7mk2' ), '<a href="https://the7.io/#!/demos" target="_blank">The7 pre-made websites</a>' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ),
+				'action_error'                       => esc_html( __( 'Error. Cannot complete following action', 'the7mk2' ) ),
 			),
 			'plugins' => $plugins,
-		    'plugins_page_url' => $plugins_page_url,
+			'plugins_page_url' => $plugins_page_url,
+			'demo_urls' => $this->get_demo_urls(),
 		) );
 	}
 
@@ -212,7 +246,7 @@ class The7_Demo_Content_Admin {
 		$import_content_dir = trailingslashit( $wp_uploads['basedir'] ) . "the7-demo-content-tmp/{$dummy_slug}";
 		$dummy_list = $this->get_dummy_list();
 
-		$import_manager = new The7_Demo_Content_Import_Manager( $import_content_dir );
+		$import_manager = new The7_Demo_Content_Import_Manager( $import_content_dir, $dummy_list[ $dummy_slug ] );
 
 		do_action( 'the7_demo_content_before_content_import', $import_manager );
 
@@ -220,7 +254,8 @@ class The7_Demo_Content_Admin {
 
 		switch ( $this->get_action() ) {
 			case 'download_package':
-				$import_manager->download_dummy();
+				$source = isset( $_POST['demo_page_url'] ) ? $_POST['demo_page_url'] : '';
+				$import_manager->download_dummy( $source );
 				break;
 			case 'import_post_types':
 				$import_manager->import_post_types();
@@ -235,6 +270,19 @@ class The7_Demo_Content_Admin {
 				$import_manager->import_theme_option();
 				$import_manager->import_ultimate_addons_settings();
 				$import_manager->import_ultimate_addons_icon_fonts();
+				$import_manager->import_the7_fontawesome();
+
+				if ( class_exists( 'Elementor\Plugin' ) ) {
+					$import_manager->import_elementor_settings();
+				}
+
+				if ( defined( 'TINVWL_FVERSION' ) ) {
+					$import_manager->import_tinvwl_settings();
+				}
+
+				if ( the7_demo_content_wc_is_active() ) {
+					$import_manager->import_woocommerce_settings();
+				}
 				break;
 			case 'import_rev_sliders':
 				$import_manager->import_rev_sliders();
@@ -244,10 +292,28 @@ class The7_Demo_Content_Admin {
 				$import_manager->cleanup_temp_dir();
 				break;
 			case 'get_posts':
-				$retval = $import_manager->getPostsList(array("page","post","product","dt_portfolio","dt_testimonials", "dt_gallery", "dt_team", "dt_slideshow"));
+				$retval = $import_manager->getPostsList( array(
+					'page',
+					'post',
+					'product',
+					'dt_portfolio',
+					'dt_testimonials',
+					'dt_gallery',
+					'dt_team',
+					'dt_slideshow',
+				) );
+				if ( is_array( $retval ) && ! $this->plugins_checker()->is_plugins_active( $this->get_demo_required_plugins( $dummy_slug ) ) ) {
+					$retval['plugins_to_install'] = array_keys( $this->plugins_checker()->get_plugins_to_install() );
+					$retval['plugins_to_activate'] = array_keys( $this->plugins_checker()->get_inactive_plugins() );
+				}
 				break;
 			case 'import_one_post':
-				$import_manager->import_one_post();
+				$post_id = $import_manager->import_one_post();
+				$retval  = array(
+					'postPermalink' => get_permalink( $post_id ),
+					'postEditLink' => get_edit_post_link( $post_id, 'return' ),
+					'postImportActions' => $this->determine_post_import_actions( $post_id ),
+				);
 				break;
 		}
 
@@ -273,7 +339,7 @@ class The7_Demo_Content_Admin {
 		}
 
 		ob_start();
-		include 'partials/notices/status.php';
+		include dirname( __FILE__ ) . '/partials/notices/status.php';
 		$status = ob_get_clean();
 
 		wp_send_json_success( $status );
@@ -309,6 +375,40 @@ class The7_Demo_Content_Admin {
 	}
 
 	/**
+	 * Return array of demo urls.
+	 *
+	 * Each item in list looks like [
+	 *  'url' => string
+	 *  'id' => string
+	 * ]
+	 *
+	 * @since 7.0.0
+	 *
+	 * @return array
+	 */
+	private function get_demo_urls() {
+		$demos = $this->get_dummy_list();
+		$demo_urls = array();
+		foreach( $demos as $demo ) {
+			$demo_urls[] = array(
+				'url' => $demo['link'],
+				'id' => $demo['id'],
+			);
+		}
+
+		return $demo_urls;
+	}
+
+	private function get_demo_required_plugins( $demo_slug ) {
+		$demos = $this->get_dummy_list();
+		if ( isset( $demos[ $demo_slug ]['required_plugins'] ) ) {
+			return $demos[ $demo_slug ]['required_plugins'];
+		}
+
+		return null;
+	}
+
+	/**
 	 * Factory method. Populates $plugins_checker property.
 	 *
 	 * @since 1.3.0
@@ -320,5 +420,89 @@ class The7_Demo_Content_Admin {
 		}
 
 		return $this->plugins_checker;
+	}
+
+	/**
+	 * Determine post-import actions based on provided post id.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param $post_id
+	 *
+	 * @return array
+	 */
+	private function determine_post_import_actions( $post_id ) {
+		$actions = array();
+		$post = get_post( $post_id );
+
+		if ( ! $post ) {
+			return array( 'cleanup' );
+		}
+
+		// import rev sliders?
+		// search for shortcodes
+		if ( preg_match( '/' . get_shortcode_regex( array( 'rev_slider_vc', 'rev_slider' ) ) . '/', $post->post_content ) ) {
+			$actions[] = 'import_rev_sliders';
+		}
+
+		// check meta fields
+		if (
+			get_post_meta( $post_id, '_dt_header_title', true ) === 'slideshow'
+			&& get_post_meta( $post_id, '_dt_slideshow_mode', true ) === 'revolution'
+		) {
+			$slider_in_use = get_post_meta( $post_id, '_dt_slideshow_revolution_slider', true );
+			$actions[] = 'import_rev_sliders';
+		}
+
+		$actions[] = 'cleanup';
+
+		return array_unique( $actions );
+	}
+
+	/**
+	 * Add import by url admin pages.
+	 *
+	 * @since 7.0.0
+	 */
+	public function add_import_by_url_admin_menu() {
+		$menu_items = array(
+			array(
+				'edit.php',
+				_x( 'Import Post', 'admin', 'the7mk2' ),
+				_x( 'Import', 'admin', 'the7mk2' ),
+				'the7-import-post-by-url',
+				'post-new.php',
+			),
+			array(
+				'edit.php?post_type=page',
+				_x( 'Import Page', 'admin', 'the7mk2' ),
+				_x( 'Import', 'admin', 'the7mk2' ),
+				'the7-import-page-by-url',
+				'post-new.php?post_type=page',
+			),
+		);
+
+		$menu_items = apply_filters( 'the7_import_by_url_menu_items', $menu_items );
+
+		foreach ( $menu_items as $i => $menu_item ) {
+			list( $parent_slug, $page_title, $menu_title, $menu_slug, $insert_after ) = $menu_item;
+			$function = array( $this, 'display_import_by_url_admin_page' );
+			$capability = 'switch_themes';
+			$hook = the7_add_submenu_page_after( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function, $insert_after );
+			add_action( "admin_print_scripts-{$hook}", array( $this, 'enqueue_edit_screen_scripts' ) );
+		}
+	}
+
+	/**
+	 * Import by url page callback.
+	 *
+	 * @since 7.0.0
+	 */
+	public function display_import_by_url_admin_page() {
+		if ( ! current_user_can( 'switch_themes' ) ) {
+			wp_die( _x( 'You have not sufficient capabilities to see this page.', 'admin', 'the7mk2' ) );
+		}
+
+		include dirname( __FILE__ ) . '/partials/demos/import-by-url.php';
 	}
 }

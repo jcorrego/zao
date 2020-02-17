@@ -517,27 +517,7 @@ add_filter( 'of_background_attachment', 'of_sanitize_background_attachment' );
 /* Typography */
 
 function of_sanitize_typography( $input, $option ) {
-
-	$output = wp_parse_args( $input, array(
-		'size'  => '',
-		'face'  => '',
-		'style' => '',
-		'color' => ''
-	) );
-
-	if ( isset( $option['options']['faces'] ) && isset( $input['face'] ) ) {
-		if ( !( array_key_exists( $input['face'], $option['options']['faces'] ) ) ) {
-			$output['face'] = '';
-		}
-	}
-	else {
-		$output['face']  = apply_filters( 'of_font_face', $output['face'] );
-	}
-
-	$output['size']  = apply_filters( 'of_font_size', $output['size'] );
-	$output['style'] = apply_filters( 'of_font_style', $output['style'] );
-	$output['color'] = apply_filters( 'of_sanitize_color', $output['color'] );
-	return $output;
+	return $input;
 }
 add_filter( 'of_sanitize_typography', 'of_sanitize_typography', 10, 2 );
 
@@ -665,6 +645,7 @@ function of_sanitize_hex( $hex, $default = '' ) {
 	if ( of_validate_hex( $hex ) ) {
 		return $hex;
 	}
+
 	return $default;
 }
 
@@ -750,7 +731,7 @@ function of_sanitize_gradient( $input, $option = array() ) {
  */
 
 function of_recognized_font_sizes() {
-	$sizes = range( 9, 120 );
+	$sizes = range( 1, 120 );
 	$sizes = apply_filters( 'of_recognized_font_sizes', $sizes );
 	$sizes = array_map( 'absint', $sizes );
 	return $sizes;
@@ -810,20 +791,24 @@ function of_recognized_font_styles() {
 
 function of_validate_hex( $hex ) {
 	$hex = trim( $hex );
+
 	/* Strip recognized prefixes. */
 	if ( 0 === strpos( $hex, '#' ) ) {
 		$hex = substr( $hex, 1 );
-	}
-	elseif ( 0 === strpos( $hex, '%23' ) ) {
+	} elseif ( 0 === strpos( $hex, '%23' ) ) {
 		$hex = substr( $hex, 3 );
 	}
+
 	/* Regex match. */
-	if ( 0 === preg_match( '/^[0-9a-fA-F]{6}$/', $hex ) ) {
-		return false;
-	}
-	else {
+	if ( preg_match( '/^[0-9a-fA-F]{6}$/', $hex ) > 0 ) {
 		return true;
 	}
+
+	if ( preg_match( '/^[0-9a-fA-F]{3}$/', $hex ) > 0 ) {
+		return true;
+	}
+
+	return false;
 }
 
 /* Background image */
@@ -943,8 +928,78 @@ function of_sanitize_number( $input, $definition ) {
 	if ( isset( $definition['units'] ) ) {
 		$units = $definition['units'];
 	}
-	$number = The7_Option_Field_Number::sanitize( $input, $units );
+
+	$max = isset( $definition['max'] ) ? (int) $definition['max'] : null;
+	$min = isset( $definition['min'] ) ? (int) $definition['min'] : null;
+
+	$number = The7_Option_Field_Number::sanitize( $input, $units, $min, $max );
 
 	return The7_Option_Field_Number::encode( $number );
 }
 add_filter( 'of_sanitize_number', 'of_sanitize_number', 10, 2 );
+
+/**
+ * Sanitize icons picker.
+ *
+ * Just return a string.
+ *
+ * @since 7.0.0
+ *
+ * @param string $val
+ *
+ * @return string
+ */
+function of_sanitize_icons_picker( $val ) {
+	return (string) $val;
+}
+
+add_filter( 'of_sanitize_icons_picker', 'of_sanitize_icons_picker' );
+
+function of_sanitize_switch( $val, $option ) {
+	$values = array_keys( $option['options'] );
+	$default = isset( $option['std'] ) ? $option['std'] : $values[1];
+
+	if ( $val === false ) {
+		$val = $values[1];
+	}
+
+	return The7_Option_Field_Switch::sanitize( $val, $values, $default );
+}
+
+add_filter( 'of_sanitize_switch', 'of_sanitize_switch', 10, 2 );
+
+/**
+ * Return random double nonce if option value is empty.
+ *
+ * @param string $val Option value.
+ *
+ * @return string
+ */
+function of_sanitize_random_double_nonce( $val = '' ) {
+	if ( ! $val ) {
+		return wp_create_nonce( mt_rand() ) . wp_create_nonce( mt_rand() );
+	}
+
+	return $val;
+}
+add_filter( 'of_sanitize_random_double_nonce', 'of_sanitize_random_double_nonce' );
+
+/**
+ * Sanitize multi select option value.
+ *
+ * @param array $val    Option value.
+ * @param array $option Option definition.
+ *
+ * @return array
+ */
+function of_sanitize_multi_select( $val, $option ) {
+	$options = array();
+	if ( isset( $option['options'] ) ) {
+		$options = (array) $option['options'];
+	}
+	$white_list = array_keys( $options );
+
+	return array_filter( array_intersect( (array) $val, $white_list ) );
+}
+
+add_filter( 'of_sanitize_multi_select', 'of_sanitize_multi_select', 10, 2 );

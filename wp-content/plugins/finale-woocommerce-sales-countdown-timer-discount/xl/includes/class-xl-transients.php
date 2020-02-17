@@ -96,14 +96,16 @@ if ( ! class_exists( 'XL_Transient' ) ) {
 				return false;
 			}
 
-			return $this->get_value( $transient_key, $data );
+			return $this->get_value( $transient_key, $data, true );
 		}
 
-		public function get_value( $transient_key, $data ) {
+		public function get_value( $transient_key, $data, $db_call = false ) {
 			$current_time = time();
 			if ( is_array( $data ) && isset( $data['time'] ) ) {
 				if ( $current_time > (int) $data['time'] ) {
-					delete_option( $transient_key );
+					if ( true === $db_call ) {
+						delete_option( $transient_key );
+					}
 
 					return false;
 				} else {

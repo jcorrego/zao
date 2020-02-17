@@ -1,16 +1,17 @@
 <?php
-/**
- * Class The7_Option_Field_Gradient_Picker
- *
- * @package The7
- */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
-class The7_Option_Field_Gradient_Picker {
+class The7_Option_Field_Gradient_Picker extends The7_Option_Field_Abstract {
+
+	public function html() {
+		$field_id   = $this->option['id'];
+		$val        = apply_filters( 'of_sanitize_gradient_picker', $this->val, $this->option );
+
+		return self::static_html( $this->option_name, $field_id, $val, array(
+			'hide_angle_controls' => isset( $this->option['fixed_angle'] ),
+		) );
+	}
 
 	/**
 	 * Return field HTML.
@@ -22,7 +23,7 @@ class The7_Option_Field_Gradient_Picker {
 	 *
 	 * @return string
 	 */
-	public static function html( $name, $id, $value, $config = array() ) {
+	public static function static_html( $name, $id, $value, $config = array() ) {
 		$config          = wp_parse_args( $config, array(
 			'hide_angle_controls' => false,
 			'value_input_class'   => '',
@@ -77,9 +78,9 @@ class The7_Option_Field_Gradient_Picker {
 		}
 
 		foreach ( $gradient['color_stops'] as $i => $color_stop ) {
-			$color_stop_parts = explode(' ', trim( $color_stop ) );
-			if ( count( $color_stop_parts ) < 2 ) {
-				$gradient['color_stops'][ $i ] = '#000000 ' . ($i === 0 ? '30%' : '100%');
+			$color_stop_parts = explode( ' ', trim( $color_stop ) );
+			if ( count( $color_stop_parts ) < 2 || ( strpos( $color_stop, '#' ) !== 0 && strpos( $color_stop, 'rgb' ) !== 0 ) ) {
+				$gradient['color_stops'][ $i ] = '#000000 ' . ( $i === 0 ? '30%' : '100%' );
 			}
 		}
 

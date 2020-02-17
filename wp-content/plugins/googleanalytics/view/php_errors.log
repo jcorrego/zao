@@ -1,0 +1,40 @@
+[21-Sep-2019 16:06:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[25-Sep-2019 07:53:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[11-Oct-2019 18:46:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[28-Oct-2019 19:56:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[16-Nov-2019 03:49:59 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[02-Dec-2019 09:21:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[18-Dec-2019 21:03:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[02-Jan-2020 07:20:40 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[10-Jan-2020 21:44:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2
+[10-Jan-2020 21:44:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _e() in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/forge/zaomakeup.com.co/wp-content/plugins/googleanalytics/view/statistics.php on line 2

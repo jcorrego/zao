@@ -1,0 +1,1 @@
+[03-Feb-2020 03:38:50 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/forge/zaomakeup.com.co/pma/libraries/classes/Rte/Footer.php on line 8

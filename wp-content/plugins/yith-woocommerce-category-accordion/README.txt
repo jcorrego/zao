@@ -3,8 +3,8 @@
 Contributors: yithemes
 Tags: woocommerce, ecommerce, product categories, wordpress categories, accordion, widget,shop, yith, yit, yithemes
 Requires at least: 3.5.1
-Tested up to: 4.9.2
-Stable tag: 1.0.18
+Tested up to: 5.3
+Stable tag: 1.0.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,68 +69,114 @@ You will be able to add your accordion(s) in your sidebar thanks to a useful wid
 
 == Changelog ==
 
-= Version 1.0.18 - Released: Feb 02, 2018 =
+= 1.0.34 - Released on 18 December 2019 =
+* New: Support for WooCommerce 3.9
+* Update: Plugin Framework
+
+= 1.0.33 - Released on 02 December 2019 =
+* Update: Plugin Framework
+* Fix: Accordion mode non working on frontend
+
+= 1.0.32 - Released on 29 November 2019 =
+* Update: Plugin Framework
+
+= 1.0.31 - Released on 09 November 2019 =
+* New: Plugin Panel Style
+* Update: Plugin Framework
+
+= 1.0.30 - Released on 30 October 2019 =
+* New: Support for WooCommerce 3.8
+* New: Support for WordPress 5.3
+* Update: Plugin Framework
+
+=  1.0.29 - Released on 30 July 2019 =
+* New: Support to WooCommerce 3.7 RC1
+* Update: Plugin Framework
+
+=  1.0.28 - Released on 12 June 2019 =
+* New: Support to WordPress 5.2
+* Update: Plugin Framework
+
+=  1.0.27 - Released on 23 April 2019 =
+* Update: Plugin Framework
+
+=  1.0.26 - Released on 04 April 2019 =
+* New: Support to WooCommerce 3.6.0 RC1
+* New: Support to WordPress 5.1.1
+* Update: Plugin Framework
+
+=  1.0.25 - Released on 25 January 2019 =
+* New: Support to WooCommerce 3.5.4
+* Update: Plugin Framework
+
+=  1.0.24 - Released on 05 December 2018 =
+
+* New: Support to WordPress 5.0
+* Update: Plugin Framework
+
+=  1.0.23 - Released on 24 October 2018 =
+* Update: Plugin Framework
+* Update: Language file
+
+=  1.0.22 - Released on 22 October 2018 =
+* New: Support to WooCommerce 3.5.0 RC2
+* Update: Plugin Framework
+
+=  1.0.21 - Released on 02 October 2018 =
+* New: Support to WooCommerce 3.5.0 RC1
+* Update: Plugin Framework
+
+=  1.0.18 - Released on 02 February 2018 =
 * New: Support to WooCommerce 3.3.1-RC1
 * New: Support to WordPress 4.9.2
 * Update: Plugin Framework 3.0.12
 * Fix: Minor bugs
 
-= Version 1.0.13 - Released: Oct 11, 2017 =
+=  1.0.13 - Released on 11 October 2017 =
 * New: Support to WooCommerce 3.2.0-RC2
 * New: Support to WordPress 4.8.2
 * Update: Plugin Framework
-= Version 1.0.12 - Released: Mar 14, 2017 =
 
+=  1.0.12 - Released on 14 March 2017 =
 * New: Support to WooCommerce 2.7.0-RC1
 * Update: Plugin Framework
 
-= Version 1.0.11 - Released: Dec 28, 2016 =
+=  1.0.11 - Released on 28 December 2016 =
 
 * New: Support to WordPress 4.7
 * New: Support to WooCommerce 2.6.11
 * Update: Plugin Framework
 
-= Version 1.0.10 - Released: Apr 27, 2016 =
-
+=  1.0.10 - Released on 27 April 2016 =
 * Update: Plugin Framework
 
-= Version 1.0.9 - Released: Mar 24, 2016 =
+=  1.0.9 - Released on 24 March 2016 =
 * Fix: Wrong icon when a subcategory has children
 * Update: Plugin Framework
 
-= Version 1.0.6 -  Released: Jan 05, 2015 =
-
+=  1.0.6 -  Released on 05 January 2015 =
 * Tweak: category box clickable for open/close accordion
 * Update: Language File
 * Update: Plugin core framework
 
-= Version 1.0.5 -  Released: Dec 14, 2015  =
-
+=  1.0.5 -  Released on 14 December 2015  =
 * Update: Plugin core framework
 
-= Version 1.0.3 - Released: Oct 30, 2015 =
+=  1.0.3 - Released on 30 October 2015 =
 
 * Update: Plugin core framework 2.0
 
-= Version 1.0.2 - Released: Sept 25, 2015 =
+=  1.0.2 - Released on 25 September 2015 =
 
 * New: Option to show Category Accordion closed when page is loaded
 * New: Support to WooCommerce 2.4
 * Update: Plugin core framework
 * Update: Language file
 
-= Version 1.0.1 - Released: July 07, 2015 =
+=  1.0.1 - Released on 07 July 2015 =
 
 * Fix minor bug
 
-= Version 1.0.0 - Released: Jun 18, 2015 =
+=  1.0.0 - Released on 18 June 2015 =
 
 * Initial release
-
-== Upgrade notice ==
-
-= 1.0.18 =
-* New: Support to WooCommerce 3.3.1-RC1
-* New: Support to WordPress 4.9.2
-* Update: Plugin Framework 3.0.12
-* Fix: Minor bugs

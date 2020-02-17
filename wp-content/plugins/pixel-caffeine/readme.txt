@@ -3,9 +3,9 @@ Contributors: adespresso, antoscarface, divbyzero, giangian, chiara_09, chusmy, 
 Donate link: https://adespresso.com/
 Tags: facebook, facebook pixel, facebook ad, facebook insertions, custom audiences, dynamic events, woocommerce
 Requires at least: 4.4
-Requires PHP: 5.3.9
-Tested up to: 4.9.8
-Stable tag: 2.0.6
+Requires PHP: 5.6
+Tested up to: 5.3
+Stable tag: 2.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -58,7 +58,7 @@ Welcome to a whole new world of *custom audiences* and *product catalog manageme
 
 = Minimum Requirements =
 
-* PHP version 5.3.9 or greater
+* PHP version 5.6 or greater
 * MySQL version 5.6 or greater or MariaDB version 10.0 or greater
 
 = Automatic installation =
@@ -123,6 +123,50 @@ Unfortunately there isn’t any way at the moment to import custom audiences _fr
 7. Product Catalog created
 
 == Changelog ==
+
+= 2.1.1 - 2019-11-18 =
+* Fix - Fatal error: Uncaught TypeError: Argument 1 passed to AEPC_Woocommerce_Addon_Support::get_product_id() must be an instance of WC_Product
+* Fix - fbq function not found when the option “Do not add the Pixel init snippet” is enabled
+* Fix - Do not include orphan variations into the product feed
+
+= 2.1.0 - 2019-11-07 =
+* Add - Option to disable the tracking of the variations. If enabled, when a variation is added to cart and then checkout/purchase, the content_ids will contain the parent ID
+* Add - Option to bypass pixel init, allowing to add pixel snippet from GTM or other source
+* Add - Allow to trigger a custom conversion event by Javascript event
+* Fix - Conflict with CartFlows
+* Fix - "Use SKU" option always checked even if unchecked
+* Fix - Notice: Undefined index: url_condition in .../pixel-caffeine/includes/class-aepc-pixel-scripts.php
+* Fix - Cron jobs initialization causing some errors on "Logs" tab
+* Fix - Description missing on variations when short description is mapped on the description field
+* Fix - Run Purchase event afterwards when PayPal used and not returned back to website after payment
+* Fix - Wrong image link on product catalog when SG Optimizer active
+
+= 2.0.8 - 2019-05-07 =
+* Important - **FB API Breaking Change** It's **mandatory** upgrade the plugin in order to have Facebook Pixel selection working correctly in the admin. If you won't upgrade within this week, the plugin will continue to work, but you won't be able to change the Pixel ID.
+* Add - Option to enable/disable the Search event
+* Add - Ability in Conversions/Events tab to specify if the trigger URL is contained or must be exact of the page where send the event. RECOMMENDED: take a backup of your current version and check all custom conversions events you have after upgrade and open a new topic if have any issues.
+* Add - New standard events in the custom conversion events created in the admin of the plugin
+* Add - Restored custom audience size
+* Add - Ability to add custom audience filter based on standard events or custom events created in "Conversions/Events" tab
+* Fix - Discordance in the SKU/ID option between pixel and product catalog configurations _(for who already have a product catalog create, make sure that "Use SKU" is enabled in the product catalog configuration if you didn't enabled the setting "Force to use product IDs even if there is a SKU defined" in General Settings)_
+* Fix - Use parent product SKU/ID in variable product single pages (it fixes the content_id not found warnings in some cases)
+* Fix - Retrieve the pixels list from the business account as well
+* Fix - AddToWishlist event with YITH Wishlist plugin
+* Fix - Add sale_price for the variable products
+* Fix - Low vulnerabilities with third-party libraries
+* Fix - Dashboard charts of pixel activity
+* Fix - URL matching for the custom conversions events based on link click
+* Fix - Fix SKU in item_group_id when the parent has the SKU (it might cause a "content_id not found" in product catalog when tracking the pixels)
+* Support - Bump minimum PHP version to 5.6 (the plugin still works with minor versions, but it won't be supported with those)
+* Support - Support WooCommerce up to 3.6.x
+
+= 2.0.7 - 2018-12-19 =
+* Support - Tested plugin with new WordPress 5.0 version
+* Support - Fix issues in feed with newest version of WooCommerce
+* Fix - "Products Are Missing From Your Catalogs" error in the DPA pixels for product with variations
+* Fix - Fix "&amp;" error on AddToCart event of product single page
+* Fix - Fix feed URL for custom configurations
+* Fix - Avoid to track multiple Purchase event per each Thank You page visit in WooCommerce and Easy Digital Downloads
 
 = 2.0.6 - 2018-08-14 =
 * Fix - Admin modals didn't open after 2.0.5 upgrade

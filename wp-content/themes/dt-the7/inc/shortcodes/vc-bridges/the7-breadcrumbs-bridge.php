@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	"weight" => -1,
@@ -49,7 +46,7 @@ return array(
 			'param_name'	=> 'font_color',
 			'type'			=> 'colorpicker',
 			'value'			=> '#a2a5a6',
-			'description' => __( 'Leave empty to use headers color.', 'the7mk2' ),
+			'description' => __( 'Leave empty to use headings color.', 'the7mk2' ),
 		),
 		array(
 			'heading' => __( 'Background', 'the7mk2' ),

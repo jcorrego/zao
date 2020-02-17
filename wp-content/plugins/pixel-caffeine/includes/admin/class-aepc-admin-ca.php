@@ -23,7 +23,7 @@ class AEPC_Admin_CA {
 		'prefill' => true,
 		'retention' => 14,
 		'rule' => array(),
-		'approximate_count' => 0
+		'approximate_count' => -1
 	);
 
 	/** @var array Save here if some error occurred per each field */
@@ -199,7 +199,7 @@ class AEPC_Admin_CA {
 	public function refresh_size() {
 		$ca = AEPC_Admin::$api->get_audience( $this->get_facebook_id(), 'approximate_count' );
 		$this->update( array(
-			'approximate_count' => absint( $ca->approximate_count )
+			'approximate_count' => intval( $ca->approximate_count )
 		) );
 	}
 
@@ -211,7 +211,7 @@ class AEPC_Admin_CA {
 		$this->update( array(
 			'name' => $ca->name,
 			'description' => $ca->description,
-			'approximate_count' => absint( $ca->approximate_count )
+			'approximate_count' => intval( $ca->approximate_count )
 		) );
 	}
 
@@ -242,7 +242,7 @@ class AEPC_Admin_CA {
 		$args['retention'] = intval( $args['retention'] );
 		$args['modified_date'] = current_time( 'mysql', false );
 		$args['modified_date_gmt'] = current_time( 'mysql', true );
-		$args['approximate_count'] = absint( $args['approximate_count'] );
+		$args['approximate_count'] = intval( $args['approximate_count'] );
 
 		if ( $args['retention'] < 1 || $args['retention'] > 180 ) {
 			AEPC_Admin_Notices::add_notice( 'error', 'ca_retention', __( 'The retention value must be beetwen 1 and 180 days value.', 'pixel-caffeine' ) );
@@ -655,7 +655,7 @@ class AEPC_Admin_CA {
 	 * @return int
 	 */
 	public function get_size() {
-		return absint( $this->_data['approximate_count'] );
+		return intval( $this->_data['approximate_count'] );
 	}
 
 	/**
@@ -1025,6 +1025,8 @@ class AEPC_Admin_CA {
 		// Set some statement to prepend to above generated
 		if ( empty( $prepend ) && isset( $translate_words[ $rule['event_type'] ][ $rule['event'] ]['generic'] ) ) {
 			$prepend = $translate_words[ $rule['event_type'] ][ $rule['event'] ]['generic'] . ' ';
+		} elseif ( 'events' == $rule['event_type'] ) {
+			$prepend = sprintf('is tracked with the event [%s]', $rule['event']) . ' ';
 		}
 
 		// Add conditions if any
@@ -1081,7 +1083,7 @@ class AEPC_Admin_CA {
 	 * @return int
 	 */
 	public function set_size( $size ) {
-		return $this->_data['approximate_count'] = absint( $size );
+		return $this->_data['approximate_count'] = intval( $size );
 	}
 
 	/**

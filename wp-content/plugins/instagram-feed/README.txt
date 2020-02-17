@@ -1,17 +1,17 @@
-=== Instagram Feed ===
+=== Smash Balloon Social Photo Feed ===
 Contributors: smashballoon, craig-at-smash-balloon
 Tags: Instagram, Instagram feed, Instagram photos, Instagram widget, Instagram gallery
-Requires at least: 3.0
-Tested up to: 4.9
-Stable tag: 1.10
+Requires at least: 3.4
+Tested up to: 5.3
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Display beautifully clean, customizable, and responsive feeds from multiple Instagram accounts
+Formerly "Instagram Feed". Display beautifully clean, customizable, and responsive Instagram feeds from multiple Instagram accounts
 
 == Description ==
 
-Display Instagram photos from any non-private Instagram accounts, either in the same single feed or in multiple different ones.
+Display Instagram posts from your Instagram accounts, either in the same single feed or in multiple different ones.
 
 = Features =
 * Super **simple to set up**
@@ -34,6 +34,22 @@ Display Instagram photos from any non-private Instagram accounts, either in the 
 * **Keep Your Site Looking Fresh** - Automatically push your new Instagram content straight to your site to keep it looking fresh and keeping your audience engaged.
 * **Super simple to set up** - Once installed, you can be displaying your Instagram photos within 30 seconds! No confusing steps or Instagram Developer account needed.
 
+= Pro Version =
+In order to maintain the free version of the plugin on an ongoing basis, and to provide quick and effective support for free, we offer a Pro version of the plugin. The Pro version allows you to:
+* Display Hashtag feeds (fully compatible with the Instagram December 11, 2018, API changes)
+* View photos and videos in a popup lightbox directly on your site
+* View post comments for user feeds
+* Display the number of like and comments for each post
+* Create carousels from your posts
+* Use "Masonry" or "Highlight" layouts for your feeds
+* Display captions for photos and videos
+* Filter posts based on hashtag/word
+* Advanced moderation system for hiding/showing certain posts
+* Block posts by specific users
+* Create "shoppable" Instagram feeds, and more.
+
+[Find out more about the Pro version](https://smashballoon.com/instagram-feed/?utm_source=wordpress&utm_campaign=sbi "Instagram Feed Pro") or [try out the Pro demo](https://smashballoon.com/instagram-feed/demo/?utm_source=wordpress&utm_campaign=sbi "Instagram Feed Pro Demo").
+
 = Featured Reviews =
 "**Simple and concise** - Excellent plugin. Simple and non-bloated. I had a couple small issues with the plugin when I first started using it, but a quick comment on the support forums got a new version pushed out the next day with the fix. Awesome support!" - [Josh Jones](https://wordpress.org/support/topic/simple-and-concise-3 'Simple and concise Instagram plugin')
 
@@ -42,17 +58,17 @@ Display Instagram photos from any non-private Instagram accounts, either in the 
 = Feedback or Support =
 We're dedicated to providing the most customizable, robust and well supported Instagram feed plugin in the world, so if you have an issue or have any feedback on how to improve the plugin then please open a ticket in the [Support forum](http://wordpress.org/support/plugin/instagram-feed 'Instagram Feed Support Forum').
 
-For a pop-up photo **lightbox**, to display posts by **hashtag**, show photo **captions**, **video** support + more, check out the [Pro version](http://smashballoon.com/instagram-feed/ 'Instagram Feed Pro').
+For a pop-up photo **lightbox**, to display posts by **hashtag**, show photo **captions**, **video** support + more, check out the [Pro version](http://smashballoon.com/instagram-feed/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed Pro').
 
 == Installation ==
 
 1. Install the Instagram Feed plugin either via the WordPress plugin directory, or by uploading the files to your web server (in the `/wp-content/plugins/` directory).
 2. Activate the Instagram Feed plugin through the 'Plugins' menu in WordPress.
-3. Navigate to the 'Instagram Feed' settings page to obtain your Instagram Access Token and Instagram User ID and configure your settings.
+3. Navigate to the 'Instagram Feed' settings page to connect your Instagram account.
 4. Use the shortcode `[instagram-feed]` in your page, post or widget to display your Instagram photos.
 5. You can display multiple Instagram feeds by using shortcode options, for example: `[instagram-feed num=6 cols=3]`
 
-For simple step-by-step directions on how to set up the Instagram Feed plugin please refer to our [setup guide](http://smashballoon.com/instagram-feed/free/ 'Instagram Feed setup guide').
+For simple step-by-step directions on how to set up the Instagram Feed plugin please refer to our [setup guide](http://smashballoon.com/instagram-feed/free/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed setup guide').
 
 = Display your Feed =
 
@@ -64,16 +80,18 @@ Copy and paste the following shortcode directly into the page, post or widget wh
 
 If you'd like to display multiple Instagram feeds then you can set different settings directly in the shortcode like so: `[instagram-feed num=9 cols=3]`
 
+If you'd like to display feed from more than one account, connect multiple accounts on the "Configure" tab and then add the user name in the shortcode: `[instagram-feed user="ANOTHER_USER_NAME"]`
+
 You can display as many different Instagram feeds as you like, on either the same page or on different pages, by just using the shortcode options below. For example:
 `[instagram-feed]`
-`[instagram-feed id="ANOTHER_USER_ID"]`
-`[instagram-feed id="ANOTHER_USER_ID, YET_ANOTHER_USER_ID" num=4 cols=4 showfollow=false]`
+`[instagram-feed user="ANOTHER_USER_NAME"]`
+`[instagram-feed user="ANOTHER_USER_NAME, YET_ANOTHER_USER_NAME" num=4 cols=4 showfollow=false]`
 
 See the table below for a full list of available shortcode options:
 
 = Shortcode Options =
 * **General Options**
-* **id** - An Instagram User ID - Example: `[instagram-feed id=AN_INSTAGRAM_USER_ID]`
+* **user** - An Instagram User Name (must have account connected) - Example: `[instagram-feed user=AN_INSTAGRAM_USER_NAME]`
 * **width** - The width of your Instagram feed. Any number - Example: `[instagram-feed width=50]`
 * **widthunit** - The unit of the width of your Instagram feed. 'px' or '%' - Example: `[instagram-feed widthunit=%]`
 * **height** - The height of your Instagram feed. Any number - Example: `[instagram-feed height=250]`
@@ -93,6 +111,10 @@ See the table below for a full list of available shortcode options:
 *
 * **Header Options**
 * **showheader** - Whether to show the Instagram feed Header. 'true' or 'false' - Example: `[instagram-feed showheader=false]`
+* **showbio** - Whether to show the account's bio in the Instagram feed Header. 'true' or 'false' - Example: `[instagram-feed showbio=false]`
+* **custombio** - Custom Bio text for the Instagram feed Header - Example: `[instagram-feed custombio="My custom bio."]`
+* **customavatar** - URL of a custom Avatar for the header. Example: `[instagram-feed customavatar="https://my-site.com/avatar.jpg"]`
+
 * **headercolor** - The color of the Instagram feed Header text. Any hex color code - Example: `[instagram-feed headercolor=#333]`
 *
 * **'Load More' Button Options**
@@ -107,51 +129,45 @@ See the table below for a full list of available shortcode options:
 * **followtextcolor** - The text color of the 'Follow on Instagram' button. Any hex color code - Example: `[instagram-feed followtextcolor=#fff]`
 * **followtext** - The text used for the 'Follow on Instagram' button - Example: `[instagram-feed followtext="Follow me"]`
 
-For more shortcode options, check out the [Pro version](http://smashballoon.com/instagram-feed/ 'Instagram Feed Pro').
+For more shortcode options, check out the [Pro version](http://smashballoon.com/instagram-feed/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed Pro').
 
 = Setting up the Free Instagram Feed WordPress Plugin =
 
 1) Once you've installed the Instagram Feed plugin click on the Instagram Feed item in your WordPress menu
 
-2) Click on the large blue Instagram button to log into your Instagram account and get your Instagram Access Token and Instagram User ID
+2) Click on the large blue Instagram button to log into your Instagram account and connect your Instagram account. If you're having trouble retrieving your Instagram information from Instagram then try using the Instagram button on [this page](https://smashballoon.com/instagram-feed/token/?utm_source=wordpress&utm_campaign=sbi) instead.
 
-3) Copy and paste the Instagram Access Token and Instagram User ID into the relevant Instagram Access Token and Instagram User ID fields. If you're having trouble retrieving your Instagram information from Instagram then try using the Instagram button on [this page](https://smashballoon.com/instagram-feed/token/) instead.
+You can also display photos from other Instagram accounts by connecting additional Instagram accounts and adding the user name in the shortcode.
 
-You can also display photos from other Instagram accounts by using [this tool](http://www.otzberg.net/iguserid/) to find their Instagram User ID. 
+3) Navigate to the Instagram Feed customize page to customize your Instagram feed.
 
-4) Navigate to the Instagram Feed customize page to customize your Instagram feed. 
+4) Once you've customized your Instagram feed, click on the Display Your Feed tab to grab the [instagram-feed] shortcode.
 
-5) Once you've customized your Instagram feed, click on the Display Your Feed tab to grab the [instagram-feed] shortcode.
+5) Copy the Instagram Feed shortcode and paste it into any page, post or widget where you want the Instagram feed to appear.
 
-6) Copy the Instagram Feed shortcode and paste it into any page, post or widget where you want the Instagram feed to appear.
+6) You can paste the Instagram Feed shortcode directly into your page editor.
 
-7) You can paste the Instagram Feed shortcode directly into your page editor. 
-
-8) You can use the default WordPress 'Text' widget to display your Instagram Feed in a sidebar or other widget area.
+7) You can use the default WordPress 'Text' widget to display your Instagram Feed in a sidebar or other widget area.
 
 == Frequently Asked Questions ==
 
 = Can I display multiple Instagram feeds on my site or on the same page? =
 
-Yep. You can display multiple Instagram feeds by using our built-in shortcode options, for example: `[instagram-feed id="12986477" cols=3]`.
+Yep. You can display multiple Instagram feeds by using our built-in shortcode options, for example: `[instagram-feed user="smashballoon" cols=3]`. Be sure to connect the related Instagram account on the "Configure" tab.
 
 = Can I display photos from more than one Instagram account in one single feed? =
 
-Yep. You can just separate the IDs by commas, either in the User ID(s) field on the plugin's Settings page, or directly in the shortcode like so: `[instagram-feed id="12986477,13460080"]`.
+Yep. You can add multiple user names from the connected accounts on the plugin's Settings page, or directly in the shortcode, separated by commas, like so: `[instagram-feed user="smashballoon, instagramfeed"]`.
 
 = How do I find my Instagram Access Token and Instagram User ID =
 
-We've made it super easy. Simply click on the big blue button on the Instagram Feed Settings page and log into your Instagram account. The plugin will then retrieve and display both your Access Token and User ID from Instagram.
-
-You can also display photos from other peoples Instagram accounts. To find their Instagram User ID you can use [this tool](http://www.otzberg.net/iguserid/).
+We've made it super easy. Simply click on the big blue button on the Instagram Feed Settings page and log into your Instagram account. The plugin will then ask if you'd like to connect the account and start using it in a feed.
 
 = My Instagram feed isn't displaying. Why not!? =
 
 There are a few common reasons for this:
 
 * **Your Access Token may not be valid.** Try clicking on the blue Instagram login button on the plugin's Settings page again and copy and paste the Instagram token it gives you into the plugin's Access Token field.
-* **Your Instagram account may be set to private.** Your Instagram account may be set to private. Instagram doesn't allow photos from private Instagram accounts to be displayed publicly.
-* **Your User ID may not be valid**. Be sure you're not using your Instagram username instead of your User ID. You can find your Instagram User ID by using [this tool](http://www.otzberg.net/iguserid/).
 * **The plugin's JavaScript file isn't being included in your page.** This is most likely because your WordPress theme is missing the WordPress [wp_footer](http://codex.wordpress.org/Function_Reference/wp_footer) function which is required for plugins to be able to add their JavaScript files to your page. You can fix this by opening your theme's **footer.php** file and adding the following directly before the closing </body> tag: `<?php wp_footer(); ?>`
 * **Your website may contain a JavaScript error which is preventing JavaScript from running.** The plugin uses JavaScript to load the Instagram photos into your page and so needs JavaScript to be running in order to work. You would need to remove any existing JavaScript errors on your website for the plugin to be able to load in your feed.
 
@@ -163,7 +179,7 @@ Nope. The Access Token used in the plugin is a "read only" token, which means th
 
 = Can I view the full-size photos or play Instagram videos directly on my website?  =
 
-This is a feature of the [Pro version](http://smashballoon.com/instagram-feed/ 'Instagram Feed Pro') of the plugin, which allows you to view the photos in a pop-up lightbox, support videos, display captions, display photos by hashtag + more!
+This is a feature of the [Pro version](http://smashballoon.com/instagram-feed/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed Pro') of the plugin, which allows you to view the photos in a pop-up lightbox, support videos, display captions, display photos by hashtag + more!
 
 = How do I embed my Instagram Feed directly into a WordPress page template? =
 
@@ -177,31 +193,25 @@ If your Instagram photos aren't loading and all your see is a loading symbol the
 
 You can obtain a new Instagram Access Token on the Instagram Feed Settings page by clicking the blue Instagram login button and then copy and pasting it into the plugin's 'Access Token' field.
 
-Occasionally the blue Instagram login button does not produce a working access token. You can try [this link](https://smashballoon.com/instagram-feed/token/) as well.
+Occasionally the blue Instagram login button does not produce a working access token. You can try [this link](https://smashballoon.com/instagram-feed/token/?utm_source=wordpress&utm_campaign=sbi) as well.
 
-2) Your Instagram User ID is incorrect or is from a private Instagram account
-
-Please double check the Instagram User ID that you are using. Please note that your Instagram User ID is different from your Instagram username. To find your Instagram User ID simply enter your Instagram username into [this tool](http://www.otzberg.net/iguserid/).
-
-If your Instagram User ID doesn't show any Instagram photos then it may be that your Instagram account is private and that the Instagram photos aren't able to be displayed.
-
-3) The plugin's JavaScript file isn't being included in your page
+2) The plugin's JavaScript file isn't being included in your page
 
 This is most likely because your WordPress theme is missing the WordPress wp_footer function which is required for plugins to be able to add their JavaScript files to your page. You can fix this by opening your theme's footer.php file and adding the following directly before the closing </body> tag:
 
 <?php wp_footer(); ?>
 
-4) There's a JavaScript error on your site which is preventing the plugin's JavaScript file from running
+3) There's a JavaScript error on your site which is preventing the plugin's JavaScript file from running
 
 You find find out whether this is the case by right clicking on your page, selecting 'Inspect Element', and then clicking on the 'Console' tab, or by selecting the 'JavaScript Console' option from your browser's Developer Tools.
 
 If a JavaScript error is occurring on your site then you'll see it listed in red along with the JavaScript file which is causing it.
 
-5) The feed you are trying to display has no Instagram posts
+4) The feed you are trying to display has no Instagram posts
 
 If you are trying to display an Instagram feed that has no posts made to it, a loading symbol may be all that shows for the Instagram feed or nothing at all. Once you add an Instagram post the Instagram feed should display normally
 
-6) The shortcode you are using is incorrect
+5) The shortcode you are using is incorrect
 
 You may have an error in the Instagram Feed shortcode you are using or are missing a necessary argument.
 
@@ -210,7 +220,7 @@ You may have an error in the Instagram Feed shortcode you are using or are missi
 The below options are available on the Instagram Feed Settings page but can also be used directly in the `[instagram-feed]` shortcode to customize individual Instagram feeds on a feed-by-feed basis.
 
 * **General Options**
-* **id** - An Instagram User ID - Example: `[instagram-feed id=AN_INSTAGRAM_USER_ID]`
+* **user** - An Instagram User Name (must have account connected) - Example: `[instagram-feed user=AN_INSTAGRAM_USER_NAME]`
 * **width** - The width of your Instagram feed. Any number - Example: `[instagram-feed width=50]`
 * **widthunit** - The unit of the width of your Instagram feed. 'px' or '%' - Example: `[instagram-feed widthunit=%]`
 * **height** - The height of your Instagram feed. Any number - Example: `[instagram-feed height=250]`
@@ -230,6 +240,10 @@ The below options are available on the Instagram Feed Settings page but can also
 *
 * **Header Options**
 * **showheader** - Whether to show the Instagram feed Header. 'true' or 'false' - Example: `[instagram-feed showheader=false]`
+* **showbio** - Whether to show the account's bio in the Instagram feed Header. 'true' or 'false' - Example: `[instagram-feed showbio=false]`
+* **custombio** - Custom Bio text for the Instagram feed Header - Example: `[instagram-feed custombio="My custom bio."]`
+* **customavatar** - URL of a custom Avatar for the header. Example: `[instagram-feed customavatar="https://my-site.com/avatar.jpg"]`
+
 * **headercolor** - The color of the Instagram feed Header text. Any hex color code - Example: `[instagram-feed headercolor=#333]`
 *
 * **'Load More' Button Options**
@@ -244,9 +258,9 @@ The below options are available on the Instagram Feed Settings page but can also
 * **followtextcolor** - The text color of the 'Follow on Instagram' button. Any hex color code - Example: `[instagram-feed followtextcolor=#fff]`
 * **followtext** - The text used for the 'Follow on Instagram' button - Example: `[instagram-feed followtext="Follow me"]`
 
-For more shortcode options, check out the [Pro version](http://smashballoon.com/instagram-feed/ 'Instagram Feed Pro').
+For more shortcode options, check out the [Pro version](http://smashballoon.com/instagram-feed/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed Pro').
 
-For more FAQs related to the Instagram Feed plugin please visit the [FAQ section](https://smashballoon.com/instagram-feed/support/faq/ 'Instagram Feed plugin FAQs') on our website.
+For more FAQs related to the Instagram Feed plugin please visit the [FAQ section](https://smashballoon.com/instagram-feed/support/faq/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed plugin FAQs') on our website.
 
 == Screenshots ==
 
@@ -287,7 +301,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 
 = What can it do? =
 
-* Display Instagram photos from any non-private Instagram account.
+* Display Instagram photos from any Instagram account you own.
 * Completely responsive and mobile ready –your Instagram feed layout looks great on any screen size and in any container width
 * Display multiple Instagram feeds on the same page or on different pages throughout your site by using our powerful Instagram Feed shortcode options
 * Display posts from multiple Instagram User IDs
@@ -310,6 +324,121 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Plus more customization options added all the time!
 
 == Changelog ==
+= 2.2 =
+* Important: On March 2, Instagram will stop supporting its old API which will disrupt feeds created from personal connected accounts. If you are using a personal account, you will need to reconnect the account on the Instagram Feed Settings page. Please [see here](https://smashballoon.com/instagram-api-changes-march-2-2020/) for more information.
+* New: Support added for the new Instagram Basic Display API.
+* New: Added PHP hooks 'sbi_before_feed' and 'sbi_after_feed' for displaying HTML before and after the main Instagram feed HTML.
+* New: Added settings for adding a custom header avatar and custom header bio text. Go to the "Customize" tab "Header" area to set these or use customavatar="AVATAR URL" or custombio="BIO TEXT" in the shortcode.
+* Tweak: Warnings and messages displaying on the front end of sites now display at the top of the feed.
+* Tweak: Header template changed to accommodate missing data if connected as a personal account to the new API.
+* Tweak: Changes to feed.php, header.php, and item.php templates.
+* Tweak: Added CSS to prevent some themes from adding box shadows and bottom border when hovering over the header.
+* Tweak: Added code to clear page caching from Litespeed cache when clearing page caches with the plugin.
+* Tweak: Header and follow button will still be displayed when number of posts is set to 0.
+* Fix: Emoji in the first few characters of a caption would cause the main post image to switch to an emoji when loading more.
+* Fix: Pagination for "tagged" feeds not working for certain accounts.
+
+= 2.1.5 =
+* New: Added aria-label attributes to SVGs for improved accessibility.
+* Tweak: Changed screen reader and alt text to be more SEO friendly (change made to item.php template).
+* Tweak: Added PHP hooks to use custom alt and screen reader text.
+* Fix: Image resolution setting option "Medium" dimensions changed from 306x306 to 320x320.
+* Fix: Screen reader text would be visible if text was right aligned.
+* Fix: Incorrect image resolution would be used when setting the image resolution to something other than auto.
+
+= 2.1.4 =
+* Tweak: If sb_instagram_js_options is not defined, a default object is set.
+* Tweak: Added a text link in the settings page footer to our new free [YouTube plugin](https://wordpress.org/plugins/feeds-for-youtube/)
+* Fix: Local images not being used when available in certain circumstances.
+
+= 2.1.3 =
+* New: Added filter "sbi_settings_pages_capability" to change what permission is needed to access settings pages.
+* Tweak: Updated language files for version 2.0+.
+* Tweak: Better error messages for no posts being found and API request delays.
+* Tweak: If "Favor Local Images" setting is in use, a 640px resolution image will be created for images coming from a personal account.
+* Tweak: Better error recovery when image file not found when viewing the feed.
+* Tweak: Button and input field styling updated to look better with WordPress 5.3.
+* Fix: Accounts that were connected prior to version 1.12 would not show the follow button if the header was not also displayed. Visit the "Configure" tab to have the account automatically updated.
+* Fix: MySQL error when retrieving resized images. Thanks [the-louie](https://github.com/the-louie)!
+* Fix: When using the new Twenty Twenty theme, Instagram icon in "follow" button displaying as block and causing the button text to appear on a new line.
+
+= 2.1.2 =
+* New: Added setting "API request size" on the "Customize" tab to allow requesting of more posts than are in the feed. Setting this to a high number will prevent no posts being found if you often post IG TV posts and use a personal account.
+* Tweak: Removed width and height attributes from the image element in the feed to prevent notices about serving scaled images in optimization tools.
+
+= 2.1.1 =
+* New: Added ability to enqueue the CSS file through the shortcode. This loads the file in the footer of the site, and only on pages that include a feed. Enable on the "Customize" tab.
+* Tweak: Resized images can be used in the page source code when "Disable js image loading" setting is enabled.
+* Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode.
+
+= 2.1 =
+* New: Added the ability to overwrite default templates in your theme. View [this article](https://smashballoon.com/guide-to-creating-custom-templates/) for more information.
+* New: Added several PHP hooks for modifying feeds settings and functionality.
+* Fix: Using the "Load Initial Posts with AJAX" setting would cause images to not resize with the browser window.
+* Fix: Added back language files for translations.
+* Fix: Changing the image resolution setting would not change the image size.
+* Fix: Follow button would not show if there was no connected account.
+* Fix: Deleting any connected account will delete any connected accounts that have errors in the data that was saved for them.
+
+= 2.0.2 =
+* Fix: HTML for header would still be visible in the source of the page when removing the header using showheader=false in the shortcode
+* Fix: CSS added to prevent layout issues when adding the feed to a "text" widget for certain themes
+
+= 2.0.1 =
+* Tweak: Force cache of major caching plugins to clear when updating plugin to avoid issues with previous CSS/JavaScript files being cached
+* Tweak: Added version number to the end of JavaScript and CSS files to clear browser caches that are causing errors
+* Fix: Added back filter to allow using shortcode in a custom HTML widget
+* Fix: Added back settings to display bio information in header and change header size which were mistakenly removed in the last update
+* Fix: Fixed a PHP notice which might display under certain circumstances
+
+= 2.0 =
+* **MAJOR UDPATE**
+* New: We've rebuilt the plugin from the ground up with a focus on performance and reliability. Your feeds are now loaded from the server using PHP removing the reliance on AJAX.
+* New: Local copies of images are now automatically stored on your server and used in your feed. You can disable this feature in the "Advanced" section of the "Customize" tab. Use the "Favor Local Images" setting on the "Customize" tab, "Advanced" sub-tab to have the plugin use local images whenever available, thus removing reliance on the Instagram CDN.
+* New: You can now set the plugin to check for new Instagram posts in the background rather than when the page loads by using the new "Background caching" option which utilizes the WordPress "cron" feature. Enable this using the "Check for new posts" setting on the "Configure" tab.
+* New: If you have a business account for Instagram, you can now connect to the new Instagram API. You can continue to use your connected personal account and do not need to connect a business account.
+
+= 1.12.2 =
+* Fix: Fixed error from Instagram when connecting a personal account.
+
+= 1.12.1 =
+* Tweak: If an image in a post fails to load then the plugin attempts to load it from another image source
+
+= 1.12 =
+* Fix: Includes fixes for some security vulnerabilities. Thanks to Julio Potier of [SecuPress](https://secupress.me/) for reporting the issues.
+* Fix: Fixed an issue caused by a bug in the Instagram API which was preventing some Instagram accounts from being able to be connected. If you experienced an issue connecting an Instagram account then please try again after updating.
+* Fix: Quotes represented by "%20" in Instagram data were causing a JSON parsing error.
+* Tweak: Data for the feed is now cached outside of the admin-ajax.php calls.
+
+= 1.11.3 =
+* Fix: Escaped single quotes causing a JSON parse error under certain circumstances.
+* Fix: Translatable code errors in the admin area causing some text to not be translatable.
+
+= 1.11.2 =
+* Fix: Unable to connect new accounts due to changes with Instagram's API. Remote requests to connect accounts are now made server-side.
+
+= 1.11.1 =
+* Fix: Feed would not load from a cache created with an older version of the plugin
+* Fix: Fixed PHP warning trying to count string length of an array
+
+= 1.11 =
+* New: Added capability "manage_instagram_feed_options" to support customizations that will allow users/roles other than the administrator to access Instagram Feed settings pages.
+* Fix: rel="noopener" added to all links that contain target="blank"
+* Fix: HTTPS used in xlmns attribute for SVGs
+* Fix: Fixed issues with strings in the admin area being translatable
+* Fix: Fixed a potential security vulnerability. Thanks to [Martin Verreault](https://egyde.ca/) for reporting the issue.
+
+= 1.10.2 =
+* Confirmed compatibility with the upcoming WordPress 5.0 "Gutenberg" update
+* Fix: Fixed an issue caused by some themes which affected the formatting of the 'Load More' and 'Follow' buttons
+* Fix: Fixed an occasional formatting issue with error messages due to no line-height being set
+* Fix: Minor admin UI fixes
+* Tweak: Removed mention of some Pro features which will be deprecated due to upcoming Instagram API changes
+
+= 1.10.1 =
+* Tweak: Automatic image resolution detection setting now works better with wide images. Resizing the browser will now automatically raise the image resolution if needed.
+* Fix: Fixed an issue where the Load More button would disappear if all posts for a feed were cached.
+
 = 1.10 =
 * New: We've made improvements to the way photos are loaded into the feed, adding a smooth transition to display photos subtly rather than suddenly.
 * New: More header sizes; you can now choose from three sizes: small, medium, and large. Change this on the "Customize" tab.
@@ -343,7 +472,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Fix: Font method setting not working when "Are you using an ajax theme?" setting is enabled
 
 = 1.8 =
-* Important: Due to [recent changes](https://smashballoon.com/instagram-api-changes-april-4-2018/) in the Instagram API it is no longer possible to display photos from other Instagram accounts which are not your own. You can only display the user feed of the account which is associated with your Access Token.
+* Important: Due to [recent changes](https://smashballoon.com/instagram-api-changes-april-4-2018/?utm_source=wordpress&utm_campaign=sbi) in the Instagram API it is no longer possible to display photos from other Instagram accounts which are not your own. You can only display the user feed of the account which is associated with your Access Token.
 * New: Added an Access Token shortcode option and support for multiple Instagram Access Tokens. If you own multiple Instagram accounts then you can now use multiple Access Tokens in order to display user feeds from each Instagram account, either in separate feeds, or in the same feed. Just use the `accesstoken` shortcode option. See [this FAQ](https://smashballoon.com/display-multiple-instagram-feeds/#multiple-user-feeds) for more information on displaying multiple User feeds.
 
 = 1.7 =
@@ -489,7 +618,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 * Tweak: Added a subtle fade effect to the Instagram photos when hovering over them
 * Tweak: Improved the responsive layout behavior of the Instagram feed
 * Tweak: Improved the documentation within the Instagram Feed plugin settings pages
-* Tweak: Included a link to [step-by-step setup directions](http//:smashballoon.com/instagram-feed/free/ 'Instagram feed setup directions') for the plugin
+* Tweak: Included a link to [step-by-step setup directions](http//:smashballoon.com/instagram-feed/free/?utm_source=wordpress&utm_campaign=sbi 'Instagram feed setup directions') for the plugin
 * Fix: Fixed an issue with the feed not clearing other widgets correctly
 
 = 1.2.3 =
@@ -509,7 +638,7 @@ We understand that sometimes you need help, have issues or just have questions. 
 * New: Added an option to display your Instagram photos in random order
 * New: A new tabbed layout has been implemented on the Instagram Feed plugin's settings pages
 * New: Added an option to preserve your Instagram Feed settings when uninstalling the plugin
-* New: Added a [Pro version](http://smashballoon.com/instagram-feed/ 'Instagram Feed Pro') of the Instagram Feed plugin which allows you to display Instagram photos by hashtag, display Instagram captions, view Instagram photos in a pop-up lightbox, show the number of Instagram likes & comments and more
+* New: Added a [Pro version](http://smashballoon.com/instagram-feed/?utm_source=wordpress&utm_campaign=sbi 'Instagram Feed Pro') of the Instagram Feed plugin which allows you to display Instagram photos by hashtag, display Instagram captions, view Instagram photos in a pop-up lightbox, show the number of Instagram likes & comments and more
 * Tweak: The 'Load More' button now automatically hides if there are no more Instagram photos to load
 * Tweak: Added a small gap to the top of the 'Load More' button
 * Tweak: Added a icon to the Instagram Feed menu item

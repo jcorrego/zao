@@ -56,6 +56,9 @@
 		'Ultimate_Team'                 => __( 'Ultimate Teams', 'ultimate_vc'),
 		'Ultimate_Sticky_Section'       => __( 'Sticky Section', 'ultimate_vc'),
 		'Ultimate_Range_Slider'         => __( 'Range Slider', 'ultimate_vc'),
+		'Ultimate_Videos'               => __( 'Video', 'ultimate_vc'),
+		'Ultimate_Ribbons'              => __( 'Ribbon', 'ultimate_vc'),
+		'Ultimate_Dual_colors'          => __( 'Dual Color Heading', 'ultimate_vc'),
 	);
 ?>
 
@@ -78,7 +81,7 @@
       <div class="smile-settings-wrapper">
         <h2 class="nav-tab-wrapper">
 	    	<a href="<?php echo admin_url('admin.php?page=about-ultimate'.$author_extend); ?>" data-tab="about-ultimate" class="nav-tab"> <?php echo __('About','ultimate_vc'); ?> </a>
-	    	<a href="<?php echo admin_url('admin.php?page=ultimate-dashboard'.$author_extend); ?>" data-tab="ultimate-modules" class="nav-tab nav-tab-active"> <?php echo __('Modules','ultimate_vc'); ?> </a>
+	    	<a href="<?php echo admin_url('admin.php?page=ultimate-dashboard'.$author_extend); ?>" data-tab="ultimate-modules" class="nav-tab nav-tab-active"> <?php echo __('Elements','ultimate_vc'); ?> </a>
 	    	<a href="<?php echo admin_url('admin.php?page=ultimate-smoothscroll'.$author_extend); ?>" data-tab="css-settings" class="nav-tab"> <?php echo __('Smooth Scroll','ultimate_vc'); ?> </a>
 	        <a href="<?php echo admin_url('admin.php?page=ultimate-scripts-and-styles'.$author_extend); ?>" data-tab="css-settings" class="nav-tab"> <?php echo __('Scripts and Styles','ultimate_vc'); ?> </a>
 	        <?php if($author) : ?>

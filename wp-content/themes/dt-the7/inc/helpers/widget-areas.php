@@ -29,6 +29,9 @@ if ( ! function_exists( 'presscore_sidebar_html_class' ) ) :
 				$output[] = 'bg-under-widget';
 				break;
 		}
+		if ( presscore_config()->get( 'sidebar.sticky' ) ) {
+			$output[] = 'sticky-sidebar';
+		}
 
 		if ( in_array( presscore_config()->get( 'sidebar.style' ), array( 'with_bg', 'with_widgets_bg' ) ) ) {
 			switch ( presscore_config()->get( 'sidebar.style.background.decoration' ) ) {
@@ -70,6 +73,10 @@ if ( ! function_exists( 'presscore_footer_html_class' ) ) :
 			// default - content_width_line
 		}
 
+		if ( (bool) of_get_option( 'footer-is_fullwidth' ) ) {
+			$output[] = 'full-width';
+		}
+
 		$output = apply_filters( 'presscore_footer_html_class', $output );
 
 		return $output ? sprintf( 'class="%s"', presscore_esc_implode( ' ', array_unique( $output ) ) ) : '';
@@ -81,7 +88,7 @@ endif;
 if ( ! function_exists( 'presscore_get_sidebar_layout_parser' ) ) :
 
 	function presscore_get_sidebar_layout_parser( $sidebar_layout ) {
-		return new Presscore_Sidebar_Layout_Parser( $sidebar_layout );
+		return new The7_Sidebar_Layout_Parser( $sidebar_layout );
 	}
 
 endif;

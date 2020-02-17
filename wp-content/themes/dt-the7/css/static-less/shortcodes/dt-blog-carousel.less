@@ -12,6 +12,7 @@
     .flex-display(@display: flex);
     & .dt-owl-item {
       .flex-display(@display: flex);
+      flex-shrink: 0;
     }
   }
 }
@@ -76,10 +77,8 @@
   .post-entry-content .entry-title a,
   .post-entry-title-content .entry-title a {
     .owl-carousel & {
-      -webkit-transition: color 0.35s;
       transition: color 0.35s;
       .accent-gradient & {
-        -webkit-transition: none;
         transition: none;
       }
     }
@@ -114,43 +113,3 @@
             content: "";
         }
       }
-.owl-carousel [class^="icon-"],
-.owl-carousel [class*=" icon-"],
-.owl-carousel [class^="icon-"]:before,
-.owl-carousel [class*=" icon-"]:before {
-   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon-arrows-carousel-32x32' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.post-thumbnail > .post-thumbnail-rollover img {
-    .owl-carousel.scale-img & {
-      -webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.35s;
-      transition: transform 0.3s ease-out, opacity 0.35s;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-    &.lazy-load {
-        -webkit-transition:  transform 0.3s ease-out, opacity 0.35s;
-        transition:  transform 0.3s ease-out, opacity 0.35s;
-    }
-  }
-  .post-thumbnail > .post-thumbnail-rollover:hover img,
-  .post-thumbnail:hover img,
-  .on-hover .post-thumbnail img  {
-    .owl-carousel.scale-img & {
-      -webkit-transform: scale(1.2);
-              transform: scale(1.2);
-      -webkit-transition: -webkit-transform 4s ease-out;
-              transition: transform 4s ease-out;
-    }
-  }

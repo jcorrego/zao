@@ -148,6 +148,16 @@ if(!class_exists("Ultimate_Google_Maps")){
 						array(
 							"type" => "dropdown",
 							"class" => "",
+							"heading" => __("Marker Animation", "ultimate_vc"),
+							"param_name" => "marker_animation",
+							"value" => 
+								array(__("Yes", "ultimate_vc") => "yes",
+							 	 	  __("No", "ultimate_vc") => "no"),
+							"group" => "Marker"
+						),
+						array(
+							"type" => "dropdown",
+							"class" => "",
 							"heading" => __("Street view control", "ultimate_vc"),
 							"param_name" => "streetviewcontrol",
 							"value" => array(__("Disable", "ultimate_vc") => "false", __("Enable", "ultimate_vc") => "true"),
@@ -346,7 +356,7 @@ if(!class_exists("Ultimate_Google_Maps")){
 			}
 		}
 		function display_ultimate_map($atts,$content = null){
-			$width = $height = $map_type = $lat = $lng = $zoom = $streetviewcontrol = $maptypecontrol = $top_margin = $pancontrol = $zoomcontrol = $zoomcontrolposition = $dragging = $dragging_desktop = $marker_icon = $icon_img = $map_override = $output = $map_style = $scrollwheel = $el_class = $map_border_style = $map_color_border = $map_border_size = $map_radius ='';
+			$width = $height = $map_type = $lat = $lng = $zoom = $streetviewcontrol = $maptypecontrol = $top_margin = $pancontrol = $zoomcontrol = $zoomcontrolposition = $dragging = $dragging_desktop = $marker_icon = $icon_img = $map_override = $output = $map_style = $scrollwheel = $el_class = $map_border_style = $map_color_border = $map_border_size = $marker_animation = $map_radius ='';
 
 			extract(shortcode_atts(array(
 				//"id" => "map",
@@ -378,6 +388,7 @@ if(!class_exists("Ultimate_Google_Maps")){
 				"map_radius" => "",
 				"gmap_margin" => "",
 				"gmap_padding" => "",
+				"marker_animation" => "yes",
 			), $atts));
 
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
@@ -478,8 +489,9 @@ if(!class_exists("Ultimate_Google_Maps")){
 						animation:  google.maps.Animation.DROP,
 						map: map_$id,
 						icon: '".esc_url($icon_url)."'
-					});
-					google.maps.event.addListener(marker_$id, 'click', toggleBounce);";
+					});";
+					if($marker_animation == 'yes'){
+					$output .= "	google.maps.event.addListener(marker_$id, 'click', toggleBounce);"; }
 
 					if(trim($content) !== ""){
 						$output .= "var infowindow = new google.maps.InfoWindow();

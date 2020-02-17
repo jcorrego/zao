@@ -11,7 +11,6 @@
 	border-color: @customColor;
 }
 .custom-mixin-shadow ( @string: "", @customColor) when (iscolor(@customColor)) {
-	-webkit-box-shadow: @string @customColor;
 	box-shadow:         @string @customColor;
 }
 .bullets-position-horizontal(@position) when (@position = left) {
@@ -210,7 +209,8 @@
 	  			.custom-mixin-bg (@bullet-color);
 	  		}
 	  		&.active span {
-	  			border-color: @bullet-color-hover;
+	  			//border-color: @bullet-color-hover;
+	  			.custom-mixin-border(@bullet-color-hover);
 	  		}
 	  		&:not(.active):hover span {
 	  			.custom-mixin-bg (@bullet-color-hover);

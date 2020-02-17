@@ -15,7 +15,7 @@ class WCCT_remove_builder {
 	}
 
 	public static function get_instance() {
-		if ( self::$ins == null ) {
+		if ( null === self::$ins ) {
 			self::$ins = new self;
 		}
 

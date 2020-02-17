@@ -21,7 +21,7 @@ class The7_Dev_Admin_Page {
 		$page_slug = add_menu_page(
 			__( 'The7 Dev', 'the7mk2' ),
 			__( 'The7 Dev', 'the7mk2' ),
-			'edit_theme_options',
+			'switch_themes',
 			'the7-dev',
 			array( __CLASS__, 'display_page' )
 		);
@@ -48,6 +48,6 @@ class The7_Dev_Admin_Page {
 	 * Enqueue page assets.
 	 */
 	public static function enqueue_styles() {
-		wp_enqueue_style( 'the7-dashboard', PRESSCORE_ADMIN_URI . '/assets/css/the7-dashboard.css', array(), THE7_VERSION );
+		wp_enqueue_style( 'the7-dashboard' );
 	}
 }

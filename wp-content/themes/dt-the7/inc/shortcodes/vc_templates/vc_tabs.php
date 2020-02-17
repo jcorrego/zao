@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $style
  * @var $content - shortcode content
  * Shortcode class
- * @var $this WPBakeryShortCode_VC_Tabs
+ * @var WPBakeryShortCode_Vc_Tabs $this
  */
 $title = $interval = $el_class = $title_size = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
@@ -40,6 +40,7 @@ if ( isset( $matches[1] ) ) {
 }
 $tabs_nav = '';
 
+// The7: Custom title size.
 $tabs_class = array(
 	'wpb_tabs_nav',
 	'ui-tabs-nav',
@@ -47,8 +48,8 @@ $tabs_class = array(
 	presscore_get_font_size_class( $title_size ),
 );
 array_filter( $tabs_class );
-
 $tabs_nav .= '<ul class="' . esc_attr( implode( ' ', $tabs_class ) ) . '">';
+
 foreach ( $tab_titles as $tab ) {
 	$tab_atts = shortcode_parse_atts( $tab[0] );
 	if ( isset( $tab_atts['title'] ) ) {
@@ -57,10 +58,10 @@ foreach ( $tab_titles as $tab ) {
 }
 $tabs_nav .= '</ul>';
 
-$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, trim( $element . ' wpb_content_element ' . $el_class . ' ' . $style ), $this->settings['base'], $atts );
+$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, trim( $element . ' wpb_content_element ' . $el_class . ' ' . esc_attr( $style ) ), $this->settings['base'], $atts );
 
 if ( 'vc_tour' === $this->shortcode ) {
-	$next_prev_nav = '<div class="wpb_tour_next_prev_nav vc_clearfix"> <span class="wpb_prev_slide"><a href="#prev" title="' . __( 'Previous tab', 'the7mk2' ) . '">' . __( 'Previous tab', 'the7mk2' ) . '</a></span> <span class="wpb_next_slide"><a href="#next" title="' . __( 'Next tab', 'the7mk2' ) . '">' . __( 'Next tab', 'the7mk2' ) . '</a></span></div>';
+	$next_prev_nav = '<div class="wpb_tour_next_prev_nav vc_clearfix"> <span class="wpb_prev_slide"><a href="#prev" title="' . esc_attr__( 'Previous tab', 'the7mk2' ) . '">' . esc_html__( 'Previous tab', 'the7mk2' ) . '</a></span> <span class="wpb_next_slide"><a href="#next" title="' . esc_attr__( 'Next tab', 'the7mk2' ) . '">' . esc_html__( 'Next tab', 'the7mk2' ) . '</a></span></div>';
 } else {
 	$next_prev_nav = '';
 }
@@ -68,7 +69,10 @@ if ( 'vc_tour' === $this->shortcode ) {
 $output = '
 	<div class="' . $css_class . '" data-interval="' . $interval . '">
 		<div class="wpb_wrapper wpb_tour_tabs_wrapper ui-tabs vc_clearfix">
-			' . wpb_widget_title( array( 'title' => $title, 'extraclass' => $element . '_heading' ) )
+			' . wpb_widget_title( array(
+	'title' => $title,
+	'extraclass' => $element . '_heading',
+) )
 	. $tabs_nav
 	. wpb_js_remove_wpautop( $content )
 	. $next_prev_nav . '
@@ -76,4 +80,8 @@ $output = '
 	</div>
 ';
 
-echo $output;
+if ( version_compare( WPB_VC_VERSION, '6.0.3', '<' ) ) {
+	echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+} else {
+	return $output;
+}

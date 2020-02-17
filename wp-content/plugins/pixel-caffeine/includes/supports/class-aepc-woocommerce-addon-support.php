@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements ECommerceAddOnInterface {
 
 	const FEED_STATUS_META = '_product_feed_status';
+	const ALREADY_TRACKED_POSTMETA = '_aepc_puchase_tracked';
+	const SESSION_USER_ID_POSTMETA = '_aepc_session_user_id';
+	const PURCHASE_QUEUE_TRANSIENT = 'aepc_purchase_%s';
 
 	/**
 	 * The slug of addon, useful to identify some common resources
@@ -81,6 +84,8 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 		add_action( 'woocommerce_registration_redirect', array( $this, 'save_registration_data' ), 5 );
 		add_action( 'wp_footer', array( $this, 'register_add_to_cart_params' ), 10 );
 		add_action( 'wp_footer', array( $this, 'register_add_payment_info_params' ), 10 );
+		add_action( 'woocommerce_checkout_order_processed', array( $this, 'register_user_id' ), 10, 3 );
+		add_action( 'woocommerce_payment_complete', array( $this, 'register_purchase_event' ) );
 	}
 
 	/**
@@ -125,7 +130,14 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	 * @return bool
 	 */
 	protected function can_fire_purchase() {
-		return is_order_received_page();
+		if ( ! is_order_received_page() ) {
+			return count($this->get_purchase_queue()) > 0;
+		}
+
+		global $wp;
+		$order_id = ! empty( $wp->query_vars['order-received'] ) ? intval( $wp->query_vars['order-received'] ) : intval( $_GET['order-received'] );
+
+		return ( $order = wc_get_order( $order_id ) ) && ! $order->get_meta( self::ALREADY_TRACKED_POSTMETA );
 	}
 
 	/**
@@ -135,6 +147,48 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	 */
 	protected function can_fire_complete_registration() {
 		return get_option( 'woocommerce_enable_myaccount_registration' ) === 'yes' && false !== WC()->session->get( 'aepc_complete_registration_data', false );
+	}
+
+	/**
+	 * Save a transient with the purchase details
+	 *
+	 * @param $order_id
+	 */
+	public function register_purchase_event( $order_id ) {
+		$order = wc_get_order($order_id);
+		$user_id = $order->get_meta(self::SESSION_USER_ID_POSTMETA);
+
+		$queue = $this->get_purchase_queue($user_id);
+		$queue[] = $order_id;
+		$this->save_purchase_queue(array_unique($queue), $user_id);
+	}
+
+	/**
+	 * Save a transient with the purchase details
+	 *
+	 * @param int $order_id
+	 * @param array $posted_data
+	 * @param WC_Order $order
+	 */
+	public function register_user_id( $order_id, $posted_data, $order ) {
+		$user_id = $this->get_session_user_id();
+		$order->add_meta_data(self::SESSION_USER_ID_POSTMETA, $user_id);
+		$order->save_meta_data();
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_session_user_id() {
+		if ( ! $user_id = WC()->session->get('aepc_user_id') ) {
+			require_once ABSPATH . 'wp-includes/class-phpass.php';
+			$hasher  = new PasswordHash( 8, false );
+			$user_id = md5( $hasher->get_random_bytes( 32 ) );
+
+			WC()->session->set('aepc_user_id', $user_id);
+		}
+
+		return $user_id;
 	}
 
 	/**
@@ -160,7 +214,7 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 
 		$args = array();
 
-		$product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : $product->id;
+		$product_id = $this->get_product_id( $product );
 		$args[ $product_id ] = AEPC_Track::check_event_parameters( 'AddToCart', array(
 			'content_type' => 'product',
 			'content_ids'  => array( $this->maybe_sku( $product_id ) ),
@@ -171,8 +225,11 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 
 		foreach ( $product->get_children() as $child_id ) {
 			$variation = wc_get_product( $child_id );
-			$variation_id = method_exists( $variation, 'get_id' ) ? $variation->get_id() : $variation->id;
-			$args[ $variation_id ] = AEPC_Track::check_event_parameters( 'AddToCart', array(
+			if (empty($variation)) {
+				continue;
+			}
+			$variation_id = $this->get_product_id( $variation );
+			$args[ $child_id ] = AEPC_Track::check_event_parameters( 'AddToCart', array(
 				'content_type' => 'product',
 				'content_ids'  => array( $this->maybe_sku( $variation_id ) ),
 				'content_category'  => AEPC_Pixel_Scripts::content_category_list( $product_id ),
@@ -203,25 +260,20 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	 */
 	protected function get_view_content_params() {
 		$product = wc_get_product();
-		$product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : $product->id;
+
+		if (empty($product)) {
+			return [];
+		}
+
+		$product_id = $this->get_product_id( $product );
+
+		$params = array(
+			'content_type' => 'product',
+			'content_ids'  => array( $this->maybe_sku( $product_id ) ),
+		);
 
 		if ( $product->is_type( 'variable' ) && AEPC_Track::can_use_product_group() ) {
-			$children_id = method_exists( $product, 'get_visible_children' ) ? $product->get_visible_children() : $product->get_children('visible');
-
-			foreach ( $children_id as &$child_id ) {
-				$child_id = $this->maybe_sku( $child_id );
-			}
-
-			$params = array(
-				'content_type' => 'product_group',
-				'content_ids'  => $children_id,
-			);
-
-		} else {
-			$params = array(
-				'content_type' => 'product',
-				'content_ids'  => array( $this->maybe_sku( $product_id ) ),
-			);
+			$params['content_type'] = 'product_group';
 		}
 
 		$params['content_name'] = $this->get_product_name( $product );
@@ -243,7 +295,12 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
 			$_product = $values['data'];
-			$product_ids[] = $this->maybe_sku( method_exists( $_product, 'get_id' ) ? $_product->get_id() : $_product->id );
+
+			if (empty($_product)) {
+				continue;
+			}
+
+			$product_ids[] = $this->maybe_sku( $this->get_product_id( $_product ) );
 			$num_items += $values['quantity'];
 		}
 
@@ -257,7 +314,7 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 
 		return array(
 			'content_type' => 'product',
-			'content_ids' => $product_ids,
+			'content_ids' => array_unique( $product_ids ),
 			'num_items' => $num_items,
 			'value' => $cart_total,
 			'currency' => get_woocommerce_currency()
@@ -270,25 +327,36 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	 * @return array
 	 */
 	protected function get_purchase_params() {
-		global $wp;
+		if (is_order_received_page()) {
+			global $wp;
+			$order = wc_get_order( ! empty( $wp->query_vars['order-received'] ) ? intval( $wp->query_vars['order-received'] ) : intval( $_GET['order-received'] ) );
+		} else {
+			$queue = $this->get_purchase_queue();
+			$order = wc_get_order( array_shift($queue) );
+		}
 
-		$product_ids = array();
-		$order = wc_get_order( ! empty( $wp->query_vars['order-received'] ) ? intval( $wp->query_vars['order-received'] ) : intval( $_GET['order-received'] ) );
+		$queue = $this->get_purchase_queue();
 
 		if ( empty( $order ) ) {
 			return array();
 		}
 
-		foreach ( $order->get_items() as $item_key => $item ) {
+		$product_ids = array_map(function($item) use($order) {
+			/** @var WC_Order_Item $item */
 			$_product = is_object( $item ) ? $item->get_product() : $order->get_product_from_item( $item );
-			$_product_id = method_exists( $_product, 'get_id' ) ? $_product->get_id() : $_product->id;
+
+			if (empty($_product)) {
+				return [];
+			}
+
+			$_product_id = $this->get_product_id( $_product );
 
 			if ( ! empty( $_product ) ) {
-				$product_ids[] = $this->maybe_sku( $_product_id );
+				return $this->maybe_sku( $_product_id );
 			} else {
-				$product_ids[] = $item['product_id'];
+				return $item['product_id'];
 			}
-		}
+		}, array_values($order->get_items()));
 
 		// Order value
 		$order_value = $order->get_total();
@@ -298,8 +366,14 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 			$order_value -= method_exists( $order, 'get_shipping_total' ) ? $order->get_shipping_total() : $order->get_total_shipping();
 		}
 
+		$order->add_meta_data( self::ALREADY_TRACKED_POSTMETA, true );
+		$order->save_meta_data();
+
+		unset($queue[0]);
+		$this->save_purchase_queue($queue);
+
 		return array(
-			'content_ids' => $product_ids,
+			'content_ids' => array_unique( $product_ids ),
 			'content_type' => 'product',
 			'value' => $order_value,
 			'currency' => method_exists( $order, 'get_currency' ) ? $order->get_currency() : $order->get_order_currency()
@@ -368,7 +442,12 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
         }
 
 		$product = wc_get_product();
-		$product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : $product->id;
+
+		if (empty($product)) {
+			return;
+		}
+
+		$product_id = $this->get_product_id( $product );
 		?><span data-content_category="<?php echo esc_attr( wp_json_encode( AEPC_Pixel_Scripts::content_category_list( $product_id ) ) ) ?>" style="display:none;"></span><?php
 	}
 
@@ -395,10 +474,10 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	 */
 	protected function maybe_sku( $product_id ) {
 		if ( AEPC_Track::can_use_sku() && $sku = get_post_meta( $product_id, '_sku', true ) ) {
-			return $sku;
+			return (string) $sku;
 		}
 
-		return $product_id;
+		return (string) $product_id;
 	}
 
 	/**
@@ -446,6 +525,42 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	}
 
 	/**
+	 * @param $user_id
+	 *
+	 * @return string
+	 */
+	protected function get_queue_transient_name($user_id = null) {
+		return sprintf(self::PURCHASE_QUEUE_TRANSIENT, $user_id ?: $this->get_session_user_id());
+	}
+
+	/**
+	 * @param null $user_id
+	 *
+	 * @return array
+	 */
+	protected function get_purchase_queue($user_id = null) {
+		$queue = get_transient($this->get_queue_transient_name($user_id)) ?: [];
+		return array_filter($queue, function($order_id){
+			$order = wc_get_order($order_id);
+			return ! empty($order) && ! $order->get_meta(self::ALREADY_TRACKED_POSTMETA );
+		});
+	}
+
+	/**
+	 * @param $queue
+	 * @param null $user_id
+	 */
+	protected function save_purchase_queue($queue, $user_id = null) {
+		$key = $this->get_queue_transient_name($user_id);
+
+		if (!empty($queue)) {
+			set_transient($key, $queue);
+		} else {
+			delete_transient($key);
+		}
+	}
+
+	/**
 	 * Helper method to get the description from a product by checking first description and then short one if the full
 	 * one is empty
 	 *
@@ -454,14 +569,16 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 	 * @return string
 	 */
 	protected function get_description_from_product( $product ) {
-		$product_description = method_exists( $product, 'get_description' ) ? $product->get_description() : $product->post->post_content;
+		return method_exists( $product, 'get_description' ) ? $product->get_description() : $product->post->post_content;
+	}
 
-		// Get excerpt if description is empty
-		if ( empty( $product_description ) ) {
-			$product_description = method_exists( $product, 'get_short_description' ) ? $product->get_short_description() : '';;
-		}
-
-		return $product_description;
+	/**
+	 * @param $product
+	 *
+	 * @return mixed
+	 */
+	protected function get_short_description_from_product( $product ) {
+		return method_exists( $product, 'get_short_description' ) ? $product->get_short_description() : $product->post->post_excerpt;
 	}
 
 	/**
@@ -482,12 +599,13 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 		$product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : ( $product_is_variation ? $product->variation_id : $product->id );
 		$product_slug = method_exists( $product, 'get_slug' ) ? $product->get_slug() : $product->post->post_name;
 		$product_description = $this->get_description_from_product( $product );
-		$product_short_description = method_exists( $product, 'get_short_description' ) ? $product->get_short_description() : '';
+		$product_short_description = $this->get_short_description_from_product( $product );
 		$product_additional_image_ids = array_map( 'wp_get_attachment_url', method_exists( $product, 'get_gallery_image_ids' ) ? $product->get_gallery_image_ids() : $product->get_gallery_attachment_ids() );
 		$product_parent_id = method_exists( $product, 'get_parent_id' ) ? $product->get_parent_id() : ( isset( $product->parent->id ) ? $product->parent->id : 0 );
+		$product_parent = $product_parent_id && ($parent_product = wc_get_product($product_parent_id)) ? $parent_product : null;
 		$product_image_link = isset( $image_parts[1] ) ? $image_parts[1] : null;
-		$product_price = floatval( $product->is_type('variable') ? $product->get_price() : $product->get_regular_price() );
-		$product_sale_price = floatval( $product->get_sale_price() );
+		$product_price = floatval( $product->is_type('variable') ? $product->get_variation_regular_price() : $product->get_regular_price() );
+		$product_sale_price = floatval( $product->is_type('variable') ? $product->get_variation_sale_price() : $product->get_sale_price() );
 
 		if ( wc_prices_include_tax() ) {
 			$product_price_tax      = $product_price;
@@ -504,6 +622,11 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 		// If variation description is empty get it from parent
 		if ( $product_is_variation && empty( $product_description ) ) {
 			$product_description = $this->get_description_from_product( wc_get_product( $product_parent_id ) );
+		}
+
+		// If variation description is empty get it from parent
+		if ( $product_is_variation && empty( $product_short_description ) ) {
+			$product_short_description = $this->get_short_description_from_product( wc_get_product( $product_parent_id ) );
 		}
 
 		if ( method_exists( $product, 'get_date_on_sale_from' ) && method_exists( $product, 'get_date_on_sale_to' ) ) {
@@ -524,7 +647,7 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 			->set_admin_url( add_query_arg( array( 'post' => $product_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) )
 			->set_parent_admin_url( add_query_arg( array( 'post' => $product_parent_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) )
 			->set_title( $product->get_title() )
-			->set_description( $product_description )
+			->set_description( $product_description ?: $product_short_description )
 			->set_short_description( $product_short_description )
 			->set_link( $product->get_permalink() )
 			->set_image_url( $product_image_link )
@@ -532,14 +655,15 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 			->set_currency( get_woocommerce_currency() )
 			->set_price( $this->format_price( $product_price ) )
 			->set_price_tax( $this->format_price( $product_price_tax ) )
-			->set_sale_price( $this->format_price( $product_sale_price ) )
-			->set_sale_price_tax( $this->format_price( $product_sale_price_tax ) )
+			->set_sale_price( $product_sale_price < $product_price ? $this->format_price( $product_sale_price ) : 0 )
+			->set_sale_price_tax( $product_sale_price < $product_price ? $this->format_price( $product_sale_price_tax ) : 0 )
 			->set_checkout_url( $product_is_variation ? add_query_arg( [ 'variation_id' => $product_id, 'add-to-cart' => $product_parent_id ], $product->get_permalink() ) : add_query_arg( 'add-to-cart', $product_id, $product->get_permalink() ) )
 			->set_if_needs_shipping( $product->needs_shipping() )
 			->set_shipping_weight( $product->get_weight() )
 			->set_shipping_weight_unit( get_option( 'woocommerce_weight_unit' ) )
 			->set_if_variation( $product_is_variation )
 			->set_group_id( $product_parent_id )
+			->set_group_sku( $product_parent ? $product_parent->get_sku() : null )
 			->set_google_category(
 				$metaboxes->get_google_category(
 					$product_is_variation ? $product_parent_id : $product_id
@@ -622,6 +746,28 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 		}
 
 		$wp_query->set('meta_query', $meta_query );
+	}
+
+	/**
+	 * @param $where
+	 * @param WP_Query $query
+	 */
+	public function ensure_not_orphaned_variations($where, WP_Query $query) {
+		global $wpdb;
+
+		$variables = $wpdb->prepare("
+SELECT ID 
+FROM {$wpdb->posts} p
+INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id = p.ID 
+INNER JOIN {$wpdb->term_taxonomy} tt USING(term_taxonomy_id) 
+INNER JOIN {$wpdb->terms} t USING(term_id) 
+WHERE p.post_type = %s 
+AND p.post_status = %s
+AND tt.taxonomy = %s
+AND t.slug = %s
+		", 'product', 'publish', 'product_type', 'variable');
+
+		return "$where AND ( {$wpdb->posts}.post_parent = 0 OR {$wpdb->posts}.post_parent IN ($variables) ) ";
 	}
 
 	/**
@@ -721,12 +867,18 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 
 		// Add hook to customize the query
 		add_action( 'pre_get_posts', array( $this, 'customize_wp_query' ) );
+		add_filter( 'posts_where_request', array( $this, 'ensure_not_orphaned_variations' ), 10, 2 );
+
+		// Fix plugin compatibilities
+		add_filter('option_siteground_optimizer_optimize_images', '__return_true');
+		add_filter('site_option_siteground_optimizer_optimize_images', '__return_true');
 
 		// Map WC objects
 		$products = wc_get_products( $products_query );
 
 		// Remove previous hook
 		remove_action( 'pre_get_posts', array( $this, 'customize_wp_query' ) );
+		remove_filter( 'posts_where_request', array( $this, 'ensure_not_orphaned_variations' ), 10 );
 
 		// Map the product item object
 		foreach ( $products as $i => &$item ) {
@@ -934,5 +1086,22 @@ class AEPC_Woocommerce_Addon_Support extends AEPC_Addon_Factory implements EComm
 		}
 
 		return $price;
+	}
+
+	/**
+	 * Get the right product ID
+	 *
+	 * @param WC_Product $product
+	 *
+	 * @return int
+	 */
+	protected function get_product_id( WC_Product $product ) {
+		if (!AEPC_Track::can_track_variations() && $product->is_type('variation')) {
+			$product_id = method_exists( $product, 'get_parent_id' ) ? $product->get_parent_id() : $product->parent_id;
+		} else {
+			$product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : $product->id;
+		}
+
+		return $product_id;
 	}
 }

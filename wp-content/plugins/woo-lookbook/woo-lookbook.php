@@ -1,17 +1,23 @@
 <?php
-/*
-Plugin Name: WooCommerce Lookbook
-Plugin URI: https://villatheme.com/extensions/woocommerce-lookbook/
-Description: Allows you to create realistic lookbooks of your products. Help your customers visualize what they purchase from you.
-Version: 1.0.5
-Author: VillaTheme
-Author URI: http://villatheme.com
-Copyright 2018 VillaTheme.com. All rights reserved.
-*/
+/**
+ * Plugin Name: LookBook for WooCommerce
+ * Plugin URI: https://villatheme.com/extensions/woocommerce-lookbook/
+ * Description: Allows you to create realistic lookbooks of your products. Help your customers visualize what they purchase from you.
+ * Version: 1.0.6.5
+ * Author: VillaTheme
+ * Author URI: http://villatheme.com
+ * Text Domain: woo-lookbook
+ * Domain Path: /languages
+ * Copyright 2018 VillaTheme.com. All rights reserved.
+ * Tested up to: 5.3
+ * WC requires at least: 3.2.0
+ * WC tested up to: 3.8
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-define( 'WOO_F_LOOKBOOK_VERSION', '1.0.5' );
+define( 'WOO_F_LOOKBOOK_VERSION', '1.0.6.5' );
+define( 'WOO_F_LOOKBOOK_PLUGIN_URL', plugins_url('/',__FILE__) );
 /**
  * Detect plugin. For use on Front End only.
  */
@@ -49,7 +55,7 @@ class WOO_F_LOOKBOOK {
 		if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			?>
 			<div id="message" class="error">
-				<p><?php _e( 'Please install and active WooCommerce. WooCommerce Multi Currency is going to working.', 'woo-lookbook' ); ?></p>
+				<p><?php _e( 'Please install and active WooCommerce. Multi Currency for WooCommerce is going to working.', 'woo-lookbook' ); ?></p>
 			</div>
 			<?php
 		}

@@ -40,7 +40,7 @@ if ( ! class_exists( 'DT_Shortcode_Simple_Login', false ) ) {
 				'value_username' => '',
 				'value_remember' => '0'
 			);
-			$atts = shortcode_atts( $default_atts, $atts );
+			$atts = shortcode_atts( $default_atts, $atts, 'dt_simple_login_form' );
 
 			$login_form_args = array();
 

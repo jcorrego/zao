@@ -41,7 +41,7 @@ if(!class_exists("WooComposer")){
 				preg_match_all("/".$pattern."/",$shortcode,$matches);
 				$shortcode_str = str_replace('"','',str_replace(" ","&",trim($matches[3][0])));
 			}
-			$short_atts = parse_str($shortcode_str);//explode("&",$shortcode_str);
+			parse_str($shortcode_str, $short_atts);//explode("&",$shortcode_str);
 			if(isset($matches[2][0])): $display_type = $matches[2][0]; else: $display_type = ''; endif;
 			if(!isset($columns)): $columns = '4'; endif;
 			if(!isset($per_page)): $post_count = '12'; else: $post_count = $per_page; endif;

@@ -104,6 +104,3 @@ class WCCT_Compatibility_With_Aelia_CS {
 }
 
 new WCCT_Compatibility_With_Aelia_CS();
-
-
-

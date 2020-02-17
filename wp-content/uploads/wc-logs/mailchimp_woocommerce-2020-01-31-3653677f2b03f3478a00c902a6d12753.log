@@ -1,0 +1,32 @@
+2020-01-31T15:02:10+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3856
+2020-01-31T15:03:44+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3856 :: email: isabolivar2@gmail.com
+2020-01-31T17:05:28+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 6c1964517f245863ff7f1538bf4e083d
+2020-01-31T17:05:48+00:00 NOTICE abandoned_cart.success :: email: nvalenc8@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=6c1964517f245863ff7f1538bf4e083d
+2020-01-31T17:07:22+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3862
+2020-01-31T17:08:45+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 119
+2020-01-31T17:09:55+00:00 NOTICE member.sync :: Updated Member nvalenc8@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Natasha
+            [LNAME] => Valencia
+        )
+
+)
+
+2020-01-31T17:11:00+00:00 NOTICE order_submit.success :: addStoreOrder :: #3862 :: email: nvalenc8@gmail.com :: abandoned cart deleted [6c1964517f245863ff7f1538bf4e083d]
+2020-01-31T17:11:00+00:00 NOTICE member.sync :: Updated Member nvalenc8@gmail.com ( merge fields only ) :: Array
+(
+    [merge_fields] => Array
+        (
+            [FNAME] => Natasha
+            [LNAME] => Valencia
+        )
+
+)
+
+2020-01-31T17:52:04+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 1e131a2f0168879be3839064b5189b5c
+2020-01-31T17:52:05+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3867
+2020-01-31T17:53:00+00:00 NOTICE abandoned_cart.success :: email: alejiscastro@hotmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=1e131a2f0168879be3839064b5189b5c
+2020-01-31T17:53:55+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3867
+2020-01-31T17:56:06+00:00 NOTICE order_submit.success :: addStoreOrder :: #3867 :: email: alejiscastro@hotmail.com

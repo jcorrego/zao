@@ -38,7 +38,17 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 		}
 
 		public static function init() {
-			add_action( 'admin_notices', array( __CLASS__, 'add_admin_notice' ) );
+			add_action( 'admin_notices', array( __CLASS__, 'add_admin_notice' ), 1 );
+			add_action( 'admin_notices', array( __CLASS__, 'remove_plugin_notices' ), 9999 );
+			add_action( 'vc_settings_tabs', array( __CLASS__, 'remove_vc_tabs'), 10, 1);
+
+			add_filter('upgrader_pre_download', array(__CLASS__, 'pre_download_filter' ), 1, 4);
+
+			$is_replace = The7_DevToolMainModule::getToolOption( 'replace_theme_branding' );
+			if ($is_replace) {
+				add_action( 'admin_notices', array( __CLASS__, 'white_label_admin_notice_enable' ), 1 );
+				add_action( 'admin_notices', array( __CLASS__, 'white_label_admin_notice_disable' ), 9999 );
+			}
 			add_action( 'after_setup_theme', array( __CLASS__, 'dev_tools_after_setup_theme' ), 9999 );
 			add_action( 'admin_menu', array( __CLASS__, 'dev_tools_menu_filter' ), 9999 );
 			add_action( 'admin_bar_menu', array( __CLASS__, 'dev_tools_admin_bar_filter' ), 1 );
@@ -50,12 +60,156 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 			add_action( 'the7_subpages_filter', array( __CLASS__, 'dev_tools_the7_subpages_filter' ) );
 		}
 
+
+		public static function pre_download_filter($reply, $package, $updater) {
+			global $the7_tgmpa;
+			if (!presscore_theme_is_activated()) return $reply;
+
+			if ( ! $the7_tgmpa ) {
+				if (class_exists( 'Presscore_Modules_TGMPAModule' )){
+					Presscore_Modules_TGMPAModule::init_the7_tgmpa();
+					Presscore_Modules_TGMPAModule::register_plugins_action();
+				}
+				else return $reply;
+			}
+			$skin = $updater->skin;
+
+			$slug_found = "";
+			if ( false === $updater->bulk && isset( $skin->options['extra']['slug'] ) ) {
+				$slug_found = $skin->options['extra']['slug'];
+			} else {
+				// Bulk installer contains less info, so fall back on the info registered in tgma
+				foreach ( $the7_tgmpa->plugins as $slug => $plugin ) {
+					if (!$the7_tgmpa->is_the7_plugin($slug)) continue;
+					if ( isset( $skin->plugin_info['Name'] ) && $plugin['name'] === $skin->plugin_info['Name'] ) {
+						$slug_found = $slug;
+						break;
+					}
+				}
+				unset( $slug, $plugin );
+			}
+
+			if(!empty($slug_found)) {
+				$skin->plugin = "ignore";
+				if (isset($skin->plugin_info['Name']))
+					$skin->plugin_info['Name'] = $skin->plugin;
+			}
+			return $reply;
+		}
+
 		public static function add_admin_notice() {
 			if ( get_transient( 'the7_dev_tool_error' ) ) {
 				the7_admin_notices()->add( 'the7_dev_tool_error', array( __CLASS__, 'render_error_notice' ), 'error the7-dashboard-notice' );
 			}
+
+			if (presscore_is_silence_enabled())
+			{
+				global $the7_tgmpa;
+				if ( ! $the7_tgmpa && class_exists( 'Presscore_Modules_TGMPAModule' ) ) {
+					Presscore_Modules_TGMPAModule::init_the7_tgmpa();
+					Presscore_Modules_TGMPAModule::register_plugins_action();
+				}
+
+				if ($the7_tgmpa->is_the7_plugin( "LayerSlider" )){
+					if (defined('LS_PLUGIN_BASE')) {
+						remove_action( 'after_plugin_row_' . LS_PLUGIN_BASE, 'layerslider_plugins_purchase_notice', 10 );
+					}
+				}
+
+				if ($the7_tgmpa->is_the7_plugin("go_pricing")) {
+					if ( method_exists( 'GW_GoPricing_AdminNotices', 'instance' ) ) {
+						remove_action( 'admin_notices', array( GW_GoPricing_AdminNotices::instance(), 'print_remote_admin_notices' ) );
+					}
+				}
+
+				if ( $the7_tgmpa->is_the7_plugin( "js_composer" ) )				{
+					if( defined( 'WPB_VC_VERSION' ) && function_exists( 'vc_license' ) ) //wpbakery
+						remove_action( 'admin_notices', array( vc_license(), 'adminNoticeLicenseActivation' ), 10 );
+				}
+
+				if ($the7_tgmpa->is_the7_plugin("Ultimate_VC_Addons") || $the7_tgmpa->is_the7_plugin("convertplug"))
+				{
+					if (defined("ULTIMATE_VERSION")) { //ult addon
+						if ( ! defined( 'BSF_PRODUCTS_NOTICES' ) )
+						{
+							define( 'BSF_PRODUCTS_NOTICES', false );
+						}
+					}
+				}
+			}
 		}
 
+		public static function white_label_admin_notice_enable() {
+			add_filter( 'gettext', array( __CLASS__, 'replace_theme_name' ), 1, 3 );
+		}
+		public static function white_label_admin_notice_disable() {
+			remove_filter( 'gettext',  array( __CLASS__, 'replace_theme_name' ), 1);
+		}
+
+		public static function replace_theme_name( $translation, $text, $domain ) {
+			return str_replace( 'The7',   'theme' , $translation );
+		}
+
+		static function remove_plugin_notices(){
+			global $the7_tgmpa;
+			if ( ! $the7_tgmpa && class_exists( 'Presscore_Modules_TGMPAModule' ) ) {
+				Presscore_Modules_TGMPAModule::init_the7_tgmpa();
+				Presscore_Modules_TGMPAModule::register_plugins_action();
+			}
+
+			if ( $the7_tgmpa->is_the7_plugin( "revslider" ) ) {
+				remove_action( 'after_plugin_row_revslider/revslider.php', array(
+					'RevSliderAdmin',
+					'add_notice_wrap_pre'
+				), 10 );
+				remove_action( 'after_plugin_row_revslider/revslider.php', array(
+					'RevSliderAdmin',
+					'show_purchase_notice'
+				), 10 );
+				remove_action( 'after_plugin_row_revslider/revslider.php', array(
+					'RevSliderAdmin',
+					'add_notice_wrap_post'
+				), 10 );
+			}
+			if ( $the7_tgmpa->is_the7_plugin( "js_composer" ) )				{
+				if( defined( 'WPB_VC_VERSION' ) && function_exists( 'vc_updater' )  && function_exists( 'vc_plugin_name' )) { //wpbakery
+					remove_action( 'in_plugin_update_message-' . vc_plugin_name(), array(
+						vc_updater()->updateManager(),
+						'addUpgradeMessageLink'
+					), 10 );
+				}
+			}
+			if ( $the7_tgmpa->is_the7_plugin("Ultimate_VC_Addons")) {
+				if ( method_exists( 'BSF_Update_Manager', 'getInstance' ) ) {
+					remove_action( 'in_plugin_update_message-Ultimate_VC_Addons/Ultimate_VC_Addons.php', array(
+						BSF_Update_Manager::getInstance(),
+						'bsf_add_registration_message'
+					), 9 );
+				}
+			}
+			if ( $the7_tgmpa->is_the7_plugin("convertplug")) {
+				if ( method_exists( 'BSF_Update_Manager', 'getInstance' ) ) {
+					remove_action( 'in_plugin_update_message-convertplug/convertplug.php', array(
+						BSF_Update_Manager::getInstance(),
+						'bsf_add_registration_message'
+					), 9 );
+				}
+			}
+		}
+
+		static function  remove_vc_tabs($tabs) {
+			if (presscore_is_silence_enabled()) {
+				global $the7_tgmpa;
+				if ( ! $the7_tgmpa && class_exists( 'Presscore_Modules_TGMPAModule' ) ) {
+					Presscore_Modules_TGMPAModule::init_the7_tgmpa();
+					Presscore_Modules_TGMPAModule::register_plugins_action();
+				}
+				if ( $the7_tgmpa->is_the7_plugin( "js_composer" ) ) {
+					unset( $tabs["vc-updater"] );
+				}
+			}
+			return $tabs;
+		}
 
 		static function dev_tools_after_setup_theme() {
 			$theme_version = wp_get_theme( get_template())->Version;
@@ -91,6 +245,7 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 
 		public static function dev_tools_menu_filter() {
 			global $menu, $submenu;
+			global $the7_tgmpa;
 
 			if ( self::getToolOption( 'hide_the7_menu' ) ) {
 				remove_menu_page( 'the7-dashboard' );
@@ -109,6 +264,15 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 					}
 				}
 			}
+			if (presscore_is_silence_enabled()) {
+				if ( ! $the7_tgmpa && class_exists( 'Presscore_Modules_TGMPAModule' ) ) {
+					Presscore_Modules_TGMPAModule::init_the7_tgmpa();
+					Presscore_Modules_TGMPAModule::register_plugins_action();
+				}
+				if ( $the7_tgmpa->is_the7_plugin( "Ultimate_VC_Addons" ) ) {
+					remove_submenu_page( "about-ultimate", "ultimate-product-license" );
+				}
+			}
 		}
 
 		public function initDefaultThemeStyle() {
@@ -122,7 +286,7 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 				"hide_the7_menu",
 				"hide_theme_options",
 				"replace_theme_branding",
-				"use_the7_options",
+				"use_the7_options"
 			);
 
 			$this->options = array_merge( $this->options, $input );
@@ -190,6 +354,10 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 
 			if ( empty( $this->options ) ) {
 				return;
+			}
+
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
 			}
 
 			if ( ! $wp_filesystem && ! WP_Filesystem( false, PRESSCORE_THEME_DIR ) ) {
@@ -266,7 +434,7 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 			}
 		}
 
-		function render_error_notice()  {
+		public static function render_error_notice()  {
 			$error_notice = get_transient( 'the7_dev_tool_error');
 			delete_transient( 'the7_dev_tool_error' );
 			echo '<p><strong>' . $error_notice . '</strong></p>';
@@ -325,6 +493,14 @@ if ( ! class_exists( 'The7_DevToolMainModule', false ) ) :
 			}
 
 			return null;
+		}
+
+		public static function getToolOptionDefault( $name, $defaultVal ) {
+			$result = getToolOption($name);
+			if ($result === NULL){
+				return $defaultVal;
+			}
+			return $result;
 		}
 
 

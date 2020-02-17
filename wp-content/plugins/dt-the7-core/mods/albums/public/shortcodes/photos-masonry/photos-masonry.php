@@ -23,7 +23,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Masonry', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_vc-photos_masonry',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_photo_masonry_editor_ico.gif', 98, 104 ),
-	                'title'  => _x( 'Photos Masonry & Grid', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Photos Masonry & Grid', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -154,7 +154,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Masonry', false ) ) {
 				'orderby' => 'date',
 			);
 
-			$attributes = shortcode_atts( $default_atts, $atts );
+			$attributes = shortcode_atts( $default_atts, $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['type'] = sanitize_key( $attributes['type'] );
@@ -202,7 +202,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Masonry', false ) ) {
 			$atts = &$this->atts;
 
 			$config->set( 'template', 'media' );
-			$config->set( 'layout', 'masonry' );
+			$config->set( 'layout', $atts['type'] );
 			$config->set( 'load_style', 'default' );
 			$config->set( 'justified_grid', false );
 			$config->set( 'full_width', false );

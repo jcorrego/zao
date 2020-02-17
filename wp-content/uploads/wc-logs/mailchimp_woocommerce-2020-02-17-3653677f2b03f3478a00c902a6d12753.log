@@ -1,0 +1,10 @@
+2020-02-17T13:27:09+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3967
+2020-02-17T13:29:19+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3967 :: email: luisadieze@gmail.com
+2020-02-17T13:32:36+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3969
+2020-02-17T13:34:25+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3970
+2020-02-17T13:34:26+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3969 :: email: andreamc5@hotmail.com
+2020-02-17T13:39:44+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3970 :: email: jrestrepos@hotmail.com
+2020-02-17T13:54:28+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Product starts in 5 seconds :: obj_id 2246
+2020-02-17T13:57:58+00:00 NOTICE product_submit.success :: updateStoreProduct :: #2246
+2020-02-17T14:10:43+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Product starts in 5 seconds :: obj_id 2165
+2020-02-17T14:14:53+00:00 NOTICE product_submit.success :: updateStoreProduct :: #2165

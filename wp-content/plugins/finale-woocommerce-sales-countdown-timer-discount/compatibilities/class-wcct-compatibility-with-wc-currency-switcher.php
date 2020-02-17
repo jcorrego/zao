@@ -24,6 +24,3 @@ class WCCT_Compatibility_With_WOO_CURRENCY_SWITCHER {
 }
 
 new WCCT_Compatibility_With_WOO_CURRENCY_SWITCHER();
-
-
-

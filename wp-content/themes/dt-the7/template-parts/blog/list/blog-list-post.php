@@ -3,10 +3,7 @@
  * Blog post template for the list layout.
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 // Remove presscore_the_excerpt() filter.
 remove_filter( 'presscore_post_details_link', 'presscore_return_empty_string', 15 );

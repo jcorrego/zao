@@ -258,8 +258,8 @@ if(!class_exists('Ultimate_Admin_Area')){
 
 			add_submenu_page(
 				"about-ultimate",
-				__("Modules","ultimate_vc"),
-				__("Modules","ultimate_vc"),
+				__("Elements","ultimate_vc"),
+				__("Elements","ultimate_vc"),
 				$role,
 				"ultimate-dashboard",
 				array($this,'load_modules')
@@ -284,7 +284,7 @@ if(!class_exists('Ultimate_Admin_Area')){
 			);
 
 			if ( ! is_multisite() ) {
-				if (!defined('BRAINSTORM_THEME_ACTIVATED_URL'))
+
 				add_submenu_page(
 					"about-ultimate",
 					__("Product License","ultimate_vc"),

@@ -300,13 +300,25 @@ if(!class_exists('Ultimate_FancyText')){
 								"dependency" => array("element" => "fancytext_effect", "value" => array("typewriter","ticker","ticker-down"))
 							),
 							array(
+								"type" => "dropdown",
+								"heading" => __("Transform","ultimate_vc"),
+								"param_name" => "fancytext_trans",
+								"value" => array(
+									__("Default","ultimate_vc") => "unset",
+									__("UPPERCASE","ultimate_vc") => "uppercase",
+									__("lowercase","ultimate_vc") => "lowercase",
+									__("Capitalize","ultimate_vc") => "capitalize",
+								),
+								"group" => "Typography",
+							),
+							array(
 								"type" => "ult_param_heading",
 								"param_name" => "fancy_prefsuf_text_typography",
 								"text" => __("Prefix Suffix Text Settings","ultimate_vc"),
 								"value" => "",
 								"group" => "Typography",
 								"class" => "ult-param-heading",
-								'edit_field_class' => 'ult-param-heading-wrapper no-top-margin vc_column vc_col-sm-12',
+								'edit_field_class' => 'ult-param-heading-wrapper vc_column vc_col-sm-12',
 							),
 							array(
 								"type" => "ultimate_google_fonts",
@@ -396,6 +408,18 @@ if(!class_exists('Ultimate_FancyText')){
 								"group" => "Typography",
 							),
 							array(
+								"type" => "dropdown",
+								"heading" => __("Transform","ultimate_vc"),
+								"param_name" => "fancypre_trans",
+								"value" => array(
+									__("Default","ultimate_vc") => "unset",
+									__("UPPERCASE","ultimate_vc") => "uppercase",
+									__("lowercase","ultimate_vc") => "lowercase",
+									__("Capitalize","ultimate_vc") => "capitalize",
+								),
+								"group" => "Typography",
+							),
+							array(
 								"type" => "ult_param_heading",
 								"text" => "<span style='display: block;'><a href='http://bsf.io/t5ir4' target='_blank' rel='noopener'>".__("Watch Video Tutorial","ultimate_vc")." &nbsp; <span class='dashicons dashicons-video-alt3' style='font-size:30px;vertical-align: middle;color: #e52d27;'></span></a></span>",
 								"param_name" => "notification",
@@ -415,7 +439,7 @@ if(!class_exists('Ultimate_FancyText')){
 		}
 		function ultimate_fancytext_shortcode($atts, $content = null){
 			$output = $fancytext_strings = $fancytext_prefix = $fancytext_suffix = $fancytext_effect = $strings_textspeed = $strings_tickerspeed = $typewriter_cursor = $typewriter_cursor_text = $typewriter_loop = $fancytext_align = $strings_font_family = $strings_font_style = $strings_font_size = $sufpref_color = $strings_line_height = $strings_startdelay = $strings_backspeed = $strings_backdelay = $ticker_wait_time = $ticker_show_items = $ticker_hover_pause = $ex_class = '';
-			$prefsuf_font_family = $prefsuf_font_style = $prefix_suffix_font_size = $prefix_suffix_line_height = $sufpref_bg_color ='';
+			$prefsuf_font_family = $prefsuf_font_style = $prefix_suffix_font_size = $prefix_suffix_line_height = $sufpref_bg_color = $fancypre_trans = $fancy_trans = $fancytext_trans = $fancyt_trans ='';
 			$id = uniqid(rand());
 
 			extract(shortcode_atts(array(
@@ -451,6 +475,8 @@ if(!class_exists('Ultimate_FancyText')){
 				'sufpref_bg_color' => '',
 				'ex_class' => '',
 				'css_fancy_design' =>'',
+				'fancypre_trans'			=> 'unset',
+				'fancytext_trans'			=> 'unset',
 			),$atts));
 
 			$vc_version = (defined('WPB_VC_VERSION')) ? WPB_VC_VERSION : 0;
@@ -527,7 +553,7 @@ if(!class_exists('Ultimate_FancyText')){
 				$string_inline_style .= 'text-align:'.$fancytext_align.';';
 
 			// Order of replacement
-			$order   = array("\r\n", "\n", "\r", "<br/>", "<br>","<br />");
+			$order   = array("\r\n", "\n", "\r", "<br/>", "<br>","<br/>");
 			$replace = '|';
 
 			// Processes \r\n's first so they aren't converted twice.
@@ -551,6 +577,16 @@ if(!class_exists('Ultimate_FancyText')){
 				else
 					$valign = 'fancytext-background-enabled';
 			}
+			//Fancy Text Transform
+			if($fancypre_trans != '')
+			{
+				$fancy_trans = 'text-transform: '.$fancypre_trans.';';
+			}
+
+			if($fancytext_trans != '')
+			{
+				$fancyt_trans = 'text-transform: '.$fancytext_trans.';';
+			}
 
 			$ultimate_js = get_option('ultimate_js');
 
@@ -558,7 +594,7 @@ if(!class_exists('Ultimate_FancyText')){
 
 				if(trim($fancytext_prefix) != '')
 				{
-					$output .= '<span '.$prefsuf_data_list.' class="ultimate-'.esc_attr($fancytext_effect).'-prefix mycustfancy ult-responsive" style="'.esc_attr($prefsuf_style).'">'.esc_html(ltrim($fancytext_prefix)).'</span>';
+					$output .= '<span '.$prefsuf_data_list.' class="ultimate-'.esc_attr($fancytext_effect).'-prefix mycustfancy ult-responsive" style="'.esc_attr($prefsuf_style).' '.esc_attr($fancy_trans).'">'.esc_html(ltrim($fancytext_prefix)).'</span>';
 				}
 				if($fancytext_effect == 'ticker' || $fancytext_effect == 'ticker-down')
 				{
@@ -576,7 +612,7 @@ if(!class_exists('Ultimate_FancyText')){
 						$direction = "down";
 					else
 						$direction = "up";
-					$output .= '<div id="vticker-'.esc_attr($id).'" '.$data_list.' class="ultimate-vticker '.esc_attr($fancytext_effect).' '.esc_attr($valign).' '.esc_attr($inherit_font_size).'" style="'.esc_attr($vticker_inline).'"><ul>';
+					$output .= '<div id="vticker-'.esc_attr($id).'" '.$data_list.' class="ultimate-vticker '.esc_attr($fancytext_effect).' '.esc_attr($valign).' '.esc_attr($inherit_font_size).'" style="'.esc_attr($vticker_inline).' '.esc_attr($fancyt_trans).'"><ul>';
 						foreach($lines as $key => $line)
 						{
 							if($key == 0) {
@@ -605,11 +641,11 @@ if(!class_exists('Ultimate_FancyText')){
 								$strings .= ',';
 						}
 					$strings .= ']';
-					$output .= '<span id="typed-'.esc_attr($id).'" class="ultimate-typed-main '.esc_attr($valign).'" style="'.esc_attr($vticker_inline).'"></span>';
+					$output .= '<span id="typed-'.esc_attr($id).'" class="ultimate-typed-main '.esc_attr($valign).'" style="'.esc_attr($vticker_inline).' '.esc_attr($fancyt_trans).'"></span>';
 				}
 				if(trim($fancytext_suffix) != '')
 				{
-					$output .= '<span '.$prefsuf_data_list.' class="ultimate-'.esc_attr($fancytext_effect).'-suffix mycustfancy ult-responsive" style="'.esc_attr($prefsuf_style).'">'.esc_html(rtrim($fancytext_suffix)).'</span>';
+					$output .= '<span '.$prefsuf_data_list.' class="ultimate-'.esc_attr($fancytext_effect).'-suffix mycustfancy ult-responsive" style="'.esc_attr($prefsuf_style).' '.esc_attr($fancy_trans).'">'.esc_html(rtrim($fancytext_suffix)).'</span>';
 				}
 				if($fancytext_effect == 'ticker' || $fancytext_effect == 'ticker-down')
 				{

@@ -1,16 +1,50 @@
+= 2.10 =
+* Fixed issue: error message in the site health section related to cURL error 28 and REST API
+* Fixed issue: wrong calculation of the subtotal when changing the shipping method in the cart
+* Added compatibility with WooCommerce 3.9
+
+= 2.9.1 =
+* Removed reviews ads
+
+= 2.9 =
+*  Fixed: bug related to the ads not being dismissed
+
+= 2.8 =
+* Added reviews request notice from the dashboard.
+* Fixed: wrong product price in the mini-cart when using the quantity based pricing feature
+
+= 2.7 =
+* Added documentation and support links to the plugin admin menus
+
+= 2.6 =
+* Fixed bug related to the display of sales prices on the home page
+* Fixed issue related to the new text domain
+* Fixed mini cart issues
+
+= 2.5 =
+* The Plugin can be translated on Wordpress.org
+
+= 2.2 =
+* Fixed issue related to the wrong discounts dates
+* Fixed issue related to the wrong subtotal in the mini-cart when discount on variable product is applied
+
+= 2.1 =
+* Added compatibility with WooCommerce 3.6.4
+* Improved overall speed
+
 = 2.0 =
 * Improved overall speed
 * Fixed issue related to the wrong item price in the mini-cart
 
 = 1.9 =
-* Added compatibility with woocommerce 3.5.5
+* Added compatibility with WooCommerce 3.5.5
 
 = 1.8 =
-* Compatibility issues with woocommerce 3.5.3
+* Compatibility issues with WooCommerce 3.5.3
 * Fixed issue related to wrong subtotal in the mini-cart when quantity based pricing discount is applied
 
 = 1.7 =
-* Fixed compatibility issues with woocommerce 3.5.1
+* Fixed compatibility issues with WooCommerce 3.5.1
 * Fixed issue related to the display of the pricing table on the product page when rule type "step" is selected
 
 = 1.6 =
@@ -24,7 +58,7 @@
 
 = 1.4 =
 * Compatibility with PHP 7
-* Added compatibility with woocommerce 3.3.X
+* Added compatibility with WooCommerce 3.3.X
 = 1.3 =
 * New feature displayed on the Pro page
 
@@ -40,7 +74,7 @@
 
 = 0.9 =
 * Fixed css conflict with loco translate
-* Fixed quandity based pricing not being able to be disabled issue
+* Fixed quantity based pricing not being able to be disabled issue
 
 = 0.8 =
 * Added pro features page
@@ -59,7 +93,7 @@
 
 = 0.5 =
 
-* Added compatibility with woocommerce 2.4.10
+* Added compatibility with WooCommerce 2.4.10
 * Updated ORION library included
 
 = 0.4 =
@@ -84,5 +118,5 @@
 * Fixed new versions update issue
 
 = 0.5 =
-* Added compatibility with woocommerce 2.4.10
+* Added compatibility with WooCommerce 2.4.10
 * Updated ORION library included

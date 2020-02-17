@@ -83,12 +83,12 @@ $options['general-bg_color'] = array(
 $options[] = array( 'name' => _x( 'Text', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
 $options[] = array(
-	'name' => _x( 'Headers', 'theme-options', 'the7mk2' ),
+	'name' => _x( 'Headings', 'theme-options', 'the7mk2' ),
 	'type' => 'title',
 );
 
 $options['fonts-h1_font_family'] = array(
-	'name'    => _x( 'Headers font family', 'theme-options', 'the7mk2' ),
+	'name'    => _x( 'Headings font family', 'theme-options', 'the7mk2' ),
 	'id'      => 'fonts-h1_font_family',
 	'std'     => 'Open Sans:600',
 	'type'    => 'web_fonts',
@@ -126,7 +126,7 @@ $options['fonts-h1_font_family'] = array(
 );
 
 $options['content-headers_color'] = array(
-	'name' => _x( 'Headers color', 'theme-options', 'the7mk2' ),
+	'name' => _x( 'Headings color', 'theme-options', 'the7mk2' ),
 	'id'   => 'content-headers_color',
 	'std'  => '#252525',
 	'type' => 'color',
@@ -244,17 +244,17 @@ $options['buttons-style'] = array(
 	'type'    => 'images',
 	'class'   => 'small',
 	'options' => array(
-		'flat'     => array(
+		'flat'   => array(
 			'title' => _x( 'Flat', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/buttons-style-flat.gif',
 		),
-		'3d'       => array(
+		'3d'     => array(
 			'title' => _x( '3D', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/buttons-style-3d.gif',
 		),
-		'material' => array(
-			'title' => _x( 'Material design', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/buttons-style-material.gif',
+		'shadow' => array(
+			'title' => _x( 'Shadow', 'theme-options', 'the7mk2' ),
+			'src'   => '/inc/admin/assets/images/buttons-style-shadow.gif',
 		),
 	),
 );
@@ -716,10 +716,11 @@ $options['general-favicon_hd'] = array(
 $options[] = array( 'name' => _x( 'Copyright information', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
 $options['bottom_bar-copyrights'] = array(
-	'id'   => 'bottom_bar-copyrights',
-	'name' => _x( 'Copyright information', 'theme-options', 'the7mk2' ),
-	'type' => 'textarea',
-	'std'  => false,
+	'id'       => 'bottom_bar-copyrights',
+	'name'     => _x( 'Copyright information', 'theme-options', 'the7mk2' ),
+	'type'     => 'textarea',
+	'std'      => false,
+	'sanitize' => 'without_sanitize',
 );
 
 $options['bottom_bar-credits'] = array(
@@ -769,7 +770,7 @@ $options['footer-bg_color'] = array(
 );
 
 $options['footer-headers_color'] = array(
-	'name' => _x( 'Headers color', 'theme-options', 'the7mk2' ),
+	'name' => _x( 'Headings color', 'theme-options', 'the7mk2' ),
 	'id'   => 'footer-headers_color',
 	'std'  => '#ffffff',
 	'type' => 'color',

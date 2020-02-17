@@ -30,8 +30,9 @@ if ( ! class_exists( 'Presscore_Modules_Compatibility_VC', false ) ) :
 
 			add_action( 'init', array( __CLASS__, 'load_bridge' ), 20 );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'load_admin_static' ), 20 );
-			add_action( 'admin_print_scripts-post.php', array( __CLASS__, 'vc_row_scripts' ), 9999 );
-			add_action( 'admin_print_scripts-post-new.php', array( __CLASS__, 'vc_row_scripts' ), 9999 );
+			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_vc_inline_styles' ), 9999 );
+			add_action( 'admin_print_scripts-post.php', array( __CLASS__, 'editor_scripts' ), 9999 );
+			add_action( 'admin_print_scripts-post-new.php', array( __CLASS__, 'editor_scripts' ), 9999 );
 			add_action( 'admin_init', array( __CLASS__, 'remove_teaser_meta_box' ), 7 );
 			add_filter( 'presscore_localized_script', array( __CLASS__, 'localize_script' ) );
 
@@ -39,7 +40,58 @@ if ( ! class_exists( 'Presscore_Modules_Compatibility_VC', false ) ) :
 				add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_vc_inline_assets' ), 20 );
 			}
 
-			add_action( 'vc_after_init_base' , array(  __CLASS__, 'remove_vc_the_excerpt_filter' ) );
+			add_action( 'vc_after_init_base', array( __CLASS__, 'remove_vc_the_excerpt_filter' ) );
+
+			if ( get_option( 'wpb_js_gutenberg_disable' ) ) {
+				add_action( 'wp_print_styles', array( __CLASS__, 'dequeue_gutenberg_stylesheets' ), 9999 );
+				add_filter( 'presscore_get_dynamic_stylesheets_list', array( __CLASS__, 'remove_gutenberg_dynamic_stylesheets' ) );
+			}
+		}
+
+		/**
+		 * Enqueue VC inline styles after theme style css.
+		 *
+		 * In VC 6.0.2 inline styles was moved to after `js_composer_front` which cause some issues
+		 * with overriding theme css.
+		 *
+		 * @since 7.6.2.5
+		 */
+		public static function fix_vc_inline_styles() {
+			if ( ! function_exists( 'wp_styles' ) ) {
+				return;
+			}
+
+			if ( isset( wp_styles()->registered['js_composer_front']->extra['after'] ) ) {
+				$vc_inline_style = wp_styles()->get_data( 'js_composer_front', 'after' );
+				wp_styles()->add_data( 'style', 'after', $vc_inline_style );
+				wp_styles()->registered['js_composer_front']->extra['after'] = array();
+			}
+		}
+
+		/**
+		 * Dequeue gutenberg stylesheets.
+		 */
+		public static function dequeue_gutenberg_stylesheets() {
+			wp_dequeue_style( 'wp-block-library' );
+			wp_dequeue_style( 'wp-block-library-theme' );
+		}
+
+		/**
+		 * Remove Gutenberg less.
+		 *
+		 * @param array $stylesheets Stylesheets definition.
+		 *
+		 * @return array
+		 */
+		public static function remove_gutenberg_dynamic_stylesheets( $stylesheets ) {
+			if ( isset( $stylesheets['dt-custom']['imports']['dynamic_import_top'] ) ) {
+				$stylesheets['dt-custom']['imports']['dynamic_import_top'] = array_diff(
+					$stylesheets['dt-custom']['imports']['dynamic_import_top'],
+					array( 'dynamic-less/plugins/gutenberg.less' )
+				);
+			}
+
+			return $stylesheets;
 		}
 
 		/**
@@ -64,7 +116,7 @@ if ( ! class_exists( 'Presscore_Modules_Compatibility_VC', false ) ) :
 				"vc_images_carousel",
 				"vc_posts_slider",
 				"vc_cta_button2",
-			) ); 
+			) );
 
 			foreach ( $shortcodes_to_remove as $shortcode ) {
 				vc_remove_element( $shortcode );
@@ -75,7 +127,11 @@ if ( ! class_exists( 'Presscore_Modules_Compatibility_VC', false ) ) :
 			do_action( 'presscore_js_composer_after_bridge_loaded' );
 		}
 
-		public static function load_admin_static() {
+		public static function load_admin_static( $hook ) {
+			if ( ! in_array( $hook, array( 'post.php', 'new-post.php' ), true ) ) {
+				return;
+			}
+
 			wp_enqueue_style( 'dt-vc-bridge', PRESSCORE_THEME_URI . '/inc/shortcodes/css/js_composer_bridge.css', array(), THE7_VERSION );
 
 			if ( function_exists( 'vc_is_inline' ) && vc_is_inline() ) {
@@ -83,9 +139,9 @@ if ( ! class_exists( 'Presscore_Modules_Compatibility_VC', false ) ) :
 			}
 		}
 
-		public static function vc_row_scripts() {
+		public static function editor_scripts() {
 			if ( is_callable( 'vc_editor_post_types' ) && in_array( get_post_type(), vc_editor_post_types() ) ) {
-				wp_enqueue_script( 'dt-vc_row-custom-admin', trailingslashit( PRESSCORE_SHORTCODES_URI ) . 'vc_extend/vc_row-custom-admin.js', array(), THE7_VERSION, true );
+				wp_enqueue_script( 'the7-vc-editor', trailingslashit( PRESSCORE_SHORTCODES_URI ) . 'vc_extend/vc-editor.js', array(), THE7_VERSION, true );
 			}
 		}
 

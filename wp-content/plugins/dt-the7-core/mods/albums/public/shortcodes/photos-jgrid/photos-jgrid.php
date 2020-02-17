@@ -23,7 +23,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Jgrid', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_vc-photos_justified_grid',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_photo_justif_editor_ico.gif', 98, 104 ),
-	                'title'  => _x( 'Photos Justified Grid', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Photos Justified Grid', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -136,7 +136,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Jgrid', false ) ) {
 				'orderby'        => 'date',
 			);
 
-			$attributes = shortcode_atts( $default_atts, $atts );
+			$attributes = shortcode_atts( $default_atts, $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['loading_effect'] = sanitize_key( $attributes['loading_effect'] );

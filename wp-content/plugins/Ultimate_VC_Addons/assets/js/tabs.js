@@ -564,7 +564,11 @@ jQuery(document).ready(function(){
       var Cur_URL = window.location.href;
       var URL_ID = Cur_URL.substr(Cur_URL.indexOf("#") + 1);
          //for fullheight
-        var indexOf=jQuery(this).data('activeindex');       
+        var indexOf=jQuery(this).data('activeindex');
+        if( indexOf == '' && indexOf != '0' )
+          {
+            indexOf = 1;
+          }
         var p = jQuery(this).find("ul.ult_tabmenu li.ult_tab_li:nth-child("+indexOf+")" ).find(".ult_a").attr("id");
 
         if(URL_ID !== Cur_URL) {

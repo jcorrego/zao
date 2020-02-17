@@ -5,9 +5,7 @@
  @import "dt-testimonials.less";
 
 
-.custom-mixin-fade-avatar-border (@customSize) when (iscolor(@customSize)) {
-	border-color: fade(@customSize, 15%);
-}
+
 
 .custom-mixin-calc-width (@customSize) when (isnumber(@customSize)) {
 	width: calc(100% ~'-' @customSize  ~'-' @post-thumb-padding-right ~'-' @post-thumb-padding-left);
@@ -30,7 +28,7 @@
 		.custom-mixin-filter-gap (@shortcode-filter-gap);
 		& a,
 		& a * {
-			color: @shortcode-filter-color;
+			.custom-mixin-color (@shortcode-filter-color);
 		}
 	}
 }

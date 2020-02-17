@@ -24,7 +24,7 @@ class DT_Shortcode_Slideshow extends DT_Shortcode {
 			'scale_mode' => 'fill',
 			'autoplay'  => 'false',
 			'interval'  => '5000',
-		), $atts ) );
+		), $atts, $this->shortcode_name ) );
 
 		// sanitize attributes
 		$width = absint( $width );
@@ -42,7 +42,7 @@ class DT_Shortcode_Slideshow extends DT_Shortcode {
 		    return $this->vc_inline_dummy( array(
                 'class'  => 'dt_slideshow',
                 'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_slideshow_editor_ico.gif', 98, 104 ),
-                'title'  => _x( 'Slideshow', 'vc inline dummy', 'the7mk2' ),
+                'title'  => _x( 'Slideshow', 'vc inline dummy', 'dt-the7-core' ),
 
                 'style' => array( 'height' => 'auto' )
             ) );

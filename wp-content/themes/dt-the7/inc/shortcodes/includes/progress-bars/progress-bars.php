@@ -26,18 +26,14 @@ class DT_Shortcode_ProgressBars extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( 'dt_progress_bars', array($this, 'shortcode_bars') );
         add_shortcode( 'dt_progress_bar', array($this, 'shortcode_bar') );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false, 4 );
     }
 
     public function shortcode_bars( $atts, $content = null ) {
         $attributes = shortcode_atts( array(
             'show_percentage'   => '1',
-        ), $atts );
+        ), $atts, 'dt_progress_bars' );
 
         $attributes['show_percentage'] = apply_filters('dt_sanitize_flag', $attributes['show_percentage']);
 
@@ -56,7 +52,7 @@ class DT_Shortcode_ProgressBars extends DT_Shortcode {
             'title'         => '',
             'color'         => '',
             'percentage'    => ''
-        ), $atts ) );
+        ), $atts, 'dt_progress_bar' ) );
         
         $title = wp_kses($title, array());
         $color = esc_attr($color);

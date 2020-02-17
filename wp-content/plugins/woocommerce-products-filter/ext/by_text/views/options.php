@@ -47,6 +47,10 @@ if (!defined('ABSPATH'))
     {
         $woof_settings[$key]['search_by_full_word'] = 0;
     }
+     if (!isset($woof_settings[$key]['search_desc_variant']))
+    {
+        $woof_settings[$key]['search_desc_variant'] = 0;
+    }    
          if (!isset($woof_settings[$key]['sku_compatibility']))
     {
         $woof_settings[$key]['sku_compatibility'] = 0;
@@ -71,17 +75,24 @@ if (!defined('ABSPATH'))
     {
         $woof_settings[$key]['image'] = '';
     }
+    
+    if (!isset($woof_settings[$key]['notes_for_customer']))
+    {
+        $woof_settings[$key]['notes_for_customer'] = '';
+    }    
     ?>
 
     <input type="hidden" name="woof_settings[<?php echo $key ?>][title]" value="<?php echo $woof_settings[$key]['title'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][placeholder]" value="<?php echo $woof_settings[$key]['placeholder'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][behavior]" value="<?php echo $woof_settings[$key]['behavior'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][search_by_full_word]" value="<?php echo $woof_settings[$key]['search_by_full_word'] ?>" />
+    <input type="hidden" name="woof_settings[<?php echo $key ?>][search_desc_variant]" value="<?php echo $woof_settings[$key]['search_desc_variant'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][autocomplete]" value="<?php echo $woof_settings[$key]['autocomplete'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][post_links_in_autocomplete]" value="<?php echo $woof_settings[$key]['post_links_in_autocomplete'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][how_to_open_links]" value="<?php echo $woof_settings[$key]['how_to_open_links'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][image]" value="<?php echo $woof_settings[$key]['image'] ?>" />
     <input type="hidden" name="woof_settings[<?php echo $key ?>][sku_compatibility]" value="<?php echo $woof_settings[$key]['sku_compatibility'] ?>" />
+    <input type="hidden" name="woof_settings[<?php echo $key ?>][notes_for_customer]" value="<?php echo stripcslashes($woof_settings[$key]['notes_for_customer']); ?>" />
     
     <div id="woof-modal-content-by_text" style="display: none;">
 
@@ -283,7 +294,44 @@ if (!defined('ABSPATH'))
             </div>
 
         </div>
+	<div class="woof-form-element-container">
 
+            <div class="woof-name-description">
+                <strong><?php _e('Search by description in variations', 'woocommerce-products-filter') ?></strong>
+                <span><?php _e('Ability to search by the description of the any variation in the variable product', 'woocommerce-products-filter') ?></span>
+            </div>
+
+            <div class="woof-form-element">
+                <?php
+                $desc_var = array(
+                    0 => __('No', 'woocommerce-products-filter'),
+                    1 => __('Yes', 'woocommerce-products-filter')
+                );
+                ?>
+
+                <div class="select-wrap">
+                    <select class="woof_popup_option" data-option="search_desc_variant">
+                        <?php foreach ($desc_var as $key => $value) : ?>
+                            <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+            <div class="woof-form-element-container">
+
+            <div class="woof-name-description">
+                <strong><?php _e('Notes for customer', 'woocommerce-products-filter') ?></strong>
+                <span><?php _e('Any notes for customer.', 'woocommerce-products-filter') ?></span>
+            </div>
+
+            <div class="woof-form-element">
+                <textarea class="woof_popup_option" data-option="notes_for_customer"></textarea>
+            </div>
+
+        </div>    
         <div class="woof-form-element-container">
 
             <div class="woof-name-description">

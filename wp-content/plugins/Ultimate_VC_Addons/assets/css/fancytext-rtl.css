@@ -6,11 +6,14 @@
 .ultimate-vticker.ultimate-fancy-text-inherit * {
     font-size: inherit
 }
+.ultimate-vticker.ticker{
+    margin: 0 5px 0 5px !important;
+}
 .ultimate-vticker.ticker ul,
 .ultimate-vticker.ticker-down ul {
     position: relative !important;
     line-height: inherit;
-    color: inherit !important
+    color: inherit !important;
 }
 .ultimate-vticker.ticker ul li,
 .ultimate-vticker.ticker-down ul li {
@@ -45,7 +48,8 @@
 	font-family: inherit;
 }
 .ultimate-typed-main {
-    display: inline-block
+    display: inline-block;
+    margin: 0 5px 0 5px;
 }
 .fancytext-typewriter-background-enabled,
 .ultimate-vticker.fancytext-background-enabled ul li {

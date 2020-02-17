@@ -1,9 +1,9 @@
-=== Finale - WooCommerce Sales Countdown Timer & Discount Plugin Lite ===
+=== Finale Lite - Sales Countdown Timer & Discount for WooCommerce ===
 Contributors: xlplugins
 Tags: WooCommerce, WooCommerce Sales Countdown, WooCommerce Countdown Timer, WooCommerce Bulk Discount, WooCommerce Recurring Campaigns, WooCommerce Sales Scheduler, WooCommerce Pre Sale, WooCommerce Counter Bar, XLPlugins, eCommerce, WooCommerce Promotions, WooCommerce Deals, WooCommerce Discounts, WooCommerc Countdown Timer, WooCommerce Scheduled Sales
 Requires at least: 4.2.1
-Tested up to: 5.0.3
-Stable tag: 2.7.0
+Tested up to: 5.3
+Stable tag: 2.11.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -264,7 +264,48 @@ We provide support through WordPress forums to Finale users. <a href="https://xl
 
 == Change log ==
 
-= 2.7.0 (2019-01-23) =
+= 2.11.1 (2019-11-15) =
+* Added: Compatible with WordPress 5.3
+* Added: Compatible with WooCommerce 3.8
+* Fixed: Expired Finale campaign meta keys in products are removing properly now.
+
+
+= 2.11.0 (2019-11-06) =
+* Improved: Clear WordPress cache when timer hits zero and page is reloaded.
+* Improved: Cron for clearing database of old entries improved.
+* Fixed: Incorrect page id fetched for WPML page, resolved now.
+
+
+= 2.10.0 (2019-07-02) =
+* Added: Clearing Autoptimised cache after campaign is finished.
+* Added: Compatible with multi currency switcher free & paid plugin by Villatheme.
+* Added: Cleaning Finale campaign product meta keys after campaign is finished.
+* Improved: Product category rules optimized to speed up the performance.
+* Fixed: Incorrect price range display issue resolved on variable products in case, taxes are enabled and entered exclusively.
+* Fixed: Clever mega menu plugin's script causing JS conflicts on single Finale campaign page, resolved.
+* Fixed: PHP error with OceanWP theme resolved now.
+
+
+= 2.9.1 (2019-05-30) =
+* Improved: Depreciated unused code was running, cleaned now.
+* WooCommerce tested upto 3.6.5 and WordPress tested upto 5.2.1.
+
+
+= 2.9.0 (2019-05-23) =
+* Improved: X-Store theme modified their single product code in recent version, that caused positions mismatch, compatibility updated.
+* Fixed: Yith Product Bundle Premium plugin has some code which was contradicting with Finale, resolved.
+* Fixed: Sold Inventory not updating properly in case of more than 2 quantities purchased, fixed now.
+
+
+= 2.8.0 (2019-03-28) =
+* Added: A new setting is added to reload the page when countdown timer hits zero.
+* Fixed: Incorrect prices displayed in the cart with WooCommerce currency switcher plugin, fixed.
+* Fixed: Simple product not showing on sale when discount applied by campaign issue fixed.
+* Fixed: Swift framework plugin conflict with finale fixed now.
+* Fixed: Incorrect inventory displayed when different variations of the same product are purchased in the same order, resolved now.
+
+
+= 2.7.0 (2019-01-25) =
 * Added: Compatible with WooCommerce product addon - By nmedia.
 * Added: Compatible with Polylang plugin to support multilingual campaigns.
 * Added: Compatible with WP fastest cache plugin, auto cleared cache at certain actions.

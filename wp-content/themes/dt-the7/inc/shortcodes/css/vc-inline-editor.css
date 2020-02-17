@@ -72,3 +72,6 @@
 .vc_dt_carousel .owl-carousel {
 	display: block;
 }
+.compose-mode .vc_element-name .vc_btn-content {
+    height: auto;
+}

@@ -67,7 +67,8 @@ class FeedMapper {
 	 * @return string|int
 	 */
 	public function get_item_group_id() {
-		return $this->item->get_group_id();
+		$parent_sku = $this->item->get_group_sku();
+		return $this->configuration->get( Configuration::OPTION_SKU_FOR_ID ) && $parent_sku ? $parent_sku : $this->item->get_group_id();
 	}
 
 	/**

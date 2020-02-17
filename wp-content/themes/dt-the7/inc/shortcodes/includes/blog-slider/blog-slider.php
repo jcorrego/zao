@@ -123,7 +123,7 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Slider', false ) ) {
 				'width' => '0',
 				'max_width' => '',
 				'height' => '210',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['order'] = apply_filters('dt_sanitize_order', $attributes['order']);

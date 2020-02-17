@@ -25,12 +25,8 @@ if ( ! class_exists( 'DT_Shortcode_Benefits', false ) ) {
 		}
 
 		protected function __construct() {
-
 			add_shortcode( 'dt_benefits', array($this, 'shortcode_benefits') );
 			add_shortcode( 'dt_benefit', array($this, 'shortcode_benefit') );
-
-			// add shortcode button
-			$tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false, 4 );
 		}
 
 		public function shortcode_benefits( $atts, $content = null ) {
@@ -42,7 +38,9 @@ if ( ! class_exists( 'DT_Shortcode_Benefits', false ) ) {
 				'animation'         => 'none',
 			);
 
-			$attributes = shortcode_atts( $default_atts, $atts );
+			wp_enqueue_style( 'the7-elements-benefits-logo' );
+
+			$attributes = shortcode_atts( $default_atts, $atts, 'dt_benefits' );
 			
 			$attributes['columns'] = sanitize_key( $attributes['columns'] );
 			$attributes['style'] = sanitize_key( $attributes['style'] );
@@ -87,7 +85,7 @@ if ( ! class_exists( 'DT_Shortcode_Benefits', false ) ) {
 				'header_size'       => 'h4',
 				'title'             => '',
 				'content_size'      => 'normal'
-			), $atts );
+			), $atts, 'dt_benefit' );
 
 			$attributes['image_link'] = esc_url($attributes['image_link']);
 			$attributes['image'] = esc_url($attributes['image']);

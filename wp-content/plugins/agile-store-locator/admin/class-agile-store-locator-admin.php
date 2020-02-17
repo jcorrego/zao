@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://agilelogix.com
+ * @link       https://agilestorelocator.com
  * @since      1.0.0
  *
  * @package    AgileStoreLocator
@@ -18,7 +18,7 @@
  *
  * @package    AgileStoreLocator
  * @subpackage AgileStoreLocator/admin
- * @author     Your Name <support@agilelogix.com>
+ * @author     AgileStoreLocator Team <support@agilelogix.com>
  */
 class AgileStoreLocator_Admin {
 
@@ -40,6 +40,14 @@ class AgileStoreLocator_Admin {
 	 */
 	private $version;
 
+
+	private $max_img_width  = 450;
+	private $max_img_height = 450;
+
+
+	private $max_ico_width  = 75;
+	private $max_ico_height = 75;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -51,17 +59,8 @@ class AgileStoreLocator_Admin {
 
 		$this->AgileStoreLocator = $AgileStoreLocator;
 		$this->version = $version;
-
 	}
 
-
-	private $max_img_width  = 450;
-	private $max_img_height = 450;
-
-
-	private $max_ico_width  = 75;
-	private $max_ico_height = 75;
-	
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
@@ -81,12 +80,13 @@ class AgileStoreLocator_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->AgileStoreLocator, AGILESTORELOCATOR_URL_PATH . 'public/css/bootstrap.min.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'asl_chosen_plugin', AGILESTORELOCATOR_URL_PATH . 'public/css/chosen.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->AgileStoreLocator, AGILESTORELOCATOR_URL_PATH . 'admin/css/bootstrap.min.css', array(), $this->version, 'all' );//$this->version
+		wp_enqueue_style( 'asl_chosen_plugin', AGILESTORELOCATOR_URL_PATH . 'admin/css/chosen.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'asl_admin', AGILESTORELOCATOR_URL_PATH . 'admin/css/style.css', array(), $this->version, 'all' );
         
-		wp_enqueue_style( 'asl_datatable1', AGILESTORELOCATOR_URL_PATH . 'public/datatable/media/css/demo_page.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'asl_datatable2', AGILESTORELOCATOR_URL_PATH . 'public/datatable/media/css/jquery.dataTables.css', array(), $this->version, 'all' );
+		//wp_enqueue_style( 'asl_datatable1', 'http://a.localhost.com/gull/src/assets/styles/vendor/datatables.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'asl_datatable1', AGILESTORELOCATOR_URL_PATH . 'admin/datatable/media/css/demo_page.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'asl_datatable2', AGILESTORELOCATOR_URL_PATH . 'admin/datatable/media/css/jquery.dataTables.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -107,15 +107,19 @@ class AgileStoreLocator_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		//wp_enqueue_script( $this->AgileStoreLocator, AGILESTORELOCATOR_URL_PATH . 'public/js/jquery-1.11.3.min.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( $this->AgileStoreLocator.'-lib', AGILESTORELOCATOR_URL_PATH . 'public/js/libs.min.js', array('jquery'), $this->version, false );
-		wp_enqueue_script( $this->AgileStoreLocator.'-choosen', AGILESTORELOCATOR_URL_PATH . 'public/js/chosen.proto.min.js', array('jquery'), $this->version, false );
-		wp_enqueue_script( $this->AgileStoreLocator.'-datatable', AGILESTORELOCATOR_URL_PATH . 'public/datatable/media/js/jquery.dataTables.min.js', array('jquery'), $this->version, false );
-		wp_enqueue_script( 'bootstrap', AGILESTORELOCATOR_URL_PATH . 'public/js/bootstrap.min.js', array('jquery'), $this->version, false );
+		///wp_enqueue_script( $this->AgileStoreLocator, AGILESTORELOCATOR_URL_PATH . 'public/js/jquery-1.11.3.min.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->AgileStoreLocator.'-lib', AGILESTORELOCATOR_URL_PATH . 'admin/js/libs.min.js', array('jquery'), $this->version, false );
+		wp_enqueue_script( $this->AgileStoreLocator.'-choosen', AGILESTORELOCATOR_URL_PATH . 'admin/js/chosen.proto.min.js', array('jquery'), $this->version, false );
+		wp_enqueue_script( $this->AgileStoreLocator.'-datatable', AGILESTORELOCATOR_URL_PATH . 'admin/datatable/media/js/jquery.dataTables.min.js', array('jquery'), $this->version, false );
+		wp_enqueue_script( 'asl-bootstrap', AGILESTORELOCATOR_URL_PATH . 'admin/js/bootstrap.min.js', array('jquery'), $this->version, false );
 		wp_enqueue_script( $this->AgileStoreLocator.'-upload', AGILESTORELOCATOR_URL_PATH . 'admin/js/jquery.fileupload.min.js', array('jquery'), $this->version, false );
 		wp_enqueue_script( $this->AgileStoreLocator.'-jscript', AGILESTORELOCATOR_URL_PATH . 'admin/js/jscript.js', array('jquery'), $this->version, false );
-		
+		wp_enqueue_script( $this->AgileStoreLocator.'-draw', AGILESTORELOCATOR_URL_PATH . 'admin/js/drawing.js', array('jquery'), $this->version, false );
+
+
 		$langs = array(
+			'select_category' => __('Select Some Options','asl_admin'),
+			'no_category' => __('Select Some Options','asl_admin'),
 			'geocode_fail' => __('Geocode was not Successful:','asl_admin'),
 			'upload_fail'  => __('Upload Failed! Please try Again.','asl_admin'),
 			'delete_category'  => __('Delete Category','asl_admin'),
@@ -139,69 +143,82 @@ class AgileStoreLocator_Admin {
 			'delete_all_stores'  => __('DELETE ALL STORES','asl_admin'),
 			'invalid_file_error'  => __('Invalid File, Accepts JPG, PNG, GIF or SVG.','asl_admin'),
 			'error_try_again'  => __('Error Occured, Please try Again.','asl_admin'),
-			'delete_all'  => __('DELETE ALL','asl_admin')
+			'delete_all'  => __('DELETE ALL','asl_admin'),
+			'pur_title'  => __('PLEASE VALIDATE PURCHASE CODE!','asl_admin'),
+			'pur_text'  => __('Thank you for purchasing <b>Store Locator for WordPress</b> Plugin, kindly enter your purchase code to unlock the page. <a target="_blank" href="https://agilestorelocator.com/wiki/store-locator-purchase-code/">How to Get Your Purchase Code</a>.','asl_admin'),
 		);
-		
-		wp_localize_script( $this->AgileStoreLocator.'-jscript', 'ASL_REMOTE', array( 'LANG' => $langs, 'URL' => admin_url( 'admin-ajax.php' ),'1.1', true ));
 
+
+		// Plugin Validation
+		wp_localize_script( $this->AgileStoreLocator.'-jscript', 'ASL_REMOTE',  array('Com' => get_option('asl-compatible'),   'LANG' => $langs, 'URL' => admin_url( 'admin-ajax.php' ),'1.1', true ));
 	}
 
+	/**
+	 * [upload_logo Upload the Logo]
+	 * @return [type] [description]
+	 */
 	public function upload_logo() {
 
 		$response = new \stdclass();
 		$response->success = false;
 
+		if(empty($_POST['data']['logo_name']) || !$_POST['data']['logo_name']) {
+
+			$response->msg = __("Error! logo name is required.",'asl_admin');
+			echo json_encode($response);die;
+		}
+
 
 		$uniqid = uniqid();
 		$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/Logo/";
-	 	$target_file = $uniqid.'_'. strtolower($_FILES["files"]["name"]);
-	 	$target_name = isset($_POST['data']['category_name'])?$_POST['data']['category_name']:('Logo '.time());
-		
-			
+	 	//$target_file = $uniqid.'_'. strtolower($_FILES["files"]["name"]);
+
 		$imageFileType = explode('.', $_FILES["files"]["name"]);
 		$imageFileType = $imageFileType[count($imageFileType) - 1];
 
+	 	$target_file = $uniqid.'_logo.'.$imageFileType;
+	 	$target_name = isset($_POST['data']['logo_name'])?$_POST['data']['logo_name']:('Logo '.time());
 
-	
-		//if file not found
-		/*
-		if (file_exists($target_name)) {
-		    $response->message = "Sorry, file already exists.";
-		}
-		*/
+	 	// Check the Size of the Image //
+	 	$tmp_file = $_FILES["files"]['tmp_name'];
+	 	list($width, $height) = getimagesize($tmp_file);
 
-		//to big size
+	 	
+		// To big size
 		if ($_FILES["files"]["size"] >  5000000) {
-		    $response->message = "Sorry, your file is too large.";
+		    $response->msg = __("Sorry, your file is too large, sized.",'asl_admin');
 		}
-		// not a valid format
+		// Not a valid format
 		else if(!in_array($imageFileType, array('jpg','png','jpeg','gif','JPG'))) {
-		    $response->message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		    $response->msg = __("Sorry, only JPG, JPEG, PNG & GIF files are allowed.",'asl_admin');
+		}
+		else if($width > $this->max_img_width || $height > $this->max_img_width) {
+
+			$response->msg = __("Max Image dimensions Width and Height is {$this->max_img_width} x {$this->max_img_height} px.<br> Recommended Logo size is 250 x 250 px",'asl_admin');
 		}
 		// upload 
 		else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_file)) {
 
 			global $wpdb;
-			$wpdb->insert(AGILESTORELOCATOR_PREFIX.'storelogos', 
-			 	array('path'=>$target_file,'name'=>$target_name),
-			 	array('%s','%s'));
+			$wpdb->insert(AGILESTORELOCATOR_PREFIX.'storelogos', array('path'=>$target_file,'name'=>$target_name), array('%s','%s'));
 
-      		$response->list = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos ORDER BY id DESC");
-      	 	$response->message = "The file has been uploaded.";
-      	 	$response->success = true;
+  		$response->list = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos ORDER BY id DESC");
+  	 	$response->msg = __("The file has been uploaded.",'asl_admin');
+  	 	$response->success = true;
 		}
 		//error
 		else {
 
-			$response->message = 'Some Error Occured';
+			$response->msg = __('Some Error Occured','asl_admin');
 		}
 
 		echo json_encode($response);
-	    die;
+	  die;
 	}
 
-
-	/*POST METHODS*/
+	/**
+	 * [add_new_store POST METHODS for Add New Store]
+	 */
 	public function add_new_store() {
 
 		global $wpdb;
@@ -209,16 +226,28 @@ class AgileStoreLocator_Admin {
 		$response  = new \stdclass();
 		$response->success = false;
 
-
 		$form_data = stripslashes_deep($_REQUEST['data']);
 		
 
+		
 		//insert into stores table
 		if($wpdb->insert( AGILESTORELOCATOR_PREFIX.'stores', $form_data))
 		{
 			$response->success = true;
 			$store_id = $wpdb->insert_id;
 
+
+			/*
+			//Add THE STORE TIMINGS
+			if($form_data['time_per_day'] == '1') {
+
+				$datatime = $_REQUEST['datatime'];
+				$datatime['store_id'] = $store_id;
+				$wpdb->insert( AGILESTORELOCATOR_PREFIX.'stores_timing', $datatime);
+			}
+			else
+				$wpdb->insert( AGILESTORELOCATOR_PREFIX.'stores_timing', array('store_id' => $store_id));
+			*/
 
 				/*Save Categories*/
 			if(is_array($_REQUEST['category']))
@@ -229,18 +258,23 @@ class AgileStoreLocator_Admin {
 				 	array('%s','%s'));			
 			}
 
-			$response->msg = 'Store added successfully.';
+			$response->msg = __('Store Added Successfully.','asl_admin');
 		}
-		else
-		{
-			$response->error = 'Error occurred while saving Store';//$form_data
-			$response->msg   =  $wpdb->last_error;
+		else {
+
+			$wpdb->show_errors = true;
+
+			$response->error = __('Error occurred while saving Store','asl_admin');
+			$response->msg   = $wpdb->print_error();
 		}
 		
 		echo json_encode($response);die;	
 	}
 
-	//update Store
+	/**
+	 * [update_store update Store]
+	 * @return [type] [description]
+	 */
 	public function update_store() {
 
 		global $wpdb;
@@ -250,9 +284,8 @@ class AgileStoreLocator_Admin {
 
 		$form_data = stripslashes_deep($_REQUEST['data']);
 		$update_id = $_REQUEST['updateid'];
-
+		
 		//update into stores table
-							
 		$wpdb->update(AGILESTORELOCATOR_PREFIX."stores",
 			array(
 				'title'			=> $form_data['title'],
@@ -266,14 +299,21 @@ class AgileStoreLocator_Admin {
 				'state'			=> $form_data['state'],
 				'lat'			=> $form_data['lat'],
 				'lng'			=> $form_data['lng'],
-				'website'		=> $form_data['url'],
+				'website'		=> $form_data['website'],
 				'country'		=> $form_data['country'],
-				'is_disabled'	=> $form_data['is_disabled'],
+				'is_disabled'	=> (isset($form_data['is_disabled']) && $form_data['is_disabled'])?'1':'0',
 				'description_2'	=> $form_data['description_2'],
 				'logo_id'		=> $form_data['logo_id'],
-				'open_hours'	=> $form_data['open_hours'],
-				'marker_id'		=> 1,
+				'marker_id'		=> $form_data['marker_id'],
+				/*'start_time'	=> $form_data['start_time'],
+				'end_time'		=> $form_data['end_time'],*/
 				'logo_id'		=> $form_data['logo_id'],
+				'open_hours'	=> $form_data['open_hours'],
+				'ordr'			=> $form_data['ordr'],
+				/*
+				'days'			=> $form_data['days'],
+				'time_per_day' => $form_data['time_per_day'],
+				*/
 				'updated_on' 	=> date('Y-m-d H:i:s')
 			),
 			array('id' => $update_id)
@@ -291,20 +331,40 @@ class AgileStoreLocator_Admin {
 		}
 
 
+		/*
+		//ADD THE TIMINGS
+		$timing_result = $wpdb->get_results("SELECT count(*) as c FROM ".AGILESTORELOCATOR_PREFIX."stores_timing WHERE store_id = $update_id");
+
+		//INSERT OR UPDATE
+		if($timing_result[0]->c == 0) {
+			
+			$datatime = $_REQUEST['datatime'];
+			$datatime['store_id'] = $update_id;
+			$wpdb->insert( AGILESTORELOCATOR_PREFIX.'stores_timing', $datatime);
+		}
+
+		else {
+
+			$datatime = $_REQUEST['datatime'];
+			$wpdb->update( AGILESTORELOCATOR_PREFIX.'stores_timing', $datatime,array('store_id' => $update_id));
+		}
+		*/
+
+
 		$response->success = true;
 
 
-		$response->msg = 'Store update successfully.';
+		$response->msg = __('Store Updated Successfully.','asl_admin');
 
-			
-		
-			
-				
+
 		echo json_encode($response);die;
 	}
 
-	
-	//To delete the store/stores
+
+	/**
+	 * [delete_store To delete the store/stores]
+	 * @return [type] [description]
+	 */
 	public function delete_store() {
 
 		global $wpdb;
@@ -341,7 +401,10 @@ class AgileStoreLocator_Admin {
 	}
 
 
-	//To Change the Status of Store
+	/**
+	 * [store_status To Change the Status of Store]
+	 * @return [type] [description]
+	 */
 	public function store_status() {
 
 		global $wpdb;
@@ -369,7 +432,10 @@ class AgileStoreLocator_Admin {
 		echo json_encode($response);die;
 	}
 	
-	//to  Duplicate the store
+	/**
+	 * [duplicate_store to  Duplicate the store]
+	 * @return [type] [description]
+	 */
 	public function duplicate_store() {
 
 		global $wpdb;
@@ -430,80 +496,93 @@ class AgileStoreLocator_Admin {
 
 		echo json_encode($response);die;
 	}
+
 	
-	/////////////////////////////////ALL Category Methods
-	/*Categories methods*/
+
+	////////////////////////////////
+	/////////ALL Category Methods //
+	////////////////////////////////
+	
+	/**
+	 * [add_category Add Category Method]
+	 */
 	public function add_category() {
 
 		global $wpdb;
 
 		$response = new \stdclass();
-			$response->success = false;
+		$response->success = false;
 
-			$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/icon/";
-			$namefile 	 = substr(strtolower($_FILES["files"]["name"]), 0, strpos(strtolower($_FILES["files"]["name"]), '.'));
+		$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/icon/";
+		$namefile 	 = substr(strtolower($_FILES["files"]["name"]), 0, strpos(strtolower($_FILES["files"]["name"]), '.'));
+		
+
+		$imageFileType = pathinfo($_FILES["files"]["name"],PATHINFO_EXTENSION);
+	 	$target_name   = uniqid();
+		
+		//add extension
+		$target_name .= '.'.$imageFileType;
+
+		///CREATE DIRECTORY IF NOT EXISTS
+		if(!file_exists($target_dir)) {
+
+			mkdir( $target_dir, 0775, true );
+		}
+		
+ 		// Check the Size of the Image //
+ 		$tmp_file = $_FILES["files"]['tmp_name'];
+ 		list($width, $height) = getimagesize($tmp_file);
+
+
+		//to big size
+		if ($_FILES["files"]["size"] >  5000000) {
+		    $response->msg = __("Sorry, your file is too large.",'asl_admin');
+		}
+		// not a valid format
+		else if(!in_array($imageFileType, array('jpg','png','jpeg','JPG','gif','svg','SVG'))) {
+		    $response->msg = __("Sorry, only JPG, JPEG, PNG & GIF files are allowed.",'asl_admin');
+		}
+		else if($width > $this->max_ico_width || $height > $this->max_ico_width) {
+
+			$response->msg = __("Max Image dimensions Width and Height is {$this->max_ico_width} x {$this->max_ico_height} px.<br> Recommended Icon size is 20 x 32 px or around it",'asl_admin');
+		}
+		// upload 
+		else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_name)) {
 			
+			$form_data = $_REQUEST['data'];
 
-			$imageFileType = pathinfo($_FILES["files"]["name"],PATHINFO_EXTENSION);
-		 	$target_name   = uniqid();
-			
-			//add extension
-			$target_name .= '.'.$imageFileType;
-
-			///CREATE DIRECTORY IF NOT EXISTS
-			if(!file_exists($target_dir)) {
-
-				mkdir( $target_dir, 0775, true );
+			if($wpdb->insert(AGILESTORELOCATOR_PREFIX.'categories', 
+		 	array(	'category_name' => $form_data['category_name'],			 		
+					'is_active'		=> 1,
+					'icon'			=> $target_name
+		 		),
+		 	array('%s','%d','%s'))
+			)
+			{
+				$response->msg = __("Category Added Successfully",'asl_admin');
+  	 			$response->success = true;
 			}
-			
-
-			/*//if file not found
-			if (file_exists($target_name)) {
-			    $response->message = "Sorry, file already exists.";
-			}
-			//to big size
-			else */
-			if ($_FILES["files"]["size"] >  5000000) {
-			    $response->message = "Sorry, your file is too large.";
-			}
-			// not a valid format
-			else if(!in_array($imageFileType, array('jpg','png','jpeg','JPG','gif'))) {
-			    $response->message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-			}
-			// upload 
-			else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_name)) {
+			else
+			{
+				$response->msg = __('Error occurred while saving record','asl_admin');//$form_data
 				
-				$form_data = $_REQUEST['data'];
-
-				if($wpdb->insert(AGILESTORELOCATOR_PREFIX.'categories', 
-			 	array(	'category_name' => $form_data['category_name'],			 		
-						'is_active'		=> 1,
-						'icon'			=> $target_name
-			 		),
-			 	array('%s','%d','%s'))
-				)
-				{
-					$response->message = "Category Add successfully";
-	  	 			$response->success = true;
-				}
-				else
-				{
-					$response->message = 'Error occurred while saving record';//$form_data
-					
-				}
-	      	 	
 			}
-			//error
-			else {
+      	 	
+		}
+		//error
+		else {
 
-				$response->message = 'Some error occured';
-			}
+			$response->msg = __('Some error occured','asl_admin');
+		}
 
-			echo json_encode($response);
-		    die;
+		echo json_encode($response);
+	    die;
 	}
 
-	//delete category/categories
+	/**
+	 * [delete_category delete category/categories]
+	 * @return [type] [description]
+	 */
 	public function delete_category() {
 
 		global $wpdb;
@@ -561,7 +640,10 @@ class AgileStoreLocator_Admin {
 	}
 
 
-	//update category with icon
+	/**
+	 * [update_category update category with icon]
+	 * @return [type] [description]
+	 */
 	public function update_category() {
 
 		global $wpdb;
@@ -642,7 +724,10 @@ class AgileStoreLocator_Admin {
 	}
 
 
-	//get category by id
+	/**
+	 * [get_category_by_id get category by id]
+	 * @return [type] [description]
+	 */
 	public function get_category_by_id() {
 
 		global $wpdb;
@@ -668,7 +753,10 @@ class AgileStoreLocator_Admin {
 	}
 
 
-	/*GET the Categories*/
+	/**
+	 * [get_categories GET the Categories]
+	 * @return [type] [description]
+	 */
 	public function get_categories() {
 
 		global $wpdb;
@@ -786,8 +874,762 @@ class AgileStoreLocator_Admin {
 
 	    	$row->icon = "<img  src='".AGILESTORELOCATOR_URL_PATH."public/icon/".$row->icon."' alt=''  style='width:20px'/>";	
 
-	    	$row->action = '<div class="edit-options"><span data-id="'.$row->id.'" title="Edit" class="glyphicon glyphicon-edit edit_category"></span> &nbsp; | &nbsp;<span title="Delete" data-id="'.$row->id.'" class="glyphicon glyphicon-trash delete_category"></span></div>';
-	    	$row->check  = '<input type="checkbox" data-id="'.$row->id.'" >';
+	    	$row->action = '<div class="edit-options"><a data-id="'.$row->id.'" title="Edit" class="edit_category"><svg width="14" height="14"><use xlink:href="#i-edit"></use></svg></a><a title="Delete" data-id="'.$row->id.'" class="delete_category g-trash"><svg width="14" height="14"><use xlink:href="#i-trash"></use></svg></a></div>';
+	    	$row->check  = '<div class="custom-control custom-checkbox"><input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="asl-chk-'.$row->id.'"><label class="custom-control-label" for="asl-chk-'.$row->id.'"></label></div>';
+	        $output['aaData'][] = $row;
+	    }
+
+		echo json_encode($output);die;
+	}
+
+
+	/////////////////////////////////////
+	///////////////ALL Markers Methods //
+	/////////////////////////////////////
+	
+
+	/**
+	 * [upload_marker upload marker into icon folder]
+	 * @return [type] [description]
+	 */
+	public function upload_marker() {
+
+		$response = new \stdclass();
+		$response->success = false;
+
+
+		if(empty($_POST['data']['marker_name']) || !$_POST['data']['marker_name']) {
+
+			$response->msg = __("Error! marker name is required.",'asl_admin');
+			echo json_encode($response);die;
+		}
+
+
+		$uniqid = uniqid();
+		$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/icon/";
+	 	$target_file = $uniqid.'_'. strtolower($_FILES["files"]["name"]);
+	 	$target_name = isset($_POST['data']['marker_name'])?$_POST['data']['marker_name']:('Marker '.time());
+		
+			
+		$imageFileType = explode('.', $_FILES["files"]["name"]);
+		$imageFileType = $imageFileType[count($imageFileType) - 1];
+
+		$tmp_file = $_FILES["files"]['tmp_name'];
+		list($width, $height) = getimagesize($tmp_file);
+
+	
+		//if file not found
+		/*
+		if (file_exists($target_name)) {
+		    $response->msg = "Sorry, file already exists.";
+		}
+		*/
+
+		//to big size
+		if ($_FILES["files"]["size"] >  22085) {
+		    $response->msg = __("Marker Image too Large.",'asl_admin');
+		    $response->size = $_FILES["files"]["size"];
+		}
+		// not a valid format
+		else if(!in_array($imageFileType, array('jpg','png','jpeg','gif','JPG'))) {
+		    $response->msg = __("Sorry, only JPG, JPEG, PNG & GIF files are allowed.",'asl_admin');
+		}
+		else if($width > $this->max_img_width || $height > $this->max_img_width) {
+
+				$response->msg = __("Max Image dimensions Width and Height is {$this->max_img_width} x {$this->max_img_height} px.<br> Recommended Logo size is 250 x 250 px",'asl_admin');
+		}
+		// upload 
+		else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_file)) {
+
+			global $wpdb;
+			$wpdb->insert(AGILESTORELOCATOR_PREFIX.'markers', 
+			 	array('icon'=>$target_file,'marker_name'=>$target_name),
+			 	array('%s','%s'));
+
+      		$response->list = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers ORDER BY id DESC");
+      	 	$response->msg = __("The file has been uploaded.",'asl_admin');
+      	 	$response->success = true;
+		}
+		//error
+		else {
+
+			$response->msg = __('Some Error Occured','asl_admin');
+		}
+
+		echo json_encode($response);die;
+	}
+
+
+	/**
+	 * [add_marker Add Marker Method]
+	 */
+	public function add_marker() {
+
+		global $wpdb;
+
+		$response = new \stdclass();
+			$response->success = false;
+
+			$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/icon/";
+			
+
+			$imageFileType = pathinfo($_FILES["files"]["name"],PATHINFO_EXTENSION);
+		 	$target_name   = uniqid();
+			
+			//add extension
+			$target_name .= '.'.$imageFileType;
+
+			///CREATE DIRECTORY IF NOT EXISTS
+			if(!file_exists($target_dir)) {
+
+				mkdir( $target_dir, 0775, true );
+			}
+			
+			// Check the Size of the Image //
+			$tmp_file = $_FILES["files"]['tmp_name'];
+			list($width, $height) = getimagesize($tmp_file);
+
+
+			//to big size
+			if ($_FILES["files"]["size"] >  5000000) {
+			    $response->msg = __("Sorry, your file is too large.",'asl_admin');
+			}
+			// not a valid format
+			else if(!in_array($imageFileType, array('jpg','png','gif','jpeg','JPG'))) {
+			    $response->msg = __("Sorry, only JPG, JPEG, PNG & GIF files are allowed.",'asl_admin');
+			}
+			else if($width > $this->max_ico_width || $height > $this->max_ico_width) {
+
+				$response->msg = __("Max Image dimensions Width and Height is {$this->max_ico_width} x {$this->max_ico_height} px.<br> Recommended Icon size is 20 x 32 px or around it",'asl_admin');
+			}
+			// upload 
+			else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_name)) {
+				
+				$form_data = $_REQUEST['data'];
+
+				if($wpdb->insert(AGILESTORELOCATOR_PREFIX.'markers', 
+			 	array(	'marker_name' => $form_data['marker_name'],			 		
+						'is_active'		=> 1,
+						'icon'			=> $target_name
+			 		),
+			 	array('%s','%d','%s'))
+				)
+				{
+					$response->msg = __("Marker Added Successfully",'asl_admin');
+	  	 			$response->success = true;
+				}
+				else
+				{
+					$response->msg = __('Error occurred while saving record','asl_admin');//$form_data
+					
+				}
+	      	 	
+			}
+			//error
+			else {
+
+				$response->msg = __('Some error occured','asl_admin');
+			}
+
+			echo json_encode($response);
+		    die;
+	}
+
+	/**
+	 * [delete_marker delete marker/markers]
+	 * @return [type] [description]
+	 */
+	public function delete_marker() {
+		
+		global $wpdb;
+
+		$response  = new \stdclass();
+		$response->success = false;
+
+		$multiple = $_REQUEST['multiple'];
+		$delete_sql;$mResults;
+
+		if($multiple) {
+
+			$item_ids 		 = implode(",",$_POST['item_ids']);
+			$delete_sql 	 = "DELETE FROM ".AGILESTORELOCATOR_PREFIX."markers WHERE id IN (".$item_ids.")";
+			$mResults 		 = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers WHERE id IN (".$item_ids.")");
+		}
+		else {
+
+			$item_id 		 = $_REQUEST['marker_id'];
+			$delete_sql 	 = "DELETE FROM ".AGILESTORELOCATOR_PREFIX."markers WHERE id = ".$item_id;
+			$mResults 		 = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers WHERE id = ".$item_id );
+		}
+
+
+		if(count($mResults) != 0) {
+			
+			if($wpdb->query($delete_sql)) {
+
+					$response->success = true;
+
+					foreach($mResults as $m) {
+
+						$inputFileName = AGILESTORELOCATOR_PLUGIN_PATH.'public/icon/'.$m->icon;
+					
+						if(file_exists($inputFileName) && $m->icon != 'default.png') {	
+									
+							unlink($inputFileName);
+						}
+					}							
+			}
+			else
+			{
+				$response->error = __('Error occurred while deleting record','asl_admin');
+				$response->msg   = $wpdb->show_errors();
+			}
+		}
+		else
+		{
+			$response->error = __('Error occurred while deleting record','asl_admin');
+		}
+
+		if($response->success)
+			$response->msg = ($multiple)?__('Markers deleted successfully.','asl_admin'):__('Marker deleted successfully.','asl_admin');
+		
+		echo json_encode($response);die;
+	}
+
+
+
+	/**
+	 * [update_marker update marker with icon]
+	 * @return [type] [description]
+	 */
+	public function update_marker() {
+
+		global $wpdb;
+
+		$response  = new \stdclass();
+		$response->success = false;
+
+		$data = $_REQUEST['data'];
+		
+		
+		// with icon
+		if($data['action'] == "notsame") {
+
+			$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/icon/";
+
+			$namefile 	 = substr(strtolower($_FILES["files"]["name"]), 0, strpos(strtolower($_FILES["files"]["name"]), '.'));
+			
+
+			$imageFileType = pathinfo($_FILES["files"]["name"],PATHINFO_EXTENSION);
+		 	$target_name   = uniqid();
+
+
+		 	// Check the Size of the Image //
+			$tmp_file 			  = $_FILES["files"]['tmp_name'];
+			list($width, $height) = getimagesize($tmp_file);
+			
+			
+			//add extension
+			$target_name .= '.'.$imageFileType;
+
+		 	
+			$res = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers WHERE id = ".$data['marker_id']);
+
+			
+
+		 	if ($_FILES["files"]["size"] >  5000000) {
+			    $response->msg = __("Sorry, your file is too large.",'asl_admin');
+			    
+			    
+			}
+			// not a valid format
+			else if(!in_array($imageFileType, array('jpg','png','jpeg','gif','JPG'))) {
+			    $response->msg = __("Sorry, only JPG, JPEG, PNG & GIF files are allowed.",'asl_admin');
+			    
+			}
+			else if($width > $this->max_ico_width || $height > $this->max_ico_width) {
+
+				$response->msg = __("Max Image dimensions Width and Height is {$this->max_ico_width} x {$this->max_ico_height} px.<br> Recommended Icon size is 20 x 32 px or around it",'asl_admin');
+			}
+			// upload 
+			else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_name)) {
+				//delete previous file
+
+				
+				
+					$wpdb->update(AGILESTORELOCATOR_PREFIX."markers",array( 'marker_name'=> $data['marker_name'], 'icon'=> $target_name),array('id' => $data['marker_id']),array( '%s' ), array( '%d' ));		
+					$response->msg = __('Updated Successfully.','asl_admin');
+					$response->success = true;
+					if (file_exists($target_dir.$res[0]->icon)) {	
+						unlink($target_dir.$res[0]->icon);
+					}
+			}
+			//error
+			else {
+
+				$response->msg = __('Some error occured','asl_admin');
+				
+			}
+
+		}
+		//without icon
+		else {
+
+			$wpdb->update(AGILESTORELOCATOR_PREFIX."markers",array( 'marker_name'=> $data['marker_name']),array('id' => $data['marker_id']),array( '%s' ), array( '%d' ));		
+			$response->msg = __('Updated Successfully.','asl_admin');
+			$response->success = true;	
+
+		}
+		
+		echo json_encode($response);die;
+	}
+
+	
+	/**
+	 * [get_markers GET the Markers List]
+	 * @return [type] [description]
+	 */
+	public function get_markers() {
+
+		global $wpdb;
+		$start = isset( $_REQUEST['iDisplayStart'])?$_REQUEST['iDisplayStart']:0;		
+		$params  = isset($_REQUEST)?$_REQUEST:null; 	
+
+		$acolumns = array(
+			'id','id','marker_name','is_active','icon'
+		);
+
+		$columnsFull = $acolumns;
+
+		$clause = array();
+
+		if(isset($_REQUEST['filter'])) {
+
+			foreach($_REQUEST['filter'] as $key => $value) {
+
+				if($value != '') {
+
+					if($key == 'is_active')
+					{
+						$value = ($value == 'yes')?1:0;
+					}
+
+					$clause[] = "$key like '%{$value}%'";
+				}
+			}	
+		} 
+
+		
+		
+		//iDisplayStart::Limit per page
+		$sLimit = "";
+		if ( isset( $_REQUEST['iDisplayStart'] ) && $_REQUEST['iDisplayLength'] != '-1' )
+		{
+			$sLimit = "LIMIT ".intval( $_REQUEST['iDisplayStart'] ).", ".
+				intval( $_REQUEST['iDisplayLength'] );
+		}
+
+		/*
+		 * Ordering
+		 */
+		$sOrder = "";
+		if ( isset( $_REQUEST['iSortCol_0'] ) )
+		{
+			$sOrder = "ORDER BY  ";
+
+			for ( $i=0 ; $i < intval( $_REQUEST['iSortingCols'] ) ; $i++ )
+			{
+				if (isset($_REQUEST['iSortCol_'.$i]))
+				{
+					$sOrder .= "`".$acolumns[ intval( $_REQUEST['iSortCol_'.$i] )  ]."` ".$_REQUEST['sSortDir_0'];
+					break;
+				}
+			}
+			
+
+			//$sOrder = substr_replace( $sOrder, "", -2 );
+			if ( $sOrder == "ORDER BY" )
+			{
+				$sOrder = "";
+			}
+		}
+		
+
+		$sWhere = implode(' AND ',$clause);
+		
+		if($sWhere != '')$sWhere = ' WHERE '.$sWhere;
+		
+		$fields = implode(',', $columnsFull);
+		
+		###get the fields###
+		$sql = 	"SELECT $fields FROM ".AGILESTORELOCATOR_PREFIX."markers";
+
+		$sqlCount = "SELECT count(*) 'count' FROM ".AGILESTORELOCATOR_PREFIX."markers";
+
+		/*
+		 * SQL queries
+		 * Get data to display
+		 */
+		$sQuery = "{$sql} {$sWhere} {$sOrder} {$sLimit}";
+		$data_output = $wpdb->get_results($sQuery);
+		
+		/* Data set length after filtering */
+		$sQuery = "{$sqlCount} {$sWhere}";
+		$r = $wpdb->get_results($sQuery);
+		$iFilteredTotal = $r[0]->count;
+		
+		$iTotal = $iFilteredTotal;
+
+	    /*
+		 * Output
+		 */
+		$sEcho = isset($_REQUEST['sEcho'])?intval($_REQUEST['sEcho']):1;
+		$output = array(
+			"sEcho" => intval($_REQUEST['sEcho']),
+			//"test" => $test,
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		
+		foreach($data_output as $aRow)
+	    {
+	    	$row = $aRow;
+
+	    	if($row->is_active == 1) {
+
+	        	 $row->is_active = 'Yes';
+	        }	       
+	    	else {
+
+	    		$row->is_active = 'No';	
+	    	}
+
+
+	    	$row->icon 	 = "<img  src='".AGILESTORELOCATOR_URL_PATH."public/icon/".$row->icon."' alt=''  style='width:20px'/>";	
+	    	$row->check  = '<div class="custom-control custom-checkbox"><input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="asl-chk-'.$row->id.'"><label class="custom-control-label" for="asl-chk-'.$row->id.'"></label></div>';
+	    	$row->action = '<div class="edit-options"><a data-id="'.$row->id.'" title="Edit" class="glyphicon-edit edit_marker"><svg width="14" height="14"><use xlink:href="#i-edit"></use></svg></a><a title="Delete" data-id="'.$row->id.'" class="glyphicon-trash delete_marker"><svg width="14" height="14"><use xlink:href="#i-trash"></use></svg></a></div>';
+	        $output['aaData'][] = $row;
+	    }
+
+		echo json_encode($output);die;
+	}
+
+	/**
+	 * [get_marker_by_id get marker by id]
+	 * @return [type] [description]
+	 */
+	public function get_marker_by_id() {
+
+		global $wpdb;
+
+		$response  = new \stdclass();
+		$response->success = false;
+
+		$store_id = $_REQUEST['marker_id'];
+		
+
+		$response->list = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers WHERE id = ".$store_id);
+
+		if(count($response->list)!=0){
+
+			$response->success = true;
+
+		}
+		else{
+			$response->error = __('Error occurred while geting record','asl_admin');
+
+		}
+		echo json_encode($response);die;
+	}
+
+	//////////////////////////
+	///////Methods for Logo //
+	//////////////////////////
+	
+
+	/**
+	 * [delete_logo Delete a Logo]
+	 * @return [type] [description]
+	 */
+	public function delete_logo() {
+		
+		global $wpdb;
+
+		$response  = new \stdclass();
+		$response->success = false;
+
+		$multiple = $_REQUEST['multiple'];
+		$delete_sql;$mResults;
+
+		if($multiple) {
+
+			$item_ids 		 = implode(",",$_POST['item_ids']);
+			$delete_sql 	 = "DELETE FROM ".AGILESTORELOCATOR_PREFIX."storelogos WHERE id IN (".$item_ids.")";
+			$mResults 		 = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos WHERE id IN (".$item_ids.")");
+		}
+		else {
+
+			$item_id 		 = $_REQUEST['logo_id'];
+			$delete_sql 	 = "DELETE FROM ".AGILESTORELOCATOR_PREFIX."storelogos WHERE id = ".$item_id;
+			$mResults 		 = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos WHERE id = ".$item_id );
+		}
+
+
+		if(count($mResults) != 0) {
+			
+			if($wpdb->query($delete_sql)) {
+
+					$response->success = true;
+
+					foreach($mResults as $m) {
+
+						$inputFileName = AGILESTORELOCATOR_PLUGIN_PATH.'public/Logo/'.$m->path;
+					
+						if(file_exists($inputFileName) && $m->path != 'default.png') {	
+									
+							unlink($inputFileName);
+						}
+					}							
+			}
+			else
+			{
+				$response->error = __('Error occurred while deleting record','asl_admin');
+				$response->msg   = $wpdb->show_errors();
+			}
+		}
+		else
+		{
+			$response->error = __('Error occurred while deleting record','asl_admin');
+		}
+
+		if($response->success)
+			$response->msg = ($multiple)?__('Logos deleted Successfully.','asl_admin'):__('Logo deleted Successfully.','asl_admin');
+		
+		echo json_encode($response);die;
+	}
+
+
+
+	/**
+	 * [update_logo update logo with icon]
+	 * @return [type] [description]
+	 */
+	public function update_logo() {
+
+		global $wpdb;
+
+		$response  = new \stdclass();
+		$response->success = false;
+
+		$data = $_REQUEST['data'];
+		
+		
+		// with icon
+		if($data['action'] == "notsame") {
+
+			$target_dir  = AGILESTORELOCATOR_PLUGIN_PATH."public/Logo/";
+
+			$namefile 	 = substr(strtolower($_FILES["files"]["name"]), 0, strpos(strtolower($_FILES["files"]["name"]), '.'));
+			
+
+			$imageFileType = pathinfo($_FILES["files"]["name"],PATHINFO_EXTENSION);
+		 	$target_name   = uniqid();
+			
+			$tmp_file = $_FILES["files"]['tmp_name'];
+			list($width, $height) = getimagesize($tmp_file);
+			
+			//add extension
+			$target_name .= '.'.$imageFileType;
+
+		 	
+			$res = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos WHERE id = ".$data['logo_id']);
+
+				
+
+		 	if ($_FILES["files"]["size"] >  5000000) {
+			    
+			    $response->msg = __("Sorry, your file is too large.",'asl_admin');
+			}
+			// not a valid format
+			else if(!in_array($imageFileType, array('jpg','png','jpeg','gif','JPG'))) {
+			    $response->msg = __("Sorry, only JPG, JPEG, PNG & GIF files are allowed.",'asl_admin');
+			    
+			}
+			else if($width > $this->max_img_width || $height > $this->max_img_width) {
+
+				$response->msg = __("Max Image dimensions Width and Height is {$this->max_img_width} x {$this->max_img_height} px.<br> Recommended Logo size is 250 x 250 px",'asl_admin');
+			}
+			// upload 
+			else if(move_uploaded_file($_FILES["files"]["tmp_name"], $target_dir.$target_name)) {
+				//delete previous file
+				
+					$wpdb->update(AGILESTORELOCATOR_PREFIX."storelogos",array( 'name'=> $data['logo_name'], 'path'=> $target_name),array('id' => $data['logo_id']),array( '%s' ), array( '%d' ));		
+					$response->msg = __('Updated Successfully.','asl_admin');
+					$response->success = true;
+					if (file_exists($target_dir.$res[0]->icon)) {	
+						unlink($target_dir.$res[0]->icon);
+					}
+			}
+			//error
+			else {
+
+				$response->msg = __('Some error occured','asl_admin');
+				
+			}
+
+		}
+		//without icon
+		else {
+
+			$wpdb->update(AGILESTORELOCATOR_PREFIX."storelogos",array( 'name'=> $data['logo_name']),array('id' => $data['logo_id']),array( '%s' ), array( '%d' ));		
+			$response->msg = __('Updated Successfully.','asl_admin');
+			$response->success = true;	
+
+		}
+		
+		echo json_encode($response);die;
+	}
+
+
+	/**
+	 * [get_logo_by_id get logo by id]
+	 * @return [type] [description]
+	 */
+	public function get_logo_by_id() {
+
+		global $wpdb;
+
+		$response  = new \stdclass();
+		$response->success = false;
+
+		$store_id = $_REQUEST['logo_id'];
+		
+
+		$response->list = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos WHERE id = ".$store_id);
+
+		if(count($response->list)!=0){
+
+			$response->success = true;
+
+		}
+		else{
+			$response->error = __('Error occurred while geting record','asl_admin');
+
+		}
+		echo json_encode($response);die;
+	}
+
+
+	/**
+	 * [get_logos GET the Logos]
+	 * @return [type] [description]
+	 */
+	public function get_logos() {
+
+		global $wpdb;
+		$start = isset( $_REQUEST['iDisplayStart'])?$_REQUEST['iDisplayStart']:0;		
+		$params  = isset($_REQUEST)?$_REQUEST:null; 	
+
+		$acolumns = array(
+			'id','id','name','path'
+		);
+
+		$columnsFull = $acolumns;
+
+		$clause = array();
+
+		if(isset($_REQUEST['filter'])) {
+
+			foreach($_REQUEST['filter'] as $key => $value) {
+
+				if($value != '') {
+
+					$clause[] = "$key like '%{$value}%'";
+				}
+			}	
+		} 
+
+		
+		
+		//iDisplayStart::Limit per page
+		$sLimit = "";
+		if ( isset( $_REQUEST['iDisplayStart'] ) && $_REQUEST['iDisplayLength'] != '-1' )
+		{
+			$sLimit = "LIMIT ".intval( $_REQUEST['iDisplayStart'] ).", ".
+				intval( $_REQUEST['iDisplayLength'] );
+		}
+
+		/*
+		 * Ordering
+		 */
+		$sOrder = "";
+		if ( isset( $_REQUEST['iSortCol_0'] ) )
+		{
+			$sOrder = "ORDER BY  ";
+
+			for ( $i=0 ; $i < intval( $_REQUEST['iSortingCols'] ) ; $i++ )
+			{
+				if (isset($_REQUEST['iSortCol_'.$i]))
+				{
+					$sOrder .= "`".$acolumns[ intval( $_REQUEST['iSortCol_'.$i] )  ]."` ".$_REQUEST['sSortDir_0'];
+					break;
+				}
+			}
+			
+
+			//$sOrder = substr_replace( $sOrder, "", -2 );
+			if ( $sOrder == "ORDER BY" )
+			{
+				$sOrder = "";
+			}
+		}
+		
+
+		$sWhere = implode(' AND ',$clause);
+		
+		if($sWhere != '')$sWhere = ' WHERE '.$sWhere;
+		
+		$fields = implode(',', $columnsFull);
+		
+		###get the fields###
+		$sql = 	"SELECT $fields FROM ".AGILESTORELOCATOR_PREFIX."storelogos";
+
+		$sqlCount = "SELECT count(*) 'count' FROM ".AGILESTORELOCATOR_PREFIX."storelogos";
+
+		/*
+		 * SQL queries
+		 * Get data to display
+		 */
+		$sQuery = "{$sql} {$sWhere} {$sOrder} {$sLimit}";
+		$data_output = $wpdb->get_results($sQuery);
+		
+		/* Data set length after filtering */
+		$sQuery = "{$sqlCount} {$sWhere}";
+		$r = $wpdb->get_results($sQuery);
+		$iFilteredTotal = $r[0]->count;
+		
+		$iTotal = $iFilteredTotal;
+
+	    /*
+		 * Output
+		 */
+		$sEcho = isset($_REQUEST['sEcho'])?intval($_REQUEST['sEcho']):1;
+		$output = array(
+			"sEcho" => intval($_REQUEST['sEcho']),
+			//"test" => $test,
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		
+		foreach($data_output as $aRow)
+	    {
+	    	$row = $aRow;
+
+	    	$row->path 	 = '<img src="'.AGILESTORELOCATOR_URL_PATH.'public/Logo/'.$row->path.'"  style="max-width:100px"/>';
+	    	$row->check  = '<div class="custom-control custom-checkbox"><input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="asl-chk-'.$row->id.'"><label class="custom-control-label" for="asl-chk-'.$row->id.'"></label></div>';
+	    	$row->action = '<div class="edit-options"><a data-id="'.$row->id.'" title="Edit" class="glyphicon-edit edit_logo"><svg width="14" height="14"><use xlink:href="#i-edit"></use></svg></a><a title="Delete" data-id="'.$row->id.'" class="glyphicon-trash delete_logo"><svg width="14" height="14"><use xlink:href="#i-trash"></use></svg></a></div>';
 	        $output['aaData'][] = $row;
 	    }
 
@@ -796,7 +1638,10 @@ class AgileStoreLocator_Admin {
 
 
 
-	/*GET List*/
+	/**
+	 * [get_store_list GET List of Stores]
+	 * @return [type] [description]
+	 */
 	public function get_store_list() {
 		
 		global $wpdb;
@@ -804,12 +1649,25 @@ class AgileStoreLocator_Admin {
 		$params  = isset($_REQUEST)?$_REQUEST:null; 	
 
 		$acolumns = array(
-			AGILESTORELOCATOR_PREFIX.'stores.id ',AGILESTORELOCATOR_PREFIX.'stores.id ',AGILESTORELOCATOR_PREFIX.'stores.id ','title','description','lat','lng','street','state','city','phone','email','website','postal_code','is_disabled',AGILESTORELOCATOR_PREFIX.'stores.created_on'/*,'country_id'*/
+			AGILESTORELOCATOR_PREFIX.'stores.id', AGILESTORELOCATOR_PREFIX.'stores.id ',AGILESTORELOCATOR_PREFIX.'stores.id ','title','description',
+			'lat','lng','street','state','city',
+			'phone','email','website','postal_code','is_disabled',
+			AGILESTORELOCATOR_PREFIX.'stores.id','marker_id', 'logo_id',
+			AGILESTORELOCATOR_PREFIX.'stores.created_on'/*,'country_id'*/
 		);
 
+		
 		$columnsFull = array(
 			AGILESTORELOCATOR_PREFIX.'stores.id as id',AGILESTORELOCATOR_PREFIX.'stores.id as id',AGILESTORELOCATOR_PREFIX.'stores.id as id','title','description','lat','lng','street','state','city','phone','email','website','postal_code','is_disabled',AGILESTORELOCATOR_PREFIX.'stores.created_on'/*,AGILESTORELOCATOR_PREFIX.'countries.country_name'*/
 		);
+
+		//	Show the Category in Grid, make it false for high records and fast query	
+		$category_in_grid = true;
+
+		$cat_in_grid_data = $wpdb->get_results("SELECT `value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'cat_in_grid'");
+		
+		if($cat_in_grid_data && $cat_in_grid_data[0] && $cat_in_grid_data[0]->value == '0')
+			$category_in_grid = false;		
 
 		
 
@@ -836,8 +1694,7 @@ class AgileStoreLocator_Admin {
 					$clause[] = AGILESTORELOCATOR_PREFIX."stores.{$key} LIKE '%{$value}%'";
 				}
 			}	
-		} 
-		
+		}
 		
 
 		//iDisplayStart::Limit per page
@@ -885,11 +1742,10 @@ class AgileStoreLocator_Admin {
 		$fields = implode(',', $columnsFull);
 		
 
-
-		$fields .= ',marker_id,logo_id,group_concat(category_id) as categories,iso_code_2';
+		$fields .= ($category_in_grid)?',marker_id,logo_id,group_concat(category_id) as categories,iso_code_2': ',marker_id,logo_id';
 
 		###get the fields###
-		$sql = 	"SELECT $fields FROM ".AGILESTORELOCATOR_PREFIX."stores LEFT JOIN ".AGILESTORELOCATOR_PREFIX."stores_categories ON ".AGILESTORELOCATOR_PREFIX."stores.id = ".AGILESTORELOCATOR_PREFIX."stores_categories.store_id  LEFT JOIN ".AGILESTORELOCATOR_PREFIX."countries ON ".AGILESTORELOCATOR_PREFIX."stores.country = ".AGILESTORELOCATOR_PREFIX."countries.id ";
+		$sql 			= 	($category_in_grid)? ("SELECT $fields FROM ".AGILESTORELOCATOR_PREFIX."stores LEFT JOIN ".AGILESTORELOCATOR_PREFIX."stores_categories ON ".AGILESTORELOCATOR_PREFIX."stores.id = ".AGILESTORELOCATOR_PREFIX."stores_categories.store_id  LEFT JOIN ".AGILESTORELOCATOR_PREFIX."countries ON ".AGILESTORELOCATOR_PREFIX."stores.country = ".AGILESTORELOCATOR_PREFIX."countries.id "): ("SELECT $fields FROM ".AGILESTORELOCATOR_PREFIX."stores ");
 
 
 		$sqlCount = "SELECT count(*) 'count' FROM ".AGILESTORELOCATOR_PREFIX."stores";
@@ -899,10 +1755,9 @@ class AgileStoreLocator_Admin {
 		 * SQL queries
 		 * Get data to display
 		 */
-		$dQuery = $sQuery = "{$sql} {$sWhere} GROUP BY ".AGILESTORELOCATOR_PREFIX."stores.id {$sOrder} {$sLimit}";
+		$dQuery = $sQuery = ($category_in_grid)? "{$sql} {$sWhere} GROUP BY ".AGILESTORELOCATOR_PREFIX."stores.id {$sOrder} {$sLimit}" : "{$sql} {$sWhere} {$sOrder} {$sLimit}";
 		
 		
-
 		$data_output = $wpdb->get_results($sQuery);
 		$wpdb->show_errors = false;
 		$error = $wpdb->last_error;
@@ -935,25 +1790,30 @@ class AgileStoreLocator_Admin {
 
 
 		$days_in_words = array('0'=>'Sun','1'=>'Mon','2'=>'Tues','3'=>'Wed','4'=>'Thur','5'=>'Fri','6'=>'Sat');
-		foreach($data_output as $aRow)
-	    {
+		
+		foreach($data_output as $aRow) {
+	    	
 	    	$row = $aRow;
+
+	    	//	No Category in Grid
+	    	if(!$category_in_grid) 
+	    		$row->categories = '';
 
 	    	$edit_url = 'admin.php?page=edit-agile-store&store_id='.$row->id;
 
-	    	$row->action = '<div class="edit-options"><a class="glyphicon glyphicon-duplicate" title="Duplicate" data-id="'.$row->id.'"></a>&nbsp; | &nbsp;<a href="'.$edit_url.'"><span title="Edit" class="glyphicon glyphicon-edit"></span></a> &nbsp; | &nbsp;<span title="Delete" data-id="'.$row->id.'" class="glyphicon glyphicon-trash"></span></div>';
-	    	$row->check  = '<input type="checkbox" data-id="'.$row->id.'" >';
+	    	$row->action = '<div class="edit-options"><a class="row-cpy" title="Duplicate" data-id="'.$row->id.'"><svg width="14" height="14"><use xlink:href="#i-clipboard"></use></svg></a><a href="'.$edit_url.'"><svg width="14" height="14"><use xlink:href="#i-edit"></use></svg></a><a title="Delete" data-id="'.$row->id.'" class="glyphicon-trash"><svg width="14" height="14"><use xlink:href="#i-trash"></use></svg></a></div>';
+	    	$row->check  = '<div class="custom-control custom-checkbox"><input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="asl-chk-'.$row->id.'"><label class="custom-control-label" for="asl-chk-'.$row->id.'"></label></div>';
 
 	    	//Show country with state
 	    	if($row->state && $row->iso_code_2)
 	    		$row->state = $row->state.', '.$row->iso_code_2;
 
-	        if($row->is_disabled == 1){
+	        if($row->is_disabled == 1) {
 
 	        	 $row->is_disabled = 'Yes';
 
 	        }	       
-	    	else{
+	    	else {
 	    		$row->is_disabled = 'No';	
 	    	}
 
@@ -991,9 +1851,20 @@ class AgileStoreLocator_Admin {
 	}
 
 
+	/**
+	 * [save_custom_map save customize map]
+	 * @return [type] [description]
+	 */
+	public function save_custom_map() {
+
+			
+	}
 
 
-	//save setting
+	/**
+	 * [save_setting save ASL Setting]
+	 * @return [type] [description]
+	 */
 	public function save_setting() {
 
 		global $wpdb;
@@ -1002,6 +1873,11 @@ class AgileStoreLocator_Admin {
 		$response->success = false;
 
 		$data_ = $_POST['data'];
+
+		//	Remove Script tag will be saved in wp_options
+		$remove_script_tag = $data_['remove_maps_script'];
+		unset($data_['remove_maps_script']);
+
 		$keys  =  array_keys($data_);
 
 		foreach($keys as $key) {
@@ -1011,44 +1887,33 @@ class AgileStoreLocator_Admin {
 			);
 		}
 
-		$response->msg 	   = "Setting has been Updated Successfully.";
-      	$response->success = true;
+
+
+		$response->msg 	   = __("Setting has been Updated Successfully.",'asl_admin');
+    $response->success = true;
 
 		echo json_encode($response);die;
 	}
 
-
-	public function admin_dashboard() {
-
-
-		global $wpdb;
-
-		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key'";
-		$all_configs_result = $wpdb->get_results($sql);
-
-		$all_configs = array('api_key' => $all_configs_result[0]->value);
-		$all_stats = array();
-		
-        $all_stats['markers']	 = 1; 
-
-        $temp = $wpdb->get_results( "SELECT count(*) as c FROM ".AGILESTORELOCATOR_PREFIX."stores");;
-        $all_stats['stores']    = $temp[0]->c;
-
 	
-		$temp = $wpdb->get_results( "SELECT count(*) as c FROM ".AGILESTORELOCATOR_PREFIX."categories");;
-        $all_stats['categories'] = $temp[0]->c;
-
-        $all_stats['searches'] = 'N/A';
-
-		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/dashboard.php';    
-	}
+	////////////////////////
+	//////////Page Callee //
+	////////////////////////
 	
-	/*Page Callee*/
+
+	/**
+	 * [admin_plugin_settings Admin Plugi]
+	 * @return [type] [description]
+	 */
 	public function admin_plugin_settings() {
 
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/add_store.php';
 	}
 
+	/**
+	 * [edit_store Edit a Store]
+	 * @return [type] [description]
+	 */
 	public function edit_store() {
 
 		global $wpdb;
@@ -1056,17 +1921,30 @@ class AgileStoreLocator_Admin {
 		$countries = $wpdb->get_results("SELECT id,country FROM ".AGILESTORELOCATOR_PREFIX."countries");
 		$logos     = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos ORDER BY name");
 		$markers   = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers");
-        $category  = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."categories ");
+        $category  = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."categories");
 
 		
 		$store_id = isset($_REQUEST['store_id'])?$_REQUEST['store_id']:null;
 
 		if(!$store_id) {
+
 			die('Invalid Store Id.');
 		}
 
 		$store  = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."stores WHERE id = $store_id");		
+		/*
+		$timing = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."stores_timing WHERE store_id = $store_id");
 
+		if($timing) {
+			$timing = (array)$timing[0];
+		}
+
+		else {
+
+			$timing['start_time_0'] = $timing['start_time_1'] = $timing['start_time_2'] = $timing['start_time_3'] = $timing['start_time_4'] = $timing['start_time_5'] = $timing['start_time_6'] = '';
+			$timing['end_time_0'] = $timing['end_time_1'] = $timing['end_time_2'] = $timing['end_time_3'] = $timing['end_time_4'] = $timing['end_time_5'] = $timing['end_time_6'] = '';
+		}
+		*/
 
 		$storecategory = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."stores_categories WHERE store_id = $store_id");
 
@@ -1080,19 +1958,29 @@ class AgileStoreLocator_Admin {
 		
 
 		//api key
-		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key'";
+		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key' || `key` = 'time_format'";
 		$all_configs_result = $wpdb->get_results($sql);
 
-		$all_configs = array('api_key' => $all_configs_result[0]->value);
+
+		$all_configs = array();
+
+		foreach($all_configs_result as $c) {
+			$all_configs[$c->key] = $c->value;
+		}
 
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/edit_store.php';		
 	}
 
 
+	/**
+	 * [admin_add_new_store Add a New Store]
+	 * @return [type] [description]
+	 */
 	public function admin_add_new_store() {
 		
 		global $wpdb;
 
+		//api key
 		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key' || `key` = 'time_format' || `key` = 'default_lat' || `key` = 'default_lng'";
 		$all_configs_result = $wpdb->get_results($sql);
 
@@ -1103,15 +1991,113 @@ class AgileStoreLocator_Admin {
 			$all_configs[$c->key] = $c->value;
 		}
 
-        $logos     = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos ORDER BY name");
-        $markers   = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers");
-        $category = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."categories");
+    $logos     = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."storelogos ORDER BY name");
+    $markers   = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."markers");
+    $category = $wpdb->get_results( "SELECT * FROM ".AGILESTORELOCATOR_PREFIX."categories");
 		$countries = $wpdb->get_results("SELECT * FROM ".AGILESTORELOCATOR_PREFIX."countries");
 
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/add_store.php';    
 	}
 
 
+	/**
+	 * [admin_dashboard Plugin Dashboard]
+	 * @return [type] [description]
+	 */
+	public function admin_dashboard() {
+
+
+		global $wpdb;
+
+		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key'";
+		$all_configs_result = $wpdb->get_results($sql);
+
+		$all_configs = array('api_key' => $all_configs_result[0]->value);
+		$all_stats = array();
+		
+		$temp = $wpdb->get_results( "SELECT count(*) as c FROM ".AGILESTORELOCATOR_PREFIX."markers");;
+        $all_stats['markers']	 = $temp[0]->c; 
+
+        $temp = $wpdb->get_results( "SELECT count(*) as c FROM ".AGILESTORELOCATOR_PREFIX."stores");;
+        $all_stats['stores']    = $temp[0]->c;
+
+	
+		$temp = $wpdb->get_results( "SELECT count(*) as c FROM ".AGILESTORELOCATOR_PREFIX."categories");;
+    $all_stats['categories'] = $temp[0]->c;
+
+
+    //	Ugly HAck
+    require_once AGILESTORELOCATOR_PLUGIN_PATH . 'includes/class-agile-store-locator-activator.php';
+    AgileStoreLocator_Activator::upgrade_method();
+
+
+		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/dashboard.php';    
+	}
+
+	/**
+	 * [get_stat_by_month Get the Stats of the Analytics]
+	 * @return [type] [description]
+	 */
+	public function get_stat_by_month() {
+
+		global $wpdb;
+
+		$month  = $_REQUEST['m'];
+		$year   = $_REQUEST['y'];
+
+		$c_m 	= date('m');
+		$c_y 	= date('y');
+
+		
+		if(!$month || is_nan($month)) {
+
+			//Current
+			$month = $c_m;
+		}
+
+		if(!$year || is_nan($year)) {
+
+			//Current
+			$year = $c_y;
+		}
+
+
+		$date = intval(date('d'));
+
+		//Not Current Month
+		if($month != $c_m && $year != $c_y) {
+
+			/*Month last date*/
+			$a_date = "{$year}-{$month}-1";
+			$date 	= date("t", strtotime($a_date));
+		}
+		
+
+		//WHERE YEAR(created_on) = YEAR(NOW()) AND MONTH(created_on) = MONTH(NOW())
+		$results = $wpdb->get_results("SELECT DAY(created_on) AS d, COUNT(*) AS c FROM `".AGILESTORELOCATOR_PREFIX."stores_view`  WHERE YEAR(created_on) = {$year} AND MONTH(created_on) = {$month} GROUP BY DAY(created_on)");
+
+		
+		
+		$days_stats = array();
+
+		for($a = 1; $a <= $date; $a++) {
+
+			$days_stats[(string)$a] = 0; 
+		}
+
+		foreach($results as $row) {
+
+			$days_stats[$row->d] = $row->c;
+		}
+	
+		echo json_encode(array('data'=>$days_stats));die;
+	}
+
+
+	/**
+	 * [admin_delete_all_stores Delete All Stores, Logos and Category Relations]
+	 * @return [type] [description]
+	 */
 	public function admin_delete_all_stores() {
 		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -1124,96 +2110,162 @@ class AgileStoreLocator_Admin {
         
         $wpdb->query("TRUNCATE TABLE `{$prefix}stores_categories`");
         $wpdb->query("TRUNCATE TABLE `{$prefix}stores`");
+        $wpdb->query("TRUNCATE TABLE `{$prefix}storelogos`");
      	
      	$response->success  = true;
-     	$response->msg 	    = 'All stores deleted';
+     	$response->msg 	    = __('All Stores with Logo Deleted','asl_admin');
 
      	echo json_encode($response);die;
 	}
 
-	
+	/**
+	 * [validate_api_key Validateyour Google API Key]
+	 * @return [type] [description]
+	 */
+	public function validate_api_key() {
 
+		global $wpdb;
+
+		error_reporting(E_ALL);
+		ini_set('display_errors', 1);
+
+		require_once AGILESTORELOCATOR_PLUGIN_PATH . 'includes/class-agile-store-locator-helper.php';
+
+		$response = new \stdclass();
+		$response->success = false;
+
+		//Get the API KEY
+		$sql 			= "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'server_key'";
+		$configs_result = $wpdb->get_results($sql);
+		$api_key 		= $configs_result[0]->value;
+
+		if($api_key) {
+
+			//Test Address
+			$street 	= '315 West Main Street';
+			$city		= 'Walla Walla';
+			$state 		= 'WA';
+			$zip 		= '45553';
+			$country 	= 'US';
+
+			$_address = $street.', '.$zip.'  '.$city.' '.$state.' '.$country;
+
+			$results = AgileStoreLocator_Helper::getLnt($_address,$api_key,true);
+
+
+			if(isset($results->error_message)) {
+
+				$response->msg 	  = $results->error_message;
+			}
+			else {
+
+				$response->msg 	   = __('Valid API Key','asl_admin');	
+				$response->success = true;	
+			}
+
+
+			//$response->msg 	  = __('API Key is Valid','asl_admin');
+			$response->success = false;
+		}
+		else
+			$response->msg = __('Server Google API Key is Missing','asl_admin');
+
+
+		echo json_encode($response);die;
+	}
+
+
+	/**
+	 * [admin_manage_categories Manage Categories]
+	 * @return [type] [description]
+	 */
 	public function admin_manage_categories() {
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/categories.php';
 	}
 
+	/**
+	 * [admin_store_markers Manage Markers]
+	 * @return [type] [description]
+	 */
 	public function admin_store_markers() {
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/markers.php';
 	}
 
+
+	/**
+	 * [admin_store_logos Manage Logos]
+	 * @return [type] [description]
+	 */
 	public function admin_store_logos() {
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/logos.php';
 	}
 	
-
+	/**
+	 * [admin_manage_store Manage Stores]
+	 * @return [type] [description]
+	 */
 	public function admin_manage_store() {
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/manage_store.php';
 	}
 
+	/**
+	 * [admin_import_stores Admin Import Store Page]
+	 * @return [type] [description]
+	 */
 	public function admin_import_stores() {
+
+		//Check if ziparhive is installed
+		global $wpdb;
+
+		//Get the API KEY
+		$sql 			= "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'server_key'";
+		$configs_result = $wpdb->get_results($sql);
+		$api_key 		= $configs_result[0]->value;
+
+		if(!$api_key) {
+
+			$api_key = __('Google API Key is Missing','asl_admin');
+		}
+
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/import_store.php';
 	}
 
 
+	/**
+	 * [admin_customize_map Customize the Map Page]
+	 * @return [type] [description]
+	 */
 	public function admin_customize_map() {
 
 		global $wpdb;
 
-		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key'";
+		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs WHERE `key` = 'api_key' OR `key` = 'default_lat' OR `key` = 'default_lng' ORDER BY id;";
 		$all_configs_result = $wpdb->get_results($sql);
 
-		$all_configs = array('api_key' => $all_configs_result[0]->value);
+		
+		$config_list = array();
+		foreach($all_configs_result as $item) {
+			$config_list[$item->key] = $item->value;
+		}
 
+		$all_configs = array('api_key' => $config_list['api_key'],'default_lat' => $config_list['default_lat'],'default_lng' => $config_list['default_lng']);
+		
 
-		$map_customize  = $wpdb->get_results("SELECT content FROM ".AGILESTORELOCATOR_PREFIX."settings WHERE type = 'map' AND id = 1");
-		$map_customize  = ($map_customize && $map_customize[0]->content)?$map_customize[0]->content:'[]';
+		$map_customize  = '[]';
 
 
 		//add_action( 'init', 'my_theme_add_editor_styles' );
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/customize_map.php';
 	}
 
-	//Add missing columns
-	private function add_configs() {
-
-		global $wpdb;
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		
-		$charset_collate = 'utf8';
-		$prefix 	 	 = $wpdb->prefix."asl_";
-
-
-		$asl_configs = array(
-			//NEW
-			array('map_language','',''),
-			array('map_region','','')
-		);
-
-		foreach($asl_configs as $_config) {
-
-			$key  = $_config[0];	
-			$val  = $_config[1];	
-			$type = $_config[2];
-
-			//validate if not exist, else enter it
-			$c = $wpdb->get_results("SELECT count(*) AS 'c' FROM `{$prefix}configs` WHERE `key` = '{$key}'");
-			if($c[0]->c == 0) {
-				
-				$sql =  "INSERT INTO `{$prefix}configs`(`key`,`value`,`type`) VALUES ('{$key}','{$val}','{$type}');";
-				dbDelta( $sql );
-			}
-		}
-	}
-
+	
+	/**
+	 * [admin_user_settings ASL Settings Page]
+	 * @return [type] [description]
+	 */
 	public function admin_user_settings() {
 	   
 	   	global $wpdb;
-
-	   	//add missing columns if not exist
-	   	$this->add_configs();
-
 	   	
 		$sql = "SELECT `key`,`value` FROM ".AGILESTORELOCATOR_PREFIX."configs";
 		$all_configs_result = $wpdb->get_results($sql);
@@ -1225,9 +2277,12 @@ class AgileStoreLocator_Admin {
 		}
 
 		///get Countries
-		$countries = $wpdb->get_results("SELECT country,iso_code_2  as code FROM ".AGILESTORELOCATOR_PREFIX."countries");
+		$countries 				= $wpdb->get_results("SELECT country,iso_code_2  as code FROM ".AGILESTORELOCATOR_PREFIX."countries");
+		
+		// Remove Google Script tags
+		$all_configs['remove_maps_script'] = get_option('asl-remove_maps_script');
 
 		include AGILESTORELOCATOR_PLUGIN_PATH.'admin/partials/user_setting.php';
-	}
+	}	
 }
 

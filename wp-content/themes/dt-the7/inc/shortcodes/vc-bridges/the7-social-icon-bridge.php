@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	"name"                    => __( "Social Icon Item" ),
@@ -15,8 +12,6 @@ return array(
 	"as_child"                => array( 'only' => 'dt_soc_icons' ),
 	"show_settings_on_create" => true,
 	"is_container"            => false,
-	"admin_enqueue_css"       => array( get_template_directory_uri() . '/fonts/icomoon-the7-social/style.css' ),
-	"front_enqueue_css"       => array( get_template_directory_uri() . '/fonts/icomoon-the7-social/style.css' ),
 	"params"                  => array(
 		array(
 			"type"       => "vc_link",
@@ -31,10 +26,11 @@ return array(
 			"type"       => "dt_title",
 		),
 		array(
-			"heading"    => __( "Choose icon", "the7mk2" ),
-			"param_name" => "dt_soc_icon",
-			"type"       => "dt_soc_icon_manager",
-			"value"      => "icon-ar-017-r",
+			"heading"          => __( "Choose icon", "the7mk2" ),
+			"param_name"       => "dt_soc_icon",
+			"type"             => "dt_soc_icon_manager",
+			"value"            => "icon-ar-017-r",
+			"edit_field_class" => "dt-shortcode-soc-icons",
 		),
 		array(
 			"heading"    => __( "Icon size", 'the7mk2' ),

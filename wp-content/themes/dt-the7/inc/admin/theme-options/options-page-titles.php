@@ -1,6 +1,7 @@
 <?php
 /**
  * Page titles settings.
+ *
  * @since 1.0.0
  */
 
@@ -13,7 +14,6 @@ $options[] = array( 'name' => _x( 'Layout', 'theme-options', 'the7mk2' ), 'type'
 
 $options[] = array( 'name' => _x( 'Title area layout', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-//Title area layout
 $options['general-title_align'] = array(
 	'id'      => 'general-title_align',
 	'name'    => _x( 'Title area layout', 'theme-options', 'the7mk2' ),
@@ -23,29 +23,28 @@ $options['general-title_align'] = array(
 	'std'     => 'left',
 	'options' => array(
 		'left'      => array(
-			'title' => 'Left title + right breadcrumbs',
+			'title' => _x( 'Left title + right breadcrumbs', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/l-r.gif',
 		),
 		'right'     => array(
-			'title' => 'Right title + left breadcrumbs',
+			'title' => _x( 'Right title + left breadcrumbs', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/r-l.gif',
 		),
 		'all_left'  => array(
-			'title' => 'Left',
+			'title' => _x( 'Left', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/l-l.gif',
 		),
 		'all_right' => array(
-			'title' => 'Right',
+			'title' => _x( 'Right', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/r-r.gif',
 		),
 		'center'    => array(
-			'title' => 'Centered',
+			'title' => _x( 'Centered', 'theme-options', 'the7mk2' ),
 			'src'   => '/inc/admin/assets/images/centre.gif',
 		),
 	),
 );
 
-//Title area height/padding
 $options[] = array( 'type' => 'divider' );
 
 $options['general-title_height'] = array(
@@ -72,7 +71,6 @@ $options['page_title-padding'] = array(
 
 $options[] = array( 'name' => _x( 'Style', 'theme-options', 'the7mk2' ), 'type' => 'heading', 'id' => 'style' );
 
-// Title style
 $options[] = array( 'name' => _x( 'Title area style', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
 $options['general-title_bg_mode'] = array(
@@ -115,8 +113,6 @@ $options[] = array(
 	'class' => 'general-title_bg_mode general-title-bg-mode-main-container',
 );
 
-
-//Title Background
 $options[] = array( 'type' => 'divider' );
 
 $options[] = array( 'type' => 'js_hide_begin', 'class' => 'general-title_bg_mode general-title-bg-solid-color' );
@@ -132,9 +128,7 @@ $options['general-title_bg_color'] = array(
 
 $options[] = array( 'type' => 'divider' );
 
-//Title border bottom
 $options[] = array( 'name' => _x( 'Border', 'theme-options', 'the7mk2' ), 'type' => 'title' );
-
 
 $options['general-title_decoration'] = array(
 	'id'        => 'general-title_decoration',
@@ -174,23 +168,19 @@ $options['general-title_decoration_outline_style'] = array(
 	'class'   => 'middle',
 	'std'     => 'solid',
 	'options' => array(
-		'solid'  => __( 'Solid' ),
-		'dotted' => __( 'Dotted' ),
-		'dashed' => __( 'Dashed' ),
-		'double' => __( 'Double' ),
+		'solid'  => _x( 'Solid', 'theme-options', 'the7mk2' ),
+		'dotted' => _x( 'Dotted', 'theme-options', 'the7mk2' ),
+		'dashed' => _x( 'Dashed', 'theme-options', 'the7mk2' ),
+		'double' => _x( 'Double', 'theme-options', 'the7mk2' ),
 	),
 );
 
-
 $options[] = array( 'type' => 'js_hide_end' );
-//-----
 
 $options[] = array( 'type' => 'divider' );
 
 $options[] = array( 'type' => 'js_hide_end' );
 
-
-//Title gradient settings
 $options[] = array( 'type' => 'js_hide_begin', 'class' => 'general-title_bg_mode general-title-bg-gradient-color' );
 
 $options[] = array( 'name' => _x( 'Gradient', 'theme-options', 'the7mk2' ), 'type' => 'title' );
@@ -202,22 +192,8 @@ $options['general-title_bg_gradient'] = array(
 	'std'  => '135deg|#ffffff 30%|#000000 100%',
 );
 
-// TODO: backward compatibility.
-/**
-$options['general-title_dir_gradient'] = array(
-	'name'     => _x( 'Gradient direction (deg)', 'theme-options', 'the7mk2' ),
-	'id'       => 'general-title_dir_gradient',
-	'class'    => 'mini',
-	'std'      => '135',
-	'type'     => 'text',
-	'sanitize' => 'dimensions',
-);
- */
-//-----
-
 $options[] = array( 'type' => 'js_hide_end' );
 
-//Title image bg settings
 $options[] = array( 'type' => 'js_hide_begin', 'class' => 'general-title_bg_mode general-title-bg-image' );
 
 $options[] = array( 'name' => _x( 'Background Image', 'theme-options', 'the7mk2' ), 'type' => 'title' );
@@ -248,7 +224,6 @@ $options['general-title_bg_image'] = array(
 		'position_y' => 'center',
 	),
 );
-//-----
 
 $options['general-title_bg_fullscreen'] = array(
 	'id'   => 'general-title_bg_fullscreen',
@@ -256,9 +231,7 @@ $options['general-title_bg_fullscreen'] = array(
 	'type' => 'checkbox',
 	'std'  => 0,
 );
-//-----
 
-//Title overlay bg settings
 $options['general-title_bg_overlay'] = array(
 	'id'   => 'general-title_bg_overlay',
 	'name' => _x( 'Enable color overlay ', 'theme-options', 'the7mk2' ),
@@ -278,7 +251,6 @@ $options['general-title_overlay_color'] = array(
 	),
 );
 
-//Background effects
 $options['general-title_scroll_effect'] = array(
 	'name'      => _x( 'Scroll effect', 'theme-options', 'the7mk2' ),
 	'id'        => 'general-title_scroll_effect',
@@ -291,8 +263,6 @@ $options['general-title_scroll_effect'] = array(
 	),
 	'show_hide' => array( 'custom' => true ),
 );
-
-//-----
 
 $options['general-title_bg_parallax'] = array(
 	'id'         => 'general-title_bg_parallax',
@@ -307,16 +277,15 @@ $options['general-title_bg_parallax'] = array(
 		'value'    => 'parallax',
 	),
 );
-//-----
 
 $options[] = array( 'type' => 'js_hide_end' );
 
 $options[] = array( 'type' => 'js_hide_end' );
 
 $options[] = array( 'type' => 'divider' );
+
 $options[] = array( 'name' => _x( 'Header', 'theme-options', 'the7mk2' ), 'type' => 'title' );
 
-//Choose header style
 $options['header-background'] = array(
 	'id'        => 'header-background',
 	'name'      => _x( 'Header style', 'theme-options', 'the7mk2' ),
@@ -345,7 +314,6 @@ $options['header-background'] = array(
 	),
 );
 
-//Transparent header style
 $options[] = array( 'type' => 'js_hide_begin' );
 
 $options['header-transparent_bg_color'] = array(
@@ -354,6 +322,7 @@ $options['header-transparent_bg_color'] = array(
 	'type' => 'alpha_color',
 	'std'  => 'rgba(0,0,0,0.5)',
 );
+
 $options['top-bar-transparent_bg_color'] = array(
 	'id'   => 'top-bar-transparent_bg_color',
 	'name' => _x( 'Top bar color', 'backend metabox', 'the7mk2' ),
@@ -377,8 +346,6 @@ $options[] = array( 'type' => 'js_hide_end' );
 
 $options[] = array( 'type' => 'js_hide_end' );
 
-
-//Title Decorative line mode
 $options[] = array(
 	'type'  => 'js_hide_begin',
 	'class' => 'general-title_bg_mode general-title-line-mode-main-container',
@@ -386,7 +353,6 @@ $options[] = array(
 
 $options[] = array( 'type' => 'divider' );
 
-//Title border bottom
 $options[] = array( 'name' => _x( 'Decorative line', 'theme-options', 'the7mk2' ), 'type' => 'title' );
 
 $options['general-title_decoration_line_color'] = array(
@@ -403,6 +369,7 @@ $options['general-title_decoration_line_height'] = array(
 	'type'  => 'number',
 	'units' => 'px',
 );
+
 $options['general-title_decoration_line_style'] = array(
 	'name'    => _x( 'Style', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-title_decoration_line_style',
@@ -410,19 +377,18 @@ $options['general-title_decoration_line_style'] = array(
 	'class'   => 'middle',
 	'std'     => 'solid',
 	'options' => array(
-		'solid'  => __( 'Solid' ),
-		'dotted' => __( 'Dotted' ),
-		'dashed' => __( 'Dashed' ),
-		'double' => __( 'Double' ),
+		'solid'  => _x( 'Solid', 'theme-options', 'the7mk2' ),
+		'dotted' => _x( 'Dotted', 'theme-options', 'the7mk2' ),
+		'dashed' => _x( 'Dashed', 'theme-options', 'the7mk2' ),
+		'double' => _x( 'Double', 'theme-options', 'the7mk2' ),
 	),
 );
 
 $options[] = array( 'type' => 'js_hide_end' );
 
 $options[] = array( 'name' => _x( 'Title', 'theme-options', 'the7mk2' ), 'type' => 'heading', 'id' => 'title' );
-$options[] = array( 'name' => _x( 'Page title', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-//Enable/disable Title
+$options[] = array( 'name' => _x( 'Page title', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
 $options['general-show_titles'] = array(
 	'id'      => 'general-show_titles',
@@ -442,52 +408,15 @@ $options['general-show_titles'] = array(
 	),
 );
 
-// Title font settings
-$options['general-font_family'] = array(
-	'name'       => _x( 'Font family', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-font_family',
-	'std'        => 'Roboto:700',
-	'type'       => 'web_fonts',
-	'fonts'      => 'all',
-	'dependency' => array(
-		'field'    => 'general-show_titles',
-		'operator' => '==',
-		'value'    => '1',
+$options['general-page-title-typography'] = array(
+	'id'         => 'general-page-title-typography',
+	'type'       => 'typography',
+	'std'        => array(
+		'font_family'    => 'Open Sans',
+		'font_size'      => 20,
+		'line_height'    => 20,
+		'text_transform' => 'none',
 	),
-);
-
-$options['general-title_size'] = array(
-	'name'       => _x( 'Font size', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-title_size',
-	'std'        => '30',
-	'type'       => 'slider',
-	'options'    => array( 'min' => 9, 'max' => 120 ),
-	'sanitize'   => 'font_size',
-	'dependency' => array(
-		'field'    => 'general-show_titles',
-		'operator' => '==',
-		'value'    => '1',
-	),
-);
-
-$options['general-title_line_height'] = array(
-	'name'       => _x( 'Line height', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-title_line_height',
-	'std'        => '36',
-	'type'       => 'slider',
-	'options'    => array( 'min' => 9, 'max' => 150 ),
-	'dependency' => array(
-		'field'    => 'general-show_titles',
-		'operator' => '==',
-		'value'    => '1',
-	),
-);
-
-$options['general-title_uppercase'] = array(
-	'name'       => _x( 'Capitalize', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-title_uppercase',
-	'type'       => 'checkbox',
-	'std'        => '0',
 	'dependency' => array(
 		'field'    => 'general-show_titles',
 		'operator' => '==',
@@ -507,15 +436,14 @@ $options['general-title_color'] = array(
 	),
 );
 
-
 $options[] = array(
 	'name' => _x( 'Breadcrumbs', 'theme-options', 'the7mk2' ),
 	'type' => 'heading',
 	'id'   => 'breadcrumbs',
 );
+
 $options[] = array( 'name' => _x( 'Breadcrumbs', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
-// Title breadcrumbs
 $options['general-show_breadcrumbs'] = array(
 	'id'        => 'general-show_breadcrumbs',
 	'name'      => _x( 'Breadcrumbs', 'theme-options', 'the7mk2' ),
@@ -534,56 +462,22 @@ $options['general-show_breadcrumbs'] = array(
 		),
 	),
 );
+
 $options[] = array( 'type' => 'js_hide_begin' );
+
 $options[] = array( 'type' => 'divider' );
+
 $options[] = array( 'name' => _x( 'Font', 'theme-options', 'the7mk2' ), 'type' => 'title' );
 
-$options['general-breadcrumbs_font_family'] = array(
-	'name'       => _x( 'Font family', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-breadcrumbs_font_family',
-	'std'        => 'Open Sans',
-	'type'       => 'web_fonts',
-	'fonts'      => 'all',
-	'dependency' => array(
-		'field'    => 'general-show_breadcrumbs',
-		'operator' => '==',
-		'value'    => '1',
+$options['breadcrumbs-typography'] = array(
+	'id'         => 'breadcrumbs-typography',
+	'type'       => 'typography',
+	'std'        => array(
+		'font_family'    => 'Open Sans',
+		'font_size'      => 12,
+		'line_height'    => 16,
+		'text_transform' => 'none',
 	),
-);
-
-$options['general-breadcrumbs_font_size'] = array(
-	'name'       => _x( 'Font size', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-breadcrumbs_font_size',
-	'std'        => '12',
-	'type'       => 'slider',
-	'options'    => array( 'min' => 9, 'max' => 120 ),
-	'sanitize'   => 'font_size',
-	'dependency' => array(
-		'field'    => 'general-show_breadcrumbs',
-		'operator' => '==',
-		'value'    => '1',
-	),
-);
-
-$options['general-breadcrumbs_line_height'] = array(
-	'name'       => _x( 'Line height', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-breadcrumbs_line_height',
-	'std'        => '16',
-	'type'       => 'slider',
-	'options'    => array( 'min' => 9, 'max' => 150 ),
-	'sanitize'   => 'font_size',
-	'dependency' => array(
-		'field'    => 'general-show_breadcrumbs',
-		'operator' => '==',
-		'value'    => '1',
-	),
-);
-
-$options['general-breadcrumbs_uppercase'] = array(
-	'name'       => _x( 'Capitalize', 'theme-options', 'the7mk2' ),
-	'id'         => 'general-breadcrumbs_uppercase',
-	'type'       => 'checkbox',
-	'std'        => '0',
 	'dependency' => array(
 		'field'    => 'general-show_breadcrumbs',
 		'operator' => '==',
@@ -632,6 +526,7 @@ $options['breadcrumbs_margin'] = array(
 );
 
 $options[] = array( 'type' => 'divider' );
+
 $options[] = array( 'name' => _x( 'Background & border', 'theme-options', 'the7mk2' ), 'type' => 'title' );
 
 $options['general-breadcrumbs_bg_color'] = array(
@@ -715,7 +610,6 @@ $options[] = array(
 	'id'   => 'responsiveness',
 );
 
-// Title Responsiveness
 $options[] = array( 'name' => _x( 'Responsive layout ', 'theme-options', 'the7mk2' ), 'type' => 'block' );
 
 $options['general-titles_responsiveness'] = array(
@@ -758,16 +652,17 @@ $options['general-responsive_title_size'] = array(
 	'id'       => 'general-responsive_title_size',
 	'std'      => '20',
 	'type'     => 'slider',
-	'options'  => array( 'min' => 9, 'max' => 120 ),
+	'options'  => array( 'min' => 1, 'max' => 120 ),
 	'sanitize' => 'font_size',
 );
 
 $options['general-responsive_title_line_height'] = array(
-	'name'    => _x( 'Responsive title line height', 'theme-options', 'the7mk2' ),
-	'id'      => 'general-responsive_title_line_height',
-	'std'     => '30',
-	'type'    => 'slider',
-	'options' => array( 'min' => 9, 'max' => 150 ),
+	'name'     => _x( 'Responsive title line height', 'theme-options', 'the7mk2' ),
+	'id'       => 'general-responsive_title_line_height',
+	'std'      => '30',
+	'type'     => 'slider',
+	'options'  => array( 'min' => 1, 'max' => 150 ),
+	'sanitize' => 'font_size',
 );
 
 $options['general-title_responsive_breadcrumbs'] = array(

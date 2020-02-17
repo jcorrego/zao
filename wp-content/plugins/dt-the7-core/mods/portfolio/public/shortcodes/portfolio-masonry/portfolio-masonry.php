@@ -5,12 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
 require_once  'class-dt-portfolio-shortcode-html.php';
 
 if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 
-	class DT_Shortcode_PortfolioMasonry extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_PortfolioMasonry extends The7pt_Shortcode_With_Inline_CSS {
 
 		/**
 		 * @var string
@@ -50,6 +49,7 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				'post_type'                      => 'category',
 				'category'                       => '',
 				'posts'                          => '',
+				'posts_offset'                   => 0,
 				'mode'                           => 'masonry',
 				'loading_effect' 				 => 'none',
 				'layout'                         => 'classic',
@@ -64,18 +64,16 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				'resized_image_dimensions'       => '1x1',
 				'image_paddings'                 => '0px 0px 0px 0px',
 				'image_scale_animation_on_hover' => 'quick_scale',
-				'image_hover_bg_color'           => 'solid_rollover_bg',
+				'image_hover_bg_color'           => 'default',
 				'image_border_radius'         	 => '0px',
 				'image_decoration'   			 => 'none',
 				'shadow_h_length'    			 => '0px',
 				'shadow_v_length'    			 => '4px',
 				'shadow_blur_radius' 			 => '12px',
 				'shadow_spread'      			 => '3px',
-				'shadow_color'       			 => 'rgba(0,0,0,.25)',
-				'custom_rollover_bg_color'       => '',
-				'custom_rollover_bg_color_2'     => '',
-				'custom_rollover_bg_color_1'     => '',
-				'custom_rollover_gradient_deg'   => '135deg',
+				'shadow_color'       			 => 'rgba(0,0,0,0.25)',
+				'custom_rollover_bg_color'       => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
 				'responsiveness'                 => 'browser_width_based',
 				'bwb_columns'                    => 'desktop:3|h_tablet:3|v_tablet:2|phone:1',
 				'pwb_column_min_width'           => '',
@@ -119,8 +117,7 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				'custom_content_color'           => '',
 				'content_bottom_margin'          => '5px',
 				'read_more_button'               => 'default_link',
-				'read_more_button_text'          => 'Read more',
-
+				'read_more_button_text'          => __( 'Read more', 'dt-the7-core' ),
 				'show_details' 					 => '',
 				'show_link' 					 => '',
 				'show_zoom' 					 => '',
@@ -133,10 +130,13 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				'project_icon_border_width'		 => '0',
 				'project_icon_border_radius'	 => '100px',
 				'project_icon_color' 			 => 'rgba(255,255,255,1)',
+				'project_icon_border'			 => 'y',
 				'project_icon_border_color'		 => '',
 				'project_icon_bg' 				 => 'y',
 				'project_icon_bg_color'			 => 'rgba(255,255,255,0.3)',
+				'dt_icon_hover' 				 => 'y',
 				'project_icon_color_hover' 		 => 'rgba(255,255,255,1)',
+				'project_icon_border_hover'		 => 'y',
 				'project_icon_border_color_hover'=> '',
 				'project_icon_bg_hover' 		 => 'y',
 				'project_icon_bg_color_hover' 	 => 'rgba(255,255,255,0.5)',
@@ -148,6 +148,7 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				'show_categories_filter'         => 'n',
 				'show_orderby_filter'            => 'n',
 				'show_order_filter'              => 'n',
+				'filter_position'				 => 'center',
 				'gap_below_category_filter'      => '',
 				'navigation_font_color'          => '',
 				'navigation_accent_color'        => '',
@@ -162,21 +163,8 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 		 */
 		protected function do_shortcode( $atts, $content = '' ) {
 			// Loop query.
-			$post_type = $this->get_att( 'post_type' );
-			if ( 'posts' === $post_type ) {
-				$query = $this->get_posts_by_post_type( 'dt_portfolio', $this->get_att( 'posts' ) );
-			} else {
-				$category_terms = presscore_sanitize_explode_string( $this->get_att( 'category' ) );
-				$category_field = ( is_numeric( $category_terms[0] ) ? 'term_id' : 'slug' );
+			$query = $this->get_loop_query();
 
-				$query = $this->get_posts_by_taxonomy( 'dt_portfolio', 'dt_portfolio_category', $category_terms, $category_field );
-			}
-
-			$query_new = apply_filters( 'the7_shortcode_query', null, $this->sc_name, $this->atts );
-			if ( is_a( $query_new, 'WP_Query' ) ) {
-				$query = $query_new;
-			}
-			
 			do_action( 'presscore_before_shortcode_loop', $this->sc_name, $this->atts );
 
 			// Remove default masonry posts wrap.
@@ -247,7 +235,6 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 
 			/**
 			 * Portfolio posts have a custom lazy loading classes.
-			 * @see DT_Portfolio_Shortcode_HTML::get_post_image
 			 */
 			presscore_remove_lazy_load_attrs();
 
@@ -278,6 +265,10 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 					$post_class_array[] = 'no-img';
 				}
 
+				if ( ! presscore_project_preview_buttons_count() && in_array( $this->get_att( 'layout' ), array( 'gradient_rollover', 'gradient_overlay' ), true ) ) {
+					$post_class_array[] = 'forward-post';
+				}
+
 				echo '<div ' . presscore_tpl_masonry_item_wrap_class( $visibility ) . presscore_tpl_masonry_item_wrap_data_attr() . '>';
 				echo '<article ' . $this->post_class( $post_class_array ) . ' data-name="' . esc_attr( get_the_title() ) . '" data-date="' . esc_attr( get_the_date( 'c' ) ) . '">';
 
@@ -287,45 +278,34 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				}
 
 				$post_media = '';
-				$follow_link = '';
-				$rollover_class = '';
 				$target = '';
-				if($config->get( 'follow_external_link' )){
+				if ( $config->get( 'follow_external_link' ) && $config->get( 'post.buttons.link.enabled' ) ) {
 					$follow_link = $config->get( 'post.buttons.link.url' );
-					$target = $config->get( 'post.buttons.link.target_blank' );
-				}else{
+					$target      = $config->get( 'post.buttons.link.target_blank' );
+				} else {
 					$follow_link = get_the_permalink();
 				}
-				if ( 1 == presscore_project_preview_buttons_count() ) {
- 					$rollover_class .= ' rollover-active';
-    			}
+
 				if ( has_post_thumbnail() ) {
-					// Post media.
-					$thumb_args = apply_filters( 'dt_post_thumbnail_args', array(
-						'img_id' => get_post_thumbnail_id(),
-						'class'  => 'post-thumbnail-rollover',
-						'href'   => $follow_link,
-						'wrap'   => '<a %HREF% %CLASS% target="'.$target.'" %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
-						'echo'   => false,
-					) );
+					$thumb_args = apply_filters(
+						'dt_post_thumbnail_args',
+						array(
+							'img_id' => get_post_thumbnail_id(),
+							'class'  => 'post-thumbnail-rollover',
+							'href'   => $follow_link,
+							'custom' => ' aria-label="' . esc_attr__( 'Post image', 'dt-the7-core' ) . '"',
+							'wrap'   => '<a %HREF% %CLASS% target="' . $target . '" %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
+							'echo'   => false,
+						)
+					);
 
 					if ( 'browser_width_based' === $this->get_att( 'responsiveness' ) ) {
-						$img_width_calculator_config = new The7_Image_Width_Calculator_Config( array(
-							'columns' => DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) ),
-						    'columns_gaps' => $this->get_att( 'gap_between_posts' ),
-						    'content_width' => of_get_option( 'general-content_width' ),
-						    'side_padding' => of_get_option( 'general-side_content_paddings' ),
-						    'mobile_side_padding' => of_get_option( 'general-mobile_side_content_paddings' ),
-						    'side_padding_switch' => of_get_option( 'general-switch_content_paddings' ),
-						    'sidebar_enabled' => ( 'disabled' !== $config->get( 'sidebar_position' ) ),
-						    'sidebar_on_mobile' => ( ! $config->get( 'sidebar_hide_on_mobile' ) ),
-						    'sidebar_width' => of_get_option( 'sidebar-width' ),
-						    'sidebar_gap' => of_get_option( 'sidebar-distance_to_content' ),
-						    'sidebar_switch' => of_get_option( 'sidebar-responsiveness' ),
-						    'image_is_wide' => ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) )
-						) );
-						$img_width_calculator = new The7_Image_BWB_Width_Calculator( $img_width_calculator_config );
-						$thumb_args['options'] = $img_width_calculator->calculate_options();
+						$image_is_wide         = ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) );
+						$thumb_args['options'] = the7_calculate_bwb_image_resize_options(
+							DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) ),
+							$this->get_att( 'gap_between_posts' ),
+							$image_is_wide
+						);
 					} else {
 						$thumb_args['options'] = presscore_set_image_dimesions();
 					}
@@ -337,26 +317,23 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 						$thumb_args['class'] .= ' layzr-bg';
 					}
 
-					
-					if ( in_array( $this->get_att( 'layout' ), array( 'classic', 'bottom_overlap' ) ) ) {
-						$post_media = dt_get_thumb_img( $thumb_args );
-					}else{
-						$post_media = dt_get_thumb_img( $thumb_args );
-					}
+					$post_media = dt_get_thumb_img( $thumb_args );
 				} elseif ( in_array( $this->get_att( 'layout' ), array( 'gradient_overlay', 'gradient_rollover' ) ) ) {
 					$img_placeholder = presscore_get_default_image();
 					$img_placeholder[1] = '1500';
 					$img_placeholder[2] = '1500';
-
-				     // Post media.
-				     $thumb_args = apply_filters( 'dt_post_thumbnail_args', array(
-					     'img_meta' => $img_placeholder,
-					     'class'    => 'post-thumbnail-rollover',
-					     'href'     => $follow_link,
-					     'wrap'     => '<a %HREF% %CLASS% target="'.$target.'" %CUSTOM%><img %IMG_CLASS% src="' . get_template_directory_uri() . '/images/gray-square.svg" %SIZE% /></a>',
-					     'echo'     => false,
-				     ) );
-
+					$thumb_args = apply_filters(
+						'dt_post_thumbnail_args',
+						array(
+							'img_meta' => $img_placeholder,
+							'class'    => 'post-thumbnail-rollover',
+							'href'     => $follow_link,
+							'custom'   => ' aria-label="' . esc_attr__( 'Post image', 'dt-the7-core' ) . '"',
+							'wrap'     => '<a %HREF% %CLASS% target="' . $target . '" %CUSTOM%><img %IMG_CLASS% src="' . get_template_directory_uri(
+								) . '/images/gray-square.svg" %SIZE% /></a>',
+							'echo'     => false,
+						)
+					);
 					$post_media = dt_get_thumb_img( $thumb_args );
 				}
 
@@ -502,12 +479,28 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 			}else{
 				$class[] = 'dt-icon-bg-off';
 			};
-
-			if($this->atts['project_icon_bg_hover'] === 'y'){
-				$class[] = 'dt-icon-hover-bg-on';
+			if($this->atts['project_icon_border'] === 'y'){
+				$class[] = 'dt-icon-border-on';
+			}
+			if($this->atts['dt_icon_hover'] === 'y'){
+				$class[] = 'dt-icon-hover-on';
+				if($this->atts['project_icon_border_hover'] === 'y'){
+					$class[] = 'dt-icon-hover-border-on';
+				}
+				if($this->atts['project_icon_bg_hover'] === 'y'){
+					$class[] = 'dt-icon-hover-bg-on';
+				}else{
+					$class[] = 'dt-icon-hover-bg-off';
+				}
 			}else{
-				$class[] = 'dt-icon-hover-bg-off';
-			};
+				$class[] = 'dt-icon-hover-off';
+			}
+
+			// if($this->atts['project_icon_bg_hover'] === 'y'){
+			// 	$class[] = 'dt-icon-hover-bg-on';
+			// }else{
+			// 	$class[] = 'dt-icon-hover-bg-off';
+			// };
 			if ( $this->get_att( 'project_icon_bg_color' ) === $this->get_att( 'project_icon_bg_color_hover' ) ) {
 				$class[] = 'disable-icon-hover-bg';
 			};
@@ -537,6 +530,14 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 			}
 			if ( 'shadow' === $this->atts['image_decoration'] ) {
 				$class[] = 'enable-img-shadow';
+			}
+			switch ( $this->get_att('filter_position') ) {
+				case 'left':
+					$class[] = 'filter-align-left';
+					break;
+				case 'right':
+					$class[] = 'filter-align-right';
+					break;
 			}
 
 			$class = $this->add_responsiveness_class( $class );
@@ -650,6 +651,40 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 		}
 
 		/**
+		 * Return less imports.
+		 *
+		 * @return array
+		 */
+		protected function get_less_imports() {
+			$dynamic_import_top = array();
+
+			switch ( $this->atts['layout'] ) {
+				case 'bottom_overlap':
+					$dynamic_import_top[] = 'layouts/bottom-overlap-layout.less';
+					break;
+				case 'gradient_overlap':
+					$dynamic_import_top[] = 'layouts/gradient-overlap-layout.less';
+					break;
+				case 'gradient_overlay':
+					$dynamic_import_top[] = 'layouts/gradient-overlay-layout.less';
+					break;
+				case 'gradient_rollover':
+					$dynamic_import_top[] = 'layouts/content-rollover-layout.less';
+					break;
+				case 'classic':
+				default:
+					$dynamic_import_top[] = 'layouts/classic-layout.less';
+			}
+
+			$dynamic_import_bottom = array();
+			if ( $this->atts['mode'] === 'grid' ) {
+				$dynamic_import_bottom[] = 'layouts/grid.less';
+			}
+
+			return compact( 'dynamic_import_top', 'dynamic_import_bottom' );
+		}
+
+		/**
 		 * Setup theme config for shortcode.
 		 */
 		protected function setup_config() {
@@ -746,9 +781,7 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'portfolio-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
@@ -766,10 +799,21 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				'post-thumb-padding-left',
 			), $this->get_att( 'image_paddings' ), '%|px' );
 			$less_vars->add_pixel_number( 'portfolio-image-border-radius', $this->get_att( 'image_border_radius' ));
-			$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-1', $this->get_att( 'custom_rollover_bg_color_1', '~""' ) );
-			$less_vars->add_keyword( 'portfolio-rollover-bg-2', $this->get_att( 'custom_rollover_bg_color_2', '~""' ) );
-			$less_vars->add_number( 'rollover-gradient-deg', $this->get_att( 'custom_rollover_gradient_deg' ));
+
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
 
 			if ( 'browser_width_based' === $this->get_att( 'responsiveness' ) ) {
 				$bwb_columns = DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) );
@@ -884,20 +928,13 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 			return $this->vc_inline_dummy( array(
 				'class'  => 'dt_vc-portfolio_masonry',
 				'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_portfolio_masonry_editor_ico.gif', 98, 104 ),
-				'title'  => _x( 'Portfolio Masonry & Grid', 'vc inline dummy', 'the7mk2' ),
+				'title'  => _x( 'Portfolio Masonry & Grid', 'vc inline dummy', 'dt-the7-core' ),
 
 				'style' => array( 'height' => 'auto' )
 			) );
 		}
 
 		protected function get_posts_filter_terms( $query ) {
-
-			if ( 'standard' !== $this->get_att( 'loading_mode' ) ) {
-				$post_ids = wp_list_pluck( $query->posts, 'ID' );
-
-				return wp_get_object_terms( $post_ids, 'dt_portfolio_category', array( 'fields' => 'all_with_object_id' ) );
-			}
-
 			$post_type = $this->get_att( 'post_type' );
 			$data = $this->get_att( $post_type );
 
@@ -932,6 +969,71 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 
 				return get_terms( $get_terms_args );
 			}
+		}
+
+		/**
+		 * Return posts query.
+		 *
+		 * @since 1.15.0
+		 *
+		 * @return WP_Query
+		 */
+		protected function get_loop_query() {
+			$query = apply_filters( 'the7_shortcode_query', null, $this->sc_name, $this->atts );
+			if ( is_a( $query, 'WP_Query' ) ) {
+				return $query;
+			}
+
+			add_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			add_filter( 'found_posts', array( $this, 'fix_pagination' ), 1, 2 );
+
+			$post_type = $this->get_att( 'post_type' );
+			if ( 'posts' === $post_type ) {
+				$query = $this->get_posts_by_post_type( 'dt_portfolio', $this->get_att( 'posts' ) );
+			} else {
+				$category_terms = presscore_sanitize_explode_string( $this->get_att( 'category' ) );
+				$category_field = ( is_numeric( $category_terms[0] ) ? 'term_id' : 'slug' );
+
+				$query = $this->get_posts_by_taxonomy( 'dt_portfolio', 'dt_portfolio_category', $category_terms, $category_field );
+			}
+
+			remove_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			remove_filter( 'found_posts', array( $this, 'fix_pagination' ), 1 );
+
+			return $query;
+		}
+
+		/**
+		 * Add offset to the posts query.
+		 *
+		 * @since 1.15.0
+		 *
+		 * @param WP_Query $query
+		 */
+		public function add_offset( &$query ) {
+			$offset  = (int) $this->atts['posts_offset'];
+			$ppp     = (int) $query->query_vars['posts_per_page'];
+			$current = (int) $query->query_vars['paged'];
+
+			if ( $query->is_paged ) {
+				$page_offset = $offset + ( $ppp * ( $current - 1 ) );
+				$query->set( 'offset', $page_offset );
+			} else {
+				$query->set( 'offset', $offset );
+			}
+		}
+
+		/**
+		 * Fix pagination accordingly with posts offset.
+		 *
+		 * @since 1.15.0
+		 *
+		 * @param int $found_posts
+		 *
+		 * @return int
+		 */
+		public function fix_pagination( $found_posts ) {
+			return $found_posts - (int) $this->atts['posts_offset'];
 		}
 
 		/**
@@ -988,13 +1090,14 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 		}
 
 		protected function get_posts_per_page( $pagination_mode ) {
-			$posts_per_page = - 1;
+			$max_posts_per_page = 99999;
 			switch ( $pagination_mode ) {
 				case 'disabled':
 					$posts_per_page = $this->get_att( 'dis_posts_total' );
 					break;
 				case 'standard':
 					$posts_per_page = $this->get_att( 'st_posts_per_page' );
+					$posts_per_page = $posts_per_page ? $posts_per_page : get_option( 'posts_per_page' );
 					break;
 				case 'js_pagination':
 					$posts_per_page = $this->get_att( 'jsp_posts_total' );
@@ -1005,6 +1108,13 @@ if ( ! class_exists( 'DT_Shortcode_PortfolioMasonry', false ) ):
 				case 'js_lazy_loading':
 					$posts_per_page = $this->get_att( 'jsl_posts_total' );
 					break;
+				default:
+					return $max_posts_per_page;
+			}
+
+			$posts_per_page = (int) $posts_per_page;
+			if ( $posts_per_page === -1 ) {
+				return $max_posts_per_page;
 			}
 
 			return $posts_per_page;

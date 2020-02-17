@@ -7,8 +7,6 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Social_Icons', false ) ) {
 
 	class DT_Shortcode_Social_Icons extends DT_Shortcode_With_Inline_Css {
@@ -78,14 +76,14 @@ if ( ! class_exists( 'DT_Shortcode_Social_Icons', false ) ) {
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name',  $this->get_unique_class(), '~"%s"' );
 			$less_vars->add_pixel_number( 'soc-icon-gap-between', $this->get_att( 'soc_icon_gap_between' ) );
 
 			return $less_vars->get_vars();
 		}
+
 		protected function get_less_file_name() {
 			// @TODO: Remove in production.
 			$less_file_name = 'social-icons-inline';

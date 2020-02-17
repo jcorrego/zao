@@ -68,22 +68,32 @@ if ( ! class_exists( 'The7_Plugins_List_Table' ) ) {
 
 			if ( $this->tgmpa->does_plugin_require_update( $slug ) && false === $this->tgmpa->does_plugin_have_update( $slug ) ) {
 				$update_status = __( 'Required Update not Available', 'tgmpa' );
-
 			} elseif ( $this->tgmpa->does_plugin_require_update( $slug ) ) {
 				$update_status = __( 'Requires Update', 'tgmpa' );
-
 			} elseif ( false !== $this->tgmpa->does_plugin_have_update( $slug ) ) {
 				$update_status = __( 'Update recommended', 'tgmpa' );
 			} else {
 				$update_status = __( 'Up to date', 'tgmpa' );
 			}
 
-			return sprintf(
-			/* translators: 1: install status, 2: update status */
+			if ( $this->tgmpa->does_plugin_have_cross_version_update( $slug ) ) {
+				$update_url  = $this->get_action_url( 'update', $slug, 'latest' );
+				$button_text = sprintf(
+					/* translators: %s: plugin version */
+					__( 'Force Upgrade to %s', 'tgmpa' ),
+					$this->tgmpa->get_plugin_latest_version( $slug )
+				);
+				$update_status .= '<br><a class="button-link button-link-delete force-update" href="' . esc_url( $update_url ) . '">' . esc_html( $button_text ) . '</a>';
+			}
+
+			$status_text = sprintf(
+				/* translators: 1: install status, 2: update status */
 				_x( '%1$s, %2$s', 'Install/Update Status', 'tgmpa' ),
 				$install_status,
 				$update_status
 			);
+
+			return $status_text;
 		}
 
 		/**
@@ -103,7 +113,7 @@ if ( ! class_exists( 'The7_Plugins_List_Table' ) ) {
 					break;
 				case 'external':
 					if ( presscore_theme_is_activated() ) {
-						$string = __( 'External Source', 'tgmpa' );
+						$string = __( 'The7 Repository', 'tgmpa' );
 					} else {
 						$string = wp_kses( sprintf( __( 'Please <a href="%s">register</a> the theme', 'tgmpa' ), admin_url( 'admin.php?page=the7-dashboard' ) ), array( 'a' => array( 'href' => true ) ) );
 					}
@@ -129,7 +139,7 @@ if ( ! class_exists( 'The7_Plugins_List_Table' ) ) {
 				$item_source = $this->tgmpa->plugins[ $item_slug ]['source'];
 			}
 
-			// If it's an external plugin and theme is not registered - show no actions
+			// If it's an external plugin and theme is not registered - show no actions.
 			if ( 'repo' !== $item_source && ! presscore_theme_is_activated() ) {
 				$prefix = ( defined( 'WP_NETWORK_ADMIN' ) && WP_NETWORK_ADMIN ) ? 'network_admin_' : '';
 				return apply_filters( "tgmpa_{$prefix}plugin_action_links", array(), $item['slug'], $item, $this->view_context );
@@ -158,18 +168,7 @@ if ( ! class_exists( 'The7_Plugins_List_Table' ) ) {
 
 			// Create the actual links.
 			foreach ( $actions as $action => $text ) {
-				$nonce_url = wp_nonce_url(
-					add_query_arg(
-						array(
-							'plugin'           => urlencode( $item['slug'] ),
-							'tgmpa-' . $action => $action . '-plugin',
-						),
-						$this->tgmpa->get_tgmpa_url()
-					),
-					'tgmpa-' . $action,
-					'tgmpa-nonce'
-				);
-
+				$nonce_url               = $this->get_action_url( $action, $item['slug'], 'minimum' );
 				$action_links[ $action ] = sprintf(
 					'<a href="%1$s">' . esc_html( $text ) . '</a>', // $text contains the second placeholder.
 					esc_url( $nonce_url ),
@@ -178,7 +177,43 @@ if ( ! class_exists( 'The7_Plugins_List_Table' ) ) {
 			}
 
 			$prefix = ( defined( 'WP_NETWORK_ADMIN' ) && WP_NETWORK_ADMIN ) ? 'network_admin_' : '';
+
 			return apply_filters( "tgmpa_{$prefix}plugin_action_links", array_filter( $action_links ), $item['slug'], $item, $this->view_context );
+		}
+
+		/**
+		 * Return action url.
+		 *
+		 * @param string $action      Can be install, update or activate.
+		 * @param string $plugin_slug Plugin slug.
+		 * @param string $version     Requested version. Can be recommended, minimum and latest.
+		 *
+		 * @return string
+		 */
+		protected function get_action_url( $action, $plugin_slug, $version = 'recommended' ) {
+			$query_args = array(
+				'plugin'           => urlencode( $plugin_slug ),
+				'tgmpa-' . $action => $action . '-plugin',
+			);
+
+			if ( $this->tgmpa->plugin_has_multiple_versions( $plugin_slug ) ) {
+				if ( $version === 'latest' ) {
+					$query_args['ver'] = $this->tgmpa->get_plugin_latest_version( $plugin_slug );
+				} elseif ( $version === 'minimum' ) {
+					$query_args['ver'] = $this->tgmpa->get_plugin_minimum_version( $plugin_slug );
+				} else {
+					$query_args['ver'] = $this->tgmpa->get_plugin_recommended_version( $plugin_slug );
+				}
+			}
+
+			return wp_nonce_url(
+				add_query_arg(
+					$query_args,
+					$this->tgmpa->get_tgmpa_url()
+				),
+				'tgmpa-' . $action,
+				'tgmpa-nonce'
+			);
 		}
 
 		/**
@@ -294,6 +329,17 @@ if ( ! class_exists( 'The7_Plugins_List_Table' ) ) {
 				foreach ( $plugins_to_install as $slug ) {
 					$name   = $this->tgmpa->plugins[ $slug ]['name'];
 					$source = $this->tgmpa->get_download_url( $slug );
+
+					// Add requested plugin version.
+					if ( $this->tgmpa->plugin_has_multiple_versions( $slug ) ) {
+						if ( isset( $_POST['plugin_version'][ $slug ] ) ) {
+							$requested_version = wp_unslash( $_POST['plugin_version'][ $slug ] );
+						} else {
+							$requested_version = $this->tgmpa->get_plugin_minimum_version( $slug );
+						}
+
+						$source = $this->tgmpa->add_plugin_version_query_arg( $source, $slug, $requested_version );
+					}
 
 					if ( ! empty( $name ) && ! empty( $source ) ) {
 						$names[] = $name;

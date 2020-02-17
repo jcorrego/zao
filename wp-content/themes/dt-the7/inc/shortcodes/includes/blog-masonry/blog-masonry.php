@@ -1,12 +1,7 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'class-dt-blog-lessvars-manager.php';
 require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'class-dt-blog-shortcode-html.php';
 
 if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
@@ -43,17 +38,18 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 		 * DT_Shortcode_BlogMasonry constructor.
 		 */
 		public function __construct() {
-			$this->sc_name = 'dt_blog_masonry';
+			$this->sc_name           = 'dt_blog_masonry';
 			$this->unique_class_base = 'blog-masonry-shortcode-id';
-			$this->taxonomy = 'category';
-			$this->post_type = 'post';
-			$this->default_atts = array(
+			$this->taxonomy          = 'category';
+			$this->post_type         = 'post';
+			$this->default_atts      = array(
 				'post_type'                      => 'category',
 				'category'                       => '',
 				'tags'                           => '',
 				'posts'                          => '',
+				'posts_offset'                   => 0,
 				'mode'                           => 'masonry',
-				'loading_effect' => 'none',
+				'loading_effect'                 => 'none',
 				'layout'                         => 'classic',
 				'bo_content_width'               => '75%',
 				'bo_content_overlap'             => '100px',
@@ -65,8 +61,10 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				'image_sizing'                   => 'resize',
 				'resized_image_dimensions'       => '3x2',
 				'image_paddings'                 => '0px 0px 0px 0px',
-				'image_scale_animation_on_hover' => 'y',
-				'image_hover_bg_color'           => 'y',
+				'image_scale_animation_on_hover' => 'slow_scale',
+				'image_hover_bg_color'           => 'disabled',
+				'custom_rollover_bg_color'       => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
 				'responsiveness'                 => 'browser_width_based',
 				'bwb_columns'                    => 'desktop:4|h_tablet:3|v_tablet:2|phone:1',
 				'pwb_column_min_width'           => '',
@@ -109,7 +107,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				'custom_content_color'           => '',
 				'content_bottom_margin'          => '5px',
 				'read_more_button'               => 'default_link',
-				'read_more_button_text'          => 'Read more',
+				'read_more_button_text'          => '',
 				'fancy_date'                     => 'n',
 				'fancy_date_font_color'          => '',
 				'fancy_date_bg_color'            => '',
@@ -117,11 +115,23 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				'fancy_categories'               => 'n',
 				'fancy_categories_font_color'    => '',
 				'fancy_categories_bg_color'      => '',
+				'show_zoom'                      => 'n',
+				'gallery_image_zoom_icon'        => 'icon-im-hover-001',
+				'project_icon_size'              => '32px',
+				'dt_project_icon'                => '',
+				'project_icon_bg_size'           => '44px',
+				'project_icon_border_width'      => '0',
+				'project_icon_border_radius'     => '100px',
+				'project_icon_color'             => 'rgba(255,255,255,1)',
+				'project_icon_border_color'      => '',
+				'project_icon_bg'                => 'n',
+				'project_icon_bg_color'          => 'rgba(255,255,255,0.3)',
 				'order'                          => 'desc',
 				'orderby'                        => 'date',
 				'show_categories_filter'         => 'n',
 				'show_orderby_filter'            => 'n',
 				'show_order_filter'              => 'n',
+				'filter_position'				 => 'center',
 				'gap_below_category_filter'      => '',
 				'navigation_font_color'          => '',
 				'navigation_accent_color'        => '',
@@ -181,6 +191,10 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				$filter_class[] = 'css-grid-filter';
 			}
 
+			$show_icon_zoom = '';
+			if ( $this->get_att( 'show_zoom' ) === 'y' ) {
+				$show_icon_zoom = '<span class="gallery-zoom-ico ' . esc_attr( $this->get_att( 'gallery_image_zoom_icon' ) ) . '"><span></span></span>';
+			}
 
 			if ( ! $this->get_flag( 'show_orderby_filter' ) && ! $this->get_flag( 'show_order_filter' ) ) {
 				$filter_class[] = 'extras-off';
@@ -206,7 +220,6 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 
 			/**
 			 * Blog posts have a custom lazy loading classes.
-			 * @see DT_Blog_Shortcode_HTML::get_post_image
 			 */
 			presscore_remove_lazy_load_attrs();
 
@@ -253,27 +266,17 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 						'img_id' => get_post_thumbnail_id(),
 						'class'  => 'post-thumbnail-rollover',
 						'href'   => get_permalink(),
-						'wrap'   => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
+						'wrap'   => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% />' . $show_icon_zoom . '</a>',
 						'echo'   => false,
 					) );
 
 					if ( 'browser_width_based' === $this->get_att( 'responsiveness' ) ) {
-						$img_width_calculator_config = new The7_Image_Width_Calculator_Config( array(
-							'columns' => DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) ),
-						    'columns_gaps' => $this->get_att( 'gap_between_posts' ),
-						    'content_width' => of_get_option( 'general-content_width' ),
-						    'side_padding' => of_get_option( 'general-side_content_paddings' ),
-						    'mobile_side_padding' => of_get_option( 'general-mobile_side_content_paddings' ),
-						    'side_padding_switch' => of_get_option( 'general-switch_content_paddings' ),
-						    'sidebar_enabled' => ( 'disabled' !== $config->get( 'sidebar_position' ) ),
-						    'sidebar_on_mobile' => ( ! $config->get( 'sidebar_hide_on_mobile' ) ),
-						    'sidebar_width' => of_get_option( 'sidebar-width' ),
-						    'sidebar_gap' => of_get_option( 'sidebar-distance_to_content' ),
-						    'sidebar_switch' => of_get_option( 'sidebar-responsiveness' ),
-						    'image_is_wide' => ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) )
-						) );
-						$img_width_calculator = new The7_Image_BWB_Width_Calculator( $img_width_calculator_config );
-						$thumb_args['options'] = $img_width_calculator->calculate_options();
+						$image_is_wide = ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) );
+						$thumb_args['options'] = the7_calculate_bwb_image_resize_options(
+							DT_VCResponsiveColumnsParam::decode_columns( $this->get_att( 'bwb_columns' ) ),
+							$this->get_att( 'gap_between_posts' ),
+							$image_is_wide
+						);
 					} else {
 						$thumb_args['options'] = presscore_set_image_dimesions();
 					}
@@ -296,7 +299,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 					     'img_meta' => $img_placeholder,
 					     'class'    => 'post-thumbnail-rollover',
 					     'href'     => get_permalink(),
-					     'wrap'     => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% src="' . get_template_directory_uri() . '/images/gray-square.svg" %SIZE% /></a>',
+					     'wrap'     => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% src="' . get_template_directory_uri() . '/images/gray-square.svg" %SIZE% /> ' . $show_icon_zoom . '</a>',
 					     'echo'     => false,
 				     ) );
 
@@ -304,7 +307,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				}
 
 				$details_btn_style = $this->get_att( 'read_more_button' );
-				$details_btn_text = $this->get_att( 'read_more_button_text' );
+				$details_btn_text = $this->get_att( 'read_more_button_text', esc_html_x( 'Read more', 'the7 shortcode', 'the7mk2' ) );
 				$details_btn_class = ( 'default_button' === $details_btn_style ? array(
 					'dt-btn-s',
 					'dt-btn',
@@ -436,6 +439,15 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 			if ( $this->get_flag( 'jsp_show_all_pages' ) ) {
 				$class[] = 'show-all-pages';
 			}
+			
+			switch ( $this->get_att('filter_position') ) {
+				case 'left':
+					$class[] = 'filter-align-left';
+					break;
+				case 'right':
+					$class[] = 'filter-align-right';
+					break;
+			}
 
 			if ( $this->get_flag( 'fancy_date' ) ) {
 				$class[] = presscore_blog_fancy_date_class();
@@ -445,7 +457,9 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				$class[] = 'content-align-center';
 			}
 
-			if ( $this->get_flag( 'image_scale_animation_on_hover' ) ) {
+			if ( $this->atts['image_scale_animation_on_hover']  === 'quick_scale' ) {
+				$class[] = 'quick-scale-img';
+			}else if($this->atts['image_scale_animation_on_hover']  === 'slow_scale') {
 				$class[] = 'scale-img';
 			}
 
@@ -465,8 +479,13 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 			}
 
 
-			if ( $this->get_flag( 'image_hover_bg_color' ) ) {
+			if ( 'disabled' != $this->get_att( 'image_hover_bg_color' ) ) {
 				$class[] = 'enable-bg-rollover';
+			}
+			if ( $this->get_flag( 'project_icon_bg' ) ) {
+				$class[] = 'dt-icon-bg-on';
+			} else {
+				$class[] = 'dt-icon-bg-off';
 			}
 
 			$class = $this->add_responsiveness_class( $class );
@@ -566,7 +585,41 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 		 * @return string
 		 */
 		protected function get_less_file_name() {
-			return get_template_directory() . '/css/dynamic-less/shortcodes/blog.less';
+			return PRESSCORE_THEME_DIR . '/css/dynamic-less/shortcodes/blog.less';
+		}
+
+		/**
+		 * Return less imports.
+		 *
+		 * @return array
+		 */
+		protected function get_less_imports() {
+			$dynamic_import_top = array();
+
+			switch ( $this->atts['layout'] ) {
+				case 'bottom_overlap':
+					$dynamic_import_top[] = 'blog/bottom-overlap-layout-blog.less';
+					break;
+				case 'gradient_overlap':
+					$dynamic_import_top[] = 'blog/gradient-overlap-layout-blog.less';
+					break;
+				case 'gradient_overlay':
+					$dynamic_import_top[] = 'blog/gradient-overlay-layout-blog.less';
+					break;
+				case 'gradient_rollover':
+					$dynamic_import_top[] = 'blog/content-rollover-layout-blog.less';
+					break;
+				case 'classic':
+				default:
+					$dynamic_import_top[] = 'blog/classic-layout-blog.less';
+			}
+
+			$dynamic_import_bottom = array();
+			if ( $this->atts['mode'] === 'grid' ) {
+				$dynamic_import_bottom[] = 'blog/grid.less';
+			}
+
+			return compact( 'dynamic_import_top', 'dynamic_import_bottom' );
 		}
 
 		/**
@@ -584,7 +637,10 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 			$config->set( 'show_excerpts', $show_post_content );
 			$config->set( 'post.preview.content.visible', $show_post_content );
 			$config->set( 'show_details', ( 'off' !== $this->get_att( 'read_more_button' ) ) );
+			$config->set( 'blog.show_icon', ('n' !==$this->get_att( 'show_zoom' )));
+			$config->set( 'blog.show_icon.html',($this->get_att( 'gallery_image_zoom_icon')));
 			$config->set( 'image_layout', ( 'resize' === $this->get_att( 'image_sizing' ) ? $this->get_att( 'image_sizing' ) : 'original' ) );
+
 
 			if ( 'resize' == $this->get_att( 'image_sizing' ) && $this->get_att( 'resized_image_dimensions' ) ) {
 				// Sanitize.
@@ -662,9 +718,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'blog-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
@@ -716,6 +770,21 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				'post-content-padding-bottom',
 				'post-content-padding-left',
 			), $this->get_att( 'post_content_paddings' ) );
+			
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
 
 			$less_vars->add_pixel_number( 'post-title-font-size', $this->get_att( 'post_title_font_size' ) );
 			$less_vars->add_pixel_number( 'post-title-line-height', $this->get_att( 'post_title_line_height' ) );
@@ -742,6 +811,15 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				'post-content-font-weight',
 				'post-content-text-transform',
 			), $this->get_att( 'content_font_style' ) );
+
+			$less_vars->add_pixel_number( 'project-icon-size', $this->get_att( 'project_icon_size' ) );
+			$less_vars->add_pixel_number( 'project-icon-bg-size', $this->get_att( 'project_icon_bg_size' ) );
+			$less_vars->add_pixel_number( 'project-icon-border-width', $this->get_att( 'project_icon_border_width' ) );
+			$less_vars->add_pixel_number( 'project-icon-border-radius', $this->get_att( 'project_icon_border_radius' ) );
+			$less_vars->add_keyword( 'project-icon-color', $this->get_att( 'project_icon_color', '~""' ) );
+			$less_vars->add_keyword( 'project-icon-border-color', $this->get_att( 'project_icon_border_color', '~""' ) );
+			$less_vars->add_keyword( 'project-icon-bg-color', $this->get_att( 'project_icon_bg_color', '~""' ) );
+
 			$less_vars->add_pixel_number( 'shortcode-filter-gap', $this->get_att( 'gap_below_category_filter', '' ) );
 			$less_vars->add_keyword( 'shortcode-filter-color', $this->get_att( 'navigation_font_color', '~""' ) );
 			$less_vars->add_keyword( 'shortcode-filter-accent', $this->get_att( 'navigation_accent_color', '~""' ) );
@@ -780,13 +858,6 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 		}
 
 		protected function get_posts_filter_terms( $query ) {
-
-			if ( 'standard' !== $this->get_att( 'loading_mode' ) ) {
-				$post_ids = wp_list_pluck( $query->posts, 'ID' );
-
-				return wp_get_object_terms( $post_ids, 'category', array( 'fields' => 'all_with_object_id' ) );
-			}
-
 			$post_type = $this->get_att( 'post_type' );
 			$data = $this->get_att( $post_type );
 
@@ -859,6 +930,9 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				return $query;
 			}
 
+			add_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			add_filter( 'found_posts', array( $this, 'fix_pagination' ), 1, 2 );
+
 			$post_type = $this->get_att( 'post_type' );
 			if ( 'posts' === $post_type ) {
 				$query = $this->get_posts_by_post_type( 'post', $this->get_att( 'posts' ) );
@@ -871,7 +945,43 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				$query = $this->get_posts_by_taxonomy( 'post', 'category', $category_terms, $category_field );
 			}
 
+			remove_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			remove_filter( 'found_posts', array( $this, 'fix_pagination' ), 1 );
+
 			return $query;
+		}
+
+		/**
+		 * Add offset to the posts query.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @param WP_Query $query
+		 */
+		public function add_offset( &$query ) {
+			$offset  = (int) $this->get_att( 'posts_offset' );
+			$ppp     = (int) $query->query_vars['posts_per_page'];
+			$current = (int) $query->query_vars['paged'];
+
+			if ( $query->is_paged ) {
+				$page_offset = $offset + ( $ppp * ( $current - 1 ) );
+				$query->set( 'offset', $page_offset );
+			} else {
+				$query->set( 'offset', $offset );
+			}
+		}
+
+		/**
+		 * Fix pagination accordingly with posts offset.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @param int $found_posts
+		 *
+		 * @return int
+		 */
+		public function fix_pagination( $found_posts ) {
+			return $found_posts - (int) $this->get_att( 'posts_offset' );
 		}
 
 		/**
@@ -896,7 +1006,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 					'posts_per_page'   => $posts_per_page,
 					'post_type'        => $post_type,
 					'post_status'      => 'publish',
-					'paged'            => dt_get_paged_var(),
+					'paged'            => the7_get_paged_var(),
 					'suppress_filters' => false,
 					'post__in'         => $post_ids,
 				);
@@ -928,13 +1038,14 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 		}
 
 		protected function get_posts_per_page( $pagination_mode ) {
-			$posts_per_page = - 1;
+			$max_posts_per_page = 99999;
 			switch ( $pagination_mode ) {
 				case 'disabled':
 					$posts_per_page = $this->get_att( 'dis_posts_total' );
 					break;
 				case 'standard':
 					$posts_per_page = $this->get_att( 'st_posts_per_page' );
+					$posts_per_page = $posts_per_page ? $posts_per_page : get_option( 'posts_per_page' );
 					break;
 				case 'js_pagination':
 					$posts_per_page = $this->get_att( 'jsp_posts_total' );
@@ -945,6 +1056,13 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 				case 'js_lazy_loading':
 					$posts_per_page = $this->get_att( 'jsl_posts_total' );
 					break;
+				default:
+					return $max_posts_per_page;
+			}
+
+			$posts_per_page = (int) $posts_per_page;
+			if ( $posts_per_page === -1 ) {
+				return $max_posts_per_page;
 			}
 
 			return $posts_per_page;
@@ -991,7 +1109,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogMasonry', false ) ):
 
 				$query_args['orderby'] = $config->get( 'orderby' );
 				$query_args['order'] = $config->get( 'order' );
-				$query_args['paged'] = dt_get_paged_var();
+				$query_args['paged'] = the7_get_paged_var();
 			} else {
 				// JS pagination.
 				$query_args['orderby'] = $this->get_att( 'orderby' );

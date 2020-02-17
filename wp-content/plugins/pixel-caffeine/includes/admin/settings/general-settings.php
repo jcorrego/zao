@@ -94,9 +94,19 @@ return array(
 		'default' => 'yes'
 	),
 
+	'aepc_enable_search_event' => array(
+		'type' => 'checkbox',
+		'default' => 'yes'
+	),
+
 	'aepc_custom_fields_event' => array(
 		'type' => 'array',
 		'default' => array()
+	),
+
+	'aepc_no_pixel_init' => array(
+		'type' => 'checkbox',
+		'default' => 'no'
 	),
 
 	'aepc_force_ids' => array(
@@ -165,6 +175,11 @@ return array(
 	),
 
 	'aepc_enable_debug_mode' => array(
+		'type' => 'checkbox',
+		'default' => 'no'
+	),
+
+	'aepc_no_variation_tracking' => array(
 		'type' => 'checkbox',
 		'default' => 'no'
 	),

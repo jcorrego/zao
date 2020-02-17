@@ -1,27 +1,39 @@
-=== Woocommerce All Discounts - Dynamic pricing plugin with bulk discounts, quantity discounts, categories, tags, newsletters and more===
+=== Conditional Discounts for WooCommerce ===
 Contributors: mano88
 Donate link: https://discountsuiteforwp.com/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts
-Tags: category discount, user role discount, customer role discount, woocommerce discount, bulk pricing, cart discount, Buy One Get One , Free discounts, dynamic pricing, pricing deals, Woocommerce, facebook discount, free gift, instagram discount, order discount, shop discount, social discount, woocommerce discounts, woocommerce dynamic discounts, woocommerce dynamic pricing, woocommerce prices, woocommerce pricing, woocommerce wholesale pricing, quantity pricing
+Tags: WooCommerce dynamic pricing, WooCommerce bulk discount, WooCommerce quantity discount, WooCommerce role based pricing, WooCommerce discount plugin, category discount, user role discount, customer role discount, discount, bulk pricing, cart discount, Buy One Get One Free
 Requires at least: 3.5
 Requires PHP: 5.2.4
-Tested up to: 5.1.1
-Stable tag: 2.0
+Tested up to: 5.3
+Stable tag: 2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple yet advanced woocommerce discount plugin ideal for bulk discounts, wholesales discounts, quantity pricing, category discounts, mailchimp and sending blue subscription deals, facebook twitter and instagram share for discounts and much more.
+A powerful WooCommerce dynamic pricing plugin for bulk discounts, free gifts, BOGOs, customer role or groups based deals and much more.
 
 == Description ==
-Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which allows you to drive customer loyalty and revenue. Woocommerce All Discounts is a powerful extension which lets you manage shop discounts like a pro. You can create any type of woocommerce dynamic discount such as bulk discounts, percentage based, fixed amount discounts, buy one get one deals,free gifts or discounts on specific products, depending on the popularity of the product. You can offer advanced discounts in the form of dynamic pricing based on the customers role, cart items, product categories, product tag ,metas or attributes, orders count and many more ways.
 
-<iframe width="640" height="390" src="https://www.youtube.com/embed/a5aQei0QdhM?ecver=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+Formerly named “WooCommerce All Discounts”, the Conditional Discounts for WooCommerce plugin is a simple yet advanced WooCommerce dynamic discount plugin ideal for all types of deals, including the following:
+<ul>
+<li>WooCommerce bulk discounts</li>
+<li>Wholesale pricing</li>
+<li>Quantity based discounts</li>
+<li>Discounts based on products categories, tags, prices, metas and any product data</li>
+<li>Role based discounts</li>
+<li>Group discounts, member discounts and much more.</li>
+<li>Free gifts</li>
+
+<li>Discounts based on previous orders by the customer, or total amount spent in shop previously by customer</li>
+</ul>
+
+
 
 <h4>LINKS</h4>
 <ul>
-	<li><a href="https://discountsuiteforwp.com/top-woocommerce-dynamic-pricing-deals-examples/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Tutorials and examples in pictures</a></li>
-        <li><a href="https://discountsuiteforwp.com/wad-admin-demo/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Generate private admin demo</a></li>
-        <li><a href="https://discountsuiteforwp.com/documentation-and-tutorials/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Tutorials and documentation</a></li>
-        <li><a href="https://discountsuiteforwp.com/contact-us/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Get live chat support</a></li>
+		<li><a href="https://discountsuiteforwp.com/woocommerce-bulk-discounts/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Bulk discounts features</a></li>
+        <li><a href="https://discountsuiteforwp.com/customer-role-based-pricing/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Customer Role Based Pricing features</a></li>
+        <li><a href="https://discountsuiteforwp.com/woocommerce-free-gifts-and-bogo/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Free gifts & BOGO (buy one get one free) features</a></li>
+        <li><a href="https://discountsuiteforwp.com/more-discounts/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts" target="blank">Other discounts</a></li>
 </ul>
 
 <h3>FREE VERSION FEATURES</h3>
@@ -40,7 +52,7 @@ Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which
 
 <h4>CATEGORY/ TAG/ META/ DISCOUNT RULES:</h4>
 <ul>
-<li>5% off category “androids”  for customer ( lee@gmail.com )</li>
+<li>5% off category “androids” for customer ( lee@gmail.com )</li>
 <li>All subscribers get 5% off product with tag "Large"</li>
 </ul>
 
@@ -59,27 +71,10 @@ Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which
 <h4>QUANTITY BASED PRICING PERCENTAGE OFF / FIXED AMOUNT OFF:</h4>
 <ul>
 <li>If blackberry phone purchase is between 2 and 5, 10% discount is offered, and if the purchase is at least 6, 15% discount is offered</li>
-<li>If purchased sunglass is a multiple of 3, get 5% discount</li>
+<li>If purchased sunglasses is a multiple of 3, get 5% discount</li>
 </ul>
 
-<h3>PRO VERSION FEATURES</h3>
-
-<h4> CATEGORY/ TAG/ META/ DISCOUNT RULES:</h4>
-<ul>
-<li>Buy a product from make-up category and get 15% off </li>
-<li>Buy any camera of 41MP resolution and get 10% off cart subtotal</li>
-<li>Purchase 4 products from category B, and get 20$ off cart total amount</li>
-</ul>
-
-
-<h4>VARIABLE PRODUCT DISCOUNTS:</h4>
-<ul>
-<li>Buy 1 slipper of color blue and small size and get 20% off</li>
-<li>Get a red slipper for free if you purchase 2 blue slippers</li>
-<li>Purchase 2 small size t-shirt for the price of one</li>
-</ul>
-
-
+<h3>PRO VERSION FEATURES (includes free features)</h3>
 <h4>Buy One Get One free (BOGO):</h4>
 <ul>
 <li>Buy a phone and get headphone for free</li>
@@ -96,7 +91,6 @@ Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which
 <li>Purchase for a total of 500$ and get 20% discount based on shipping country</li>
 </ul>
 
-
 <h4>PRODUCT DISCOUNT:</h4>
 <ul>
 <li>Buy product A and get discount on product B</li>
@@ -105,7 +99,7 @@ Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which
 </ul>
 
 
-<h4>MAILCHIMP OR SENDINBLUE NEWSLETTER/ AFFILIATION DISCOUNT:</h4>
+<h4>MAILCHIMP, SENDINBLUE OR NEWSLETTER DISCOUNT:</h4>
 <ul>
 <li>Get discount on purchased product if subscribed to our mailchimp newsletter database</li>
 <li>Get discount if customer is following an affiliation link</li>
@@ -113,26 +107,50 @@ Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which
 <li>You get a 30% discount on your next order if 5 other customers land on my page using your affiliation link.</li>
 </ul>
 
+<h4>AFFILIATE DISCOUNT</h4>
+<span>It requires the AffiliateWP plugin installed and set up.</span>
+<ul><li>Get $43 discount off subtotal in cart if customer is an affiliate.</li></ul>
 
-<h4>SPECIFIC USER/ USER ROLE/ GROUP BASED DISCOUNT:</h4>
-<ul>
-<li>5% off for all shop subscribers</span></li>
-<li>20% off product if customer logs in with a specific email domain</li>
-<li>10% off cart subtotal if customer belongs to a specific group. Eg; loyal customers/li>
+<h4>SPECIFIC USER DISCOUNT</h4>
+<span>Discounts based on specific WordPress users.</span>
+<ul><li>5% for Mr. XYZ for his first online order in the store.</li></ul>
+
+<h4>USER ROLE DISCOUNT</h4>
+<span>Based on the user roles existing in the site.</span>
+<ul><li>$18 discount off products from Product list F for only “Authors” user roles.</li>
+<li>5% off for all shop subscribers</li></ul>
+
+<h4>GROUP BASED DISCOUNT</h4>
+<span>Requires the Groups plugin installed and set up.</span>
+<ul><li>$15 discount for members of the “Retailers” group</li>
+<li>10% off cart subtotal if customer belongs to a specific group. Eg; loyal customers</li>
 </ul>
 
+<h4>EMAIL DOMAIN BASED DISCOUNT</h4>
+<span>Administers discounts based on the first level domain of the user’s registered email address.</span>
+<ul><li>20% discount for customers with “wordpress.org” email domains</li></ul>
 
-<h4>SHIPPING/ BILLING BASED DISCOUNT:</h4>
+<h4>SHIPPING COUNTRY BASED DISCOUNT:</h4>
+<span>Discount based on the selected shipping country in the cart.</span>
 <ul>
 <li>50% off product if customer shipping country is Australia</li>
-<li>25$ off flat of if customers billing state is Abuja</li>
-<li>Get Product A for free if shipping state is New York</li>
 </ul>
 
+<h4>SHIPPING STATE BASED DISCOUNT</h4>
+<span>Discount based on the shipping state chosen by customer.</span>
+<ul><li>Get Product A for free if shipping state is New York</li></ul>
 
-<h4>DISCOUNT BASED ON COUPLED RULES:</h4>
+<h4>BILLING COUNTRY BASED DISCOUNT</h4>
+<span>It applies the discount if the chosen billing country is selected by the customer in the cart.</span>
+<ul><li>Get 40% discount off subtotal if billing country is “Benin”.</li></ul>
+
+<h4>BILLING STATE BASED DISCOUNT</h4>
+<span>The discount is applied if the customer chooses the selected billing state.</span>
+<ul><li>25$ off flat of if customers billing state is Abuja</li></ul>
+
+<h4>QUANTITY BASED DISCOUNTS:</h4>
 <ul>
-<li>If order item count is more or equals to 2 and in category A apply 20% discount on category B products.</li>
+<li>If order item count is more or equal to 2 and in category A, apply 20% discount on category B products.</li>
 <li>If order subtotal is less than 500$ and more than 100$ get 15% off cart subtotal.</li>
 <li>Offer 1 or more products from category B as free gift if order products in category B and if cart subtotal is more than 200$.</li>
 </ul>
@@ -183,11 +201,19 @@ Woocommerce All Discounts is a powerful woocommerce dynamic pricing plugin which
 <li>Get a free gift on the 4th purchase of product A</li>
 </ul>
 
+<h4>NEW: DISCOUNT APPLIED ON CHEAPEST PRODUCT IN CART</h4>
+<span>If the rules set are met, apply the discount to the cheapest product in the shopping cart. The discount can be a percentage or a fixed amount.</span>
+<ul>
+<li>Buy products from product list A and get $15 discount off the cheapest item in the cart.</li>
+<li>Buy between 5 and 10 items from product list C and get 10% discount off the cheapest item in the cart.</li>
+<li>If subscribed to MailChimp mailing list, get $19 discount off the cheapest item in the cart.</li></ul>
 
-<h4>CONDITIONS BASED and RULES APPLIED ON:</h4>
-<span>Discounts are applicable based on conditions define by the shop manager, conditions can be based on categories, a defined product list, (specifics) users role, country/state, social media, previous orders, first order, products in cart, product reviews, payment gateway, newsletter subscription, affiliation link, shop currency.</span>
-<span>The rules can be applied on free gift, product price, cart subtotal, and taxes.</span>
-
+<h4>NEW: DISCOUNT APPLIED ON CHEAPEST PRODUCT SUBTOTAL IN CART</h4>
+<span>If the rules set are met, apply the discount to the product with the lowest subtotal in the shopping cart. The discount can be a percentage or a fixed amount.</span>
+<ul>
+<li>If an affiliate member, and has 3 or more items from product list D in the cart, get $30 discount off the product with the lowest subtotal in the cart.</li>
+<li>If purchased 3 or more items previously from the store, get 25% discount off the product with the lowest subtotal in the cart.</li>
+</ul>
 
 == Installation ==
 
@@ -234,7 +260,7 @@ The WordPress codex contains <a href="http://codex.wordpress.org/Managing_Plugin
 
 <h4>Updating</h4>
 
-You can use automatic update to update the plugin safely.</div>
+You can use the automatic update feature of WordPress to update the plugin safely.</div>
 
 
 
@@ -257,11 +283,11 @@ You can use automatic update to update the plugin safely.</div>
 
 <li><a href="https://discountsuiteforwp.com/tutorials/create-woocommerce-bulk-discount-per-customer-role-group/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts"><strong>How to create a woocommerce bulk discount per customer role or group?</strong></a></li>
 
-<li><a href="https://discountsuiteforwp.com/tutorials/woocommerce-bulk-discount-per-category/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts"><strong>How to create a woocommerce bulk discount per category?</strong></a></li> 
+<li><a href="https://discountsuiteforwp.com/tutorials/woocommerce-bulk-discount-per-category/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts"><strong>How to create a woocommerce bulk discount per category?</strong></a></li>
 
 <li><a href="https://discountsuiteforwp.com/tutorials/create-products-list-using-woocommerce-discounts/?utm_source=wordpress.org&utm_medium=cpc&utm_campaign=Woocommerce%20All%20Discounts"><strong>How to create a products list using woocommerce all discounts?</strong></a></li>
 
-= Will Woocommerce All Discounts work with my theme ? =
+= Will Woocommerce All Discounts work with my theme? =
 
 Woocommerce All Discounts works with any theme, including the default WordPress themes.
 
@@ -273,19 +299,53 @@ Woocommerce All Discounts works with any theme, including the default WordPress 
 
 == Changelog ==
 
+= 2.10 =
+* Fixed issue: error message in the site health section related to cURL error 28 and REST API
+* Fixed issue: wrong calculation of the subtotal when changing the shipping method in the cart
+* Added compatibility with WooCommerce 3.9
+
+= 2.9.1 =
+* Removed reviews ads
+
+= 2.9 =
+*  Fixed: bug related to the ads not being dismissed
+
+= 2.8 =
+* Added reviews request notice from the dashboard.
+* Fixed: wrong product price in the mini-cart when using the quantity based pricing feature.
+
+= 2.7 =
+* Added documentation and support links to the plugin admin menus
+
+= 2.6 =
+* Fixed bug related to the display of sales prices on the home page
+* Fixed issue related to the new text domain
+* Fixed mini cart issues
+
+= 2.5 =
+* The Plugin can be translated on Wordpress.org
+
+= 2.2 =
+* Fixed issue related to the wrong discounts dates
+* Fixed issue related to the wrong subtotal in the mini-cart when discount on variable product is applied
+
+= 2.1 =
+* Added compatibility with WooCommerce 3.6.4
+* Improved overall speed
+
 = 2.0 =
 * Improved overall speed
 * Fixed issue related to the wrong item price in the mini-cart
 
 = 1.9 =
-* Added compatibility with woocommerce 3.5.5
+* Added compatibility with WooCommerce 3.5.5
 
 = 1.8 =
-* Compatibility issues with woocommerce 3.5.3
-* Fixed issue related to wrong subtotal in the mini-cart when quantity based pricing discount is applied
+* Compatibility issues with WooCommerce 3.5.3
+* Fixed issue related to the wrong subtotal in the mini-cart when quantity based pricing discount is applied
 
 = 1.7 =
-* Fixed compatibility issues with woocommerce 3.5.1
+* Fixed compatibility issues with WooCommerce 3.5.1
 * Fixed issue related to the display of the pricing table on the product page when rule type "step" is selected
 
 = 1.6 =
@@ -318,8 +378,8 @@ Woocommerce All Discounts works with any theme, including the default WordPress 
 * Fixed variable products issue
 
 = 0.9 =
-* Fixed css conflict with loco translate
-* Fixed quandity based pricing not being able to be disabled issue
+* Fixed CSS conflict with loco translate
+* Fixed the issue of quantity based pricing not being able to be disabled.
 
 = 0.8 =
 * Added pro features page
@@ -338,20 +398,39 @@ Woocommerce All Discounts works with any theme, including the default WordPress 
 
 = 0.5 =
 
-* Added compatibility with woocommerce 2.4.10
+* Added compatibility with WooCommerce 2.4.10
 * Updated ORION library included
 
 = 0.4 =
 
-* Improvements: Start and End dates are not mandatory anymore. When not filled, the discount is active everytime.
-* Added date picker to ease the dates selection.
-* Fixed error message when creating group of rules
-* Fixed lists and discounts requests limitation (nopaging issue)
+* Improvements: Start and End dates are not mandatory anymore. When not filled, the discount is active every time.
+* Added date picker to ease the date selection.
+* Fixed error message when creating groups of rules
+* Fixed lists and discounts requests limitation (“no paging” issue)
 * Fixed total cart discount is not displayed on the order details pages (admin and front)
 * Fixed variations IDs don't return anything when evaluating a list by IDs
 * Added plugin review notice
 
 == Upgrade Notice ==
+
+= 2.10 =
+* Fixed issue: error message in the site health section related to cURL error 28 and REST API
+* Fixed issue: wrong calculation of the subtotal when changing the shipping method in the cart
+* Added compatibility with WooCommerce 3.9
+
+=2.9.1=
+* Removed reviews ads
+
+
+=2.9=
+*  Fixed: bug related to the ads not being dismissed
+
+=2.8=
+* Added reviews request notice from the dashboard.
+* Fixed: wrong product price in the mini-cart when using the quantity based pricing feature.
+
+=2.7=
+* Added documentation and support links to the plugin admin menus
 
 = 1.5.2 =
 * Fixed issue related to "Invalid argument supplied for foreach"
@@ -380,8 +459,8 @@ Woocommerce All Discounts works with any theme, including the default WordPress 
 * Fixed variable products issue
 
 = 0.9 =
-* Fixed css conflict with loco translate
-* Fixed quandity based pricing not being able to be disabled issue
+* Fixed CSS conflict with loco translate
+* Fixed the issue of quantity based pricing not being able to be disabled.
 
 = 0.8 =
 * Added pro features page

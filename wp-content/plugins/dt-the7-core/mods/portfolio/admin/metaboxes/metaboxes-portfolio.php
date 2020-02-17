@@ -659,55 +659,61 @@ $DT_META_BOXES[] = array(
 	'priority' 	=> 'high',
 	'fields' 	=> array(
 
-		// Back button
-		Presscore_Meta_Box_Field_Template::get_as_array( 'select pages', array(
-			'name'		=> _x('Back button:', 'backend metabox', 'dt-the7-core'),
-			'id'		=> "{$prefix}back_button",
-			'divider'	=> 'bottom'
-		) ),
+		array(
+			'name'    => _x( 'Back button url:', 'backend metabox', 'dt-the7-core' ),
+			// Translators: %s link to theme options.
+			'desc'  => sprintf( _x( 'Leave empty to use link from %s.', 'backend metabox', 'dt-the7-core' ), '<a href="' . admin_url( 'admin.php?page=of-blog-and-portfolio-menu&tab=portfolio-tab&mark=general-project_back_button_url#section-general-show_back_button_in_project' ) . '" target="_blank">' . _x( 'Theme Options', 'backend metabox', 'dt-the7-core' ) . '</a>' ),
+			'id'      => "{$prefix}back_button",
+			'type'    => 'text',
+			'std'     => '',
+			'class'   => 'widefat',
+			'divider' => 'bottom',
+		),
 
 		////////////////////
 		// Project link //
 		////////////////////
 
 		array(
-			'name'    		=> _x('Project link:', 'backend metabox', 'dt-the7-core'),
-			'id'      		=> "{$prefix}show_link",
-			'type'    		=> 'checkbox',
-			'std'			=> 0,
-			'hide_fields'	=> array(
-				"{$prefix}link",
-				"{$prefix}link_name",
-				"{$prefix}link_target",
+			'name'        => _x( 'Project link:', 'backend metabox', 'dt-the7-core' ),
+				'id'          => "{$prefix}show_link",
+			'type'        => 'radio',
+			'std'         => 'disabled',
+			'options'     => array(
+				'0' => _x( 'Disabled', 'backend metabox', 'dt-the7-core' ),
+				'2' => _x( 'Link in projects lists only', 'backend metabox', 'dt-the7-core' ),
+				'1' => _x( 'Link in projects lists and on project page', 'backend metabox', 'dt-the7-core' ),
+			),
+			'hide_fields' => array(
+				'2' => array( "{$prefix}link_name" ),
+				'0' => array( "{$prefix}link", "{$prefix}link_name", "{$prefix}link_target" ),
 			),
 		),
 
-		// Link
 		array(
-			'name'	=> _x('Link:', 'backend metabox', 'dt-the7-core'),
-			'id'    => "{$prefix}link",
-			'type'  => 'text',
-			'std'   => '',
+			'name' => _x( 'Project link url:', 'backend metabox', 'dt-the7-core' ),
+			'id'   => "{$prefix}link",
+			'type' => 'text',
+			'std'  => '',
 		),
 
-		// Link name
 		array(
-			'name'	=> _x('Caption:', 'backend metabox', 'dt-the7-core'),
-			'id'    => "{$prefix}link_name",
-			'type'  => 'text',
-			'std'   => '',
-		),
-
-		// Target
-		array(
-			'name'    	=> _x('Target:', 'backend metabox', 'dt-the7-core'),
-			'id'      	=> "{$prefix}link_target",
-			'type'    	=> 'radio',
-			'std'		=> '',
-			'options'	=> array(
-				''			=> _x('_self', 'backend metabox', 'dt-the7-core'),
-				'_blank' 	=> _x('_blank', 'backend metabox', 'dt-the7-core'),
+			'name'    => _x( 'Project link target:', 'backend metabox', 'dt-the7-core' ),
+			'id'      => "{$prefix}link_target",
+			'type'    => 'radio',
+			'std'     => '',
+			'options' => array(
+				''       => _x( 'Same window/tab', 'backend metabox', 'dt-the7-core' ),
+				'_blank' => _x( 'New window/tab', 'backend metabox', 'dt-the7-core' ),
 			),
+		),
+
+		array(
+			'name'        => _x( 'Project link button caption:', 'backend metabox', 'dt-the7-core' ),
+			'id'          => "{$prefix}link_name",
+			'type'        => 'text',
+			'std'         => '',
+			'placeholder' => _x( 'Link', 'backend metabox', 'dt-the7-core' ),
 		),
 
 		///////////////////////////////////////////
@@ -715,11 +721,18 @@ $DT_META_BOXES[] = array(
 		///////////////////////////////////////////
 
 		array(
-			'name'    		=> _x('Hide featured image on project page:', 'backend metabox', 'dt-the7-core'),
-			'id'      		=> "{$prefix}hide_thumbnail",
-			'type'    		=> 'checkbox',
-			'std'			=> 0,
-			'top_divider'	=> true,
+			'name'        => _x( 'Featured image:', 'backend metabox', 'dt-the7-core' ),
+			'id'          => "{$prefix}hide_thumbnail",
+			'type'        => 'radio',
+			'options'     => array(
+				0 => _x( 'Visible', 'backend metabox', 'dt-the7-core' ),
+				1 => _x( 'Hidden', 'backend metabox', 'dt-the7-core' ),
+			),
+			'std'         => 0,
+			'top_divider' => true,
+			'hide_fields' => array(
+				1 => array( "{$prefix}open_thumbnail_in_lightbox" ),
+			),
 		),
 
 		///////////////////////////////////////

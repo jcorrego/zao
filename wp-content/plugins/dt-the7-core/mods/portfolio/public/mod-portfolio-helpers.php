@@ -151,13 +151,14 @@ if ( ! function_exists( 'presscore_get_project_media_slider' ) ) :
 			$video_url = esc_url( get_post_meta( $thumb_id, 'dt-video-url', true ) );
 
 			$thumb_args = array(
-				'img_meta' 	=> $thumb_meta,
-				'img_id'	=> $thumb_id,
+				'img_meta'  => $thumb_meta,
+				'img_id'    => $thumb_id,
 				'img_class' => 'preload-me',
-				'class'		=> 'alignnone rollover',
-				'href'		=> get_permalink( $post->ID ),
-				'wrap'		=> '<a %CLASS% %HREF% %TITLE% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %SIZE% /></a>',
-				'echo'		=> false,
+				'class'     => 'alignnone rollover',
+				'href'      => get_permalink( $post->ID ),
+				'custom'    => ' aria-label="' . esc_attr__( 'Post image', 'dt-the7-core' ) . '"',
+				'wrap'      => '<a %CLASS% %HREF% %TITLE% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %SIZE% /></a>',
+				'echo'      => false,
 			);
 
 			if ( $video_url ) {
@@ -224,9 +225,10 @@ if ( ! function_exists( 'presscore_get_project_rollover_zoom_icon' ) ) :
 	function presscore_get_project_rollover_zoom_icon( $args = array() ) {
 		$default_args = array(
 			// can be 'single', 'gallery' or 'first'
-			'popup' => 'single',
-			'class' => '',
-			'attachment_id' => 0
+			'popup'         => 'single',
+			'class'         => '',
+			'text'          => false,
+			'attachment_id' => 0,
 		);
 		$args = wp_parse_args( $args, $default_args );
 
@@ -277,13 +279,15 @@ if ( ! function_exists( 'presscore_get_project_rollover_zoom_icon' ) ) :
 				$data_attr .= sprintf( ' data-large_image_width="%s" data-large_image_height="%s"', intval( $attachment_src[1] ), intval( $attachment_src[2] ) );
 			}
 
+			$data_attr .= ' aria-label="' . esc_attr__( 'Portfolio zoom icon', 'dt-the7-core' ) . '"';
+			$text = $args['text'] === false ? esc_html( __( 'Zoom', 'dt-the7-core' ) ) : $args['text'];
 			$rollover_icon = sprintf(
 				'<a href="%s" class="%s" title="%s" %s>%s</a>',
 				esc_url( $link_src ),
 				esc_attr( implode( ' ', $link_class ) ),
 				esc_attr( $attachment_title ),
 				$data_attr,
-				__( 'Zoom', 'dt-the7-core' )
+				$text
 			);
 
 		}
@@ -358,14 +362,15 @@ if ( ! function_exists( 'presscore_project_get_thumbnail_img' ) ) :
 	 */
 	function presscore_project_get_thumbnail_img( $thumb_id, $class = '' ) {
 		$thumb_args = array(
-			'echo'		=> false,
-			'img_meta' 	=> wp_get_attachment_image_src( $thumb_id, 'full' ),
-			'img_id'	=> $thumb_id,
+			'echo'      => false,
+			'img_meta'  => wp_get_attachment_image_src( $thumb_id, 'full' ),
+			'img_id'    => $thumb_id,
 			'img_class' => 'preload-me',
-			'class'		=> $class,
-			'href'		=> get_permalink(),
-			'options'	=> presscore_set_image_dimesions(),
-			'wrap'		=> '<a %HREF% %CLASS% %TITLE% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %SIZE% /></a>'
+			'class'     => $class,
+			'href'      => get_permalink(),
+			'options'   => presscore_set_image_dimesions(),
+			'custom'    => ' aria-label="' . esc_attr__( 'Post image', 'dt-the7-core' ) . '"',
+			'wrap'      => '<a %HREF% %CLASS% %TITLE% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %SIZE% /></a>',
 		);
 
 		$thumb_args = apply_filters( 'dt_portfolio_thumbnail_args', $thumb_args );
@@ -411,3 +416,24 @@ if ( ! function_exists( 'presscore_project_get_preview_content' ) ) :
 	}
 
 endif;
+
+/**
+ * Return portfolio rollover class.
+ *
+ * @since
+ *
+ * @uses presscore_project_preview_buttons_count
+ *
+ * @return string
+ */
+function the7pt_get_portfolio_rollover_class() {
+	$rollover_class        = '';
+	$preview_buttons_count = presscore_project_preview_buttons_count();
+	if ( $preview_buttons_count === 0 ) {
+		$rollover_class = 'forward-post';
+	} elseif ( $preview_buttons_count === 1 ) {
+		$rollover_class = 'rollover-active';
+	}
+
+	return $rollover_class;
+}

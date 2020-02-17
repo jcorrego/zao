@@ -29,7 +29,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Scroller', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_vc-photos_scroller',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_photo_carousel_editor_ico.gif', 131, 104 ),
-	                'title'  => _x( 'Photos Scroller', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Photos Scroller', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -146,7 +146,7 @@ if ( ! class_exists( 'DT_Shortcode_Photos_Scroller', false ) ) {
 				'height' => '210',
 			);
 
-			$attributes = shortcode_atts( $default_atts, $atts );
+			$attributes = shortcode_atts( $default_atts, $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['orderby'] = ( 'recent' == $attributes['orderby'] ? 'date' : 'rand' );

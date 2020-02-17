@@ -52,6 +52,8 @@ if ( ! class_exists( 'Presscore_Mod_Benefits', false ) ) {
 
 			add_action( 'init', array( $mod_public, 'register_shortcodes' ) );
 			add_action( 'presscore_js_composer_after_bridge_loaded', array( $mod_public, 'load_shortcodes_vc_bridge' ) );
+			// Register dynamic stylesheets.
+			add_filter( 'presscore_get_dynamic_stylesheets_list', array( $mod_public, 'register_dynamic_stylesheet' ) );
 		}
 
 	}

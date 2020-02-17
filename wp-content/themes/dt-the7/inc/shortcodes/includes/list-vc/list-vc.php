@@ -33,7 +33,7 @@ if ( ! class_exists( 'DT_Shortcode_List_Vc', false ) ) {
 				'style' => '1',
 				'dividers' => 'true',
 				'bullet_position' => 'top',
-			), $atts ) );
+			), $atts, 'dt_vc_list' ) );
 
 			$style = in_array( $style, array('1', '2', '3') ) ? $style : '1';
 			$bullet_position = in_array( $bullet_position, array('top', 'middle') ) ? $bullet_position : 'middle';
@@ -83,7 +83,7 @@ if ( ! class_exists( 'DT_Shortcode_List_Vc', false ) ) {
 		public function shortcode_item( $atts, $content = null ) {
 			extract( shortcode_atts( array(
 				'image'         => '',
-			), $atts ) );
+			), $atts, 'dt_vc_list_item' ) );
 
 			$image = esc_url($image);
 
@@ -92,7 +92,7 @@ if ( ! class_exists( 'DT_Shortcode_List_Vc', false ) ) {
 				$content = '<div>' . $content . '</div>';
 
 				if ( $image ) {
-					$content = sprintf( '<div><img src="%s" class="list-img" alt="" /></div>%s', $image, $content );
+					$content = sprintf( '<div><img src="%s" class="list-img" alt="%s" /></div>%s', $image, esc_attr( __( 'List item image', 'the7mk2' ) ), $content );
 				}
 
 				$content = '<div class="wf-table">' . $content . '</div>';

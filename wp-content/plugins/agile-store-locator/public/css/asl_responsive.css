@@ -7,11 +7,17 @@
 .asl-p-cont#asl-storelocator a{box-shadow: none !important;}
 #asl-storelocator.asl-p-cont {position: relative;}
 .asl-p-cont .alert.asl-geo-err{position:absolute;top:0;width:50%;text-align:center;z-index:100000;left:25%;padding: 5px}
-
+.asl-p-cont#asl-storelocator .panel-cont .item .p-area a {color: inherit;}
+.asl-p-cont#asl-storelocator .panel-cont .item .glyphicon.icon-calendar { top: -2px}
+#asl-storelocator.asl-p-cont .info-addr * { color: #333333;}
 body #asl-storelocator.asl-p-cont #asl-map-canv *{-webkit-box-sizing:initial;-moz-box-sizing:initial;box-sizing:initial}
 body #asl-storelocator.asl-p-cont #asl-map-canv *:before,#asl-map-canv *:after{-webkit-box-sizing:initial;-moz-box-sizing:initial;box-sizing:initial}
+body #asl-storelocator.asl-p-cont .panel-cont {position: relative; display: inline-block; width: 100%}
 
-@media(max-width:1200px){
+#asl-storelocator.asl-p-cont .search_filter .form-control {color: #000000;}
+
+@media(max-width:1200px) {
+    
     .asl-p-cont#asl-storelocator .asl-advance-filters .drop_box_filter p span::before {
         display: none !important;
     }

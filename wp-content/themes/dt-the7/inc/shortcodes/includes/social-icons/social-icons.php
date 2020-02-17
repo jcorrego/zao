@@ -30,7 +30,7 @@ if ( ! class_exists( 'DT_Shortcode_SocialIcons', false ) ) {
 			$attributes = shortcode_atts( array(
 				'animation'			=> 'none',
 				'alignment'			=> 'default'
-			), $atts );
+			), $atts, 'dt_social_icons' );
 
 			$classes = array( 'soc-ico' );
 
@@ -57,7 +57,7 @@ if ( ! class_exists( 'DT_Shortcode_SocialIcons', false ) ) {
 				'icon'          => '',
 				'target_blank'  => '1',
 				'link'          => '#'
-			), $atts ) );
+			), $atts, 'dt_social_icon' ) );
 
 			static $social_icons = null;
 

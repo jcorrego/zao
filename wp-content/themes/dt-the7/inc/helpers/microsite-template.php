@@ -191,8 +191,12 @@ if ( ! function_exists( 'presscore_microsite_theme_options_filter' ) ) :
 		/**
 		 * Favicon.
 		 */
-		if ( 'general-favicon' === $name && presscore_microsite_is_custom_logo( "{$field_prefix}favicon_type" ) ) {
-			$favicon = get_post_meta( $post->ID, "{$field_prefix}favicon", true );
+		$favicon_meta = array(
+			'general-favicon'    => 'favicon',
+			'general-favicon_hd' => 'favicon_hd',
+		);
+		if ( array_key_exists( $name, $favicon_meta ) && presscore_microsite_is_custom_logo( "{$field_prefix}favicon_type" ) ) {
+			$favicon = get_post_meta( $post->ID, "{$field_prefix}{$favicon_meta[$name]}", true );
 			if ( $favicon ) {
 				$icon_image = wp_get_attachment_image_src( $favicon[0], 'full' );
 
@@ -301,11 +305,13 @@ if ( ! function_exists( 'presscore_microsite_setup' ) ) :
 		$hide_header = in_array( 'header', $hidden_parts );
 		$hide_floating_menu = in_array( 'floating_menu', $hidden_parts );
 
-		if ( $hide_header && $hide_floating_menu ) {
-			add_filter( 'presscore_show_header', '__return_false' );
-			add_filter( 'body_class', 'presscore_microsite_disable_headers' );
-		} else if ( $hide_header ) {
+		if ( $hide_header ) {
 			add_filter( 'body_class', 'presscore_microsite_hide_header' );
+
+			if ( $hide_floating_menu ) {
+				add_filter( 'presscore_show_header', '__return_false' );
+				add_filter( 'body_class', 'presscore_microsite_disable_headers' );
+			}
 		}
 
 		// Hide top bar.

@@ -7,11 +7,9 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 
-	class DT_Shortcode_Testimonials_Masonry extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_Testimonials_Masonry extends The7pt_Shortcode_With_Inline_CSS {
 		/**
 		 * @var string
 		 */
@@ -145,6 +143,9 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 
 			do_action( 'presscore_before_shortcode_loop', $this->sc_name, $this->atts );
 
+			// Remove default masonry posts wrap.
+			presscore_remove_posts_masonry_wrap();
+
 			$loading_mode = $this->get_att( 'loading_mode' );
 
 			$data_post_limit = '-1';
@@ -206,9 +207,17 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 
 					if ( $query->have_posts() ): while( $query->have_posts() ): $query->the_post();
 					do_action('presscore_before_post');
+
+						// Post visibility on the first page.
+						$visibility = 'visible';
+						if ( $data_post_limit >= 0 && $query->current_post >= $data_post_limit ) {
+							$visibility = 'hidden';
+						}
+						echo '<div ' . presscore_tpl_masonry_item_wrap_class( $visibility ) . presscore_tpl_masonry_item_wrap_data_attr() . '>';
+
 						$post_id = get_the_ID();
 
-						echo '<div class="testimonial-item">';
+						echo '<div class="testimonial-item post visible">';
 						if ( $this->get_att( 'content_layout' ) == 'layout_3' || $this->get_att( 'content_layout' ) == 'layout_4' ) {
 							echo '<div class="testimonial-author">';
 						}
@@ -318,6 +327,8 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 						if ( $this->get_att( 'content_layout' ) == 'layout_1' || $this->get_att( 'content_layout' ) == 'layout_5' || $this->get_att( 'content_layout' ) == 'layout_6' ) {
 							echo '</div>';
 						}
+
+					echo '</div>';
 
 					echo '</div>';
 
@@ -576,9 +587,8 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'dt-testimonials-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
 
@@ -705,7 +715,7 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 			return $this->vc_inline_dummy( array(
 				'class'  => 'dt_testimonials_masonry',
 				'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_testim_masonry_editor_ico.gif', 98, 104 ),
-				'title'  => _x( 'Testimonials Masonry & Grid', 'vc inline dummy', 'the7mk2' ),
+				'title'  => _x( 'Testimonials Masonry & Grid', 'vc inline dummy', 'dt-the7-core' ),
 
 				'style' => array( 'height' => 'auto' )
 			) );
@@ -894,12 +904,6 @@ if ( ! class_exists( 'DT_Shortcode_Testimonials_Masonry', false ) ) :
 		}
 
 		protected function get_posts_filter_terms( $query ) {
-			if ( 'standard' !== $this->get_att( 'loading_mode' ) ) {
-				$post_ids = wp_list_pluck( $query->posts, 'ID' );
-
-				return wp_get_object_terms( $post_ids, 'dt_testimonials_category', array( 'fields' => 'all_with_object_id' ) );
-			}
-
 			$post_type = $this->get_att( 'post_type' );
 			$data = $this->get_att( $post_type );
 

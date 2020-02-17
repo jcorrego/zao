@@ -1,12 +1,11 @@
 <?php
 /**
  * Deprecated function.
+ *
+ * @package The7
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * @deprecated
@@ -146,15 +145,17 @@ function dt_get_retina_sensible_image( $logo, $r_logo, $default, $custom = '', $
 	if ( ! isset( $img_meta['size'] ) && isset( $img_meta[1], $img_meta[2] ) ) {
 		$img_meta['size'] = image_hwstring( $img_meta[1], $img_meta[2] );
 	}
-	$output = dt_get_thumb_img( array(
-		'wrap'      => '<img %IMG_CLASS% %SRC% %SIZE% %CUSTOM% />',
-		'img_class' => $class,
-		'img_meta'  => $img_meta,
-		'custom'    => $custom,
-		'echo'      => false,
-		// TODO: add alt if it's possible
-		'alt'       => '',
-	) );
+	$output = dt_get_thumb_img(
+		array(
+			'wrap'      => '<img %IMG_CLASS% %SRC% %SIZE% %CUSTOM% />',
+			'img_class' => $class,
+			'img_meta'  => $img_meta,
+			'custom'    => $custom,
+			'echo'      => false,
+			// TODO: add alt if it's possible
+			'alt'       => '',
+		)
+	);
 
 	return $output;
 }
@@ -176,7 +177,6 @@ function dt_is_hd_device() {
  */
 function dt_core_detect_retina_script() {
 	/*
-
 	function createCookie(name, value, days) {
 		var expires;
 		if (days) {
@@ -235,7 +235,7 @@ function dt_core_detect_retina_script() {
 	*/
 	if ( ! isset( $_COOKIE['devicePixelRatio'] ) ) :
 		?>
-        <script type="text/javascript">
+		<script type="text/javascript">
 			function createCookie(a, d, b) {
 				if (b) {
 					var c = new Date;
@@ -269,7 +269,8 @@ function dt_core_detect_retina_script() {
 				var d = readCookie("devicePixelRatio"), b = void 0 === a.devicePixelRatio ? 1 : a.devicePixelRatio;
 				areCookiesEnabled() && null == d && (createCookie("devicePixelRatio", b, 7), 1 != b && a.location.reload(!0))
 			})(window);
-        </script><?php
+		</script>
+		<?php
 	endif;
 }
 
@@ -351,11 +352,11 @@ endif;
 /**
  * @deprecated 6.6.0
  *
- * @param Presscore_Lib_LessVars_Manager $less_vars
+ * @param The7_Less_Vars_Manager_Interface $less_vars
  *
  * @return array
  */
-function presscore_less_get_accent_colors( Presscore_Lib_LessVars_Manager $less_vars ) {
+function presscore_less_get_accent_colors( The7_Less_Vars_Manager_Interface $less_vars ) {
 	return the7_less_get_accent_colors( $less_vars );
 }
 
@@ -395,9 +396,9 @@ if ( ! function_exists( 'presscore_options_get_font_sizes' ) ) :
 	 */
 	function presscore_options_get_font_sizes() {
 		return array(
-			"big"    => _x( 'large', 'theme-options', 'the7mk2' ),
-			"normal" => _x( 'medium', 'theme-options', 'the7mk2' ),
-			"small"  => _x( 'small', 'theme-options', 'the7mk2' ),
+			'big'    => _x( 'large', 'theme-options', 'the7mk2' ),
+			'normal' => _x( 'medium', 'theme-options', 'the7mk2' ),
+			'small'  => _x( 'small', 'theme-options', 'the7mk2' ),
 		);
 	}
 
@@ -505,3 +506,492 @@ if ( ! function_exists( 'presscore_get_team_links_array' ) ) :
 	}
 
 endif;
+
+if ( ! function_exists( 'presscore_get_blank_image' ) ) :
+
+	/**
+	 * Get blank image.
+	 *
+	 * @deprecated 6.10.0
+	 */
+	function presscore_get_blank_image() {
+		return PRESSCORE_THEME_URI . '/images/1px.gif';
+	}
+
+endif;
+
+/**
+ * Return current paged/page query var or 1 if it's empty.
+ *
+ * @since      1.0.0
+ * @deprecated 7.1.1 Use the7_get_paged_var()
+ * @see        the7_get_paged_var()
+ *
+ * @return int
+ */
+function dt_get_paged_var() {
+	return the7_get_paged_var();
+}
+
+/**
+ * It's just a stub to deprecated function that is used in dt-the7-core.
+ *
+ * @deprecated 7.5.0 Do not use.
+ *
+ * @return bool
+ */
+function presscore_post_format_supports_media_content() {
+	return true;
+}
+
+if ( ! function_exists( 'presscore_display_share_buttons_for_image' ) ) :
+
+	/**
+	 * @deprecated 7.8.0
+	 *
+	 * @see the7_display_image_share_buttons
+	 *
+	 * @return string
+	 *
+	 */
+	function presscore_display_share_buttons_for_image( $place = '', $options = array() ) {
+		$default_options = array(
+			'class' => array( 'album-share-overlay' ),
+		);
+		$options         = wp_parse_args( $options, $default_options );
+
+		return presscore_display_share_buttons( $place, $options );
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_get_share_buttons_list' ) ) :
+
+	/**
+	 * @deprecated 7.8.0
+	 *
+	 * @see the7_get_share_buttons_list
+	 *
+	 * @return string
+	 */
+	function presscore_get_share_buttons_list( $place, $post_id = null ) {
+		global $post;
+
+		$buttons = of_get_option( 'social_buttons-' . $place, array() );
+
+		if ( empty( $buttons ) ) {
+			return array();
+		}
+
+		// get title
+		if ( ! $post_id ) {
+			$_post = $post;
+			$post_id = $_post->ID;
+		} else {
+			$_post = get_post( $post_id );
+		}
+
+		$t = isset( $_post->post_title ) ? $_post->post_title : '';
+
+		// get permalink
+		$u = get_permalink( $post_id );
+
+		$buttons_list = presscore_themeoptions_get_social_buttons_list();
+		$protocol = is_ssl() ? "https" : "http";
+		$share_buttons = array();
+
+		foreach ( $buttons as $button ) {
+			$esc_url = true;
+			$url = $custom = $icon_class = '';
+			$desc = $buttons_list[ $button ];
+
+			switch ( $button ) {
+				case 'twitter':
+					$icon_class = 'twitter';
+					$url = add_query_arg( array( 'url' => rawurlencode( $u ), 'text' => urlencode( $t ) ), 'https://twitter.com/share' );
+					break;
+				case 'facebook':
+					$icon_class = 'facebook';
+					$url = add_query_arg( array( 'u' => rawurlencode( $u ), 't' => urlencode( $t ) ), 'http://www.facebook.com/sharer.php' );
+					break;
+				case 'pinterest':
+					$icon_class = 'pinterest pinit-marklet';
+					$url = '//pinterest.com/pin/create/button/';
+					$custom = ' data-pin-config="above" data-pin-do="buttonBookmark"';
+					// if image
+					if ( wp_attachment_is_image( $post_id ) ) {
+						$image = wp_get_attachment_image_src( $post_id, 'full' );
+						if ( ! empty( $image ) ) {
+							$url = add_query_arg( array(
+													  'url'         => rawurlencode( $u ),
+													  'media'       => rawurlencode( $image[0] ),
+													  'description' => rawurlencode( apply_filters( 'get_the_excerpt', $_post->post_content ) )
+												  ), $url );
+							$custom = ' data-pin-config="above" data-pin-do="buttonPin"';
+							$icon_class = 'pinterest';
+						}
+					}
+					break;
+				case 'linkedin':
+					$bt = get_bloginfo( 'name' );
+					$url = $protocol . '://www.linkedin.com/shareArticle?mini=true&url=' . rawurlencode( $u ) . '&title=' . rawurlencode( $t ) . '&summary=&source=' . rawurlencode( $bt );
+					$icon_class = 'linkedin';
+					break;
+				case 'whatsapp':
+					$esc_url = false;
+					$url = 'https://api.whatsapp.com/send?text=' . rawurlencode( "{$t} - {$u}" );
+					$custom = ' data-action="share/whatsapp/share"';
+					$icon_class = 'whatsapp';
+					break;
+			}
+
+			if ( $esc_url ) {
+				$url = esc_url( $url );
+			}
+
+			$share_button = '<a class="' . $icon_class . '" href="' . $url . '" title="' . esc_attr( $desc ) . '" target="_blank"' . $custom . '><span class="soc-font-icon"></span><span class="screen-reader-text">' . sprintf( __( 'Share with %s', 'the7mk2' ), $desc ) . '</span></a>';
+
+			$share_buttons[] = apply_filters( 'presscore_share_button', $share_button, $button, $icon_class, $url, $desc, $t, $u );
+		}
+
+		return apply_filters( 'presscore_get_share_buttons_list', $share_buttons, $place, $post_id );
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_display_share_buttons' ) ) :
+
+	/**
+	 * Display share buttons.
+	 *
+	 * @deprecated 7.8.0
+	 *
+	 * @param string $place   Place.
+	 * @param array  $options Options.
+	 *
+	 * @return string
+	 */
+	function presscore_display_share_buttons( $place = '', $options = array() ) {
+		$default_options = array(
+			'echo'			=> true,
+			'class'			=> array( 'project-share-overlay' ),
+			'id'			=> null,
+			'title'			=> of_get_option( "social_buttons-{$place}-button_title", '' )
+		);
+		$options = wp_parse_args($options, $default_options);
+
+		$share_buttons = presscore_get_share_buttons_list( $place, $options['id'] );
+
+		if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
+			return '';
+		}
+
+		$class = $options['class'];
+		if ( ! is_array($class) ) {
+			$class = explode( ' ', $class );
+		}
+
+		$title = esc_html( $options['title'] );
+
+		$html =	'<div class="' . esc_attr( implode( ' ', $class ) ) . '">'
+				   . presscore_get_button_html( array(
+													'title' => $title ? $title : __( 'Share this', 'the7mk2' ),
+													'href' => '#',
+													'class' => 'share-button entry-share h5-size' . ( $title ? '' : ' no-text' )
+												) )
+				   . '<div class="soc-ico">'
+				   . implode( '', $share_buttons )
+				   . '</div>'
+				   . '</div>';
+
+		$html = apply_filters( 'presscore_display_share_buttons', $html );
+
+		if ( $options['echo'] ) {
+			echo $html;
+		}
+		return $html;
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_display_new_share_buttons' ) ) :
+
+	/**
+	 * Display share buttons.
+	 *
+	 * @deprecated 7.8.0
+	 *
+	 * @param string $place   Place.
+	 * @param array  $options Options.
+	 *
+	 * @return string
+	 */
+	function presscore_display_new_share_buttons( $place = '', $options = array() ) {
+		$default_options = array(
+			'echo'			=> true,
+			'class'			=> array( 'single-share-box' ),
+			'id'			=> null,
+			'title'			=> of_get_option( "social_buttons-{$place}-button_title", '' )
+		);
+		$options = wp_parse_args($options, $default_options);
+
+		$share_buttons = presscore_get_share_buttons_list( $place, $options['id'] );
+
+		if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
+			return '';
+		}
+
+		$class = $options['class'];
+		if ( ! is_array( $class ) ) {
+			$class = explode( ' ', $class );
+		}
+
+		$html =	'<div class="' . esc_attr( implode( ' ', $class ) ) . '">'
+				   . '<div class="share-link-description">' . esc_html( $options['title'] ) . '</div>'
+				   . '<div class="share-buttons">'
+				   . implode( '', $share_buttons )
+				   . '</div>'
+				   . '</div>';
+
+		$html = apply_filters( 'presscore_display_share_buttons', $html );
+
+		if ( $options['echo'] ) {
+			echo $html;
+		}
+		return $html;
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_display_share_buttons_for_post' ) ) :
+
+	/**
+	 * @deprecated 7.8.0
+	 *
+	 * @param string $place   Place.
+	 * @param array  $options Options.
+	 */
+	function presscore_display_share_buttons_for_post( $place = '', $options = array() ) {
+		$post_id = null;
+		if ( isset( $options['id'] ) ) {
+			$post_id = $options['id'];
+		}
+
+		$wrap_class = 'single-share-box';
+		if ( isset( $options['class'] ) ) {
+			$wrap_class = is_array( $options['class'] ) ? implode( ' ', $options['class'] ) : $options['class'];
+		}
+
+		the7_display_post_share_buttons( $place, $post_id, $wrap_class );
+	}
+
+endif;
+
+/**
+ * @deprecated 7.8.0
+ *
+ * @return array
+ */
+function presscore_set_image_width_options() {
+
+	$config = presscore_get_config();
+	$target_image_width = $config->get('post.preview.width.min');
+
+	if ( 'wide' == $config->get( 'post.preview.width' ) && !$config->get('all_the_same_width') ) {
+		$target_image_width *= 3;
+		$image_options = array( 'w' => absint( round( $target_image_width ) ), 'z' => 0, 'hd_convert' => false );
+
+	} else {
+		$target_image_width *= 1.5;
+		$image_options = array( 'w' => absint( round( $target_image_width ) ), 'z' => 0 );
+
+	}
+
+	return $image_options;
+}
+
+/**
+ * Display image share buttons. Used in sliders and image gallery with list layout.
+ *
+ * @since 7.8.0
+ * @deprecated 7.8.1
+ *
+ * @param null   $image_id   ID of the image to share. If null, then current post will be used instead.
+ * @param string $wrap_class Buttons wrap class.
+ */
+function the7_display_image_share_buttons( $image_id = null, $wrap_class = 'album-share-overlay' ) {
+	$place         = 'photo';
+	$share_buttons = the7_get_share_buttons_list( $place, $image_id );
+	if ( apply_filters( 'presscore_hide_share_buttons', empty( $share_buttons ) ) ) {
+		return;
+	}
+
+	presscore_get_template_part(
+		'theme',
+		'share-buttons/image-share-buttons',
+		null,
+		array(
+			'wrap_class'           => $wrap_class,
+			'share_buttons_header' => the7_get_share_buttons_header( $place ),
+			'share_buttons'        => $share_buttons,
+		)
+	);
+}
+
+if ( ! function_exists( 'presscore_get_royal_slider' ) ) :
+
+	/**
+	 * Royal media slider.
+	 *
+	 * @deprecated 7.8.1
+	 *
+	 * @param array $media_items Attachments id's array.
+	 * @return string HTML.
+	 */
+	function presscore_get_royal_slider( $attachments_data, $options = array() ) {
+
+		if ( empty( $attachments_data ) ) {
+			return '';
+		}
+
+		presscore_remove_lazy_load_attrs();
+
+		$default_options = array(
+			'echo'      => false,
+			'width'     => null,
+			'height'    => null,
+			'class'     => array(),
+			'style'     => '',
+			'show_info' => array( 'title', 'link', 'description' )
+		);
+		$options = wp_parse_args( $options, $default_options );
+
+		// common classes
+		$options['class'][] = 'royalSlider';
+		$options['class'][] = 'rsShor';
+
+		$container_class = implode(' ', $options['class']);
+
+		$data_attributes = '';
+		if ( !empty($options['width']) ) {
+			$data_attributes .= ' data-width="' . absint($options['width']) . '"';
+		}
+
+		if ( !empty($options['height']) ) {
+			$data_attributes .= ' data-height="' . absint($options['height']) . '"';
+		}
+
+		if ( isset( $options['autoplay'] ) ) {
+			$data_attributes .= ' data-autoslide="' . ( $options['interval'] ? $options['interval'] : $default_options['interval'] ) . '"';
+		}
+
+		if ( isset( $options['interval'] ) ) {
+			$options['interval'] = absint( $options['interval'] );
+			$data_attributes .= ' data-paused="' . ( $options['autoplay'] ? 'false' : 'true' ) . '"';
+		}
+
+		$html = "\n" . '<ul class="' . esc_attr($container_class) . '"' . $data_attributes . $options['style'] . '>';
+
+		foreach ( $attachments_data as $data ) {
+
+			if ( empty($data['full']) ) continue;
+
+			$is_video = !empty( $data['video_url'] );
+
+			$html .= "\n\t" . '<li' . ( ($is_video) ? ' class="rollover-video"' : '' ) . '>';
+
+			$image_args = array(
+				'img_meta' 	=> array( $data['full'], $data['width'], $data['height'] ),
+				'img_id'	=> $data['ID'],
+				'alt'		=> $data['alt'],
+				'title'		=> $data['title'],
+				'caption'	=> $data['caption'],
+				'img_class' => 'rsImg',
+				'custom'	=> '',
+				'class'		=> '',
+				'echo'		=> false,
+				'wrap'		=> '<img %IMG_CLASS% %SRC% %SIZE% %ALT% %CUSTOM% />',
+			);
+
+			if ( $is_video ) {
+				$video_url = remove_query_arg( array('iframe', 'width', 'height'), $data['video_url'] );
+				$image_args['custom'] = 'data-rsVideo="' . esc_url($video_url) . '"';
+			}
+
+			$image = dt_get_thumb_img( $image_args );
+
+			$html .= "\n\t\t" . $image;
+
+			if ( !empty($data['link']) && in_array('link', $options['show_info']) ) {
+				$html .= "\n\t\t" . '<a href="' . $data['link'] . '" class="rsCLink" target="_blank"></a>';
+			}
+
+			$caption_html = '';
+			$links = '';
+
+			if ( in_array('share_buttons', $options['show_info']) ) {
+				ob_start();
+				the7_display_image_share_buttons( $data['ID'] );
+				$links .= "\n\t\t\t\t" . ob_get_clean();
+			}
+
+			if ( $links ) {
+				$caption_html .= '<div class="album-content-btn">' . $links . '</div>';
+			}
+
+			if ( !empty($data['title']) && in_array('title', $options['show_info']) ) {
+				$caption_html .= "\n\t\t\t\t" . '<h4>' . esc_html($data['title']) . '</h4>';
+			}
+
+			if ( !empty($data['description']) && in_array('description', $options['show_info']) ) {
+				$caption_html .= "\n\t\t\t\t" . wpautop($data['description']);
+			}
+
+			if ( $caption_html ) {
+				$html .= "\n\t\t" . '<div class="slider-post-caption">' . "\n\t\t\t" . '<div class="slider-post-inner">' . $caption_html . "\n\t\t\t" . '</div>' . "\n\t\t" . '</div>';
+			}
+
+			$html .= '</li>';
+
+		}
+
+		$html .= '</ul>';
+
+		if ( $options['echo'] ) {
+			echo $html;
+		}
+
+		presscore_add_lazy_load_attrs();
+
+		return $html;
+	}
+
+endif;
+
+/**
+ * @TODO: Remove in 8.2.0
+ *
+ * @deprecated 8.1.0
+ */
+function dt_make_web_font_uri( $font ) {
+	if ( !$font ) {
+		return false;
+	}
+
+	return '//fonts.googleapis.com/css?family=' . str_replace( ' ', '+', $font );
+}
+
+/**
+ * @TODO: Remove in 8.2.0
+ *
+ * @deprecated 8.1.0
+ */
+function dt_get_google_fonts( $font = '', $effect = '' ) {
+	if ( ! $font ) {
+		return;
+	}
+
+	?>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=<?php echo str_replace( ' ', '+', $font ); ?>">
+	<?php
+}

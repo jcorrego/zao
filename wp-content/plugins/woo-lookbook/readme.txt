@@ -1,17 +1,17 @@
-=== WooCommerce LookBook - Shop by Instagram - Shoppable with Product Tags ===
-Contributors: mrt3vn
+=== LookBook for WooCommerce - Shoppable with Product Tags ===
+Contributors: villatheme, mrt3vn
 Donate link: http://www.villatheme.com/donate
 Tags: shop by instagram, woocommerce lookbook, instagram shoppable, shop instagram, shop instagram feed, woocommerce instagram
 Requires at least: 4.4
-Tested up to: 4.9.6
-Stable tag: 1.0.5
+Tested up to: 5.2
+Stable tag: 1.0.6.3
 License: GPLv2 or later
 
 == Description ==
 
->[Try the Demo](http://new2new.com/?item=woocommerce-lookbook "Demo WooCommerce Lookbook") | [Documents](http://docs.villatheme.com/?item=woocommerce-Lookbook "Documents") | [Pro Version](https://goo.gl/CAgGU6 "Premium Version"))
+LookBook for WooCommerce is a WooCommerce extension that helps your customer visualize your products, know how will it look in real life. This plugin is very useful for fashion shop. Before buying any clothes online, customers always wonder how will the product look like when they wear it. Lookbook for WooCommerce solves this problem by allowing you to create lookbook of your products with picture and nodes. Using nodes to marks your products on lookbook pictures. Customers can click on nodes to view product information and purchase.
 
-WooCommerce Lookbook allows you to make shop by Instagram and create realistic lookbooks of your products. Your customers can buy products from Instagram images or any images. Help your customers visualize what they are about to purchase from you.
+>[Try the Demo](http://new2new.com/?item=woocommerce-lookbook "Demo LookBook for WooCommerce") | [Documents](http://docs.villatheme.com/?item=woocommerce-Lookbook "Documents") | [Pro Version](https://1.envato.market/mV0bM "Premium Version")) | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
 
 [youtube https://youtu.be/SnI7qcSIbrI]
 
@@ -21,76 +21,71 @@ WooCommerce Lookbook allows you to make shop by Instagram and create realistic l
 
 ### FREE VERSION:
 
-&#9658; **Create Lookbooks**: Create Lookbooks by drag and drop nodes to mark products position on photos. By click on nodes, customers can see products information with name, short description, price… Customers will also be able to add products to cart from Lookbooks.
+&#9658; **Loobook**: create product lookbook and display it with shortcodes.
 
-&#9658; **Shop by Instagram**: Sync published pictures from any Instagram account to your WooCommerce Lookbook and using it to create lookbooks, slides.
+- **Create Lookbooks**: use product picture to create lookbook. You can drag and drop nodes on lookbook pictures to mark products.
 
-&#9658; **Shortcodes**: Use shortcodes to put lookbook any where you want on your sits. Avaiable shortcodes:
+- **Shortcodes**: Use shortcodes to put lookbook any where you want on your sits. Avaiable shortcodes:
 
-**Display Instagram Photos as carousel**: [woocommerce_lookbook_instagram style="[carousel]" row="[number]" limit="[number]"]
+- **Display Instagram Photos as carousel**: [woocommerce_lookbook_instagram style=”[carousel]” row=”[number]” limit=”[number]”]
 
-**Display Instagram Photos as gallery**:[woocommerce_lookbook_instagram style="[gallery]" row="[number]" limit="[number]"]|
+- **Display Instagram Photos as gallery**:[woocommerce_lookbook_instagram style=”[gallery]” row=”[number]” limit=”[number]”]|
 
-**Put single Lookbooks**:[woocommerce_lookbook id="[list_ids]"]
+- **Put single Lookbooks**:[woocommerce_lookbook id=”[list_ids]”]
 
-**Display multiple Lookbooks as a slide**:[woocommerce_lookbook_slide id="[list_ids]"]
+- **Display multiple Lookbooks as a slide**:[woocommerce_lookbook_slide id=”[list_ids]”]
 
-&#9658; **Add node**: Adding note and drag and drop nodes to mark product positions on Lookbooks. In free version you are limited with 2 nodes.
+&#9658; **Nodes**: use node to mark products on lookbooks.
 
-&#9658; **Nodes color**: Design nodes with main color, background color, border color
+- **Add node**: Adding note and drag and drop nodes to mark product positions on Lookbooks. In free version you are limited with 2 nodes.
 
-&#9658; **Product title**: Choose to display or hide the product titles above the nodes on Lookbooks.
+- **Nodes color**: Design nodes with main color, background color, border color
 
-&#9658; **Title color**: Design product titles color with text color and background color.
+- **Product title**: Choose to display or hide the product titles above the nodes on Lookbooks.
 
-&#9658; **Quickview**: By click on nodes, customers will open a QuickView popup. The QuickView popup provides them the product name, short description, price. There is also an Add to Cart button on the QuickView popup, allowing customers to select a quantity and add the product to cart.
+- **Title color**: Design product titles color with text color and background color.
 
-&#9658; **Quickview pop-up design**: Design QuickView popup with text color, background color, border-radius.
+&#9658; **Quickview**: y click on nodes, customers will open a QuickView popup. The QuickView popup provides them the product name, short description, price. There is also an Add to Cart button on the QuickView popup, allowing customers to select a quantity and add the product to cart.
 
-&#9658; **Close button**: Select to display or hide the Close button on Quickview popup.
+- **Quickview pop-up design**: Design QuickView popup with text color, background color, border-radius.
 
-&#9658; **See more button**: Select to display or hide the see more button on Quickview popup. The see more button will lead to the single product page.
+- **Close button**: Select to display or hide the Close button on Quickview popup.
 
-&#9658; **Slides**: You can combine lookbooks and display it on front-end as a slide.
+- **See more button**: Select to display or hide the see more button on Quickview popup. The see more button will lead to the single product page.
 
-&#9658; **Slide design**: Customize the slide size with width and height.
+- **Slides**: You can combine lookbooks and display it on front-end as a slide.
 
-&#9658; **Slide effect**: Select slide effect slide or fade.
+- **Slide design**: Customize the slide size with width and height.
 
-&#9658; **Slide Pagination**: Enable or disable the slide pagination on the frontend.
+- **Slide effect**: Select slide effect slide or fade.
 
-&#9658; **Slide Navigation**: Enable or disable the slide navigation on the frontend.
+- **Slide Pagination**: Enable or disable the slide pagination on the frontend.
 
-&#9658; **Autoplay**: Select to let slides automatical play.
+- **Slide Navigation**: Enable or disable the slide navigation on the frontend.
 
-&#9658; **Autoplay duration**: Select a specified time to move to the next lookbook with autoplay slides option.
+- **Autoplay**: Select to let slides automatical play.
 
-&#9658; **Custom Script**: Add your own CSS code to fully customize lookbook as you want.
+- **Autoplay duration**: Select a specified time to move to the next lookbook with autoplay slides option.
 
-&#9658; **Link Redirect**: If this option is enabled, clicking on a node will redirect to the single product page.
+- **Custom Script**: Add your own CSS code to fully customize lookbook as you want.
 
-&#9658; **External Link**: An option for External/Affiliate products, clicking on a node will redirect to the external link instead of the single product page.
+- **Link Redirect**: If this option is enabled, clicking on a node will redirect to the single product page.
 
-&#9658; **Sync pictures from Instagram**: Enter an Instagram username to sync pictures from that account to WooCommerce Lookbook. Then you will be able to create Lookbook from that pictures.
+- **External Link**: An option for External/Affiliate products, clicking on a node will redirect to the external link instead of the single product page.
 
-&#9658; **Carousel/Gallery display**: Display Instagram pictures and lookbooks on the frontend in Carousel or Gallery style.
+- **Sync pictures from Instagram**: Enter an Instagram username to sync pictures from that account to LookBook for WooCommerce. Then you will be able to create Lookbook from that pictures.
 
-&#9658; **Link to Instagram**: Enable “View on Instagram” button on the Quickview popup, the button will lead to the original Instagram picture which you used to create the Lookbook.
+- **Carousel/Gallery display**: Display Instagram pictures and lookbooks on the frontend in Carousel or Gallery style.
 
-&#9658; **Lookbooks in single product page**: Automatical finds lookbook that includes the product and displays that lookbook in the product description.
+- **Link to Instagram**: Enable “View on Instagram” button on the Quickview popup, the button will lead to the original Instagram picture which you used to create the Lookbook.
 
-&#9658; **Updates weekly**: The plugin will be updated weekly for fixing bugs and compatible.
+- **Lookbooks in single product page**: Automatical finds lookbook that includes the product and displays that lookbook in the product description.
 
-&#9658; **Easy to use**: Easy to find out how to use this plugin with a friendly user interface and guiding document and videos.
+- **Updates weekly**: The plugin will be updated weekly for fixing bugs and compatible.
 
-&#9658; Access our videos tutorials.
-
-&#9658; Access our articles tutorials.
-
-&#9658; [Access our documents](http://docs.villatheme.com/?item=woocommerce-lookbook/).
+- **Easy to use**: Easy to find out how to use this plugin with a friendly user interface and guiding document and videos.
 
 ### PREMIUM VERSION:
-
 
 &#9658; **All features of the free version.**
 
@@ -110,25 +105,49 @@ WooCommerce Lookbook allows you to make shop by Instagram and create realistic l
 
 &#9658; **Image Quantity**: Select how many images will be synced from Instagram.
 
-&#9658; [GET PREMIUM VERSION NOW](https://goo.gl/CAgGU6)
+&#9658; [GET PREMIUM VERSION NOW](https://1.envato.market/mV0bM)
 
 &#9658; Check screenshots at https://villatheme.com/extensions/woocommerce-lookbook/
 
 ### MAY BE YOU NEED
 
-[WooCommerce Notification](https://goo.gl/IYAQ7B): Social Proof Marketing plugin. Live recent order on the front-end of your site.
+[Dropshipping and Fulfillment for AliExpress and WooCommerce](http://bit.ly/woo-aliexpress-dropshipping): Free dropshipping solution - Transfer data from AliExpress products to WooCommerce effortlessly and fulfill AliExpress orders automatically
 
-[WooCommerce Multi Currency](https://goo.gl/HMbYNM): Switches to different currencies easily and accepts payment with only one currency or all currencies.
+[Abandoned Cart Recovery For WooCommerce](http://bit.ly/woo-abandoned-cart-recovery): Capture abandoned carts & send reminder emails to customers.
 
-[WooCommerce Photo Reviews](https://goo.gl/m27Yy1): Allow posting reviews include product pictures, review reminder, review for coupons.
+[Import Shopify to WooCommerce](http://bit.ly/import-shopify-to-woocommerce): Import Shopify to WooCommerce plugin help you import all products from your Shopify store to WooCommerce
 
-[WooCommerce Boost Sales](https://goo.gl/2nwsmd): Increase profit on every single order with Up-selling and Cross-selling
+[Customer Coupons for WooCommerce](http://bit.ly/woo-customer-coupons): Display coupons on your website
 
-[WooCommerce Free Shipping Bar](https://goo.gl/wvW4Ca): Use free shipping as a marketing tool, encourage customers to pay more for free shipping.
+[Custom Email Blocks for WooCommerce](http://bit.ly/woo-custom-email-blocks): Create your own professional email design & content for all your outgoing emails
 
-[WooCommerce Lucky Wheel](https://goo.gl/XVkjny): Offer customers to spin for coupons by entering their emails.
+[Virtual Reviews for WooCommerce](http://bit.ly/woo-virtual-reviews): Virtual Reviews for WooCommerce helps generate virtual reviews, display canned reviews for newly created store
 
-[WooCommerce Coupon Box](https://goo.gl/NdSia8): Subscribe emails for discount coupons
+[Thank You Page Customizer for WooCommerce](http://bit.ly/woo-thank-you-page-customizer): Customize your “Thank You” page and give coupons to customers after a successful order
+
+[Sales Countdown Timer](http://bit.ly/sales-countdown-timer): Create a sense of urgency with a countdown to the beginning or end of sales, store launch or other events
+
+[EU Cookies Bar](http://bit.ly/eu-cookies-bar): A very simple plugin which helps your website comply with Cookie Law
+
+[Lucky Wheel for WooCommerce](http://bit.ly/woo-lucky-wheel): Offer customers to spin for coupons by entering their emails.
+
+[WordPress Lucky Wheel](http://bit.ly/wp-lucky-wheel): WordPress Lucky Wheel gives you the best solution to get emails address from visitors of your WordPress website
+
+[Advanced Product Information for WooCommerce](http://bit.ly/woo-advanced-product-information): Display more intuitive information of products such as sale countdown, sale badges, who recently bought products, rank of products in their categories, available payment methods...
+
+[Photo Reviews for WooCommerce](http://bit.ly/woo-photo-reviews): Allow posting reviews include product pictures, review reminder, review for coupons.
+
+[Product Builder for WooCommerce](http://bit.ly/woo-product-builder): Allows your customers to build a full product set from small parts step by step. The plugin works base on WooCommerce with many useful features like compatible, email completed product, attributes filters.
+
+[Boost Sales for WooCommerce](http://bit.ly/woo-boost-sales): Increase profit on every single order with Up-selling and Cross-selling
+
+[Free Shipping Bar for WooCommerce](http://bit.ly/woo-free-shipping-bar): Use free shipping as a marketing tool, encourage customers to pay more for free shipping.
+
+[Notification for WooCommerce](http://bit.ly/woo-notification): Social Proof Marketing plugin. Live recent order on the front-end of your site.
+
+[Multi Currency for WooCommerce](http://bit.ly/woo-multi-currency): Switches to different currencies easily and accepts payment with only one currency or all currencies.
+
+[Coupon Box for WooCommerce](http://bit.ly/woo-coupon-box-free): Subscribe emails for discount coupons
 
 ### Documentation
 
@@ -152,10 +171,23 @@ WooCommerce Lookbook allows you to make shop by Instagram and create realistic l
 1. Fashion demo
 2. Furniture demo
 3. Product detail
-3. Shop by Instagram
-4. Quick view
+4. Shop
 
 == Changelog ==
+/**1.0.6.1 - 2019.05.10**
+- Updated: Change plugin name
+- Updated: Change premium version url
+
+/**1.0.6 - 2019.04.03**
+- Fixed: Tab JS in backend
+- Updated: Make admin notices dismissible
+
+/**1.0.5.2 - 2018.10.17**/
+- Remove: Upgrade notice
+
+/**1.0.5.1 - 2018.10.15**/
+- Remove: Upgrade notice
+
 /**1.0.5 - 2018.07.05**/
 - Updated: Instagram API
 - Updated: Support class

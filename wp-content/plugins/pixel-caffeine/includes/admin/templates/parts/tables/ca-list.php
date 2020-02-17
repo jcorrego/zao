@@ -47,14 +47,18 @@ if ( ( ! isset( $_GET['paged'] ) || $_GET['paged'] <= 1 ) && empty( $audiences )
 					<small class="info-extra"><?php $audience->human_date( 't_time' ) ?></small>
 				</td>
 				<td>
-					<?php _e( 'Not available', 'pixel-caffeine' ) ?>
-					<a
-						href="#_"
-						class="btn btn-fab btn-help btn-fab-mini"
-						data-toggle="popover"
-						data-placement="top"
-						data-html="true"
-						data-content="<?php printf( __( 'The custom audience size indicator is not available due to Facebook policies based on %sAdvertising Principles%s.', 'pixel-caffeine' ), "<a href='https://newsroom.fb.com/news/2017/11/our-advertising-principles/' target='_blank'>", '</a>' ) ?>"></a>
+					<?php
+					$size = $audience->get_size();
+					if ($size > 1000 ) {
+						echo $size;
+					} elseif ($size >= 0) {
+						echo __('Below 1000', 'pixel-caffeine');
+					} else {
+						printf('<em>%s</em>', __('Size Not Yet Available', 'pixel-caffeine'));
+						printf('<a href="#_" class="btn btn-fab btn-help btn-fab-mini" data-toggle="popover" data-placement="top" data-html="true" data-content="%s"></a>', __( 'Your audience\'s size will available about 2-3 days after its creation.', 'pixel-caffeine' ));
+					}
+					?>
+					<a href="#_" class="btn btn-fab btn-fab-mini btn-sync js-ca-size-sync btn-naked" data-ca_id="<?php echo $audience->get_id() ?>"></a>
 				</td>
 				<td class="actions">
 					<div class="btn-group-sm">

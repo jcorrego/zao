@@ -1,0 +1,20 @@
+
+Oct 16, 2019 19.14.07: Uncaught Error: Call to a member function get_cart_contents_count() on null in /home/forge/zaomakeup.com.co/wp-content/themes/dt-the7/inc/mods/compatibility/woocommerce/front/templates/cart/mod-wc-mini-cart.php:19
+Stack trace:
+#0 /home/forge/zaomakeup.com.co/wp-includes/template.php(724): require()
+#1 /home/forge/zaomakeup.com.co/wp-includes/template.php(671): load_template('/home/forge/zao...', false)
+#2 /home/forge/zaomakeup.com.co/wp-includes/general-template.php(168): locate_template(Array, true, false)
+#3 /home/forge/zaomakeup.com.co/wp-content/themes/dt-the7/inc/mods/compatibility/woocommerce/front/class-the7-wc-mini-cart.php(59): get_template_part('inc/mods/compat...')
+#4 /home/forge/zaomakeup.com.co/wp-content/themes/dt-the7/inc/mods/compatibility/woocommerce/front/class-the7-wc-mini-cart.php(64): The7_WC_Mini_Cart::render_cart_inner()
+#5 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(286): The7_WC_Mini_Cart::render_cart_micro_widget('')
+#6 /home/forge/zaomakeup.com.co/wp-includes/class-wp
+
+Oct 16, 2019 19.14.10: Uncaught Error: Call to a member function get_cart_contents_count() on null in /home/forge/zaomakeup.com.co/wp-content/themes/dt-the7/inc/mods/compatibility/woocommerce/front/templates/cart/mod-wc-mini-cart.php:19
+Stack trace:
+#0 /home/forge/zaomakeup.com.co/wp-includes/template.php(724): require()
+#1 /home/forge/zaomakeup.com.co/wp-includes/template.php(671): load_template('/home/forge/zao...', false)
+#2 /home/forge/zaomakeup.com.co/wp-includes/general-template.php(168): locate_template(Array, true, false)
+#3 /home/forge/zaomakeup.com.co/wp-content/themes/dt-the7/inc/mods/compatibility/woocommerce/front/class-the7-wc-mini-cart.php(59): get_template_part('inc/mods/compat...')
+#4 /home/forge/zaomakeup.com.co/wp-content/themes/dt-the7/inc/mods/compatibility/woocommerce/front/class-the7-wc-mini-cart.php(64): The7_WC_Mini_Cart::render_cart_inner()
+#5 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(286): The7_WC_Mini_Cart::render_cart_micro_widget('')
+#6 /home/forge/zaomakeup.com.co/wp-includes/class-wp

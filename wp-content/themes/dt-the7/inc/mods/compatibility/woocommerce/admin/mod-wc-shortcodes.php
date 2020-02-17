@@ -1,8 +1,5 @@
 <?php
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'DT_WC_Shortcodes', false ) ):
 

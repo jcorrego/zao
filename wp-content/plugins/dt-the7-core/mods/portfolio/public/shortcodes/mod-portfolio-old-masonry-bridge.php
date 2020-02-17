@@ -11,8 +11,8 @@ include dirname( __FILE__ ) . '/mod-portfolio-bridge-common-parts.php';
 return array(
 	"weight"	=> -1,
 	"base"		=> "dt_portfolio",
-	"name"		=> __( "Portfolio Masonry & Grid (old)", 'dt-the7-core' ),
-	"category"  => __('The7 Old', 'the7mk2'),
+	"name"		=> __( "Portfolio Masonry and Grid (old)", 'dt-the7-core' ),
+	"category"  => __('The7 Old', 'dt-the7-core'),
 	"icon"		=> "dt_vc_ico_portfolio",
 	"class"		=> "dt_vc_sc_portfolio",
 	"params"	=> array(

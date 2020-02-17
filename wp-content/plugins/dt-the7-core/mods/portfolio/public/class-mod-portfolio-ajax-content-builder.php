@@ -6,7 +6,7 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-class Presscore_Mod_Portfolio_Ajax_Content_Builder extends Presscore_Ajax_Content_Builder {
+class Presscore_Mod_Portfolio_Ajax_Content_Builder extends The7pt_Template_Ajax_Content_Builder {
 
 	protected function configure_template() {
 		$this->config->set( 'template', 'portfolio' );

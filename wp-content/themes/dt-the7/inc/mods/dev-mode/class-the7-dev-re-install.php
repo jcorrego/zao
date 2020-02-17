@@ -31,7 +31,7 @@ class The7_Dev_Re_Install {
 			'theme' => $theme_template,
 			'new_version' => THE7_VERSION,
 			'url' => presscore_theme_update_get_changelog_url(),
-			'package' => $the7_remote_api->get_theme_download_url(),
+			'package' => $the7_remote_api->get_theme_download_url( THE7_VERSION ),
 		);
 
 		return $transient;

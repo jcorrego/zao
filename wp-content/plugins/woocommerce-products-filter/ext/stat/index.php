@@ -169,7 +169,7 @@ final class WOOF_EXT_STAT extends WOOF_EXT {
         } catch (PDOException $e) {
             die(__("Database not connected!    ERROR! ", 'woocommerce-products-filter'));
             // More info!
-            //die(__("Database not connected!    ERROR:  ",'meta-data-filter').$e->getMessage());
+            //die(__("Database not connected!    ERROR:  ",'woocommerce-products-filter').$e->getMessage());
         }
         die(__("Database successfully connected!!!", 'woocommerce-products-filter'));
     }

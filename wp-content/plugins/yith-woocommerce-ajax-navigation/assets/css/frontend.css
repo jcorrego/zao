@@ -18,6 +18,10 @@
     cursor: not-allowed;
 }
 
+.yith-wcan-list-price-filter{
+    margin-left: 0;
+}
+
 /* Colors Type */
 ul.yith-wcan-color.yith-wcan.yith-wcan-group,
 ul.yith-wcan-list {
@@ -37,19 +41,16 @@ ul.yith-wcan-list {
 .woocommerce-page .widget_layered_nav ul.yith-wcan-color li a,
 .woocommerce .widget_layered_nav ul.yith-wcan-color li span,
 .woocommerce-page .widget_layered_nav ul.yith-wcan-color li span {
-  
-   display: block;
-    height: 35px;
-    margin: 10px 10px 10px 0;
+    border: 1px solid #ddd;
+    display: block;
+    height: 20px;
+    margin: 5px 5px 5px 0;
     padding: 0;
-    width: 35px;
+    width: 20px;
     overflow: hidden;
     text-indent: 100%;
     white-space: nowrap;
     box-sizing: content-box;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
 }
 
 .woocommerce .widget_layered_nav ul.yith-wcan-color li a:hover,
@@ -60,14 +61,11 @@ ul.yith-wcan-list {
 .woocommerce-page .widget_layered_nav ul.yith-wcan-color li span:hover,
 .woocommerce .widget_layered_nav ul.yith-wcan-color li.chosen span,
 .woocommerce-page .widget_layered_nav ul.yith-wcan-color li.chosen span {
-         background-image: none;
-    -webkit-border-radius: 20;
-    -moz-border-radius: 20;
-    border-radius: 20;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-}
+    border: 1px solid #444;
+    background-image: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 /* Labels Type */
@@ -184,18 +182,6 @@ ul.yith-wcan-list {
 }
 
 /* Hierarchical  Order */
-.widget.widget_layered_nav li.yit-wcan-child-terms.level-1 {
-    padding-left: 30px;
-}
-
-.widget.widget_layered_nav li.yit-wcan-child-terms.level-2 {
-    padding-left: 60px;
-}
-
-.widget.widget_layered_nav li.yit-wcan-child-terms.level-3 {
-    padding-left: 90px;
-}
-
 .yith-wcan-select-wrapper ul.yith-wcan-select.yith-wcan li.yit-wcan-child-terms.level-1 {
     padding-left: 30px;
 }
@@ -208,6 +194,21 @@ ul.yith-wcan-list {
     padding-left: 90px;
 }
 
+.yit-wcan-parent-terms ul.yith-child-terms.level-0 {
+    padding-left: 20px;
+}
+
+.yit-wcan-parent-terms ul.yith-child-terms.level-1 {
+    padding-left: 40px;
+}
+
+.yit-wcan-parent-terms ul.yith-child-terms.level-2 {
+    padding-left: 60px;
+}
+
+.yit-wcan-parent-terms ul.yith-child-terms.level-3 {
+    padding-left: 80px;
+}
 /* === Sort By === */
 
 .yith-wcan-sort-by ul.orderby {
@@ -219,11 +220,11 @@ ul.yith-wcan-list {
     margin-bottom: 5px;
 }
 
-.yith-wcan-sort-by ul.orderby li.orderby-wrapper a.active:before,
+.yith-wcan-sort-by ul.orderby li.orderby-wrapper > a.active:before,
 a.yith-wcan-onsale-button.active:before,
 a.yith-wcan-instock-button.active:before,
 a.yith-wcan-price-link.active:before,
-ul.yith-wcan-list li.chosen a:before{
+ul.yith-wcan-list li.chosen > a:before{
     font-family: WooCommerce;
     speak: none;
     font-variant: normal;
@@ -300,17 +301,23 @@ ul.yith-wcan-list li.chosen a:before{
     background-image: url("../images/radio_sprite.png");
 }
 
-.yith-woocommerce-ajax-product-filter.with-checkbox ul li a.active:before,
-.yith-woocommerce-ajax-product-filter.with-checkbox ul li a.chosen:before,
-.yith-woocommerce-ajax-product-filter.with-checkbox ul li.active a:before,
-.yith-woocommerce-ajax-product-filter.with-checkbox ul li.chosen a:before,
+.yith-woocommerce-ajax-product-filter.with-checkbox ul li > a.active:before,
+.yith-woocommerce-ajax-product-filter.with-checkbox ul li > a.chosen:before,
+.yith-woocommerce-ajax-product-filter.with-checkbox ul li.active > a:before,
+.yith-woocommerce-ajax-product-filter.with-checkbox ul li.chosen > a:before,
 .yith-woocommerce-ajax-product-filter.with-checkbox ul.orderby li a.active:before,
 .yith-woocommerce-ajax-product-filter.with-checkbox ul.orderby li a.chosen:before,
-.yith-woocommerce-ajax-product-filter.with-checkbox ul.orderby li.active a:before,
-.yith-woocommerce-ajax-product-filter.with-checkbox ul.orderby li.chosen a:before{
+.yith-woocommerce-ajax-product-filter.with-checkbox ul.orderby li.active > a:before,
+.yith-woocommerce-ajax-product-filter.with-checkbox ul.orderby li.chosen > a:before,
+.widget_layered_nav.with-checkbox .chosen::before{
     content: '';
     background-position: bottom center;
 }
+
+.widget_layered_nav.with-checkbox .chosen::before{
+    display: none;
+}
+
 .yith-woocommerce-ajax-product-filter.with-checkbox ul li a:after,
 .yith-woocommerce-ajax-product-filter.with-checkbox ul li a.active:after,
 .yith-woocommerce-ajax-product-filter.with-checkbox ul li a.chosen:after,
@@ -342,4 +349,52 @@ ul.yith-wcan-list li.chosen a:before{
     margin-right: 5px;
     font-weight: bold;
     font-size: 12px;
+}
+
+.yith-woocommerce-ajax-product-filter ul li{
+    list-style: none;
+}
+
+/*-------------------------------
+    STOREFRONT SUPPORT
+--------------------------------*/
+
+.theme-storefront .widget_layered_nav .yith-wcan-list li::before{
+    width: 0;content: "" !important;
+    float: none;
+    padding-left: 0 !important;
+}
+
+.theme-storefront .widget_layered_nav .yith-wcan-list li,
+.theme-storefront .yith-woocommerce-ajax-product-filter.widget_layered_nav ul li{
+    padding-left: 0 !important;
+}
+
+.theme-storefront .yith-woocommerce-ajax-product-filter ul li.chosen a:before,
+.theme-storefront .yith-woocommerce-ajax-product-filter.yith-wcan-sort-by ul li a.active:before{
+    font-family: 'Font Awesome 5 Free';
+    content: "\f057";
+}
+
+.theme-storefront .yith-woocommerce-ajax-product-filter.with-checkbox ul li.chosen a:before,
+.theme-storefront .yith-woocommerce-ajax-product-filter.yith-wcan-sort-by.with-checkbox ul li a.active:before {
+    content: "";
+}
+
+.theme-storefront .widget-area .yith-woocommerce-ajax-product-filter a:not(.button):before {
+    text-decoration: none;
+    display: inline-block
+}
+
+/*-------------------------------
+    FLATSOME SUPPORT
+--------------------------------*/
+
+.theme-flatsome .yith-woocommerce-ajax-product-filter ul.yith-child-terms{
+    display: block;
+}
+
+.theme-flatsome .yith-woocommerce-ajax-product-filter ul li.yit-wcan-parent-terms,
+.theme-flatsome .yith-woocommerce-ajax-product-filter ul.yith-child-terms li{
+    display: inline;
 }

@@ -8,12 +8,10 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
-	class DT_Shortcode_FancyImage extends DT_Shortcode {
+	class DT_Shortcode_FancyImage extends DT_Shortcode_With_Inline_Css {
 
 		static protected $instance;
 
-		protected $shortcode_name = 'dt_fancy_image';
-		protected $atts = array();
 		protected $content = null;
 
 		public static function get_instance() {
@@ -23,14 +21,67 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			return self::$instance;
 		}
 
-		protected function __construct() {
-			add_shortcode( $this->shortcode_name, array( $this, 'shortcode' ) );
+		public function __construct() {
+			$this->sc_name           = 'dt_fancy_image';
+			$this->unique_class_base = 'shortcode-single-image';
+			$this->default_atts      = array(
+				'type'                        => 'uploaded_image',
+				'image_id'                    => '',
+				'image'                       => '',
+				'image_alt'                   => '',
+				'image_link'                  => '',
+				'image_dimensions'            => '',
+				'media'                       => '',
+				'onclick'                     => 'none',
+				'custom_link_target'          => '_self',
+				'align'                       => 'center',
+				'animation'                   => 'none',
+				'width'                       => '500',
+				'height'                      => '',
+				'border_radius'               => '',
+				'image_decoration'            => 'none',
+				'shadow_h_length'             => '5px',
+				'shadow_v_length'             => '5px',
+				'shadow_blur_radius'          => '5px',
+				'shadow_spread'               => '5px',
+				'shadow_color'                => 'rgba(0,0,0,.6)',
+				'show_zoom'					  => 'n',
+				'dt_icon'                     => 'Defaults-heart',
+				'rollover_icon_size'		  => '32px',
+				'rollover_icon_color'		  => 'rgba(255,255,255,1)',
+				'rollover_icon_bg_size'		  => '44px',
+				'rollover_icon_bg'			  => 'n',
+				'rollover_icon_bg_color'	  => 'rgba(255,255,255,0.3)',
+				'rollover_icon_border_radius' => '100px',
+				'rollover_icon_border_width'  => '0px',
+				'rollover_icon_border_color'  => '',
+				'image_hover_bg_color'        => 'default',
+				'image_scale_animation_on_hover' => 'disabled',
+				'custom_rollover_bg_color'    => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient' => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+				'extra_class'                 => '',
+				'css'                         => '',
+				'nofollow'                    => '',
+				'caption'                     => 'description',
+
+				// Deprecated atts.
+				'margin_top'                  => '0',
+				'margin_bottom'               => '0',
+				'margin_right'                => '0',
+				'margin_left'                 => '0',
+				'lightbox'                    => '',
+			);
 		}
 
-		public function shortcode( $atts, $content = null ) {
+		public function do_shortcode( $atts, $content = null ) {
+			// Temporary fix.
+			$this->get_unique_class();
 
-			$this->content = $this->sanitize_content( $content );
-			$this->atts = $this->sanitize_attributes( $atts );
+			$this->atts = $this->sanitize_attributes( $this->atts );
+			// For custom caption.
+			if ( $this->atts['caption'] !== 'off' ) {
+				$this->content = $this->sanitize_content( $content );
+			}
 
 			// override shortcode atts for uploaded image
 			if ( $this->is_uploaded_image() ) {
@@ -53,9 +104,13 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 				$this->atts['_image_height'] = $image_src[2];
 				$this->atts['image_alt'] = esc_attr( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
 				$this->atts['media'] = esc_url( get_post_meta( $image_id, 'dt-video-url', true ) );
-				$post_content = get_post_field( 'post_content', $image_id );
-				$this->content = $this->sanitize_content( $post_content );
 
+				// Caption logic.
+				if ( $this->atts['caption'] === 'on' ) {
+					$this->content = $this->sanitize_content( get_post_field( 'post_excerpt', $image_id ) );
+				} elseif ( $this->atts['caption'] === 'description' ) {
+					$this->content = $this->sanitize_content( get_post_field( 'post_content', $image_id ) );
+				}
 			} else {
 
 				// Do not use height attribute for images from url.
@@ -69,7 +124,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 				$output .= $this->get_caption();
 			$output .= '</div>';
 
-			return $output; 
+			echo $output;
 		}
 
 		protected function get_container_html_class( $custom_class = '' ) {
@@ -78,6 +133,8 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			if ( $custom_class ) {
 				$class[] = $custom_class;
 			}
+
+			$class[] = $this->get_unique_class();
 
 			switch ( $this->atts['align'] ) {
 				case 'left': $class[] = 'alignleft'; break;
@@ -104,6 +161,21 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 
 			if ( function_exists( 'vc_shortcode_custom_css_class' ) ) {
 				$class[] = vc_shortcode_custom_css_class( $this->atts['css'], ' ' );
+			}
+			if ( 'disabled' !=  $this->atts[ 'image_hover_bg_color' ] ) {
+				$class[] = 'enable-bg-rollover';
+			}else {
+				$class[] = 'disable-bg-rollover';
+			}
+			if ( $this->get_flag( 'rollover_icon_bg' ) ) {
+				$class[] = 'dt-icon-bg-on';
+			} else {
+				$class[] = 'dt-icon-bg-off';
+			}
+			if ( $this->atts['image_scale_animation_on_hover']  === 'quick_scale' ) {
+				$class[] = 'quick-scale-img';
+			}else if($this->atts['image_scale_animation_on_hover']  === 'slow_scale') {
+				$class[] = 'scale-img';
 			}
 
 			return 'class="' . esc_attr( implode( ' ', $class ) ) . '"';
@@ -136,11 +208,28 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			if ( $this->lazy_loading_on() ) {
 				$class .= 'layzr-bg ';
 			}
+			$dt_icon_attr = esc_attr( $this->atts['dt_icon'] );
+			$dt_icon = str_replace( 'dt-icon-', '', $dt_icon_attr );
+			static $social_icons = null;
+
+			if ( !$social_icons ) {
+				$social_icons = presscore_get_social_icons_data();
+			}
+			if ( array_key_exists( $dt_icon, $social_icons ) ) {
+				$title = $title ? $title : $social_icons[ $dt_icon ];
+				$icon_class = "soc-font-icon {$dt_icon_attr}";
+			} else {
+				$icon_class = $dt_icon_attr;
+			}
 
 			if ( $args['rollover'] ) {
 				$output .= '<div class="' . $class . 'rollover-video" style="' . $this->image_inline_style() . '">';
 					$output .= $args['image_html'];
-					$output .= '<a class="video-icon dt-pswp-item pswp-video" href="' . $args['href'] . '" title="' . $args['title'] . '" data-dt-img-description="' . $args['description'] . '"></a>';
+					$output .= '<a class="video-icon dt-pswp-item pswp-video" href="' . $args['href'] . '" title="' . $args['title'] . '" data-dt-img-description="' . $args['description'] . '">';
+						if ( $this->get_att( 'show_zoom' ) === 'y' ) {
+							$output .= '<span class=" '. esc_attr( 'rollover-icon ' . $icon_class ).'"></span>';
+						};
+					$output .= '</a>';
 				$output .= '</div>';
 			} else {
 				$output .= '<a class="' . $class . 'dt-pswp-item pswp-video" href="' . $args['href'] . '" title="' . $args['title'] . '" data-dt-img-description="' . $args['description'] . '">';
@@ -205,7 +294,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 				'custom' => sprintf( 'data-dt-location="%s"', esc_attr( $args['permalink'] ) ),
 			);
 
-			if ( $this->is_image() ) {
+			if ( ! $this->is_hover_enabled() ) {
 				$thumb_args['custom'] .= sprintf( ' style="%s"', $this->image_inline_style() );
 			}
 
@@ -215,7 +304,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 		protected function render_image( $args = array() ) {
 			$hwstring = ( $args['width'] && $args['height'] ? image_hwstring( $args['width'], $args['height'] ) : '' );
 			$style = '';
-			if ( $this->is_image() ) {
+			if ( ! $this->is_hover_enabled() ) {
 				$style = $this->image_inline_style();
 			}
 
@@ -229,6 +318,20 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 		protected function render_image_in_lightbox( $args = array() ) {
 			$output = '';
 
+			$dt_icon_attr = esc_attr( $this->atts['dt_icon'] );
+			$dt_icon = str_replace( 'dt-icon-', '', $dt_icon_attr );
+			static $social_icons = null;
+
+			if ( !$social_icons ) {
+				$social_icons = presscore_get_social_icons_data();
+			}
+			if ( array_key_exists( $dt_icon, $social_icons ) ) {
+				$title = $title ? $title : $social_icons[ $dt_icon ];
+				$icon_class = "soc-font-icon {$dt_icon_attr}";
+			} else {
+				$icon_class = $dt_icon_attr;
+			}
+
 			$style = '';
 			if ( $args['rollover'] ) {
 				$style = $this->image_inline_style();
@@ -238,6 +341,9 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 
 			$output .= '<a class="' . ( $this->lazy_loading_on() ? 'layzr-bg ' : '' ) . ( $args['rollover'] ? 'rollover rollover-zoom ' : '' ) . 'dt-pswp-item pswp-image" href="' . $args['href'] . '" title="' . $args['title'] . '" data-dt-img-description="' . $args['description'] . '" data-large_image_width="' . $args['image_width'] . '" data-large_image_height = "' . $args['image_height']. '"  style="' . $style . '">';
 				$output .= $args['image_html'];
+				if ( $this->get_att( 'show_zoom' ) === 'y' ) {
+					$output .= '<span class=" '. esc_attr( 'rollover-icon ' . $icon_class ).'"></span>';
+				}
 			$output .= '</a>';
 
 			return $output;
@@ -252,6 +358,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 				if ( $this->atts['extra_class'] ) {
 					$class .= ' ' . esc_attr( $this->atts['extra_class'] );
 				}
+				
 
 				$style = '';
 				if ( $this->atts['border_radius'] ) {
@@ -276,40 +383,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			return $caption;
 		}
 
-		protected function sanitize_attributes( &$atts ) {
-			$clear_atts = shortcode_atts( array(
-				'type'               => 'uploaded_image',
-				'image_id'           => '',
-				'image'              => '',
-				'image_alt'          => '',
-				'image_link'         => '',
-				'image_dimensions'   => '',
-				'image_hovers'       => 'true',
-				'media'              => '',
-				'onclick'            => 'none',
-				'custom_link_target' => '_self',
-				'align'              => 'center',
-				'animation'          => 'none',
-				'width'              => '500',
-				'height'             => '',
-				'border_radius'      => '',
-				'image_decoration'   => 'none',
-				'shadow_h_length'    => '5px',
-				'shadow_v_length'    => '5px',
-				'shadow_blur_radius' => '5px',
-				'shadow_spread'      => '5px',
-				'shadow_color'       => 'rgba(0,0,0,.6)',
-				'extra_class'        => '',
-				'css'                => '',
-
-				// Deprecated atts.
-				'margin_top'         => '0',
-				'margin_bottom'      => '0',
-				'margin_right'       => '0',
-				'margin_left'        => '0',
-				'lightbox'           => '',
-			), $atts );
-
+		protected function sanitize_attributes( $clear_atts ) {
 			$clear_atts['type'] = sanitize_key( $clear_atts['type'] );
 			$clear_atts['align'] = sanitize_key( $clear_atts['align'] );
 
@@ -323,12 +397,6 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			// Back compatibility.
 			if ( apply_filters( 'dt_sanitize_flag', $clear_atts['lightbox'] ) ) {
 				$clear_atts['onclick'] = 'lightbox';
-			}
-
-			if ( 'none' === $clear_atts['onclick'] ) {
-				$clear_atts['image_hovers'] = false;
-			} else {
-				$clear_atts['image_hovers'] = apply_filters( 'dt_sanitize_flag', $clear_atts['image_hovers'] );
 			}
 
 			$clear_atts['width'] = absint( $clear_atts['width'] );
@@ -351,7 +419,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			return $clear_atts;
 		}
 
-		protected function sanitize_content( &$content ) {
+		protected function sanitize_content( $content ) {
 			return strip_shortcodes( $content );
 		}
 
@@ -363,8 +431,8 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			return ( 'custom_link' === $this->atts['onclick'] );
 		}
 
-		protected function is_image() {
-			return ( ! $this->atts['image_hovers'] );
+		protected function is_hover_enabled() {
+			return $this->atts['onclick'] !== 'none';
 		}
 
 		protected function is_compatibility_mode() {
@@ -373,10 +441,22 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 
 		protected function get_media() {
 			$output = '';
-
 			$wrap_class = '';
 			$video_url = $this->atts['media'];
 			$image_src = $this->atts['image'];
+			$dt_icon_attr = esc_attr( $this->atts['dt_icon'] );
+			$dt_icon = str_replace( 'dt-icon-', '', $dt_icon_attr );
+			static $social_icons = null;
+
+			if ( !$social_icons ) {
+				$social_icons = presscore_get_social_icons_data();
+			}
+			if ( array_key_exists( $dt_icon, $social_icons ) ) {
+				$title = $title ? $title : $social_icons[ $dt_icon ];
+				$icon_class = "soc-font-icon {$dt_icon_attr}";
+			} else {
+				$icon_class = $dt_icon_attr;
+			}
 
 			if ( $this->is_uploaded_image() ) {
 				$image_html = $this->render_resized_image( array(
@@ -407,7 +487,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 						'href' => $video_url,
 						'title' => $this->atts['image_title'],
 						'description' => $this->content,
-						'rollover' => $this->atts['image_hovers']
+						'rollover' => $this->is_hover_enabled()
 					) );
 
 				} else {
@@ -417,6 +497,7 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 				}
 
 			} else if ( $image_src ) {
+				$output = $image_html;
 
 				if ( 'lightbox' === $this->atts['onclick'] ) {
 
@@ -427,24 +508,33 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 						'href' => $image_src,
 						'title' => $this->atts['image_title'],
 						'description' => $this->content,
-						'rollover' => $this->atts['image_hovers']
+						'rollover' => $this->is_hover_enabled()
 					) );
 
-				} else {
-					$output = $image_html;
-
-					if ( $this->is_image_with_link() ) {
-						$target = ( '_blank' === $this->atts['custom_link_target'] ? ' target="_blank"' : '' );
-						$class = 'layzr-bg';
-						$style = '';
-						if ( $this->atts['image_hovers'] ) {
-							$class .= ' rollover';
-							$style = $this->image_inline_style();
-						}
-						$output = '<a href="' . $this->atts['image_link'] . '" class="' . $class . '" style="' . $style . '"' . $target . '>' . $output . '</a>';
-					} else {
-						$wrap_class = 'layzr-bg';
+				} elseif ( $this->is_image_with_link() ) {
+					$target = ( '_blank' === $this->atts['custom_link_target'] ? ' target="_blank"' : '' );
+					$rel = '';
+					if ( $target ) {
+						$rel = ' rel="noopener"';
+					} elseif ( $this->atts['nofollow'] ) {
+						$rel = ' rel="nofollow"';
 					}
+					$class = '';
+					if ( $this->lazy_loading_on() ) {
+						$class .= ' layzr-bg';
+					}
+					$style = '';
+					if ( $this->is_hover_enabled() ) {
+						$class .= ' rollover';
+						$style = $this->image_inline_style();
+					}
+					$output = '<a href="' . esc_url( $this->atts['image_link'] ) . '" class="' . esc_attr( $class ) . '" style="' . esc_attr( $style ) . '"' . $target . $rel . ' aria-label="' . esc_attr( 'Image', 'the7mk2' ) . '">' .  $image_html ;
+					if ( $this->get_att( 'show_zoom' ) === 'y' ) {
+						$output .= '<span class="'. esc_attr( 'rollover-icon ' . $icon_class ).'"></span>';
+					}
+					$output .= '</a>';
+				} elseif( $this->lazy_loading_on() ) {
+					$wrap_class = ' layzr-bg';
 				}
 
 			} else if ( $video_url ) {
@@ -456,9 +546,52 @@ if ( ! class_exists( 'DT_Shortcode_FancyImage', false ) ) {
 			return $this->wrap_media( $output, $wrap_class );
 		}
 
+		/**
+		 * Return array of prepared less vars to insert to less file.
+		 *
+		 * @return array
+		 */
+		protected function get_less_vars() {
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
+			$less_vars->add_keyword( 'unique-shortcode-class-name', 'shortcode-single-image-wrap.' . $this->get_unique_class(), '~"%s"' );
+
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
+			$less_vars->add_pixel_number( 'rollover-icon-size', $this->get_att( 'rollover_icon_size' ) );
+			$less_vars->add_keyword( 'rollover-icon-color', $this->get_att( 'rollover_icon_color', '~""' ) );
+
+			$less_vars->add_pixel_number( 'rollover-icon-bg-size', $this->get_att( 'rollover_icon_bg_size' ) );
+			$less_vars->add_pixel_number( 'rollover-icon-border-width', $this->get_att( 'rollover_icon_border_width' ) );
+			$less_vars->add_pixel_number( 'rollover-icon-border-radius', $this->get_att( 'rollover_icon_border_radius' ) );
+			$less_vars->add_keyword( 'rollover-icon-border-color', $this->get_att( 'rollover_icon_border_color', '~""' ) );
+			$less_vars->add_keyword( 'rollover-icon-bg-color', $this->get_att( 'rollover_icon_bg_color', '~""' ) );
+
+			return $less_vars->get_vars();
+		}
+
+		/**
+		 * Return shortcode less file absolute path to output inline.
+		 *
+		 * @return string
+		 */
+		protected function get_less_file_name() {
+			return PRESSCORE_THEME_DIR . '/css/dynamic-less/shortcodes/fancy-image.less';
+		}
 	}
 
-	// create shortcode
-	DT_Shortcode_FancyImage::get_instance();
+	DT_Shortcode_FancyImage::get_instance()->add_shortcode();
 
 }

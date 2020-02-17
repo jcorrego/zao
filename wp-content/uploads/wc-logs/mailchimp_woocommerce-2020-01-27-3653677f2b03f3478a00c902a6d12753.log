@@ -1,0 +1,8 @@
+2020-01-27T08:35:01+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3782
+2020-01-27T08:37:15+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3782 :: email: alejiscastro@hotmail.com
+2020-01-27T13:41:48+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3790
+2020-01-27T13:42:11+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3797
+2020-01-27T13:42:35+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3802
+2020-01-27T13:44:20+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3790 :: email: MARITZA781@GMAIL.COM
+2020-01-27T13:44:21+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3797 :: email: sandraacevedomd@gmail.com
+2020-01-27T13:44:22+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3802 :: email: isabolivar2@gmail.com

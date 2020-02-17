@@ -10,21 +10,14 @@
 @post-title-font-weight: normal;
 @post-title-text-transform: none;
 
-//@shortcode-pagination-gap: 50px;
-
-
 @import "inline-mixin.less";
-@import "blog/classic-layout-blog.less";
-@import "blog/bottom-overlap-layout-blog.less";
-@import "blog/gradient-overlap-layout-blog.less";
-@import "blog/gradient-overlay-layout-blog.less";
-@import "blog/content-rollover-layout-blog.less";
 
+// DYNAMIC_IMPORT_TOP
 
-.rollover-background-gradient (@startColor: #eee, @endColor: white, @deg: 135deg) when (iscolor(@startColor)) {
-	background: @startColor; /* Old browsers */
-	background: -webkit-linear-gradient(@deg,  @startColor 30%,@endColor 100%); /* Chrome10+,Safari5.1+ */
-	background: linear-gradient(@deg, @startColor 30%,@endColor 100%); /* W3C */
+.rollover-background-gradient(@firstColor, @gradient) when (isstring(~"@gradient")) {
+	background: @firstColor;
+	background: -webkit-linear-gradient(@gradient);
+	background: linear-gradient(@gradient);
 }
 
 .paginator {
@@ -37,7 +30,7 @@
 		.custom-mixin-filter-gap (@shortcode-filter-gap);
 		& a,
 		& a * {
-			color: @shortcode-filter-color;
+			.custom-mixin-color (@shortcode-filter-color);
 		}
 	}
 }
@@ -45,7 +38,7 @@
 	.@{unique-shortcode-class-name} & {
 		& a,
 		& a * {
-			color: @shortcode-filter-color;
+			.custom-mixin-color (@shortcode-filter-color);
 		}
 		& .button-load-more {
 			.custom-mixin-fade-border (@shortcode-filter-color, @opacity:10%);
@@ -120,7 +113,7 @@ article {
 	.@{unique-shortcode-class-name}.hover-scale & {
 		&:after {
 			.custom-mixin-bg (@portfolio-rollover-bg);
-			.rollover-background-gradient (@startColor: @portfolio-rollover-bg-1, @endColor: @portfolio-rollover-bg-2, @deg: @rollover-gradient-deg);
+			.rollover-background-gradient (@firstColor: @portfolio-rollover-bg, @gradient: @portfolio-rollover-bg-gradient);
 		}
 	}
 	.@{unique-shortcode-class-name}.gradient-overlay-layout-list & {
@@ -144,7 +137,17 @@ article {
 .post-thumbnail-rollover:after {
 	.@{unique-shortcode-class-name}.enable-bg-rollover & {
 		.custom-mixin-bg (@portfolio-rollover-bg);
-		.rollover-background-gradient (@startColor: @portfolio-rollover-bg-1, @endColor: @portfolio-rollover-bg-2, @deg: @rollover-gradient-deg);
+		.rollover-background-gradient (@firstColor: @portfolio-rollover-bg, @gradient: @portfolio-rollover-bg-gradient);
+	}
+}
+.post-thumbnail {
+	.@{unique-shortcode-class-name}:not(.gradient-overlay-layout-list) & {
+		box-shadow: @portfolio-img-shadow;
+	}
+}
+article {
+	.@{unique-shortcode-class-name}.gradient-overlay-layout-list & {
+		box-shadow: @portfolio-img-shadow;
 	}
 }
 .post-thumbnail {
@@ -172,12 +175,23 @@ article {
 			.gradient-overlay-layout-list:not(.content-align-center)& {
 				margin: @project-icon-above-gap @project-icon-gap @project-icon-below-gap 0;
 			}
-			&:before,
-		    &:after {
-		    	border-width: @project-icon-border-width;
-		    }
-			&:before {
-		  		.custom-mixin-border (@project-icon-border-color);
+			.dt-icon-border-on& {
+				&:before {
+			    	border-width: @project-icon-border-width;
+			    	border-style: solid;
+			    }
+			}
+			.dt-icon-hover-border-on& {
+				
+			    &:after {
+			    	border-width: @project-icon-border-width;
+			    	border-style: solid;
+			    }
+			}
+			.dt-icon-border-on& {
+				&:before {
+			  		.custom-mixin-border (@project-icon-border-color);
+				}
 			}
 		    .dt-icon-bg-on& {
 		    	&:before {
@@ -189,9 +203,11 @@ article {
 		    		.custom-mixin-bg (@project-icon-bg-color-hover);
 		    	}
 		    }
-		    &:after {
-		    	.custom-mixin-border (@project-icon-border-color-hover);
-		    }
+		    .dt-icon-border-on& {
+			    &:after {
+			    	.custom-mixin-border (@project-icon-border-color-hover);
+			    }
+			}
 		    & > span:before {
 		    	font-size: @project-icon-size;
 		    	line-height: @project-icon-bg-size;
@@ -199,8 +215,16 @@ article {
 		    &:not(:hover) > span {
 		    	.custom-mixin-color (@project-icon-color);
 		    }
+		     & > span,
 		     &:hover > span {
-		    	.custom-mixin-color (@project-icon-color-hover);
+		    	.dt-icon-hover-off& {
+			    	.custom-mixin-color (@project-icon-color);
+			    }
+		    }
+		     &:hover > span {
+		     	.dt-icon-hover-on& {
+		    		.custom-mixin-color (@project-icon-color-hover);
+		    	}
 		    }
 		}
 	}
@@ -217,9 +241,9 @@ article {
 		margin-bottom: @post-title-margin-bottom;
 		.custom-mixin-font-size (@post-title-font-size);
 		.custom-mixin-line-height (@post-title-line-height);
-		font-style: @post-title-font-style;
-		font-weight: @post-title-font-weight;
-		text-transform: @post-title-text-transform;
+		.custom-mixin-font-style ( @post-title-font-style);
+		.custom-mixin-font-weight (@post-title-font-weight);
+		.custom-mixin-text-transform (@post-title-text-transform);
 
 	}
 }
@@ -232,9 +256,9 @@ article {
 			.custom-mixin-line-height (@post-meta-line-height);
 			.custom-mixin-color (@post-meta-color);
 
-			font-style: @post-meta-font-style;
-			font-weight: @post-meta-font-weight;
-			text-transform: @post-meta-text-transform;
+			.custom-mixin-font-style ( @post-meta-font-style);
+			.custom-mixin-font-weight (@post-meta-font-weight);
+			.custom-mixin-text-transform (@post-meta-text-transform);
 		}
 	}
 }
@@ -261,9 +285,9 @@ article {
 			.custom-mixin-color (@post-content-color);
 		}
 
-		font-style: @post-content-font-style;
-		font-weight: @post-content-font-weight;
-		text-transform: @post-content-text-transform;
+		.custom-mixin-font-style ( @post-content-font-style);
+		.custom-mixin-font-weight (@post-content-font-weight);
+		.custom-mixin-text-transform (@post-content-text-transform);
 	}
 }
 
@@ -388,177 +412,4 @@ article {
 			}
 }
 
-.dt-css-grid {
-	.@{unique-shortcode-class-name}:not(.resize-by-browser-width) & {
-	  	grid-row-gap: @grid-posts-gap*2;
-	  	grid-column-gap: @grid-posts-gap*2;
-    	//-ms-grid-columns:repeat(auto-fit, minmax(@grid-post-min-width, 1fr));
-    	grid-template-columns:repeat(auto-fill, minmax(@grid-post-min-width, 1fr));
-    	& .double-width {
-	  		grid-column: span 2;
-	  	}
-	  	.cssgridlegacy.no-cssgrid &,
-	  	.no-cssgridlegacy.no-cssgrid & {
-	  		display: flex;
-	  		flex-flow: row wrap;
-	  		margin: -@grid-posts-gap;
-	  		& .wf-cell {
-	  			flex: 1 0 @grid-post-min-width;
-				min-width: @grid-post-min-width;
-				max-width: 100%;
-				padding: @grid-posts-gap;
-				box-sizing: border-box;
-				&.double-width {
-			  		//min-width: @grid-post-min-width*2;
-			  	}
-		  	}
-	  	}
-	}
-	.@{unique-shortcode-class-name}.resize-by-browser-width & {
-		//-ms-grid-columns: 1fr 1fr 1fr;
-		grid-template-columns: repeat(@desktop-columns-num, 1fr);
-	  	grid-template-rows: auto;
-	  	grid-column-gap: @grid-posts-gap*2;
-	  	grid-row-gap: @grid-posts-gap*2;
-	  	
-	  	& .double-width {
-	  		grid-column: span 2;
-	  	}
-	  	.cssgridlegacy.no-cssgrid & {
-	  		margin: -@grid-posts-gap;
-	  		& .wf-cell {
-				width: 100%/@desktop-columns-num;
-				padding: @grid-posts-gap;
-				&.double-width {
-			  		width: calc(100%/@desktop-columns-num) * 2;
-			  	}
-		  	}
-	  	}
-	}
-
-	.@{unique-shortcode-class-name}.resize-by-browser-width:not(.centered-layout-list):not(.content-bg-on) & {
-  		grid-row-gap: @grid-posts-gap*2 - @post-content-padding-bottom;
-	}
-}
-@media screen and (max-width: 1199px){
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}.resize-by-browser-width & {
-			grid-template-columns: repeat(@h-tablet-columns-num, 1fr);
-			.cssgridlegacy.no-cssgrid &,
-	  		.no-cssgridlegacy.no-cssgrid & {
-		  		& .wf-cell {
-					width: 100%/@h-tablet-columns-num;
-					&.double-width {
-				  		width: calc(100%/@h-tablet-columns-num)*2;
-				  	}
-			  	}
-		  	}
-		}
-	}
-}
-@media screen and (max-width: 991px){
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}.resize-by-browser-width & {
-			grid-template-columns: repeat(@v-tablet-columns-num, 1fr);
-			.cssgridlegacy.no-cssgrid &,
-	  		.no-cssgridlegacy.no-cssgrid & {
-		  		& .wf-cell {
-					width: 100%/@v-tablet-columns-num;
-					&.double-width {
-				  		width: calc(100%/@v-tablet-columns-num)*2;
-				  	}
-			  	}
-		  	}
-		}
-	}
-}
-@media screen and (max-width: 812px){
-	.mixin-double-width (@a) when (isnumber(@a)) and (@a > 356) {
-	  	grid-column: span 1;
-	}
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}:not(.resize-by-browser-width) & {
-	    	& .double-width {
-	    		.mixin-double-width (@grid-post-min-width);
-	    	}
-		}
-	}
-}
-
-@media screen and (max-width: 767px){
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}.resize-by-browser-width & {
-			grid-template-columns: repeat(@phone-columns-num, 1fr);
-			.cssgridlegacy.no-cssgrid &,
-	  		.no-cssgridlegacy.no-cssgrid & {
-		  		& .wf-cell {
-					width: 100%/@phone-columns-num;
-					&.double-width {
-				  		width: calc(100%/@phone-columns-num)*2;
-				  	}
-			  	}
-		  	}
-		}
-	}
-	.mixin-double-width (@a) when (isnumber(@a)) and (@a > 350) {
-	  	grid-column: span 1;
-	}
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}:not(.resize-by-browser-width) & {
-	    	& .double-width {
-	    		.mixin-double-width (@grid-post-min-width);
-	    	}
-		}
-	}
-
-}
-@media screen and (max-width: 568px){
-	.mixin (@a) when (isnumber(@a)) and (@a > 528) {
-		grid-template-columns:repeat(auto-fill, minmax(528px, 1fr));
-	}
-	.mixin-double-width (@a) when (isnumber(@a)) and (@a > 264) {
-	  	grid-column: span 1;
-	}
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}:not(.resize-by-browser-width) & {
-	    	.mixin (@grid-post-min-width);
-	    	& .double-width {
-	    		.mixin-double-width (@grid-post-min-width);
-	    	}
-		}
-	}
-}
-@media screen and (max-width: 420px){
-	.mixin (@a) when (isnumber(@a)) and (@a > 370) {
-		grid-template-columns:repeat(auto-fill, minmax(100%, 1fr));
-	}
-	.mixin-double-width (@a) when (isnumber(@a)) and (@a > 185) {
-	  	grid-column: span 1;
-	}
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}:not(.resize-by-browser-width) & {
-	    	.mixin (@grid-post-min-width);
-	    	
-	    	& .double-width {
-		  		.mixin-double-width (@grid-post-min-width);
-		  	}
-		}
-	}
-}
-@media screen and (max-width: 320px){
-	.mixin (@a) when (isnumber(@a)) and (@a > 280) {
-		grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-	}
-	.mixin-double-width (@a) when (isnumber(@a)) and (@a > 140) {
-	  	grid-column: span 1;
-	}
-	.dt-css-grid {
-		.@{unique-shortcode-class-name}:not(.resize-by-browser-width) & {
-	    	.mixin (@grid-post-min-width);
-	    	
-	    	& .double-width {
-		  		.mixin-double-width (@grid-post-min-width);
-		  	}
-		}
-	}
-}
+// DYNAMIC_IMPORT_BOTTOM

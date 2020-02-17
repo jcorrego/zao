@@ -23,13 +23,6 @@ class WCCT_Appearance {
 		add_action( 'woocommerce_single_product_summary', array( $this, 'wcct_position_below_short_desc' ), 21.3 );
 		add_action( 'woocommerce_single_product_summary', array( $this, 'wcct_position_below_add_cart' ), 39.3 );
 
-		/**
-		 * @deprecated
-		 */
-		//      add_action( 'woocommerce_single_product_summary', array( $this, 'wcct_position_below_meta' ), 41.3 );
-		//      add_action( 'woocommerce_after_single_product_summary', array( $this, 'wcct_position_above_tab_area' ), 9.9 );
-		//      add_action( 'woocommerce_after_single_product_summary', array( $this, 'wcct_position_below_related_products' ), 21.3 );
-
 		add_filter( 'woocommerce_cart_item_name', array( $this, 'wcct_show_on_cart' ), 10, 3 );
 		add_action( 'woocommerce_after_shop_loop_item', array( $this, 'wcct_bar_timer_show_on_grid' ), 9 );
 
@@ -55,7 +48,7 @@ class WCCT_Appearance {
 	}
 
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self;
 		}
 
@@ -74,13 +67,19 @@ class WCCT_Appearance {
 		wp_enqueue_script( 'wcct_public_js', $this->wcct_url . '/assets/js/wcct_combined.min.js', array( 'jquery' ), WCCT_VERSION, true );
 
 		// store currency
-		$wcct_currency                   = get_woocommerce_currency_symbol();
-		$localize_arr['wcct_version']    = WCCT_VERSION;
-		$localize_arr['currency']        = $wcct_currency;
-		$localize_arr['admin_ajax']      = admin_url( 'admin-ajax.php' );
-		$localize_arr['home_url']        = home_url();
-		$localize_arr['log_file']        = $base_url . '/force.txt';
-		$localize_arr['refresh_timings'] = 'yes';
+		$wcct_currency                             = get_woocommerce_currency_symbol();
+		$localize_arr['wcct_version']              = WCCT_VERSION;
+		$localize_arr['currency']                  = $wcct_currency;
+		$localize_arr['admin_ajax']                = admin_url( 'admin-ajax.php' );
+		$localize_arr['home_url']                  = home_url();
+		$localize_arr['log_file']                  = $base_url . '/force.txt';
+		$localize_arr['refresh_timings']           = 'yes';
+		$localize_arr['reload_page_on_timer_ends'] = 'yes';
+		$global_settings                           = WCCT_Common::get_global_default_settings();
+		if ( 'no' === $global_settings['wcct_reload_page_on_timer_ends'] ) {
+			$localize_arr['reload_page_on_timer_ends'] = 'no';
+		}
+
 		wp_localize_script( 'wcct_public_js', 'wcct_data', apply_filters( 'wcct_localize_js_data', $localize_arr ) );
 	}
 
@@ -115,8 +114,7 @@ class WCCT_Appearance {
 	}
 
 	public function wcct_show_on_cart( $hyper_link_name, $cart_item, $cart_item_key ) {
-
-		if ( WCCT_Core()->cart->is_mini_cart ) {
+		if ( WCCT_Core()->cart->is_mini_cart || ! is_array( $cart_item ) || ! isset( $cart_item['product_id'] ) ) {
 			return $hyper_link_name;
 		}
 		$get_item_id = $cart_item['product_id'];
@@ -140,7 +138,8 @@ class WCCT_Appearance {
 			return;
 		}
 
-		if ( ! is_checkout() ) {
+		$display_on_checkout = apply_filters( 'wcct_display_campaign_elements_on_checkout', false );
+		if ( true === $display_on_checkout || ! is_checkout() ) {
 			if ( is_user_logged_in() && current_user_can( 'administrator' ) && isset( $_GET['wcct_positions'] ) && $_GET['wcct_positions'] == 'yes' && $position != '0' ) {
 				WCCT_Common::pr( $this->get_position_for_index( $position ) );
 			}
@@ -152,14 +151,14 @@ class WCCT_Appearance {
 			if ( ! $product instanceof WC_Product ) {
 				return;
 			}
-			if ( in_array( $type, array( 'single', 'grid' ) ) ) {
+			if ( in_array( $type, array( 'single', 'grid' ), true ) ) {
 				$goals_meta = WCCT_Core()->public->wcct_get_goal_object( $goals, WCCT_Core()->public->wcct_get_product_parent_id( $product ) );
 			}
 
-			if ( $type == 'single' && is_singular( 'product' ) ) {
+			if ( 'single' === $type && is_singular( 'product' ) ) {
 				if ( isset( $data['single_bar'] ) && is_array( $data['single_bar'] ) && count( $data['single_bar'] ) > 0 ) {
 					$manage_stock_check = true;
-					if ( in_array( $product->get_type(), WCCT_Common::get_simple_league_product_types() ) ) {
+					if ( in_array( $product->get_type(), WCCT_Common::get_simple_league_product_types(), true ) ) {
 						$manage_stock_check = $product->managing_stock();
 					}
 					// in some cases manage stock returns blank, that's why below handling
@@ -172,14 +171,14 @@ class WCCT_Appearance {
 					if ( ! $product->is_in_stock() ) {
 						$show_bar = false;
 					}
-					if ( $goals['type'] == 'same' && ! $manage_stock_check ) {
+					if ( 'same' === $goals['type'] && ! $manage_stock_check ) {
 						$show_bar = false;
 					}
-					if ( $show_bar && $goals['type'] == 'same' && in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types() ) && WCCT_Common::get_total_stock( $product ) <= 0 ) {
+					if ( $show_bar && 'same' === $goals['type'] && in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types(), true ) && WCCT_Common::get_total_stock( $product ) <= 0 ) {
 						// use <= for sometimes stock quantity goes to in negative
 						$show_bar = false;
 					}
-					if ( WCCT_Core()->public->wcct_restrict_for_booking_oth( $product->get_id() ) == false ) {
+					if ( false === WCCT_Core()->public->wcct_restrict_for_booking_oth( $product->get_id() ) ) {
 						$campaign_id = key( $data['single_bar'] );
 						$single_bar  = current( $data['single_bar'] );
 
@@ -205,24 +204,24 @@ class WCCT_Appearance {
 					}
 				}
 			}
-			if ( $type == 'grid' ) {
+			if ( 'grid' === $type ) {
 
 				if ( isset( $data['grid_bar'] ) && is_array( $data['grid_bar'] ) && count( $data['grid_bar'] ) > 0 ) {
 					$manage_stock_check = true;
-					if ( in_array( $product->get_type(), WCCT_Common::get_simple_league_product_types() ) ) {
+					if ( in_array( $product->get_type(), WCCT_Common::get_simple_league_product_types(), true ) ) {
 						$manage_stock_check = $product->managing_stock();
 					}
 					// in some cases manage stock returns blank, that's why below handling
 					$manage_stock_check = ( $manage_stock_check ) ? true : false;
 					$show_bar           = true;
-					if ( $goals['type'] == 'same' && ! $manage_stock_check ) {
+					if ( 'same' === $goals['type'] && ! $manage_stock_check ) {
 						$show_bar = false;
 					}
-					if ( $show_bar && $goals['type'] == 'same' && in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types() ) && WCCT_Common::get_total_stock( $product ) <= 0 ) {
+					if ( 'same' === $show_bar && $goals['type'] && in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types(), true ) && WCCT_Common::get_total_stock( $product ) <= 0 ) {
 						// use <= for sometimes stock quantity goes to in negative
 						$show_bar = false;
 					}
-					if ( WCCT_Core()->public->wcct_restrict_for_booking_oth( $product->get_id() ) == false && $show_bar ) {
+					if ( false === WCCT_Core()->public->wcct_restrict_for_booking_oth( $product->get_id() ) && $show_bar ) {
 						foreach ( $data['grid_bar'] as $campaign_id => $grid_bar ) {
 							$this->wcct_trigger_counter_bar( $campaign_id, $grid_bar, $goals_meta, 'grid' );
 							break;
@@ -235,7 +234,7 @@ class WCCT_Appearance {
 					}
 				}
 			}
-			if ( $type == 'cart' ) {
+			if ( 'cart' === $type ) {
 				if ( isset( $data['show_on_cart'] ) && is_array( $data['show_on_cart'] ) && count( $data['show_on_cart'] ) > 0 ) {
 					foreach ( $data['show_on_cart'] as $campaign_id => $show_on_cart ) {
 						$this->wcct_trigger_countdown_timer( $campaign_id, $show_on_cart, 'cart' );
@@ -261,7 +260,6 @@ class WCCT_Appearance {
 	}
 
 	public function wcct_trigger_counter_bar( $key, $data, $goal_data, $call_type = 'single' ) {
-
 		global $product, $wcct_style;
 
 		if ( ! $product instanceof WC_Product ) {
@@ -270,13 +268,13 @@ class WCCT_Appearance {
 		if ( $product->is_in_stock() === false ) {
 			return '';
 		}
-		if ( is_object( $product ) && in_array( $product->get_type(), array( 'grouped' ) ) ) {
+		if ( is_object( $product ) && in_array( $product->get_type(), array( 'grouped' ), true ) ) {
 			return '';
 		}
-		if ( false == is_array( $goal_data ) ) {
+		if ( false === is_array( $goal_data ) ) {
 			return '';
 		}
-		if ( count( $goal_data ) == 0 ) {
+		if ( count( $goal_data ) === 0 ) {
 			return '';
 		}
 		if ( $goal_data['sold_out'] >= $goal_data['quantity'] ) {
@@ -290,47 +288,48 @@ class WCCT_Appearance {
 		$new_key     = $campaign_id . '_' . $prCampaignId;
 
 		$timers_class = 'wcct_cbsh_id_';
-		if ( $call_type == 'single' ) {
+		if ( 'single' === $call_type ) {
 			$timers_class = 'wcct_cbs_id_';
-		} elseif ( $call_type == 'grid' ) {
+		} elseif ( 'grid' === $call_type ) {
 			$timers_class = 'wcct_cbg_id_';
-		} elseif ( $call_type == 'cart' ) {
+		} elseif ( 'cart' === $call_type ) {
 			$timers_class = 'wcct_cbc_id_';
 		}
 
 		$wcct_orientation_classes = ' wcct_bar_orientation_ltr';
-		if ( isset( $data['orientation'] ) && $data['orientation'] == 'rtl' ) {
+		if ( isset( $data['orientation'] ) && 'rtl' === $data['orientation'] ) {
 			$wcct_orientation_classes = ' wcct_bar_orientation_rtl';
 		}
 
 		$wcct_aria_classes = ' wcct_bar_stripe';
-		if ( isset( $data['skin'] ) && $data['skin'] == 'fill' ) {
+		if ( isset( $data['skin'] ) && 'fill' === $data['skin'] ) {
 			$wcct_aria_classes = ' wcct_bar_fill';
-		} elseif ( isset( $data['skin'] ) && $data['skin'] == 'stripe_animate' ) {
+		} elseif ( isset( $data['skin'] ) && 'stripe_animate' === $data['skin'] ) {
 			$wcct_aria_classes = ' wcct_bar_stripe wcct_bar_stripe_animate';
 		}
 		$wcct_progress_classes = '';
-		if ( isset( $data['edge'] ) && $data['edge'] == 'smooth' ) {
+		if ( isset( $data['edge'] ) && 'smooth' === $data['edge'] ) {
 			$wcct_progress_classes .= ' wcct_bar_edge_smooth';
 			$wcct_aria_classes     .= ' wcct_bar_edge_smooth';
 		}
 		$new_height = 12;
-		if ( isset( $data['height'] ) && $data['height'] != '' ) {
+		if ( isset( $data['height'] ) && '' !== $data['height'] ) {
 			$new_height = (int) $data['height'];
 		}
 		ob_start();
-		if ( isset( $data['border_style'] ) && $data['border_style'] != 'none' ) {
+		if ( isset( $data['border_style'] ) && 'none' !== $data['border_style'] ) {
 			echo '.' . $timers_class . $new_key . ' { border-style: ' . $data['border_style'] . '; border-color: ' . ( isset( $data['border_color'] ) ? $data['border_color'] : '#ffffff' ) . '; border-width: ' . ( isset( $data['border_width'] ) ? $data['border_width'] . 'px' : '1px' ) . '; padding: 10px; }';
 		}
 		echo '.' . $timers_class . $new_key . ' .wcct_progress_aria { ' . ( isset( $data['bg_color'] ) ? ( 'background: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ' height: ' . $new_height . 'px; }';
-		if ( isset( $data['edge'] ) && $data['edge'] == 'rounded' ) {
+		if ( isset( $data['edge'] ) && 'rounded' === $data['edge'] ) {
 			echo '.' . $timers_class . $new_key . ' .wcct_progress_aria { border-radius: ' . ( $new_height / 2 ) . 'px; -moz-border-radius: ' . ( $new_height / 2 ) . 'px; -webkit-border-radius: ' . ( $new_height / 2 ) . 'px; }';
 		}
 		echo '.' . $timers_class . $new_key . ' .wcct_progress_aria .wcct_progress_bar { ' . ( isset( $data['active_color'] ) ? ( 'background-color: ' . $data['active_color'] . '; ' ) : '' ) . '; }';
 		echo '.' . $timers_class . $new_key . ' p span { ' . ( isset( $data['active_color'] ) ? ( 'color: ' . $data['active_color'] . '; ' ) : '' ) . '; }';
 		$wcct_bar_css = ob_get_clean();
 		$wcct_style   .= $wcct_bar_css;
-		if ( ( isset( $data['display'] ) && $data['display'] != '' ) || $call_type == 'grid' ) {
+
+		if ( ( isset( $data['display'] ) && '' !== $data['display'] ) || 'grid' === $call_type ) {
 			$sold_percentage = 0;
 			if ( is_array( $goal_data ) && isset( $goal_data['sold_out'] ) && $goal_data['sold_out'] > 0 ) {
 				$sold_per = (float) ( $goal_data['sold_out'] / $goal_data['quantity'] ) * 100;
@@ -341,7 +340,7 @@ class WCCT_Appearance {
 				}
 			}
 			$remaining_percentage = $sold_percentage;
-			if ( isset( $data['orientation'] ) && $data['orientation'] == 'rtl' ) {
+			if ( isset( $data['orientation'] ) && 'rtl' === $data['orientation'] ) {
 				$remaining_percentage = ( 100 - $sold_percentage );
 			}
 
@@ -380,13 +379,14 @@ class WCCT_Appearance {
 
 	/**
 	 * Generate Output of Merge tags like {{Sold_out}}
-	 * @global type $product
 	 *
 	 * @param type $data
 	 * @param type $goal_data
 	 * @param type $merge_tags
 	 *
 	 * @return type
+	 * @global type $product
+	 *
 	 */
 	public function wcct_merge_tags( $data, $goal_data, $merge_tags = 'sold_units' ) {
 		global $product;
@@ -397,7 +397,7 @@ class WCCT_Appearance {
 		$goal_sold_out = isset( $goal_data['sold_out'] ) ? (int) $goal_data['sold_out'] : 0;
 
 		if ( $product && is_object( $product ) && $product instanceof WC_Product ) {
-			if ( in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types() ) ) {
+			if ( in_array( $product->get_type(), WCCT_Common::get_variable_league_product_types(), true ) ) {
 				$children = $product->get_children();
 				if ( $children && is_array( $children ) && count( $children ) > 0 ) {
 					$child         = $children[0];
@@ -410,17 +410,17 @@ class WCCT_Appearance {
 				$goal_price = (float) $product->get_price();
 			}
 		}
-		if ( $merge_tags == 'sold_units' ) {
-			if ( $goal_sold_out === 0 ) {
+		if ( 'sold_units' === $merge_tags ) {
+			if ( 0 === $goal_sold_out ) {
 				$output['sold_units'] = '0';
 			} else {
 				$output['sold_units'] = $goal_sold_out;
 			}
-		} elseif ( $merge_tags == 'total_units' ) {
+		} elseif ( 'total_units' === $merge_tags ) {
 			$total_units           = (int) $goal_quantity;
 			$output['total_units'] = $total_units;
-		} elseif ( $merge_tags == 'remaining_units' ) {
-			$sold_units  = ( $goal_sold_out === 0 ) ? '0' : $goal_sold_out;
+		} elseif ( 'remaining_units' === $merge_tags ) {
+			$sold_units  = ( 0 === $goal_sold_out ) ? '0' : $goal_sold_out;
 			$total_units = ( $goal_quantity ) ? (int) $goal_quantity : '0';
 			if ( $total_units > 0 ) {
 				if ( ( $total_units - $sold_units ) >= '0' ) {
@@ -429,8 +429,8 @@ class WCCT_Appearance {
 					$output['remaining_units'] = '0';
 				}
 			}
-		} elseif ( $merge_tags == 'sold_percentage' ) {
-			if ( $goal_sold_out === 0 ) {
+		} elseif ( 'sold_percentage' === $merge_tags ) {
+			if ( 0 === $goal_sold_out ) {
 				$output['sold_percentage'] = '0%';
 			} else {
 				$sold_per = (float) ( $goal_sold_out / $goal_quantity ) * 100;
@@ -440,8 +440,8 @@ class WCCT_Appearance {
 					$output['sold_percentage'] = $sold_per . '%';
 				}
 			}
-		} elseif ( $merge_tags == 'remaining_percentage' ) {
-			if ( $goal_sold_out === 0 ) {
+		} elseif ( 'remaining_percentage' === $merge_tags ) {
+			if ( 0 === $goal_sold_out ) {
 				$output['remaining_percentage'] = '100%';
 			} else {
 				$sold_per   = (float) ( $goal_sold_out / $goal_quantity ) * 100;
@@ -452,26 +452,26 @@ class WCCT_Appearance {
 					$output['remaining_percentage'] = $remain_per . '%';
 				}
 			}
-		} elseif ( $merge_tags == 'sold_units_price' ) {
-			if ( $goal_sold_out === 0 ) {
+		} elseif ( 'sold_units_price' === $merge_tags ) {
+			if ( 0 === $goal_sold_out ) {
 				$output['sold_units_price'] = wc_price( 0 );
 			} else {
 				$sold_price                 = (float) ( $goal_price * $goal_sold_out );
 				$output['sold_units_price'] = wc_price( $sold_price );
 			}
-		} elseif ( $merge_tags == 'total_units_price' ) {
+		} elseif ( 'total_units_price' === $merge_tags ) {
 			$total_units_price           = (float) ( $goal_price * $goal_quantity );
 			$output['total_units_price'] = wc_price( $total_units_price );
 		}
 
-		return ( isset( $output[ $merge_tags ] ) && $output[ $merge_tags ] != '' ) ? $output[ $merge_tags ] : '';
+		return ( isset( $output[ $merge_tags ] ) && '' !== $output[ $merge_tags ] ) ? $output[ $merge_tags ] : '';
 	}
 
 	public function wcct_maybe_decode_campaign_time_merge_tags( $content, $campaign_data ) {
 		$date_format = apply_filters( 'wcct_global_date_time_format', 'M j', $campaign_data );
 		if ( strpos( $content, '{{campaign_start_date}}' ) !== false ) {
 			$get_start_timestamp = ( isset( $campaign_data['start_timestamp'] ) ? $campaign_data['start_timestamp'] : null );
-			if ( $get_start_timestamp !== null ) {
+			if ( null !== $get_start_timestamp ) {
 				$date_start_time = new DateTime();
 				$date_start_time->setTimezone( new DateTimeZone( WCCT_Common::wc_timezone_string() ) );
 				$date_start_time->setTimestamp( $get_start_timestamp );
@@ -482,7 +482,7 @@ class WCCT_Appearance {
 
 		if ( strpos( $content, '{{campaign_end_date}}' ) !== false ) {
 			$get_start_timestamp = ( isset( $campaign_data['end_timestamp'] ) ? $campaign_data['end_timestamp'] : null );
-			if ( $get_start_timestamp !== null ) {
+			if ( null !== $get_start_timestamp ) {
 				$date_start_time = new DateTime();
 				$date_start_time->setTimezone( new DateTimeZone( WCCT_Common::wc_timezone_string() ) );
 				$date_start_time->setTimestamp( $get_start_timestamp );
@@ -496,17 +496,17 @@ class WCCT_Appearance {
 
 	/**
 	 * Print Countdown Timer For Grid and Single
-	 * @global type $product
-	 * @global type $wcct_style
 	 *
 	 * @param type $key
 	 * @param type $data
 	 * @param type $call_type
 	 *
 	 * @return type
+	 * @global type $product
+	 * @global type $wcct_style
+	 *
 	 */
 	public function wcct_trigger_countdown_timer( $key, $data, $call_type = 'single' ) {
-
 		global $product, $wcct_style;
 		$campaign_id   = $key;
 		$prCampaign_id = 0;
@@ -514,18 +514,18 @@ class WCCT_Appearance {
 			$prCampaign_id = $product->get_id();
 		}
 		$reduce_font_size_mobile = 0;
-		if ( true == WCCT_Core()->is_mobile ) {
+		if ( true === WCCT_Core()->is_mobile ) {
 
 			$reduce_font_size_mobile = isset( $data['timer_mobile'] ) ? $data['timer_mobile'] : 0;
 		}
-		$new_key = $campaign_id . '_' . $prCampaign_id;
-
+		$new_key      = $campaign_id . '_' . $prCampaign_id;
 		$timers_class = 'wcct_ctsh_id_';
-		if ( $call_type == 'single' ) {
+
+		if ( 'single' === $call_type ) {
 			$timers_class = 'wcct_cts_id_';
-		} elseif ( $call_type == 'grid' ) {
+		} elseif ( 'grid' === $call_type ) {
 			$timers_class = 'wcct_ctg_id_';
-		} elseif ( $call_type == 'cart' ) {
+		} elseif ( 'cart' === $call_type ) {
 			$timers_class = 'wcct_ctc_id_';
 		}
 
@@ -546,33 +546,33 @@ class WCCT_Appearance {
 			$data['label_font'] = round( $data['label_font'] * ( $reduce_font_size_mobile / 100 ), 1 );
 		}
 		ob_start();
-		if ( $data['skin'] == 'round_fill' ) {
+		if ( 'round_fill' === $data['skin'] ) {
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap { ' . ( isset( $data['bg_color'] ) ? ( 'background: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ' height: ' . $new_height . 'px; width: ' . $new_height . 'px; }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap .wcct_wrap_border { ' . ( isset( $data['bg_color'] ) ? ( 'border-color: ' . $data['bg_color'] . '; ' ) : '' ) . '}';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap span { ' . ( isset( $data['timer_font'] ) ? ( 'font-size: ' . $data['timer_font'] . 'px; ' ) : '' ) . ' }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap .wcct_table_cell { ' . ( isset( $data['label_font'] ) ? ( 'font-size: ' . $data['label_font'] . 'px; ' ) : '' ) . ' }';
-		} elseif ( $data['skin'] == 'square_fill' ) {
+		} elseif ( $data['skin'] === 'square_fill' ) {
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap { ' . ( isset( $data['bg_color'] ) ? ( 'background: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ' height: ' . $new_height . 'px; width: ' . $new_height . 'px; }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap .wcct_wrap_border { ' . ( isset( $data['bg_color'] ) ? ( 'border-color: ' . $data['bg_color'] . '; ' ) : '' ) . '}';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap span { ' . ( isset( $data['timer_font'] ) ? ( 'font-size: ' . $data['timer_font'] . 'px; ' ) : '' ) . ' }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap .wcct_table_cell { ' . ( isset( $data['label_font'] ) ? ( 'font-size: ' . $data['label_font'] . 'px; ' ) : '' ) . ' }';
-		} elseif ( $data['skin'] == 'round_ghost' ) {
+		} elseif ( $data['skin'] === 'round_ghost' ) {
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap { ' . ( isset( $data['bg_color'] ) ? ( 'border-color: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ' height: ' . $new_height . 'px; width: ' . $new_height . 'px; }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap .wcct_wrap_border { ' . ( isset( $data['bg_color'] ) ? ( 'border-color: ' . $data['bg_color'] . '; ' ) : '' ) . '}';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap span { ' . ( isset( $data['timer_font'] ) ? ( 'font-size: ' . $data['timer_font'] . 'px; ' ) : '' ) . ' }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_round_wrap .wcct_table_cell { ' . ( isset( $data['label_font'] ) ? ( 'font-size: ' . $data['label_font'] . 'px; ' ) : '' ) . ' }';
-		} elseif ( $data['skin'] == 'square_ghost' ) {
+		} elseif ( $data['skin'] === 'square_ghost' ) {
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap { ' . ( isset( $data['bg_color'] ) ? ( 'border-color: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ' height: ' . $new_height . 'px; width: ' . $new_height . 'px; }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap .wcct_wrap_border { ' . ( isset( $data['bg_color'] ) ? ( 'border-color: ' . $data['bg_color'] . '; ' ) : '' ) . '}';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap span { ' . ( isset( $data['timer_font'] ) ? ( 'font-size: ' . $data['timer_font'] . 'px; ' ) : '' ) . ' }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_square_wrap .wcct_table_cell { ' . ( isset( $data['label_font'] ) ? ( 'font-size: ' . $data['label_font'] . 'px; ' ) : '' ) . ' }';
-		} elseif ( $data['skin'] == 'highlight_1' ) {
+		} elseif ( $data['skin'] === 'highlight_1' ) {
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_highlight_1_wrap { ' . ( isset( $data['bg_color'] ) ? ( 'background: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ( isset( $data['label_font'] ) ? ( 'font-size: ' . $data['label_font'] . 'px; ' ) : '' ) . ' }';
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap .wcct_highlight_1_wrap span { ' . ( isset( $data['timer_font'] ) ? ( 'font-size: ' . $data['timer_font'] . 'px; ' ) : '' ) . ' }';
 		} else {
 			echo '.' . $timers_class . $new_key . '.wcct_countdown_' . $data['skin'] . ' .wcct_timer_wrap { ' . ( isset( $data['bg_color'] ) ? ( 'background: ' . $data['bg_color'] . '; ' ) : '' ) . ( isset( $data['label_color'] ) ? 'color: ' . $data['label_color'] . '; ' : '' ) . ( isset( $data['timer_font'] ) ? ( 'font-size: ' . $data['timer_font'] . 'px; ' ) : '' ) . ' }';
 		}
-		if ( isset( $data['border_style'] ) && $data['border_style'] != 'none' && isset( $data['border_color'] ) && $data['border_color'] != '' ) {
+		if ( isset( $data['border_style'] ) && $data['border_style'] !== 'none' && isset( $data['border_color'] ) && $data['border_color'] != '' ) {
 			echo '.' . $timers_class . $new_key . ' { padding: 10px; border: ' . ( ( isset( $data['border_width'] ) && $data['border_width'] != '' ) ? $data['border_width'] : '1' ) . 'px ' . $data['border_style'] . ' ' . $data['border_color'] . ' }';
 		}
 		$wcct_timer_css = ob_get_clean();
@@ -584,7 +584,7 @@ class WCCT_Appearance {
 		$is_show_hrs = apply_filters( 'wcct_always_show_hrs_on_timers', true );
 		$is_show_hrs = apply_filters( "wcct_always_show_hrs_on_timers_{$campaign_id}", $is_show_hrs );
 
-		if ( isset( $data['display'] ) && $data['display'] != '' ) {
+		if ( isset( $data['display'] ) && $data['display'] !== '' ) {
 			?>
             <div
                     class="wcct_countdown_timer <?php echo $timers_class . $new_key; ?> wcct_timer wcct_countdown_<?php echo $data['skin']; ?>"
@@ -599,17 +599,12 @@ class WCCT_Appearance {
 				 * Trying and getting difference left still in te countdown
 				 * Comparing end timestamp with the current timestamp
 				 */
-				$date_obj = new DateTime();
-
+				$date_obj            = new DateTime();
 				$current_Date_object = clone $date_obj;
-
 				$date_obj->setTimestamp( $data['end_timestamp'] );
-
 				$interval = $current_Date_object->diff( $date_obj );
-
-				$x = $interval->format( '%R' );
-
-				$is_left = $x;
+				$x        = $interval->format( '%R' );
+				$is_left  = $x;
 
 				if ( $is_left == '+' ) {
 					$total_seconds_left = 0;
@@ -622,9 +617,8 @@ class WCCT_Appearance {
 
 					$display = '<div class="wcct_timer_wrap" data-date="' . $data['end_timestamp'] . '" data-left="' . $total_seconds_left . '" data-timer-skin="' . $data['skin'] . '"></div>';
 					$output  = str_replace( '{{countdown_timer}}', $display, $data['display'] );
-
-					$output = apply_filters( 'wcct_the_content', $output );
-					$output = $this->wcct_maybe_decode_campaign_time_merge_tags( $output, $data );
+					$output  = apply_filters( 'wcct_the_content', $output );
+					$output  = $this->wcct_maybe_decode_campaign_time_merge_tags( $output, $data );
 
 					echo $output;
 				}
@@ -642,41 +636,10 @@ class WCCT_Appearance {
 	 */
 	public function wcct_trigger_countdown_timer_expiry( $campaign_id, $data ) {
 		?>
-        <div class="wcct_counter_timer_expiry" data-expiry="<?Php echo wp_json_encode( $data ); ?>">
+        <div class="wcct_counter_timer_expiry">
 			<?php echo isset( $data['text'] ) ? apply_filters( 'wcct_the_content', $data['text'] ) : ''; ?>
         </div>
 		<?php
-	}
-
-	public function wcct_position_below_meta() {
-		global $post;
-		$single_data = WCCT_Core()->public->get_single_campaign_pro_data( $post->ID );
-
-		$cp_data = array(
-			'campaign' => $single_data,
-		);
-		$this->wcct_triggers( $cp_data, 7 );
-	}
-
-	public function wcct_position_above_tab_area() {
-		global $post;
-		$single_data = WCCT_Core()->public->get_single_campaign_pro_data( $post->ID );
-
-		$cp_data = array(
-			'campaign' => $single_data,
-		);
-		echo '<div class="wcct_clear"></div>';
-		$this->wcct_triggers( $cp_data, 8 );
-	}
-
-	public function wcct_position_below_related_products() {
-		global $post;
-		$single_data = WCCT_Core()->public->get_single_campaign_pro_data( $post->ID );
-
-		$cp_data = array(
-			'campaign' => $single_data,
-		);
-		$this->wcct_triggers( $cp_data, 11 );
 	}
 
 	public function wcct_bar_timer_show_on_grid() {
@@ -898,6 +861,6 @@ class WCCT_Appearance {
 
 }
 
-if ( class_exists( 'WCCT_Appearance' ) ) {
+if ( class_exists( 'WCCT_Core' ) ) {
 	WCCT_Core::register( 'appearance', 'WCCT_Appearance' );
 }

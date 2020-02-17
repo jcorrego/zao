@@ -1,13 +1,13 @@
 <?php
 /**
  * Page title helpers
- * 
- * @package vogue
+ *
  * @since 1.0.0
+ *
+ * @package The7
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+defined( 'ABSPATH' ) || exit;
 
 if ( ! function_exists( 'presscore_get_page_title' ) ) :
 
@@ -18,16 +18,16 @@ if ( ! function_exists( 'presscore_get_page_title' ) ) :
 	 */
 	function presscore_get_page_title() {
 		$default_page_title_strings = array(
-			'search' => __( 'Search Results for: %s', 'the7mk2' ),
+			'search'   => __( 'Search Results for: %s', 'the7mk2' ),
 			'category' => __( 'Category Archives: %s', 'the7mk2' ),
-			'tag' => __( 'Tag Archives: %s', 'the7mk2' ),
-			'author' => __( 'Author Archives: %s', 'the7mk2' ),
-			'day' => __( 'Daily Archives: %s', 'the7mk2' ),
-			'month' => __( 'Monthly Archives: %s', 'the7mk2' ),
-			'year' => __( 'Yearly Archives: %s', 'the7mk2' ),
-			'archives' => __( 'Archives:', 'the7mk2' ),
+			'tag'      => __( 'Tag Archives: %s', 'the7mk2' ),
+			'author'   => __( 'Author Archives: %s', 'the7mk2' ),
+			'day'      => __( 'Daily Archives: %s', 'the7mk2' ),
+			'month'    => __( 'Monthly Archives: %s', 'the7mk2' ),
+			'year'     => __( 'Yearly Archives: %s', 'the7mk2' ),
+			'archives' => __( 'Archives: %s', 'the7mk2' ),
 			'page_404' => __( 'Page not found', 'the7mk2' ),
-			'blog' => __( 'Blog', 'the7mk2' ),
+			'blog'     => __( 'Blog', 'the7mk2' ),
 		);
 
 		/**
@@ -38,6 +38,16 @@ if ( ! function_exists( 'presscore_get_page_title' ) ) :
 		$page_title_strings = apply_filters( 'presscore_page_title_strings', $default_page_title_strings );
 		$page_title_strings = wp_parse_args( $page_title_strings, $default_page_title_strings );
 
+		if ( ! of_get_option( 'show_static_part_of_archive_title' ) ) {
+			$page_title_strings['category'] = '%s';
+			$page_title_strings['tag']      = '%s';
+			$page_title_strings['author']   = '%s';
+			$page_title_strings['day']      = '%s';
+			$page_title_strings['month']    = '%s';
+			$page_title_strings['year']     = '%s';
+			$page_title_strings['archives'] = '%s';
+		}
+
 		$title = '';
 
 		if ( is_home() && ! is_front_page() ) {
@@ -46,20 +56,28 @@ if ( ! function_exists( 'presscore_get_page_title' ) ) :
 		} elseif ( is_page() || is_single() ) {
 			$title = get_the_title();
 
-		} else if ( is_search() ) {
+		} elseif ( is_search() ) {
 			$title = sprintf( $page_title_strings['search'], '<span>' . get_search_query() . '</span>' );
 
-		} else if ( is_archive() ) {
+		} elseif ( is_archive() ) {
 
 			if ( is_category() ) {
-				$title = sprintf( $page_title_strings['category'], '<span>' . single_cat_title( '', false ) . '</span>' );
+				$title = sprintf(
+					$page_title_strings['category'],
+					'<span>' . single_cat_title( '', false ) . '</span>'
+				);
 
 			} elseif ( is_tag() ) {
 				$title = sprintf( $page_title_strings['tag'], '<span>' . single_tag_title( '', false ) . '</span>' );
 
 			} elseif ( is_author() ) {
 				the_post();
-				$title = sprintf( $page_title_strings['author'], '<span class="vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( "ID" ) ) ) . '" title="' . esc_attr( get_the_author() ) . '" rel="me">' . get_the_author() . '</a></span>' );
+				$title = sprintf(
+					$page_title_strings['author'],
+					'<span class="vcard"><a class="url fn n" href="' . esc_url(
+						get_author_posts_url( get_the_author_meta( 'ID' ) )
+					) . '" title="' . esc_attr( get_the_author() ) . '" rel="me">' . get_the_author() . '</a></span>'
+				);
 				rewind_posts();
 
 			} elseif ( is_day() ) {
@@ -71,11 +89,13 @@ if ( ! function_exists( 'presscore_get_page_title' ) ) :
 			} elseif ( is_year() ) {
 				$title = sprintf( $page_title_strings['year'], '<span>' . get_the_date( 'Y' ) . '</span>' );
 
+			} elseif ( is_tax() ) {
+				$title = sprintf( $page_title_strings['archives'], '<span>' . single_term_title( '', false ) . '</span>' );
+
 			} else {
-				$title = $page_title_strings['archives'];
+				$title = sprintf( $page_title_strings['archives'], '<span>' . post_type_archive_title( '', false ) . '</span>' );
 
 			}
-
 		} elseif ( is_404() ) {
 			$title = $page_title_strings['page_404'];
 
@@ -125,17 +145,17 @@ if ( ! function_exists( 'presscore_get_page_title_wrap_html_class' ) ) :
 		$config = presscore_config();
 		$output = array();
 
-		switch( $config->get( 'page_title.align' ) ) {
-			case 'right' :
+		switch ( $config->get( 'page_title.align' ) ) {
+			case 'right':
 				$output[] = 'title-right';
 				break;
-			case 'left' :
+			case 'left':
 				$output[] = 'title-left';
 				break;
-			case 'all_right' :
+			case 'all_right':
 				$output[] = 'content-right';
 				break;
-			case 'all_left' :
+			case 'all_left':
 				$output[] = 'content-left';
 				break;
 			default:
@@ -153,10 +173,10 @@ if ( ! function_exists( 'presscore_get_page_title_wrap_html_class' ) ) :
 		if ( $config->get( 'page_title.breadcrumbs.mobile.enabled' ) ) {
 			$output[] = 'breadcrumbs-mobile-off';
 		}
-		if (  $config->get( 'page_title.breadcrumbs.background.mode' ) == 'enabled' ) {
+		if ( $config->get( 'page_title.breadcrumbs.background.mode' ) == 'enabled' ) {
 			$output[] = 'breadcrumbs-bg';
 		}
-		if (  $config->get( 'page_title.background.responsiveness' ) ) {
+		if ( $config->get( 'page_title.background.responsiveness' ) ) {
 			$output[] = 'page-title-responsive-enabled';
 		}
 
@@ -183,10 +203,6 @@ if ( ! function_exists( 'presscore_get_page_title_wrap_html_class' ) ) :
 			$output[] = 'title-outline-decoration';
 		}
 
-		//////////////
-		// Output //
-		//////////////
-
 		if ( $class && ! is_array( $class ) ) {
 			$class = explode( ' ', $class );
 		}
@@ -201,7 +217,7 @@ endif;
 if ( ! function_exists( 'presscore_get_page_title_breadcrumbs' ) ) :
 
 	function presscore_get_page_title_breadcrumbs( $args = array() ) {
-		$config = Presscore_Config::get_instance();
+		$config            = Presscore_Config::get_instance();
 		$breadcrumbs_class = 'breadcrumbs text-small';
 
 		switch ( $config->get( 'page_title.breadcrumbs.background.mode' ) ) {
@@ -215,8 +231,8 @@ if ( ! function_exists( 'presscore_get_page_title_breadcrumbs' ) ) :
 
 		$default_args = array(
 			'beforeBreadcrumbs' => '<div class="page-title-breadcrumbs">',
-			'afterBreadcrumbs' => '</div>',
-			'listAttr' => ' class="' . $breadcrumbs_class . '"'
+			'afterBreadcrumbs'  => '</div>',
+			'listAttr'          => ' class="' . $breadcrumbs_class . '"',
 		);
 
 		$args = wp_parse_args( $args, $default_args );

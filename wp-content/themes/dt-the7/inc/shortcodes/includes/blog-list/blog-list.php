@@ -3,13 +3,8 @@
  * Blog list shortcode.
  */
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'class-dt-blog-lessvars-manager.php';
 require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'class-dt-blog-shortcode-html.php';
 
 if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
@@ -54,6 +49,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				'category'                       => '',
 				'tags'                           => '',
 				'posts'                          => '',
+				'posts_offset'                   => 0,
 				'layout'                         => 'classic',
 				'cl_image_width'                 => '50%',
 				'cl_dividers'                    => 'n',
@@ -76,7 +72,21 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				'image_sizing'                   => 'resize',
 				'resized_image_dimensions'       => '3x2',
 				'image_paddings'                 => '0px 0px 0px 0px',
-				'image_scale_animation_on_hover' => 'y',
+				'image_scale_animation_on_hover' => 'slow_scale',
+				'image_hover_bg_color'           => 'disabled',
+				'custom_rollover_bg_color'       => 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    => '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+				'show_zoom'                      => 'n',
+				'gallery_image_zoom_icon'        => 'icon-im-hover-001',
+				'project_icon_size'              => '32px',
+				'dt_project_icon'                => '',
+				'project_icon_bg_size'           => '44px',
+				'project_icon_border_width'      => '0',
+				'project_icon_border_radius'     => '100px',
+				'project_icon_color'             => 'rgba(255,255,255,1)',
+				'project_icon_border_color'      => '',
+				'project_icon_bg'                => 'n',
+				'project_icon_bg_color'          => 'rgba(255,255,255,0.3)',
 				'loading_mode'                   => 'disabled',
 				'dis_posts_total'                => '-1',
 				'st_posts_per_page'              => '',
@@ -118,13 +128,14 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				'content_line_height'            => '',
 				'content_bottom_margin'          => '5px',
 				'read_more_button'               => 'default_link',
-				'read_more_button_text'          => 'Read more',
+				'read_more_button_text'          => '',
 				'show_categories_filter'         => 'n',
 				'show_orderby_filter'            => 'n',
 				'show_order_filter'              => 'n',
 				'gap_between_posts'              => '50px',
 				'order'                          => 'desc',
 				'orderby'                        => 'date',
+				'filter_position'				 => 'center',
 				'gap_below_category_filter'      => '',
 				'navigation_font_color'          => '',
 				'navigation_accent_color'        => '',
@@ -160,6 +171,10 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				$data_pagination_mode = 'load-more';
 			} else {
 				$data_pagination_mode = 'pages';
+			}
+			$show_icon_zoom = '';
+			if ( $this->get_att( 'show_zoom' ) === 'y' ) {
+				$show_icon_zoom = '<span class="gallery-zoom-ico ' . esc_attr( $this->get_att( 'gallery_image_zoom_icon' ) ) . '"><span></span></span>';
 			}
 
 			$data_atts = array(
@@ -198,7 +213,6 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 
 			/**
 			 * Blog posts have a custom lazy loading classes.
-			 * @see DT_Blog_Shortcode_HTML::get_post_image
 			 */
 			presscore_remove_lazy_load_attrs();
 
@@ -251,32 +265,23 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 					$layout = $this->get_att( 'layout' );
 					$image_width = ( array_key_exists( $layout, $layout_image_width_map ) ? $layout_image_width_map[ $layout ] : '100%' );
 					$image_paddings = $this->sanitize_paddings( $this->get_att( 'image_paddings' ) );
+					$image_is_wide = ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) );
 
-					$image_width_config = new The7_Image_List_Width_Calculator_Config( array(
-						'content_width' => of_get_option( 'general-content_width' ),
-						'side_padding' => of_get_option( 'general-side_content_paddings' ),
-						'mobile_side_padding' => of_get_option( 'general-mobile_side_content_paddings' ),
-						'side_padding_switch' => of_get_option( 'general-switch_content_paddings' ),
-						'sidebar_enabled' => ( 'disabled' !== $config->get( 'sidebar_position' ) ),
-						'sidebar_on_mobile' => ( ! $config->get( 'sidebar_hide_on_mobile' ) ),
-						'sidebar_width' => of_get_option( 'sidebar-width' ),
-						'sidebar_gap' => of_get_option( 'sidebar-distance_to_content' ),
-						'sidebar_switch' => of_get_option( 'sidebar-responsiveness' ),
-						'image_is_wide' => ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) ),
-					    'image_width' => $image_width,
-						'mobile_switch' => $this->get_att( 'mobile_switch_width' ),
-					    'right_padding' => $image_paddings[1],
-					    'left_padding' => $image_paddings[3],
-					) );
-					$image_width_calc = new The7_Image_List_Width_Calculator( $image_width_config );
+					$resize_options = the7_calculate_image_resize_options_for_list_layout(
+						$image_width,
+						$this->get_att( 'mobile_switch_width' ),
+						$image_paddings[1],
+						$image_paddings[3],
+						$image_is_wide
+					);
 
 					// Post media.
 					$thumb_args = apply_filters( 'dt_post_thumbnail_args', array(
 						'img_id' => get_post_thumbnail_id(),
 						'class'  => 'post-thumbnail-rollover',
 						'href'   => get_permalink(),
-						'wrap'   => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
-						'options' => $image_width_calc->calculate_options(),
+						'wrap'   => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% />' . $show_icon_zoom . '</a>',
+						'options' => $resize_options,
 						'echo'   => false,
 					) );
 
@@ -291,7 +296,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				}
 
 				$details_btn_style = $this->get_att( 'read_more_button' );
-				$details_btn_text = $this->get_att( 'read_more_button_text' );
+				$details_btn_text = $this->get_att( 'read_more_button_text', esc_html_x( 'Read more', 'the7 shortcode', 'the7mk2' ) );
 				$details_btn_class = ('default_button' === $details_btn_style ? array( 'dt-btn-s', 'dt-btn' ) : array());
 
 				presscore_get_template_part( 'shortcodes', 'blog-list/tpl-layout', $this->get_att( 'layout' ), array(
@@ -399,6 +404,9 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 			if ( $this->get_flag( 'content_bg' ) ) {
 				$class[] = 'content-bg-on';
 			}
+			if ( 'disabled' != $this->get_att( 'image_hover_bg_color' ) ) {
+				$class[] = 'enable-bg-rollover';
+			}
 
 			$loading_mode = $this->get_att( 'loading_mode' );
 			if ( 'standard' !== $loading_mode ) {
@@ -408,13 +416,28 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 			if ( 'js_lazy_loading' === $loading_mode ) {
 				$class[] = 'lazy-loading-mode';
 			}
+			switch ( $this->get_att('filter_position') ) {
+				case 'left':
+					$class[] = 'filter-align-left';
+					break;
+				case 'right':
+					$class[] = 'filter-align-right';
+					break;
+			}
 
 			if ( $this->get_flag( 'jsp_show_all_pages' ) ) {
 				$class[] = 'show-all-pages';
 			}
 
-			if ( $this->get_flag( 'image_scale_animation_on_hover' ) ) {
+			if ( $this->atts['image_scale_animation_on_hover']  === 'quick_scale' ) {
+				$class[] = 'quick-scale-img';
+			}else if($this->atts['image_scale_animation_on_hover']  === 'slow_scale') {
 				$class[] = 'scale-img';
+			}
+			if ( $this->get_flag( 'project_icon_bg' ) ) {
+				$class[] = 'dt-icon-bg-on';
+			} else {
+				$class[] = 'dt-icon-bg-off';
 			}
 
 			if ( $this->get_flag( 'fancy_date' ) ) {
@@ -436,10 +459,9 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				$class = explode( ' ', $class );
 			}
 
-			if ( 'classic' === $this->atts['layout'] && absint( $this->atts['cl_image_width'] ) >= 100 ) {
-				$class[] = ' full-width-img';
-			}
-
+			if ( 'classic' === $this->atts['layout'] && strpos( $this->atts['cl_image_width'], '%' ) !== false && absint( $this->atts['cl_image_width'] ) >= 100 ) {
+                $class[] = ' full-width-img';
+            }
 			return 'class="' . join( ' ', get_post_class( $class, null ) ) . '"';
 		}
 
@@ -449,27 +471,28 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 		 * @return string
 		 */
 		protected function get_less_file_name() {
+			return PRESSCORE_THEME_DIR . '/css/dynamic-less/shortcodes/blog.less';
+		}
+
+		protected function get_less_imports() {
+			$dynamic_import_top = array();
+
 			switch ( $this->atts['layout'] ) {
 				case 'centered':
-					$less_file_name = 'centered-layout-blog';
+					$dynamic_import_top[] = 'blog/centered-layout-blog.less';
 					break;
 				case 'bottom_overlap':
-					$less_file_name = 'bottom-overlap-layout-blog';
+					$dynamic_import_top[] = 'blog/bottom-overlap-layout-blog.less';
 					break;
 				case 'side_overlap':
-					$less_file_name = 'side-overlap-layout-blog';
+					$dynamic_import_top[] = 'blog/side-overlap-layout-blog.less';
 					break;
 				case 'classic':
 				default:
-					$less_file_name = 'classic-layout-blog';
+					$dynamic_import_top[] = 'blog/classic-layout-blog.less';
 			}
 
-			// @TODO: Remove in production.
-			$less_file_name = 'blog';
-
-			$less_file_path = trailingslashit( get_template_directory() ) . "css/dynamic-less/shortcodes/{$less_file_name}.less";
-
-			return $less_file_path;
+			return compact( 'dynamic_import_top' );
 		}
 
 		/**
@@ -562,16 +585,14 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'blog-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
 			switch ( $this->get_att( 'layout' ) ) {
 				case 'classic':
 					$less_vars->add_keyword( 'post-divider-color', $this->get_att( 'cl_dividers_color', '~""' ) );
-					$less_vars->add_percent_number( 'post-thumbnail-width', $this->get_att( 'cl_image_width' ) );
+					$less_vars->add_pixel_or_percent_number( 'post-thumbnail-width', $this->get_att( 'cl_image_width' ) );
 					break;
 				case 'centered':
 					$less_vars->add_keyword( 'post-divider-color', $this->get_att( 'cl_dividers_color', '~""' ) );
@@ -606,6 +627,21 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 			$less_vars->add_keyword( 'fancy-category-color', $this->get_att( 'fancy_categories_font_color', '~""' ) );
 			$less_vars->add_keyword( 'fancy-category-bg', $this->get_att( 'fancy_categories_bg_color', '~""' ) );
 
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
+
 			$less_vars->add_paddings( array(
 				'post-content-padding-top',
 				'post-content-padding-right',
@@ -639,6 +675,15 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				'post-content-font-weight',
 				'post-content-text-transform',
 			), $this->get_att( 'content_font_style' ) );
+
+			$less_vars->add_pixel_number( 'project-icon-size', $this->get_att( 'project_icon_size' ) );
+			$less_vars->add_pixel_number( 'project-icon-bg-size', $this->get_att( 'project_icon_bg_size' ) );
+			$less_vars->add_pixel_number( 'project-icon-border-width', $this->get_att( 'project_icon_border_width' ) );
+			$less_vars->add_pixel_number( 'project-icon-border-radius', $this->get_att( 'project_icon_border_radius' ) );
+			$less_vars->add_keyword( 'project-icon-color', $this->get_att( 'project_icon_color', '~""' ) );
+			$less_vars->add_keyword( 'project-icon-border-color', $this->get_att( 'project_icon_border_color', '~""' ) );
+			$less_vars->add_keyword( 'project-icon-bg-color', $this->get_att( 'project_icon_bg_color', '~""' ) );
+
 			$less_vars->add_pixel_number( 'shortcode-filter-gap', $this->get_att( 'gap_below_category_filter', '' ) );
 			$less_vars->add_keyword( 'shortcode-filter-color', $this->get_att( 'navigation_font_color', '~""' ) );
 			$less_vars->add_keyword( 'shortcode-filter-accent', $this->get_att( 'navigation_accent_color', '~""' ) );
@@ -670,13 +715,6 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 		}
 
 		protected function get_posts_filter_terms( $query ) {
-
-			if ( 'standard' !== $this->get_att( 'loading_mode' ) ) {
-				$post_ids = wp_list_pluck( $query->posts, 'ID' );
-
-				return wp_get_object_terms( $post_ids, 'category', array( 'fields' => 'all_with_object_id' ) );
-			}
-
 			$post_type = $this->get_att( 'post_type' );
 			$data = $this->get_att( $post_type );
 
@@ -749,6 +787,9 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				return $query;
 			}
 
+			add_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			add_filter( 'found_posts', array( $this, 'fix_pagination' ), 1, 2 );
+
 			$post_type = $this->get_att( 'post_type' );
 			if ( 'posts' === $post_type ) {
 				$query = $this->get_posts_by_post_type( 'post', $this->get_att( 'posts' ) );
@@ -761,7 +802,43 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				$query = $this->get_posts_by_taxonomy( 'post', 'category', $category_terms, $category_field );
 			}
 
+			remove_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			remove_filter( 'found_posts', array( $this, 'fix_pagination' ), 1 );
+
 			return $query;
+		}
+
+		/**
+		 * Add offset to the posts query.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @param WP_Query $query
+		 */
+		public function add_offset( &$query ) {
+			$offset  = (int) $this->get_att( 'posts_offset' );
+			$ppp     = (int) $query->query_vars['posts_per_page'];
+			$current = (int) $query->query_vars['paged'];
+
+			if ( $query->is_paged ) {
+				$page_offset = $offset + ( $ppp * ( $current - 1 ) );
+				$query->set( 'offset', $page_offset );
+			} else {
+				$query->set( 'offset', $offset );
+			}
+		}
+
+		/**
+		 * Fix pagination accordingly with posts offset.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @param int $found_posts
+		 *
+		 * @return int
+		 */
+		public function fix_pagination( $found_posts ) {
+			return $found_posts - (int) $this->get_att( 'posts_offset' );
 		}
 
 		protected function get_posts_by_post_type( $post_type, $post_ids = array() ) {
@@ -781,7 +858,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 					'posts_per_page'   => $posts_per_page,
 					'post_type'        => $post_type,
 					'post_status'      => 'publish',
-					'paged'            => dt_get_paged_var(),
+					'paged'            => the7_get_paged_var(),
 					'suppress_filters' => false,
 					'post__in'         => $post_ids,
 				);
@@ -813,13 +890,14 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 		}
 
 		protected function get_posts_per_page( $pagination_mode ) {
-			$posts_per_page = - 1;
+			$max_posts_per_page = 99999;
 			switch ( $pagination_mode ) {
 				case 'disabled':
 					$posts_per_page = $this->get_att( 'dis_posts_total' );
 					break;
 				case 'standard':
 					$posts_per_page = $this->get_att( 'st_posts_per_page' );
+					$posts_per_page = $posts_per_page ? $posts_per_page : get_option( 'posts_per_page' );
 					break;
 				case 'js_pagination':
 					$posts_per_page = $this->get_att( 'jsp_posts_total' );
@@ -830,6 +908,13 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 				case 'js_lazy_loading':
 					$posts_per_page = $this->get_att( 'jsl_posts_total' );
 					break;
+				default:
+					return $max_posts_per_page;
+			}
+
+			$posts_per_page = (int) $posts_per_page;
+			if ( $posts_per_page === -1 ) {
+				return $max_posts_per_page;
 			}
 
 			return $posts_per_page;
@@ -876,7 +961,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogList', false ) ):
 
 				$query_args['orderby'] = $config->get( 'orderby' );
 				$query_args['order'] = $config->get( 'order' );
-				$query_args['paged'] = dt_get_paged_var();
+				$query_args['paged'] = the7_get_paged_var();
 			} else {
 				// JS pagination.
 				$query_args['orderby'] = $this->get_att( 'orderby' );

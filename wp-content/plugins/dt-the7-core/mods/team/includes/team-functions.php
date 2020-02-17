@@ -13,8 +13,8 @@ if ( ! function_exists( 'presscore_get_team_links_array' ) ) :
 	 */
 	function presscore_get_team_links_array() {
 		$team_links =  array(
-			'website'		=> array( 'desc' => _x( 'Personal blog / website', 'team link', 'the7mk2' ) ),
-			'mail'			=> array( 'desc' => _x( 'E-mail', 'team link', 'the7mk2' ) ),
+			'website'		=> array( 'desc' => _x( 'Personal blog / website', 'team link', 'dt-the7-core' ) ),
+			'mail'			=> array( 'desc' => _x( 'E-mail', 'team link', 'dt-the7-core' ) ),
 		);
 
 		$common_links = presscore_get_social_icons_data();

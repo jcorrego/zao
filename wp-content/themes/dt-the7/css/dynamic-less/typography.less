@@ -11,7 +11,125 @@ body.page,
 	color: @base-color;
 }
 
+#main .wf-wrap,
+.page-title .wf-wrap,
+.fancy-header .wf-wrap {
+	padding: 0 @page-right-margin 0 @page-left-margin;
+}
 
+.side-header .mobile-header-bar {
+	box-sizing: border-box;
+}
+//Fallback css grid
+.no-cssgridlegacy.no-cssgrid {
+	& .wf-container,
+    & .wf-container-main {
+		margin: 0 -@page-right-margin 0 -@page-left-margin;
+   	}
+}
+#main-slideshow.fixed > .royalSlider {
+	max-width: calc(@content-width ~"-" @side-content-paddings ~"-" @side-content-paddings);
+	.header-width (@content-width);
+}
+.header-width (@customSize) when (ispercentage(@customSize)) {
+	max-width: @customSize;
+}
+
+.header-bar,
+.mobile-header-bar {
+ 	.masthead:not(.side-header):not(.side-header-menu-icon) & {
+		max-width: calc(@content-width ~"-" @header-right-padding ~"-" @header-left-padding);
+		.header-width (@content-width);
+		margin: 0 auto;
+	}
+	.masthead:not(.side-header).full-width &,
+	.masthead.side-header-menu-icon {
+		max-width: 100%;
+	}
+}
+
+.page-title .wf-wrap:after {
+	width: calc(@content-width ~"-" @page-right-margin ~"-" @page-left-margin);
+	max-width: calc(100% ~"-" @page-right-margin ~"-" @page-left-margin);
+	.boxed & {
+		left: @page-left-margin;
+	}
+}
+
+//Fallback css grid
+.no-cssgridlegacy.no-cssgrid {
+	& .wf-container,
+    & .wf-container-main {
+  		margin: 0 -@page-right-margin 0 -@page-left-margin;
+   	}
+   	& .sidebar-right .content {
+		padding-left: @page-left-margin;
+	}
+	& .sidebar-left .content {
+		padding-right: @page-right-margin;
+	}
+	& .sidebar-right .sidebar,
+	& .sidebar-divider-off.sidebar-right .sidebar,
+	& .sidebar-right .sidebar.solid-bg,
+	& .sidebar-right .sidebar.bg-under-widget
+	{
+		padding-right: @page-right-margin;
+	}
+	& .sidebar-left .sidebar,
+	& .sidebar-divider-off.sidebar-left .sidebar,
+	& .sidebar-left .sidebar.solid-bg,
+	& .sidebar-left .sidebar.bg-under-widget {
+		padding-left: @page-left-margin;
+	}
+	& .sidebar-right .sidebar,
+	& .sidebar-divider-off.sidebar-right .sidebar,
+	& .sidebar-right .sidebar.solid-bg,
+	& .sidebar-right .sidebar.bg-under-widget {
+		padding-left: 0;
+	}
+	& .sidebar-left .sidebar,
+	& .sidebar-divider-off.sidebar-left .sidebar,
+	& .sidebar-left .sidebar.solid-bg,
+	& .sidebar-left .sidebar.bg-under-widget {
+		padding-right: 0;
+	}
+	& .content,
+	& .sidebar {
+		padding: 0 @page-right-margin 0 @page-left-margin;
+	}
+	}
+
+.sidebar-right .sidebar,
+.sidebar-divider-off.sidebar-right .sidebar,
+.sidebar-right .sidebar.solid-bg,
+.sidebar-right .sidebar.bg-under-widget
+{
+	margin-right: 0;
+	margin-left: 0;
+}
+.sidebar-left .sidebar,
+.sidebar-divider-off.sidebar-left .sidebar,
+.sidebar-left .sidebar.solid-bg,
+.sidebar-left .sidebar.bg-under-widget {
+	margin-right: 0;
+	margin-left: 0;
+}
+#main-slideshow.fixed {
+	padding: @page-top-margin @page-right-margin @page-bottom-margin @page-left-margin;
+}
+
+	.wf-container {
+		margin: 0 -@page-right-margin 0 -@page-left-margin;
+	}
+	.wf-cell,
+.wf-usr-cell
+{
+	padding: 0 @page-right-margin 0 @page-left-margin;
+}
+
+#footer .wf-wrap {
+	padding: 0 @footer-right-padding 0 @footer-left-padding;
+}
 /*Large text*/
 .text-big,
 .dt-accordion-text-big .wpb_accordion_header > a {
@@ -20,7 +138,8 @@ body.page,
 }
 /*Medium text*/
 .text-normal,
-.dt-accordion-text-normal .wpb_accordion_header > a {
+.dt-accordion-text-normal .wpb_accordion_header > a,
+.icon-with-text-shortcode .dt-text-desc {
 	font-size: @base-font-size;
 	line-height: @base-line-height;
 }
@@ -103,7 +222,29 @@ h6,
 	text-transform: @h6-text-transform;
 }
 
-h1, 
+// Define default font sizes for UA heding shortcode.
+.uvc-heading.uvc-heading-default-font-sizes .uvc-main-heading {
+	h1 {
+		line-height: @h1-line-height;
+	}
+	h2 {
+		line-height: @h2-line-height;
+	}
+	h3 {
+		line-height: @h3-line-height;
+	}
+	h4 {
+		line-height: @h4-line-height;
+	}
+	h5 {
+		line-height: @h5-line-height;
+	}
+	h6 {
+		line-height: @h6-line-height;
+	}
+}
+
+h1,
 h2,
 h3,
 h4,
@@ -140,6 +281,10 @@ h3.entry-title,
 .entry-meta .header-color,
 .color-title {
 	color: @h1-color;
+
+	.dt-mega-menu .dt-mega-parent .sidebar-content .widget & {
+		color: @mega-menu-widget-title-color;
+	}
 	.sidebar-content & {
 		color: @widget-sidebar-header-color;
 	}
@@ -227,9 +372,9 @@ a:hover {
 	// 	.text-gradient (@startColor: @accent-bg-color, @endColor: @accent-text-color-2);
 	// }
 	color: @accent-bg-color !important;
-		.accent-gradient & {
-			.text-gradient-text-fill (@startColor: @accent-bg-color, @endColor: @accent-text-color-2);
-	  	}
+	.accent-gradient & {
+		.text-gradient-text-fill (@startColor: @accent-bg-color, @endColor: @accent-text-color-2);
+  	}
 	.wf-container-footer &,
 	.accent-gradient &  {
 		.custom-mixin-footer-color (@widget-footer-accent-color) !important;
@@ -262,10 +407,12 @@ a:hover {
 #footer > .wf-wrap {
 	width: @content-width;
 }
-.ph-wrap {
-	max-width:  @content-width - 88;
+// .ph-wrap {
+// 	max-width:  @content-width - 88;
+// }
+#phantom.full-width .ph-wrap.boxed {
+	max-width: 100%;
 }
-#phantom.full-width .ph-wrap.boxed,
 #page.boxed {
 	max-width: @box-width;
 }
@@ -279,7 +426,8 @@ a:hover {
 #phantom .ph-wrap.boxed,
 .boxed .top-bar.line-content:before,
 .boxed .classic-header.content-width-line .navigation:before {
-	max-width: @content-width - 88;
+	max-width: calc(@content-width ~"-" @header-right-padding ~"-" @header-left-padding);
+	
 }
 .boxed .full-width .top-bar.line-content:before,
 .boxed .classic-header.full-width.content-width-line .navigation:before {
@@ -291,6 +439,10 @@ a:hover {
 
 #main {
 	padding: @page-top-margin 0 @page-bottom-margin 0;
+
+	& > .wf-wrap {
+		padding: 0 @page-right-margin 0 @page-left-margin;
+	}
 }
 
 
@@ -304,9 +456,26 @@ body {
 /* #General -> Appearance -> Background
 ================================================== */
 #page {
+
 	background: @page-bg-color @page-bg-image @page-bg-repeat @page-bg-attachment @page-bg-position-x @page-bg-position-y;
 	background-size: @page-bg-size;
 	background-attachment: @page-bg-attachment;
+	.fixed-page-bg & {
+		background: none;
+	}
+	&:after {
+		.fixed-page-bg & {
+			content:"";
+			position:fixed;
+			top:0;
+			height:100vh;
+			left:0;
+			right:0;
+			z-index:-1;
+			background: @page-bg-color @page-bg-image @page-bg-repeat @page-bg-position-x @page-bg-position-y;
+			background-size: @page-bg-size;
+		}
+	}
 }
 	.footer-overlap .page-inner {
 		background: @page-bg-color @page-bg-image @page-bg-repeat @page-bg-attachment @page-bg-position-x @page-bg-position-y;

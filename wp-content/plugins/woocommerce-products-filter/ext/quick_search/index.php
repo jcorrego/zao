@@ -133,21 +133,21 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
             return;
         }
         if (isset($_REQUEST['woof_qt_extended'])) {
-            wp_enqueue_script('woof_alasql', $this->get_ext_link() . "/js/alasql/alasql.js");
+            wp_enqueue_script('woof_alasql', $this->get_ext_link() . "/js/alasql/alasql.min.js",array(),WOOF_VERSION);
             $parse_tpl = explode("/", $_REQUEST['woof_qt_extended']);
             if (count($parse_tpl) > 1 AND $parse_tpl[0] == 'custom') {
-                wp_enqueue_style('woof_qs_style', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/css/" . $parse_tpl[1] . ".css");
-                wp_enqueue_script('woof_qs_script', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/js/" . $parse_tpl[1] . ".js");
+                wp_enqueue_style('woof_qs_style', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/css/" . $parse_tpl[1] . ".css",array(),WOOF_VERSION);
+                wp_enqueue_script('woof_qs_script', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/js/" . $parse_tpl[1] . ".js",array(),WOOF_VERSION);
             } else {
-                wp_enqueue_style('woof_qs_style', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/css/" . $parse_tpl[0] . ".css");
-                wp_enqueue_script('woof_qs_script', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/js/" . $parse_tpl[0] . ".js");
+                wp_enqueue_style('woof_qs_style', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/css/" . $parse_tpl[0] . ".css",array(),WOOF_VERSION);
+                wp_enqueue_script('woof_qs_script', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/js/" . $parse_tpl[0] . ".js",array(),WOOF_VERSION);
             }
         } else {
-            wp_enqueue_script('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/jquery.easy-autocomplete.min.js');
-            wp_enqueue_style('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.min.css');
-            wp_enqueue_style('easy-autocomplete-theme', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.themes.min.css');
+            wp_enqueue_script('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/jquery.easy-autocomplete.min.js',array(),WOOF_VERSION);
+            wp_enqueue_style('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.min.css',array(),WOOF_VERSION);
+            wp_enqueue_style('easy-autocomplete-theme', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.themes.min.css',array(),WOOF_VERSION);
         }
-        wp_enqueue_script('woof_quick_search', $this->get_ext_link() . 'js/quick_search.js');
+        wp_enqueue_script('woof_quick_search', $this->get_ext_link() . 'js/quick_search.js',array(),WOOF_VERSION);
         $link = '';
         if (isset($_REQUEST['woof_quick_search_link'])) {
             $link = $_REQUEST['woof_quick_search_link'];
@@ -190,7 +190,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
     }
 
     public function woof_print_applications_tabs_content() {
-        wp_enqueue_script('woof_qs_admin_', $this->get_ext_link() . 'js/admin.js');
+        wp_enqueue_script('woof_qs_admin_', $this->get_ext_link() . 'js/admin.js',array(),WOOF_VERSION);
         //***
         global $WOOF;
         $data = array();
@@ -260,7 +260,9 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
             'cache_results' => false,
             //'no_found_rows'=>false,
             'update_post_meta_cache' => false,
-            'update_post_term_cache' => false
+            'update_post_term_cache' => false,
+            'orderby' => 'ID',
+            'order' => 'DESC',            
         );
 
         if (class_exists('SitePress')) {
@@ -271,7 +273,8 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         }
 
         $start += $step;
-        if ($start > 10000) { // limiting the number of products
+        $limit = apply_filters("woof_quick_search_products_limit", 10000);
+        if ($start > $limit) { // limiting the number of products
             $do = false;
         }
         $product_ids = new WP_Query($args);
@@ -338,7 +341,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         $data['price'] = $this->get_all_prices($product);
         $data['key_words'] = "";
         $data['term_ids'] = " ";
-        $data['meta_data']=array();
+        $data['meta_data'] = array();
         $term_ids = array();
         $all_taxonomies = $WOOF->get_taxonomies();
         foreach ($this->tax_serch_data as $tax) {
@@ -365,7 +368,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
             }
         }
         $data['term_ids'] .= " ";
-        if (true) {   // if you want serch in all taxonomies by additional filters( ignore $this->tax_serch_data )
+        if (true) {   // if you want search in all taxonomies by additional filters( ignore $this->tax_serch_data )
             foreach ($all_taxonomies as $key_slug => $val_tax) {
                 $_terms = get_the_terms($id, $key_slug);
                 if (!is_array($_terms)) {
@@ -382,30 +385,30 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
                 $data['term_ids'] .= " ";
             }
         }
-        $data['meta_data']=$this->get_meta_data_by_id($id);
+        $data['meta_data'] = $this->get_meta_data_by_id($id);
         //wp_cache_flush();
         return $data;
     }
-    public function get_meta_data_by_id($id){
-        $meta_data=array();
-        if(class_exists('WOOF_META_FILTER')){
-                $meta_fields=$this->woof_settings['meta_filter'];
-                if (!empty($meta_fields))
-                {
-                    foreach ($meta_fields as $key => $meta)
-                    {
-                        if($meta['meta_key']=="__META_KEY__"){
-                            continue;
-                        } 
-                        $meta=get_post_meta( $id,$meta['meta_key'], true );
-                        if($meta){
-                            $meta_data[$key]=$meta;
-                        }
+
+    public function get_meta_data_by_id($id) {
+        $meta_data = array();
+        if (class_exists('WOOF_META_FILTER')) {
+            $meta_fields = $this->woof_settings['meta_filter'];
+            if (!empty($meta_fields)) {
+                foreach ($meta_fields as $key => $meta) {
+                    if ($meta['meta_key'] == "__META_KEY__") {
+                        continue;
                     }
-                }    
+                    $meta = get_post_meta($id, $meta['meta_key'], true);
+                    if ($meta) {
+                        $meta_data[$key] = $meta;
+                    }
+                }
+            }
         }
         return $meta_data;
     }
+
     public function get_all_prices($product) {
         if (!$product) {
             return array();
@@ -505,7 +508,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         try {
             clearstatcache(true, $file);
         } catch (Exception $e) {
-
+            
         }
         //***
         if ($fh = fopen($file, 'a+')) {

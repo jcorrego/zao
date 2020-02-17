@@ -4,7 +4,11 @@
 //+++
 $args = array();
 $args['show_count'] = get_option('woof_show_count', 0);
-$args['show_count_dynamic'] = get_option('woof_show_count_dynamic', 0);
+if($dynamic_recount==-1){
+    $args['show_count_dynamic'] = get_option('woof_show_count_dynamic', 0);
+}else{
+    $args['show_count_dynamic']=$dynamic_recount;  
+}
 $args['hide_dynamic_empty_pos'] = 0;
 $args['woof_autosubmit'] = $autosubmit;
 //***
@@ -19,15 +23,18 @@ if (!function_exists('woof_show_btn')) {
 
             <?php
             global $WOOF;
-            if ($WOOF->is_isset_in_request_data($WOOF->get_swoof_search_slug())  ): global $woof_link; ?>
+            if ($WOOF->is_isset_in_request_data($WOOF->get_swoof_search_slug()) OR class_exists("WOOF_EXT_TURBO_MODE")  ): global $woof_link; ?>
 
                 <?php
-                $woof_reset_btn_txt = __('Reset', 'woocommerce-products-filter');
+                $woof_reset_btn_txt = get_option('woof_reset_btn_txt', '');
+                if (empty($woof_reset_btn_txt)) {
+                    $woof_reset_btn_txt = __('Reset', 'woocommerce-products-filter');
+                }
                 $woof_reset_btn_txt = WOOF_HELPER::wpml_translate(null, $woof_reset_btn_txt);
                 ?>
 
                 <?php if ($woof_reset_btn_txt != 'none'): ?>
-                    <button style="float: right;" class="button woof_reset_search_form" data-link="<?php echo $woof_link ?>"><?php echo $woof_reset_btn_txt ?></button>
+                    <button  class="button woof_reset_search_form" data-link="<?php echo $woof_link ?>"><?php echo $woof_reset_btn_txt ?></button>
                 <?php endif; ?>
             <?php endif; ?>
 
@@ -144,6 +151,10 @@ if (!function_exists('woof_print_tax')) {
 	if (isset($WOOF->settings['show_toggle_button'][$tax_slug])) {
 	    $show_toggle = (int) $WOOF->settings['show_toggle_button'][$tax_slug];
 	}
+        $tooltip_text = "";
+	if (isset($WOOF->settings['tooltip_text'][$tax_slug])) {
+	    $tooltip_text = $WOOF->settings['tooltip_text'][$tax_slug];
+	}
 	//***
 	$search_query = $WOOF->get_request_data();
 	$block_is_closed = true;
@@ -171,7 +182,11 @@ if (!function_exists('woof_print_tax')) {
 	    case 'checkbox':
 		if ($WOOF->settings['show_title_label'][$tax_slug]) {
 		    ?>
-		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]) ?><?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                            <?php echo WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]) ?>
+                            <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]),$tooltip_text) ?>
+                            <?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?>
+                        </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 			    <?php
 			}
 
@@ -189,7 +204,10 @@ if (!function_exists('woof_print_tax')) {
 		    case 'select':
 			if ($WOOF->settings['show_title_label'][$tax_slug]) {
 			    ?>
-		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]) ?><?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                            <?php echo WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]) ?>
+                            <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]),$tooltip_text) ?>
+                            <?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 			    <?php
 			}
 			?>
@@ -203,7 +221,10 @@ if (!function_exists('woof_print_tax')) {
 		    case 'mselect':
 			if ($WOOF->settings['show_title_label'][$tax_slug]) {
 			    ?>
-		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]) ?><?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                            <?php echo WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]) ?>
+                            <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate($taxonomies_info[$tax_slug]),$tooltip_text) ?>
+                            <?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 				<?php
 			    }
 			    ?>
@@ -225,7 +246,11 @@ if (!function_exists('woof_print_tax')) {
 				$title = $title[0];
 			    }
 			    ?>
-		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $title ?><?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+		    	<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                            <?php echo $title ?>
+                            <?php echo WOOF_HELPER::draw_tooltipe($title,$tooltip_text) ?>
+                            <?php WOOF_HELPER::draw_title_toggle($show_toggle, $block_is_closed); ?>
+                        </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 			    <?php
 			}
 
@@ -289,16 +314,23 @@ if (!function_exists('woof_print_tax')) {
 			    if (isset($WOOF->settings['by_price']['show'])) {
 				$price_filter = (int) $WOOF->settings['by_price']['show'];
 			    }
+                            $tooltip_text = "";
+                            if (isset($WOOF->settings['by_price']['tooltip_text'])) {
+                                $tooltip_text = $WOOF->settings['by_price']['tooltip_text'];
+                            }
 			    ?>
 
 			<?php if ($price_filter == 1): ?>
-		    <div data-css-class="woof_price_search_container" class="woof_price_search_container woof_container">
+		    <div data-css-class="woof_price_search_container" class="woof_price_search_container woof_container woof_price_filter">
 		        <div class="woof_container_overlay_item"></div>
 		        <div class="woof_container_inner">
 		    	<div class="woocommerce widget_price_filter">
 		    <?php //the_widget('WC_Widget_Price_Filter', array('title' => ''));        ?>
 		    <?php if (isset($WOOF->settings['by_price']['title_text']) AND ! empty($WOOF->settings['by_price']['title_text'])): ?>
-				    <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+				    <<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                                        <?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?>
+                                        <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']),$tooltip_text) ?>
+                                    </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 		    <?php endif; ?>
 		    <?php WOOF_HELPER::price_filter(); ?>
 		    	</div>
@@ -308,11 +340,14 @@ if (!function_exists('woof_print_tax')) {
 		<?php endif; ?>
 
 		<?php if ($price_filter == 2): ?>
-		    <div data-css-class="woof_price2_search_container" class="woof_price2_search_container woof_container">
+		    <div data-css-class="woof_price2_search_container" class="woof_price2_search_container woof_container woof_price_filter">
 		        <div class="woof_container_overlay_item"></div>
 		        <div class="woof_container_inner">
 		    <?php if (isset($WOOF->settings['by_price']['title_text']) AND ! empty($WOOF->settings['by_price']['title_text'])): ?>
-				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                                    <?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?>
+                                    <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']),$tooltip_text) ?>
+                                </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 		    <?php endif; ?>
 
 		    <?php echo do_shortcode('[woof_price_filter type="select" additional_taxes="' . $additional_taxes . '"]'); ?>
@@ -323,11 +358,14 @@ if (!function_exists('woof_print_tax')) {
 
 
 		<?php if ($price_filter == 3): ?>
-		    <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container">
+		    <div data-css-class="woof_price3_search_container" class="woof_price3_search_container woof_container woof_price_filter">
 		        <div class="woof_container_overlay_item"></div>
 		        <div class="woof_container_inner">
 		    <?php if (isset($WOOF->settings['by_price']['title_text']) AND ! empty($WOOF->settings['by_price']['title_text'])): ?>
-				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                                    <?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?>
+                                    <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']),$tooltip_text) ?>
+                                </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 		    <?php endif; ?>
 
 		    <?php echo do_shortcode('[woof_price_filter type="slider" additional_taxes="' . $additional_taxes . '"]'); ?>
@@ -338,11 +376,14 @@ if (!function_exists('woof_print_tax')) {
 
 
 			    <?php if ($price_filter == 4): ?>
-		    <div data-css-class="woof_price4_search_container" class="woof_price4_search_container woof_container">
+		    <div data-css-class="woof_price4_search_container" class="woof_price4_search_container woof_container woof_price_filter">
 		        <div class="woof_container_overlay_item"></div>
 		        <div class="woof_container_inner">
 		    <?php if (isset($WOOF->settings['by_price']['title_text']) AND ! empty($WOOF->settings['by_price']['title_text'])): ?>
-				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                                    <?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?>
+                                    <?php echo WOOF_HELPER::draw_tooltipe(WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']),$tooltip_text) ?>
+                                </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 		    <?php endif; ?>
 
 		    <?php echo do_shortcode('[woof_price_filter type="text" additional_taxes="' . $additional_taxes . '"]'); ?>
@@ -351,11 +392,13 @@ if (!function_exists('woof_print_tax')) {
 		    </div>
 			<?php endif; ?>
 			<?php if ($price_filter == 5): ?>
-		    <div data-css-class="woof_price5_search_container" class="woof_price5_search_container woof_container">
+		    <div data-css-class="woof_price5_search_container" class="woof_price5_search_container woof_container woof_price_filter">
 		        <div class="woof_container_overlay_item"></div>
 		        <div class="woof_container_inner">
 			    <?php if (isset($WOOF->settings['by_price']['title_text']) AND ! empty($WOOF->settings['by_price']['title_text'])): ?>
-				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+				<<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                                    <?php echo WOOF_HELPER::wpml_translate(null, $WOOF->settings['by_price']['title_text']); ?>
+                                </<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
 		    <?php endif; ?>
 
 		    <?php echo do_shortcode('[woof_price_filter type="radio" additional_taxes="' . $additional_taxes . '"]'); ?>
@@ -423,7 +466,6 @@ if (!function_exists('woof_print_tax')) {
 
                 <div class="woof_redraw_zone" data-woof-ver="<?php echo WOOF_VERSION ?>">
     <?php echo apply_filters('woof_print_content_before_search_form', '') ?>
-
 <?php
 
 if (isset($start_filtering_btn) AND (int) $start_filtering_btn == 1) {
@@ -510,10 +552,16 @@ $txt = apply_filters('woof_start_filtering_btn_txt', __('Show products filter fo
 
 	    //lets print our items and taxonomies
 	    $counter = 0;
-	    // var_dump($items_order);
+
 	    if (count($tax_only) > 0) {
 		$items_order = get_order_by_tax_only($items_order, $tax_only);
 	    }
+
+            if(isset($by_step)){
+               $new_items_order=explode(',',$by_step);
+               $items_order = array_map('trim', $new_items_order);
+            }
+
 	    foreach ($items_order as $key) {
                 
 		if (in_array($key, $this->items_keys)) {

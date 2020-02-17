@@ -19,6 +19,9 @@ class MailChimp_WooCommerce_Customer
     protected $orders_count = null;
     protected $total_spent = null;
     protected $address;
+    protected $requires_double_optin = false;
+    protected $original_subscriber_status = null;
+    protected $wordpress_user = null;
 
     /**
      * @return array
@@ -212,6 +215,81 @@ class MailChimp_WooCommerce_Customer
     }
 
     /**
+     * @return bool
+     */
+    public function requiresDoubleOptIn()
+    {
+        return $this->requires_double_optin;
+    }
+
+    /**
+     * @param $bool
+     * @return $this
+     */
+    public function requireDoubleOptIn($bool)
+    {
+        $this->requires_double_optin = (bool) $bool;
+
+        if ($this->requires_double_optin) {
+            $this->opt_in_status = false;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function wasSubscribedOnOrder($id)
+    {
+        // we are saving the post meta for subscribers on each order... so if they have subscribed on checkout
+        $subscriber_meta = get_post_meta($id, 'mailchimp_woocommerce_is_subscribed', true);
+        $subscribed = $subscriber_meta === '' ? false : (bool) $subscriber_meta;
+
+        return $this->original_subscriber_status = $subscribed;
+    }
+
+    /**
+     * @return null|bool
+     */
+    public function getOriginalSubscriberStatus()
+    {
+        return $this->original_subscriber_status;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMergeFields()
+    {
+        return array(
+            'FNAME' => trim($this->getFirstName()),
+            'LNAME' => trim($this->getLastName()),
+        );
+    }
+
+    /**
+     * @param $user
+     * @return $this
+     */
+    public function setWordpressUser($user)
+    {
+        if ($user instanceof \WP_User) {
+            $this->wordpress_user = $user;
+        }
+        return $this;
+    }
+
+    /**
+     * @return null|\WP_User
+     */
+    public function getWordpressUser()
+    {
+        return $this->wordpress_user;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -226,7 +304,7 @@ class MailChimp_WooCommerce_Customer
             'first_name' => (string) $this->getFirstName(),
             'last_name' => (string) $this->getLastName(),
             'orders_count' => (int) $this->getOrdersCount(),
-            'total_spent' => floatval(number_format($this->getTotalSpent(), 2)),
+            'total_spent' => floatval(number_format($this->getTotalSpent(), 2, '.', '')),
             'address' => (empty($address) ? null : $address),
         ));
     }

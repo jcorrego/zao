@@ -1,0 +1,13 @@
+2020-02-14T20:34:11+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:35:10+00:00 NOTICE abandoned_cart.success :: email: luisadieze@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:43:00+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:44:40+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:44:40+00:00 NOTICE abandoned_cart.success :: email: luisadieze@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:44:40+00:00 NOTICE abandoned_cart.success :: email: luisadieze@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:45:06+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:45:45+00:00 NOTICE abandoned_cart.success :: email: luisadieze@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:46:09+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:47:51+00:00 NOTICE abandoned_cart.success :: email: luisadieze@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=60f33a7929f25e2b3d8b44a1a5a6ddb5
+2020-02-14T20:48:16+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_User_Submit starts in the next minute :: obj_id 78
+2020-02-14T20:48:16+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3967
+2020-02-14T20:52:02+00:00 NOTICE order_submit.success :: addStoreOrder :: #3967 :: email: luisadieze@gmail.com :: abandoned cart deleted [60f33a7929f25e2b3d8b44a1a5a6ddb5]

@@ -85,6 +85,14 @@ class Presscore_Mod_Portfolio_Public {
 		return $page_id;
 	}
 
+	public function the7_archive_display_full_content_filter( $display_full_content ) {
+		if ( is_tax( 'dt_portfolio_category' ) || is_post_type_archive( 'dt_portfolio' ) ) {
+			$display_full_content = of_get_option( 'template_page_id_portfolio_category_full_content' );
+		}
+
+		return $display_full_content;
+	}
+
 	public function post_meta_wrap_class_filter( $class ) {
 		if ( 'dt_portfolio' == get_post_type() ) {
 			$class[] = 'portfolio-categories';
@@ -93,6 +101,10 @@ class Presscore_Mod_Portfolio_Public {
 	}
 
 	public function filter_page_title( $page_title ) {
+		if ( of_get_option( 'show_static_part_of_archive_title' ) === '0' ) {
+			return $page_title;
+		}
+
 		if ( is_tax( 'dt_portfolio_category' ) ) {
 			$page_title = sprintf( __( 'Portfolio Archives: %s', 'dt-the7-core' ), '<span>' . single_term_title( '', false ) . '</span>' );
 		} elseif ( is_post_type_archive( 'dt_portfolio' ) ) {
@@ -111,22 +123,6 @@ class Presscore_Mod_Portfolio_Public {
 			}
 		}
 
-		// hover icons style
-		switch ( presscore_config()->get( 'post.preview.hover.icon.style' ) ) {
-			case 'outline':
-				$classes[] = 'outlined-portfolio-icons';
-				break;
-			case 'transparent':
-				$classes[] = 'semitransparent-portfolio-icons';
-				break;
-			case 'accent':
-				$classes[] = 'accent-portfolio-icons';
-				break;
-			case 'small':
-				$classes[] = 'small-portfolio-icons';
-				break;
-		}
-
 		return $classes;
 	}
 
@@ -140,5 +136,21 @@ class Presscore_Mod_Portfolio_Public {
 	public function filter_add_to_author_archive( $new_post_types ) {
 		$new_post_types[] = 'dt_portfolio';
 		return $new_post_types;
+	}
+
+	/**
+	 * Register dynamic stylesheets.
+	 *
+	 * @param array $dynamic_stylesheets
+	 *
+	 * @return array
+	 */
+	public function register_dynamic_stylesheet( $dynamic_stylesheets ) {
+		$dynamic_stylesheets['the7-elements-albums-portfolio'] = array(
+			'path' => The7pt()->plugin_path() . 'assets/css/legacy.less',
+			'src' => 'the7-elements-albums-portfolio.less',
+		);
+
+		return $dynamic_stylesheets;
 	}
 }

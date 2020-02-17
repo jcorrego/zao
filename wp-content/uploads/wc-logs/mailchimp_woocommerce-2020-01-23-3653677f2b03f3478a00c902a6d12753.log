@@ -1,0 +1,6 @@
+2020-01-23T15:24:34+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Single_Order starts in 90 seconds :: obj_id 3777
+2020-01-23T15:26:06+00:00 NOTICE order_submit.success :: updateStoreOrder :: #3777 :: email: andreina_862@hotmail.com
+2020-01-23T17:29:21+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 6759b980581bcf76f1d63e51d7a7e6bf
+2020-01-23T17:30:27+00:00 NOTICE action_scheduler.queue_job :: MailChimp_WooCommerce_Cart_Update starts in the next minute :: obj_id 6759b980581bcf76f1d63e51d7a7e6bf
+2020-01-23T17:30:28+00:00 NOTICE abandoned_cart.success :: email: beatrizeugeniaospina@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=6759b980581bcf76f1d63e51d7a7e6bf
+2020-01-23T17:30:28+00:00 NOTICE abandoned_cart.success :: email: beatrizeugeniaospina@gmail.com :: checkout_url: https://www.zaomakeup.com.co/checkout/?mc_cart_id=6759b980581bcf76f1d63e51d7a7e6bf

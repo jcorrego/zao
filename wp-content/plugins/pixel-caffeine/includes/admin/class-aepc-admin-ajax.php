@@ -485,6 +485,7 @@ class AEPC_Admin_Ajax {
 		$params = array(
 			'value',
 			'currency',
+			'predicted_ltv',
 			'content_name',
 			'content_category',
 			'content_type',

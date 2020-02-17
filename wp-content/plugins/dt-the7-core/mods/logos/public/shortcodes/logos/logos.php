@@ -30,6 +30,8 @@ if ( ! class_exists( 'DT_Shortcode_Logos', false ) ) {
 		public function shortcode( $atts, $content = null ) {
 			$this->atts = $this->sanitize_attributes( $atts );
 
+			wp_enqueue_style( 'the7-elements-benefits-logo' );
+
 			$dt_query = $this->get_posts_by_terms( $this->atts );
 
 			$output = '';
@@ -141,7 +143,7 @@ if ( ! class_exists( 'DT_Shortcode_Logos', false ) ) {
 				'columns_number' => '3',
 				'animation' => 'none',
 				'animate' => 'one_by_one'
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			$clean_atts['animate'] = sanitize_key( $clean_atts['animate'] );
 

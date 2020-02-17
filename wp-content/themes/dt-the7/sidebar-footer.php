@@ -2,32 +2,28 @@
 /**
  * The Sidebar containing the main widget areas.
  *
- * @package The7
  * @since 1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $footer_sidebar = presscore_validate_footer_sidebar( presscore_config()->get( 'footer_widgetarea_id' ) );
 
-$show_sidebar = presscore_config()->get( 'footer_show' ) && is_active_sidebar( $footer_sidebar );
+$show_sidebar    = presscore_config()->get( 'footer_show' ) && is_active_sidebar( $footer_sidebar );
 $show_bottom_bar = apply_filters( 'presscore_show_bottom_bar', presscore_config()->get( 'template.bottom_bar.enabled' ) );
 
 if ( $show_sidebar || $show_bottom_bar ) : ?>
 
 	<!-- !Footer -->
-	<footer id="footer" <?php echo presscore_footer_html_class( 'footer' ) ?>>
+	<footer id="footer" <?php echo presscore_footer_html_class( 'footer' ); ?>>
 
 		<?php
 		if ( $show_sidebar ) :
-
-			// footer layout
 			$sidebar_layout = presscore_get_sidebar_layout_parser( presscore_config()->get( 'template.footer.layout' ) );
 			$sidebar_layout->add_sidebar_columns();
-		?>
+			?>
 
 			<div class="wf-wrap">
 				<div class="wf-container-footer">
@@ -40,7 +36,7 @@ if ( $show_sidebar || $show_bottom_bar ) : ?>
 				</div><!-- .wf-container-footer -->
 			</div><!-- .wf-wrap -->
 
-		<?php
+			<?php
 			$sidebar_layout->remove_sidebar_columns();
 		endif;
 

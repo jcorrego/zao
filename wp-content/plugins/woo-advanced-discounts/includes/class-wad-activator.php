@@ -22,18 +22,20 @@
  */
 class Wad_Activator {
 
+
 	/**
 	 * Short Description. (use period)
 	 *
 	 * Long Description.
 	 *
-	 * @since    0.1
+	 * @since 0.1
 	 */
 	public static function activate() {
-            GLOBAL $wp_rewrite;
-            add_option('wad_do_activation_redirect', true);            
-            $wp_rewrite->flush_rules(false);
-            
+            if ( ! get_transient( 'wad_review_submitted' ) ) {
+                  set_transient( 'wad_review_submitted', "no", MINUTE_IN_SECONDS * 7 * DAY_IN_SECONDS );
+            }
+            global $wp_rewrite;
+            add_option( 'wad_do_activation_redirect', true );
+            $wp_rewrite->flush_rules( false );
 	}
-
 }

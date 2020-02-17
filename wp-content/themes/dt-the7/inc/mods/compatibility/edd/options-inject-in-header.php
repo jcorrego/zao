@@ -23,6 +23,9 @@ presscore_options_apply_template( $new_options, 'basic-header-element', 'header-
 	'caption' => array(
 		'divider' => false,
 	),
+	'custom-icon' => array(
+		'std' => 'the7-mw-icon-cart',
+	),
 ) );
 
 $new_options[] = array( 'type' => 'divider' );
@@ -33,6 +36,37 @@ $new_options['header-elements-edd_cart-show_sub_cart'] = array(
 	'type' => 'checkbox',
 	'std'  => '1',
 );
+$new_options['header-elements-edd_cart-sub_cart-bg-width'] = array(
+	'id'       => 'header-elements-edd_cart-sub_cart-bg-width',
+	'name'     => _x( 'Background width', 'theme-options', 'the7mk2' ),
+	'type'     => 'text',
+	'std'      => '240',
+	'class'    => 'mini',
+	'sanitize' => 'dimensions',
+	'dependency' => array(
+		'field'    => 'header-elements-edd_cart-show_sub_cart',
+		'operator' => '==',
+		'value'    => '1',
+	),
+);
+$new_options['header-elements-edd_cart-sub_cart-bg-color'] = array(
+	'id'   => 'header-elements-edd_cart-sub_cart-bg-color',
+	'name' => _x( 'Background color', 'theme-options', 'the7mk2' ),
+	'type' => 'alpha_color',
+	'std'  => 'rgba(255,255,255,0.3)',
+	'dependency' => array(
+		'field'    => 'header-elements-edd_cart-show_sub_cart',
+		'operator' => '==',
+		'value'    => '1',
+	),
+);
+$new_options['header-elements-edd_cart-sub_cart-font-color'] = array(
+	'id'   => 'header-elements-edd_cart-sub_cart-font-color',
+	'name' => _x( 'Text color', 'theme-options', 'the7mk2' ),
+	'type' => 'color',
+	'std'  => '#000',
+);
+
 
 $new_options[] = array( 'type' => 'divider' );
 
@@ -88,22 +122,13 @@ $new_options['header-elements-edd_cart-counter-color'] = array(
 $new_options['header-elements-edd_cart-counter-bg'] = array(
 	'id'         => 'header-elements-edd_cart-counter-bg',
 	'name'       => _x( 'Products counter background', 'theme-options', 'the7mk2' ),
-	'type'       => 'images',
+	'type'       => 'radio',
 	'class'      => 'small',
 	'std'        => 'accent',
 	'options'    => array(
-		'accent'   => array(
-			'title' => _x( 'Accent', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'color'    => array(
-			'title' => _x( 'Custom color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom.gif',
-		),
-		'gradient' => array(
-			'title' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom-gradient.gif',
-		),
+		'accent'   => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'    => _x( 'Custom color', 'theme-options', 'the7mk2' ),
+		'gradient' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
 	),
 	'dependency' => array(
 		'field'    => 'header-elements-edd_cart-show_counter',
@@ -149,6 +174,13 @@ $new_options['header-elements-edd_cart-counter-bg-gradient'] = array(
 			'value'    => 'gradient',
 		),
 	),
+);
+$new_options['header-elements-woocommerce_edd_cart-counter-size'] = array(
+	'name'        => _x( 'Products counter size', 'theme-options', 'the7mk2' ),
+	'id'   => 'header-elements-woocommerce_edd_cart-counter-size',
+	'type' => 'slider',
+	'std'  => 9,
+	'options' => array( 'min' => 9, 'max' => 120 ),
 );
 
 if ( isset( $options ) ) {

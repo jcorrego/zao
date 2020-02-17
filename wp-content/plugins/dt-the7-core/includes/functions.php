@@ -36,3 +36,22 @@ function the7pt_is_theme_version_greater_or_equal_to( $ver ) {
 function the7pt_is_theme_version_smaller_or_equal_to( $ver ) {
 	return version_compare( the7pt_get_theme_version(), $ver, '<=' );
 }
+
+add_action( 'optionsframework_after_validate', 'the7pt_register_theme_options_for_translation' );
+
+/**
+ * Register theme options strings for translation in WPML or Polylang after validation.
+ *
+ * @since 1.19.0
+ *
+ * @param array $options
+ *
+ * @return array
+ */
+function the7pt_register_theme_options_for_translation( $options ) {
+	if ( ! empty( $options['portfolio-breadcrumbs-text'] ) ) {
+		do_action( 'wpml_register_single_string', 'dt-the7', 'portfolio-breadcrumbs-text', $options['portfolio-breadcrumbs-text'] );
+	}
+
+	return $options;
+}

@@ -43,17 +43,17 @@ if ( ! class_exists( 'YITH_WCAN_Admin' ) ) {
         /**
          * @var string Official plugin documentation
          */
-        protected $_official_documentation = 'https://yithemes.com/docs-plugins/yith-woocommerce-ajax-product-filter';
+        protected $_official_documentation = 'https://docs.yithemes.com/yith-woocommerce-ajax-product-filter/';
 
         /**
          * @var string Official plugin landing page
          */
-        protected $_premium_landing = 'https://yithemes.com/themes/plugins/yith-woocommerce-ajax-product-filter';
+        protected $_premium_landing = 'https://yithemes.com/themes/plugins/yith-woocommerce-ajax-product-filter/';
 
         /**
          * @var string Official plugin landing page
          */
-        protected $_premium_live = 'http://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/shop/';
+        protected $_premium_live = 'https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/';
 
         /**
          * Constructor
@@ -73,9 +73,9 @@ if ( ! class_exists( 'YITH_WCAN_Admin' ) ) {
             add_action( 'yith_wcan_premium_tab', array( $this, 'premium_tab' ) );
             add_action( 'yith_wcan_custom_style_tab', array( $this, 'custom_style_tab' ) );
 
-            /* Plugin Informations */
-            add_filter( 'plugin_action_links_' . plugin_basename( YITH_WCAN_DIR . '/' . basename( YITH_WCAN_FILE ) ), array( $this, 'action_links' ) );
-            add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 4 );
+	        /* === Show Plugin Information === */
+	        add_filter( 'plugin_action_links_' . plugin_basename( YITH_WCAN_DIR . '/' . basename( YITH_WCAN_FILE ) ), array( $this, 'action_links' ) );
+	        add_filter( 'yith_show_plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 5 );
 
             // YITH WCAN Loaded
             do_action( 'yith_wcan_loaded' );
@@ -187,18 +187,13 @@ if ( ! class_exists( 'YITH_WCAN_Admin' ) ) {
          * @return mixed
          * @use plugin_action_links_{$plugin_file_name}
          */
-        public function action_links( $links ) {
-            $premium_live_text = defined( 'YITH_WCAN_FREE_INIT' ) ? __( 'Premium live demo', 'yith-woocommerce-ajax-navigation' ) : __( 'Live demo', 'yith-woocommerce-ajax-navigation' );
-            $links[]           = '<a href="' . $this->_premium_live . '" target="_blank">' . $premium_live_text . '</a>';
+	    public function action_links( $links ) {
+		    $links = yith_add_action_links( $links, $this->_panel_page, false );
+		    return $links;
+	    }
 
-            if ( defined( 'YITH_WCAN_FREE_INIT' ) ) {
-                $links[] = '<a href="' . $this->get_premium_landing_uri() . '" target="_blank">' . __( 'Premium Version', 'yith-woocommerce-ajax-navigation' ) . '</a>';
-            }
 
-            return $links;
-        }
-
-        /**
+	    /**
          * plugin_row_meta
          *
          * add the action links to plugin admin page
@@ -213,13 +208,19 @@ if ( ! class_exists( 'YITH_WCAN_Admin' ) ) {
          * @author   Andrea Grillo <andrea.grillo@yithemes.com>
          * @use plugin_row_meta
          */
-        public function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
+	    public function plugin_row_meta( $new_row_meta_args, $plugin_meta, $plugin_file, $plugin_data, $status, $init_file = 'YITH_WCAN_FREE_INIT' ) {
+		    if ( defined( $init_file ) && constant( $init_file ) == $plugin_file ) {
+			    $new_row_meta_args['slug'] = 'yith-woocommerce-ajax-product-filter';
+		    }
 
-            if ( ( defined( 'YITH_WCAN_INIT' ) && YITH_WCAN_INIT == $plugin_file ) || ( defined( 'YITH_WCAN_FREE_INIT' ) && YITH_WCAN_FREE_INIT == $plugin_file ) ) {
-                $plugin_meta[] = '<a href="' . $this->_official_documentation . '" target="_blank">' . __( 'Plugin Documentation', 'yith-woocommerce-ajax-navigation' ) . '</a>';
-            }
-            return $plugin_meta;
-        }
+		    if ( defined( 'YITH_WCAN_FREE_INIT' ) && YITH_WCAN_FREE_INIT == $plugin_file ) {
+			    $new_row_meta_args['support'] = array(
+				    'url' => 'https://wordpress.org/support/plugin/yith-woocommerce-ajax-navigation'
+			    );
+		    }
+
+		    return $new_row_meta_args;
+	    }
 
         /**
          * Get the premium landing uri
@@ -229,7 +230,7 @@ if ( ! class_exists( 'YITH_WCAN_Admin' ) ) {
          * @return  string The premium landing link
          */
         public function get_premium_landing_uri() {
-            return defined( 'YITH_REFER_ID' ) ? $this->_premium_landing . '?refer_id=' . YITH_REFER_ID : $this->_premium_landing . '?refer_id=1030585';
+            return $this->_premium_landing;
         }
 
         /**

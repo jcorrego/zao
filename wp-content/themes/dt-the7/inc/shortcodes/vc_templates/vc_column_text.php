@@ -12,13 +12,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $css
  * @var $content - shortcode content
  * Shortcode class
- * @var $this WPBakeryShortCode_VC_Column_text
+ * @var WPBakeryShortCode_Vc_Column_text $this
  */
 $el_class = $el_id = $css = $css_animation = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
-$class_to_filter = 'wpb_text_column wpb_content_element ' . presscore_get_shortcode_animation_html_class( $css_animation );
+// The7: Custom animation.
+$animation_class = $this->getCSSAnimation( $css_animation );
+if ( ! $animation_class ) {
+	$animation_class = presscore_get_shortcode_animation_html_class( $css_animation );
+}
+
+$class_to_filter = 'wpb_text_column wpb_content_element ' . $animation_class;
 $class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 $wrapper_attributes = array();
@@ -33,4 +39,8 @@ $output = '
 	</div>
 ';
 
-echo $output;
+if ( version_compare( WPB_VC_VERSION, '6.0.3', '<' ) ) {
+	echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+} else {
+	return $output;
+}

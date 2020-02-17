@@ -22,7 +22,17 @@ class AEPC_Track {
 		'Purchase'             => 'value, currency, content_name, content_type, content_ids, num_items',
 		'Lead'                 => 'value, currency, content_name, content_category',
 		'CompleteRegistration' => 'value, currency, content_name, status',
-		'CustomEvent'          => 'value, currency, content_name, content_category, content_type, content_ids'
+		'CustomEvent'          => 'value, currency, content_name, content_category, content_type, content_ids',
+
+		'Contact'           => '',
+		'CustomizeProduct'  => '',
+		'Donate'            => '',
+		'FindLocation'      => '',
+		'PageView'          => '',
+		'Schedule'          => '',
+		'StartTrial'        => 'currency, predicted_ltv, value',
+		'SubmitApplication' => '',
+		'Subscribe'         => 'currency, predicted_ltv, value',
 
 	);
 
@@ -318,7 +328,22 @@ class AEPC_Track {
 	 * Get all conversion events saved on DB
 	 */
 	public static function get_conversions_events() {
-		return get_option( 'aepc_conversions_events', array() );
+		return array_map( [__CLASS__, 'get_default_args'], get_option( 'aepc_conversions_events', array() ) );
+	}
+
+	/**
+	 * Return the arguments on parameter with the defaults if not found
+	 *
+	 * @param array $args
+	 *
+	 * @return array
+	 */
+	public static function get_default_args($args = []) {
+		return wp_parse_args($args, [
+			'url_condition' => 'contains',
+			'js_event_element' => '',
+			'js_event_name' => '',
+		]);
 	}
 
 	/**
@@ -394,6 +419,15 @@ class AEPC_Track {
 	}
 
 	/**
+	 * Return if Purchase events is active
+	 *
+	 * @return mixed|void
+	 */
+	public static function is_search_active() {
+		return 'yes' === get_option( 'aepc_enable_search_event', 'yes' );
+	}
+
+	/**
 	 * Return if the Custom Audiences events are active
 	 *
 	 * @return mixed|void
@@ -460,6 +494,15 @@ class AEPC_Track {
 	}
 
 	/**
+	 * Return if DAP events are active
+	 *
+	 * @return mixed|void
+	 */
+	public static function can_init_pixel() {
+		return 'no' === get_option( 'aepc_no_pixel_init', 'no' );
+	}
+
+	/**
 	 * Get if the user wants to track the shipping
 	 */
 	public static function can_track_shipping_costs() {
@@ -471,6 +514,13 @@ class AEPC_Track {
 	 */
 	public static function can_use_product_group() {
 		return 'no' === get_option( 'aepc_conversions_no_product_group', 'no' );
+	}
+
+	/**
+	 * Say if we can track the variation
+	 */
+	public static function can_track_variations() {
+		return 'no' === get_option( 'aepc_no_variation_tracking', 'no' );
 	}
 
 	/**

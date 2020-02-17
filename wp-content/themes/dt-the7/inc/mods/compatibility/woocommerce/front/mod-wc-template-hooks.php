@@ -95,15 +95,18 @@ add_filter( 'presscore_masonry_container_class', 'dt_woocommerce_add_classes_to_
  * Change paypal icon.
  */
 add_filter( 'woocommerce_paypal_icon', 'dt_woocommerce_change_paypal_icon' );
+
 /**
  * Cart.
  */
 remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
 add_action( 'woocommerce_after_cart_form', 'woocommerce_cross_sell_display', 1 );
+add_filter( 'woocommerce_cross_sells_columns', 'the7_woocommerce_cross_sells_columns' );
+add_filter( 'woocommerce_cross_sells_total', 'the7_woocommerce_cross_sells_total' );
 
 /**
  * Notices.
  */
-if ( ! is_admin() ) {
+if ( function_exists( 'wc_print_notices' ) && ! is_admin() ) {
 	add_action( 'presscore_before_loop', 'wc_print_notices', 10 );
 }

@@ -64,7 +64,7 @@ function wad_get_user_role() {
         return 'non-user';
     $rarr = unserialize($role);
     $roles = is_array($rarr) ? array_keys($rarr) : array('non-user');
-    return $roles[0];
+    return $roles; //$roles[0];
 }
 
 /**
@@ -123,7 +123,7 @@ function wad_get_existing_user_roles() {
     global $wp_roles;
     $roles_arr = array();
     $all_roles = $wp_roles->roles;
-    $roles_arr["not-logged-in"]=__("Not logged in", "wad");
+    $roles_arr["not-logged-in"]=__("Not logged in", "woo-advanced-discounts");
     foreach ($all_roles as $role_key => $role_data) {
         $roles_arr[$role_key] = $role_data["name"];
     }

@@ -19665,4 +19665,3 @@ alasql.use("alasql");
 return alasql;
 }));
 
-

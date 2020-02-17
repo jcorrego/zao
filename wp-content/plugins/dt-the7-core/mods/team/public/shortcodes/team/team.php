@@ -36,7 +36,7 @@ if ( ! class_exists( 'DT_Shortcode_Team', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_team',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_team_masonry_editor_ico.gif', 98, 104 ),
-	                'title'  => _x( 'Team (old)', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Team (old)', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -122,7 +122,7 @@ if ( ! class_exists( 'DT_Shortcode_Team', false ) ) {
 				'proportion' => '',
 				'full_width' => '',
 				'round_images' => '',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			$attributes['type'] = in_array($attributes['type'], array('masonry', 'grid') ) ? $attributes['type'] : 'masonry';
 

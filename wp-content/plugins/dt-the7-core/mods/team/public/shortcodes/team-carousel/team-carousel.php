@@ -7,11 +7,9 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 
-	class DT_Shortcode_Team_Carousel extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_Team_Carousel extends The7pt_Shortcode_With_Inline_CSS {
 		/**
 		 * @var string
 		 */
@@ -47,6 +45,7 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 			$this->default_atts = array(
 				'post_type' => 'category',
 				'posts' => '',
+				'posts_offset' => 0,
 				'category' => '',
 				'order' => 'desc',
 				'orderby' => 'date',
@@ -55,7 +54,6 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 				'content_bg' => 'y',
 				'custom_content_bg_color' => '',
 				'post_content_paddings' => '20px 20px 20px 20px',
-
 				'image_sizing' => 'resize',
 				'resized_image_dimensions' => '1x1',
 				'img_max_width' => '',
@@ -71,10 +69,10 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 				'slides_on_mob' => '1',
 				'adaptive_height' => 'n',
 				'item_space' => '30',
+				'stage_padding' => '0',
 				'speed' => '600',
 				'autoplay' => 'n',
 				'autoplay_speed' => "6000",
-
 				'content_alignment' => 'center',
 				'post_title_font_style' => ':bold:',
 				'post_title_font_size' => '',
@@ -101,7 +99,6 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 				'content_bottom_margin' => '5px',
 				'read_more_button' => 'default_link',
 				'read_more_button_text' => 'View details',
-
 				'show_soc_icon'	=> 'y',
 				'show_icons_under' => 'under_position',
 				'soc_icon_size'	=> '16px',
@@ -110,16 +107,17 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 				'soc_icon_border_width'	=> '0',
 				'soc_icon_border_radius'=> '100px',
 				'soc_icon_color' => 'rgba(255,255,255,1)',
+				'soc_icon_border'	=> 'y',
 				'soc_icon_border_color'	=> '',
 				'soc_icon_bg' => 'y',
 				'soc_icon_bg_color'	=> '',
 				'soc_icon_color_hover' => 'rgba(255,255,255,0.75)',
+				'soc_icon_border_hover'	=> 'y',
 				'soc_icon_border_color_hover' => '',
 				'soc_icon_bg_hover' => 'y',
 				'soc_icon_bg_color_hover' => '',
 				'soc_icon_gap' => '4px',
 				'soc_icon_below_gap' => '15px',
-
 				'arrows' => 'y',
 				'arrow_icon_size' => '18px',
 				'r_arrow_icon_paddings' => '0 0 0 0',
@@ -151,7 +149,6 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 				'reposition_arrows_mobile_switch_width' => '778px',
 				'l_arrows_mobile_h_position' => '10px',
 				'r_arrows_mobile_h_position' => '10px',
-
 				'show_bullets' => 'n',
 				'bullets_style' => 'small-dot-stroke',
 				'bullet_size' => '10px',
@@ -173,24 +170,14 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 		 * Do shortcode here.
 		 */
 		protected function do_shortcode( $atts, $content = '' ) {
-			// Loop query.
-			$post_type = $this->get_att( 'post_type' );
-			$config = presscore_config();
-			if ( 'posts' === $post_type ) {
-				$query = $this->get_posts_by_post_type( 'dt_team', $this->get_att( 'posts' ) );
-			}else {
-				$category_terms = presscore_sanitize_explode_string( $this->get_att( 'category' ) );
-				$category_field = ( is_numeric( $category_terms[0] ) ? 'term_id' : 'slug' );
-
-				$query = $this->get_posts_by_taxonomy( 'dt_team', 'dt_team_category', $category_terms, $category_field );
-			}
+			$query = $this->get_loop_query();
 
 			do_action( 'presscore_before_shortcode_loop', $this->sc_name, $this->atts );
 
 			presscore_remove_posts_masonry_wrap();
 
 			echo '<div ' . $this->get_container_html_class( array( 'owl-carousel team-carousel-shortcode dt-team-shortcode dt-owl-carousel-call' ) ) . ' ' . $this->get_container_data_atts() . '>';
-
+				$lazy_loading_enabled = presscore_lazy_loading_enabled();
 				if ( $query->have_posts() ): while( $query->have_posts() ): $query->the_post();
 					do_action('presscore_before_post');
 
@@ -198,10 +185,47 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 
 					echo '<div class="team-container">';
 
-						presscore_get_template_part( 'mod_team', 'team-post-media' );
+						if ( has_post_thumbnail() ) {
+
+							$thumb_id = get_post_thumbnail_id();
+
+							$teammate_thumb_args = array(
+								'lazy_loading'  => $lazy_loading_enabled,
+								'lazy_class'    => 'owl-lazy-load',
+								'lazy_bg_class' => 'layzr-bg',
+								'img_meta'		=> wp_get_attachment_image_src( $thumb_id, 'full' ),
+								'img_id'		=> $thumb_id,
+								'options'		=> presscore_set_image_dimesions(),
+								'echo'			=> true,
+								'wrap'			=> '<img %IMG_CLASS% %SRC% %SIZE% %IMG_TITLE% %ALT% />',
+							);
+
+							$config = Presscore_Config::get_instance();
+
+							if ( 'post' == $config->get( 'post.open_as' ) ) {
+								$teammate_thumb_args['wrap'] = '<a %HREF% %CLASS%>' . $teammate_thumb_args['wrap'] . '</a>';
+								$teammate_thumb_args['class'] = 'rollover';
+								$teammate_thumb_args['href'] = get_permalink();
+
+							} else {
+								$teammate_thumb_args['wrap'] = '<span>' . $teammate_thumb_args['wrap'] . '</span>';
+
+							}
+
+							$teammate_thumb_args = presscore_add_thumbnail_class_for_masonry( $teammate_thumb_args );
+
+							echo '<div class="team-media">';
+
+								dt_get_thumb_img( $teammate_thumb_args );
+
+							echo '</div>';
+
+						}
 
 						echo '<div class="team-desc">';
 							echo '<div class="team-author">';
+
+								$config = presscore_config();
 
 								// Output author name
 								$title = get_the_title();
@@ -267,6 +291,7 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 
 					endwhile; endif;
 				echo '</div>';
+				presscore_add_lazy_load_attrs();
 				do_action( 'presscore_after_shortcode_loop', $this->sc_name, $this->atts );
 		}
 		
@@ -309,7 +334,16 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 			if($this->atts['arrow_icon_border_hover'] === 'y'){
 				$class[] = 'dt-arrow-hover-border-on';
 			}
-
+			if($this->atts['soc_icon_border'] === 'y'){
+				$class[] = 'dt-icon-border-on';
+			}else{
+				$class[] = 'dt-icon-border-off';
+			};
+			if($this->atts['soc_icon_border_hover'] === 'y'){
+				$class[] = 'dt-icon-border-hover-on';
+			}else{
+				$class[] = 'dt-icon-border-hover-off';
+			};
 			if($this->atts['soc_icon_bg_hover'] === 'y'){
 				$class[] = 'dt-icon-hover-bg-on';
 			}else{
@@ -423,6 +457,7 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 				'phone-columns-num' => $this->atts['slides_on_mob'],
 				'auto-height' => ($this->atts['adaptive_height'] === 'y') ? 'true' : 'false',
 				'col-gap' => $this->atts['item_space'],
+				'stage-padding' => $this->atts['stage_padding'],
 				'speed' => $this->atts['speed'],
 				'autoplay' => ($this->atts['autoplay'] === 'y') ? 'true' : 'false',
 				'autoplay_speed' => $this->atts['autoplay_speed'],
@@ -473,9 +508,8 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'team-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
 
@@ -621,34 +655,127 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 			return $this->vc_inline_dummy( array(
 				'class'  => 'dt_team_carousel',
 				'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_team_carousel_editor_ico.gif', 133, 104 ),
-				'title'  => _x( 'Team Carousel', 'vc inline dummy', 'the7mk2' ),
+				'title'  => _x( 'Team Carousel', 'vc inline dummy', 'dt-the7-core' ),
 				'style' => array( 'height' => 'auto' )
 			) );
 		}
 
+		/**
+		 * Return posts query.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @return WP_Query
+		 */
+		protected function get_loop_query() {
+			$query = apply_filters( 'the7_shortcode_query', null, $this->sc_name, $this->atts );
+			if ( is_a( $query, 'WP_Query' ) ) {
+				return $query;
+			}
+
+			add_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			add_filter( 'found_posts', array( $this, 'fix_pagination' ), 1, 2 );
+
+			$post_type = $this->get_att( 'post_type' );
+			if ( 'posts' === $post_type ) {
+				$query = $this->get_posts_by_post_type( 'dt_team', $this->get_att( 'posts' ) );
+			} else {
+				$category_terms = presscore_sanitize_explode_string( $this->get_att( 'category' ) );
+				$category_field = ( is_numeric( $category_terms[0] ) ? 'term_id' : 'slug' );
+
+				$query = $this->get_posts_by_taxonomy( 'dt_team', 'dt_team_category', $category_terms, $category_field );
+			}
+
+			remove_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			remove_filter( 'found_posts', array( $this, 'fix_pagination' ), 1 );
+
+			return $query;
+		}
+
+		/**
+		 * Add offset to the posts query.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @param WP_Query $query
+		 */
+		public function add_offset( &$query ) {
+			// Apply offset only to the7 main query.
+			if ( empty( $query->query['is_the7_main_query'] ) ) {
+				return;
+			}
+
+			$offset  = (int) $this->atts['posts_offset'];
+			$ppp     = (int) $query->query_vars['posts_per_page'];
+			$current = (int) $query->query_vars['paged'];
+
+			if ( $query->is_paged ) {
+				$page_offset = $offset + ( $ppp * ( $current - 1 ) );
+				$query->set( 'offset', $page_offset );
+			} else {
+				$query->set( 'offset', $offset );
+			}
+		}
+
+		/**
+		 * Fix pagination accordingly with posts offset.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @param int $found_posts
+		 * @param WP_Query $query
+		 *
+		 * @return int
+		 */
+		public function fix_pagination( $found_posts, $query ) {
+			// Apply offset only to the7 main query.
+			if ( empty( $query->query['is_the7_main_query'] ) ) {
+				return $found_posts;
+			}
+
+			return $found_posts - (int) $this->atts['posts_offset'];
+		}
+
+		/**
+		 * Return posts per page.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @return int
+		 */
+		protected function get_posts_per_page() {
+			$posts_per_page = (int) $this->get_att( 'dis_posts_total', '-1' );
+			if ( $posts_per_page === -1 ) {
+				return 99999;
+			}
+
+			return $posts_per_page;
+		}
+
 		protected function get_posts_by_post_type( $post_type, $post_ids = array() ) {
-			$posts_per_page = $this->get_att( 'dis_posts_total', '-1' );
+			$posts_per_page = $this->get_posts_per_page();
 
 			if ( is_string( $post_ids ) ) {
 				$post_ids = presscore_sanitize_explode_string( $post_ids );
 			}
 			$post_ids = array_filter( $post_ids );
 			$query_args = array(
-				'orderby'          => $this->get_att( 'orderby' ),
-				'order'            => $this->get_att( 'order' ),
-				'posts_per_page'   => $posts_per_page,
-				'post_type'        => $post_type,
-				'post_status'      => 'publish',
-				'paged'            => 1,
-				'suppress_filters' => false,
-				'post__in'         => $post_ids,
+				'orderby'            => $this->get_att( 'orderby' ),
+				'order'              => $this->get_att( 'order' ),
+				'posts_per_page'     => $posts_per_page,
+				'post_type'          => $post_type,
+				'post_status'        => 'publish',
+				'paged'              => 1,
+				'suppress_filters'   => false,
+				'post__in'           => $post_ids,
+				'is_the7_main_query' => true,
 			);
 
 			return new WP_Query( $query_args );
 		}
 
 		protected function get_posts_by_taxonomy( $post_type, $taxonomy, $taxonomy_terms = array(), $taxonomy_field = 'term_id' ) {
-			$posts_per_page = $this->get_att( 'dis_posts_total', '-1' );
+			$posts_per_page = $this->get_posts_per_page();
 
 			if ( is_string( $taxonomy_terms ) ) {
 				$taxonomy_terms = presscore_sanitize_explode_string( $taxonomy_terms );
@@ -656,10 +783,11 @@ if ( ! class_exists( 'DT_Shortcode_Team_Carousel', false ) ) :
 			$taxonomy_terms = array_filter( $taxonomy_terms );
 
 			$query_args = array(
-				'posts_per_page'   => $posts_per_page,
-				'post_type'        => $post_type,
-				'post_status'      => 'publish',
-				'suppress_filters' => false,
+				'posts_per_page'     => $posts_per_page,
+				'post_type'          => $post_type,
+				'post_status'        => 'publish',
+				'suppress_filters'   => false,
+				'is_the7_main_query' => true,
 			);
 
 			$tax_query = array();

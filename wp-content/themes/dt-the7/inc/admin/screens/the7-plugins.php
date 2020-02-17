@@ -1,8 +1,5 @@
 <?php
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * @var The7_TGMPA $the7_tgmpa
@@ -12,7 +9,7 @@ global $the7_tgmpa;
 // If there is another $the7_tgmpa registered.
 if ( ! is_a( $the7_tgmpa, 'The7_TGMPA' ) ) {
     $the7_tgmpa_file = __( 'cannot find class file', 'the7mk2' );
-    if ( class_exists( 'ReflectionClass', false ) ) {
+    if ( $the7_tgmpa && class_exists( 'ReflectionClass', false ) ) {
 	    $the7_tgmpaReflection = new ReflectionClass( get_class( $the7_tgmpa ) );
 	    $the7_tgmpa_file = str_replace( ABSPATH, '', $the7_tgmpaReflection->getFileName() );
     }

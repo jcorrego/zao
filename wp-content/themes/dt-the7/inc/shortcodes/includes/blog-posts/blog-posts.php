@@ -146,7 +146,7 @@ if ( ! class_exists( 'DT_Shortcode_BlogPosts', false ) ) {
 				'show_orderby' => '',
 				'show_order' => '',
 				'posts_per_page' => '-1'
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['type'] = sanitize_key( $attributes['type'] );

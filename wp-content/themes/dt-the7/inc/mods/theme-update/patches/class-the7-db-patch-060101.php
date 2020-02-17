@@ -36,7 +36,7 @@ if ( ! class_exists( 'The7_DB_Patch_060101', false ) ) {
 				return;
 			}
 
-			$color_obj = new Presscore_Lib_LessVars_Color( $this->get_option( 'top_bar-bg-color' ) );
+			$color_obj = new The7_Less_Vars_Value_Color( $this->get_option( 'top_bar-bg-color' ) );
 			$top_bar_with_bg = $color_obj->get_opacity() > 0;
 			$top_bar_with_decoration = in_array( $this->get_option( 'top_bar-bg-style' ), array(
 				'fullwidth_line',

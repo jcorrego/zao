@@ -156,12 +156,14 @@
 .custom-mixin-footer-accent-bg (@customColor, @color-opacity:100%) when (iscolor(@customColor)) {
 	background: fade(@customColor, @color-opacity);
 }
+.custom-mixin-mega-menu-accent (@customColor) when (iscolor(@customColor)) {
+	color: @customColor !important;
+	background: none;
+}
 /* !Defining basic mixins */
 
-.text-gradient (@startColor: #eee, @endColor: white) when not (@endColor = "") {
-	background: -webkit-linear-gradient(@endColor); /* Chrome10+,Safari5.1+ */
-		// -webkit-background-clip: text;
-		// -webkit-text-fill-color: transparent;
+.text-gradient (@startColor: #eee, @endColor: white) when not (@endColor = ~"") {
+	background: -webkit-linear-gradient(@endColor);
 	color: transparent;
   	-webkit-background-clip: text;
   	background-clip: text;
@@ -169,7 +171,7 @@
      	color: @startColor;
     }
 }
-.text-gradient-text-fill (@startColor: #eee, @endColor: white) when not (@endColor = "") {
+.text-gradient-text-fill (@startColor: #eee, @endColor: white) when not (@endColor = ~"") {
 	background: -webkit-linear-gradient(@endColor); /* Chrome10+,Safari5.1+ */
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
@@ -192,19 +194,9 @@
 }
 
 .box-shadow (@string) {
-	-webkit-box-shadow: @string;
 	box-shadow:         @string;
 }
 .border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
-	-webkit-border-top-right-radius:    @topright;
-	-webkit-border-bottom-right-radius: @bottomright;
-	-webkit-border-bottom-left-radius:  @bottomleft;
-	-webkit-border-top-left-radius:     @topleft;
-
-	-moz-border-radius-topright:        @topright;
-	-moz-border-radius-bottomright:     @bottomright;
-	-moz-border-radius-bottomleft:      @bottomleft;
-	-moz-border-radius-topleft:         @topleft;
 
 	border-top-right-radius:            @topright;
 	border-bottom-right-radius:         @bottomright;
@@ -225,7 +217,6 @@
 /* !Border radius */
 
 .border-radius (@radius: @border-radius-size) {
-	-webkit-border-radius: @radius;
 	border-radius:         @radius;
 }
 /*Transparent background*/

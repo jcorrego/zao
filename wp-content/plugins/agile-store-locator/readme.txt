@@ -4,9 +4,9 @@ Author URI: https://agilelogix.com/
 Plugin URI: https://agilestorelocator.com/
 Tags:  store locator, location finder,google maps, directions,store finder, geocoding,business locations, google maps plugin, map directions, nearest stores, routes, street view, store locator widget, wp google maps, wp store locator,geolocation
 Requires at least: 3.3.2
-Tested up to: 4.9
+Tested up to: 5.3
 Donate link: https://codecanyon.net/item/agile-store-locator-google-maps-for-wordpress/16973546
-Stable tag: 1.1.4
+Stable tag: 1.1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

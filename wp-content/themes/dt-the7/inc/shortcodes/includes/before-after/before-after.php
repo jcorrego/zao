@@ -45,7 +45,7 @@ if ( ! class_exists( 'DT_Shortcode_Before_After', false ) ) {
 				'navigation' => 'drag',
 				'offset' => '50',
 				'el_class' => ''
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			$clean_atts['orientation'] = sanitize_key( $clean_atts['orientation'] );
 			$clean_atts['navigation'] = sanitize_key( $clean_atts['navigation'] );

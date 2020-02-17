@@ -326,16 +326,24 @@ if ( ! class_exists( 'The7pt_Photo_Scroller', false ) ) {
 		}
 
 		protected function get_slide_share_buttons() {
-			if ( ! function_exists( 'presscore_get_share_buttons_list' ) || ! $this->settings['show_share_buttons'] ) {
+			if ( ! $this->settings['show_share_buttons'] ) {
 				return '';
 			}
 
-			$html = presscore_display_share_buttons( 'photo', array(
-				'echo'  => false,
-				'class' => 'album-share-overlay',
-			) );
+			if ( function_exists( 'the7_display_popup_share_buttons' ) ) {
+				ob_start();
+				the7_display_popup_share_buttons();
+				return ob_get_clean();
+			}
 
-			return $html;
+			if ( function_exists( 'presscore_display_share_buttons' ) ) {
+				return presscore_display_share_buttons( 'photo', array(
+					'echo'  => false,
+					'class' => 'album-share-overlay',
+				) );
+			}
+
+			return '';
 		}
 	}
 }

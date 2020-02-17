@@ -7,12 +7,11 @@ define( 'WOO_F_LOOKBOOK_ADMIN', WOO_F_LOOKBOOK_DIR . "admin" . DIRECTORY_SEPARAT
 define( 'WOO_F_LOOKBOOK_FRONTEND', WOO_F_LOOKBOOK_DIR . "frontend" . DIRECTORY_SEPARATOR );
 define( 'WOO_F_LOOKBOOK_LANGUAGES', WOO_F_LOOKBOOK_DIR . "languages" . DIRECTORY_SEPARATOR );
 define( 'WOO_F_LOOKBOOK_INCLUDES', WOO_F_LOOKBOOK_DIR . "includes" . DIRECTORY_SEPARATOR );
-
-define( 'WOO_F_LOOKBOOK_CSS', WP_PLUGIN_URL . "/woo-lookbook/css/" );
+define( 'WOO_F_LOOKBOOK_CSS', WOO_F_LOOKBOOK_PLUGIN_URL . "/css/" );
 define( 'WOO_F_LOOKBOOK_CSS_DIR', WOO_F_LOOKBOOK_DIR . "css" . DIRECTORY_SEPARATOR );
-define( 'WOO_F_LOOKBOOK_JS', WP_PLUGIN_URL . "/woo-lookbook/js/" );
+define( 'WOO_F_LOOKBOOK_JS', WOO_F_LOOKBOOK_PLUGIN_URL . "/js/" );
 define( 'WOO_F_LOOKBOOK_JS_DIR', WOO_F_LOOKBOOK_DIR . "js" . DIRECTORY_SEPARATOR );
-define( 'WOO_F_LOOKBOOK_IMAGES', WP_PLUGIN_URL . "/woo-lookbook/images/" );
+define( 'WOO_F_LOOKBOOK_IMAGES', WOO_F_LOOKBOOK_PLUGIN_URL . "/images/" );
 
 
 /*Include functions file*/
@@ -33,4 +32,3 @@ if ( is_file( WOO_F_LOOKBOOK_INCLUDES . "instagram.php" ) ) {
 
 vi_include_folder( WOO_F_LOOKBOOK_ADMIN, 'WOO_F_LOOKBOOK_Admin_' );
 vi_include_folder( WOO_F_LOOKBOOK_FRONTEND, 'WOO_F_LOOKBOOK_Frontend_' );
-?>

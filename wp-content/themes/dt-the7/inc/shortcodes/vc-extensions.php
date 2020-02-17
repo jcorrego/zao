@@ -22,8 +22,11 @@ class The7_Inc_Shortcodes_VCParams {
 	 * Enqueue js and css files to load on VC back/front editor page.
 	 */
 	public static function enqueue_assets() {
-		wp_enqueue_style( 'the7-vc-params', PRESSCORE_ADMIN_URI . '/assets/css/vc-params.css', array(), THE7_VERSION );
-		wp_enqueue_script( 'the7-vc-params', PRESSCORE_ADMIN_URI . '/assets/js/vc-params.js', array('jquery'), THE7_VERSION, true );
+		the7_register_style( 'the7-vc-params', PRESSCORE_ADMIN_URI . '/assets/css/vc-params' );
+		the7_register_script( 'the7-vc-params', PRESSCORE_ADMIN_URI . '/assets/js/vc-params', array( 'jquery' ), false, true );
+
+		wp_enqueue_style( 'the7-vc-params' );
+		wp_enqueue_script( 'the7-vc-params' );
 	}
 
 	/**
@@ -354,7 +357,7 @@ class The7_Inc_Shortcodes_VCParams {
 		$bold      = $_value[1];
 		$uppercase = $_value[2];
 
-		return '<input type="hidden" class="wpb_vc_param_value" name="' . esc_attr( $settings['param_name'] ) . '" value="' . esc_attr( $value ) . '">' . '<label class="dt_font_style-italic-label"><input type="checkbox" class="dt_font_style-italic" value="italic" ' . checked( 'italic', $italic, false ) . '>' . esc_html( _x( 'Italic', 'backend', 'the7mk2' ) ) . '</label>' . '<label class="dt_font_style-bold-label"><input type="checkbox" class="dt_font_style-bold" value="bold" ' . checked( 'bold', $bold, false ) . '>' . esc_html( _x( 'Bold', 'backend', 'the7mk2' ) ) . '</label>' . '<label class="dt_font_style-uppercase-label"><input type="checkbox" class="dt_font_style-uppercase" value="uppercase" ' . checked( 'uppercase', $uppercase, false ) . '>' . esc_html( _x( 'Capitalize', 'backend', 'the7mk2' ) ) . '</label>';
+		return '<input type="hidden" class="wpb_vc_param_value" name="' . esc_attr( $settings['param_name'] ) . '" value="' . esc_attr( $value ) . '">' . '<label class="dt_font_style-italic-label"><input type="checkbox" class="dt_font_style-italic" value="italic" ' . checked( 'italic', $italic, false ) . '>' . esc_html( _x( 'Italic', 'backend', 'the7mk2' ) ) . '</label>' . '<label class="dt_font_style-bold-label"><input type="checkbox" class="dt_font_style-bold" value="bold" ' . checked( 'bold', $bold, false ) . '>' . esc_html( _x( 'Bold', 'backend', 'the7mk2' ) ) . '</label>' . '<label class="dt_font_style-uppercase-label"><input type="checkbox" class="dt_font_style-uppercase" value="uppercase" ' . checked( 'uppercase', $uppercase, false ) . '>' . esc_html( _x( 'Uppercase', 'backend', 'the7mk2' ) ) . '</label>';
 	}
 
 	/**
@@ -471,7 +474,7 @@ class The7_Inc_Shortcodes_VCParams {
 	public function gradient_picker( $settings, $value ) {
 		$field_name = $settings['param_name'];
 
-		return The7_Option_Field_Gradient_Picker::html( $field_name, $field_name, $value, array(
+		return The7_Option_Field_Gradient_Picker::static_html( $field_name, $field_name, $value, array(
 			'hide_angle_controls' => false,
 			'value_input_class'   => 'wpb_vc_param_value',
 		) );
@@ -487,10 +490,24 @@ class The7_Inc_Shortcodes_VCParams {
 		}
 	}
 
+	public function enqueue_icon_picker_styles() {
+		wp_deregister_style( 'font-awesome' );
+		wp_dequeue_style( 'font-awesome' );
+		the7_register_style( 'the7-awesome-fonts-back', PRESSCORE_THEME_URI . '/fonts/FontAwesome/back-compat' );
+		the7_register_fontawesome_style( 'font-awesome' );
+		wp_enqueue_style( 'font-awesome' );
+		wp_enqueue_style( 'the7-awesome-fonts-back' );
+	}
+
 	/**
 	 * Register params.
 	 */
 	public function register_params() {
+		if ( The7_Icon_Manager::is_fontawesome_enabled() ) {
+			add_action( 'vc_backend_editor_enqueue_js_css', array( $this, 'enqueue_icon_picker_styles' ), 50 );
+			add_action( 'vc_frontend_editor_enqueue_js_css', array( $this, 'enqueue_icon_picker_styles' ), 50 );
+		}
+
 		$dir        = get_template_directory_uri();
 		$script_url = "{$dir}/inc/shortcodes/vc_extend/dt-vc-scripts.js";
 
@@ -505,8 +522,9 @@ class The7_Inc_Shortcodes_VCParams {
 		$this->add_shortcode_param( 'dt_number_with_icon', array( $this, 'number_param_with_icon' ), $script_url );
 		$this->add_shortcode_param( 'dt_font_style', array( $this, 'font_style_param' ), $script_url );
 		$this->add_shortcode_param( 'dt_switch', array( $this, 'switch_param' ), $script_url );
-		$this->add_shortcode_param( 'dt_navigation', array( $this, 'dt_icon_settings_field' ), $script_url );
-		$this->add_shortcode_param( 'dt_soc_icon_manager', array( $this, 'dt_soc_icons_settings_field' ), $script_url );
+		$this->add_shortcode_param( 'dt_navigation', array( $this, 'dt_icon_settings_field' ), PRESSCORE_ADMIN_URI . '/assets/js/vc/params/dt-icons-picker.js' );
+		$this->add_shortcode_param( 'icon_manager', array( $this, 'dt_icon_settings_field' ), PRESSCORE_ADMIN_URI . '/assets/js/vc/params/dt-icons-picker.js' );
+		$this->add_shortcode_param( 'dt_soc_icon_manager', array( $this, 'dt_icon_settings_field' ), PRESSCORE_ADMIN_URI . '/assets/js/vc/params/dt-icons-picker.js' );
 		$this->add_shortcode_param( 'dt_radio_image', array( $this, 'dt_image_param' ), $script_url );
 		$this->add_shortcode_param( 'dt_gradient_picker', array( $this, 'gradient_picker' ), PRESSCORE_ADMIN_URI . '/assets/js/vc/params/dt-gradient-picker.js' );
 
@@ -540,146 +558,22 @@ class The7_Inc_Shortcodes_VCParams {
 	/**
 	 * Return font icons param.
 	 *
+	 * @param array $settings
 	 * @param string|array $value
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function dt_icon_settings_field( $settings, $value ) {
-		$dependency = '';
-		//$uid = uniqid();
-		$param_name = isset( $settings['param_name'] ) ? $settings['param_name'] : '';
-		$type       = isset( $settings['type'] ) ? $settings['type'] : '';
-		$class      = isset( $settings['class'] ) ? $settings['class'] : '';
-		$icon_id    = 'icon-';
-		if ( $param_name == "next_icon" ) {
-			$icons = array(
-				'icon-ar-021-r',
-				'icon-ar-022-r',
-				'icon-ar-023-r',
-				'icon-ar-001-r',
-				'icon-ar-002-r',
-				'icon-ar-003-r',
-				'icon-ar-004-r',
-				'icon-ar-005-r',
-				'icon-ar-006-r',
-				'icon-ar-007-r',
-				'icon-ar-008-r',
-				'icon-ar-009-r',
-				'icon-ar-010-r',
-				'icon-ar-011-r',
-				'icon-ar-012-r',
-				'icon-ar-013-r',
-				'icon-ar-014-r',
-				'icon-ar-015-r',
-				'icon-ar-017-r',
-				'icon-ar-018-r',
-				'icon-ar-019-r',
-				'icon-ar-020-r',
-			);
+		$icons = array();
+		$predefined_icons = presscore_get_icons_for_vc_icon_picker( $settings['param_name'] );
+		if ( $predefined_icons ) {
+			$icons['Predefined'] = $predefined_icons;
 		}
-		if ( $param_name == "prev_icon" ) {
-			$icons = array(
-				'icon-ar-021-l',
-				'icon-ar-022-l',
-				'icon-ar-023-l',
-				'icon-ar-001-l',
-				'icon-ar-002-l',
-				'icon-ar-003-l',
-				'icon-ar-004-l',
-				'icon-ar-005-l',
-				'icon-ar-006-l',
-				'icon-ar-007-l',
-				'icon-ar-008-l',
-				'icon-ar-009-l',
-				'icon-ar-010-l',
-				'icon-ar-011-l',
-				'icon-ar-012-l',
-				'icon-ar-013-l',
-				'icon-ar-014-l',
-				'icon-ar-015-l',
-				'icon-ar-017-l',
-				'icon-ar-018-l',
-				'icon-ar-019-l',
-				'icon-ar-020-l',
-			);
-		}
-		//Project links
-		if ( $param_name == "project_link_icon" ) {
-			$icons = array(
-				'icon-portfolio-p211',
-				'icon-portfolio-p212',
-				'icon-portfolio-p208',
-				'icon-portfolio-p204',
-				'icon-portfolio-p201',
-				'icon-portfolio-p206',
-				'icon-portfolio-p203',
-				'icon-portfolio-p205',
-			);
-		}
-		if ( $param_name == "external_link_icon" ) {
-			$icons = array(
-				'icon-portfolio-p211',
-				'icon-portfolio-p212',
-				'icon-portfolio-p208',
-				'icon-portfolio-p204',
-				'icon-portfolio-p201',
-				'icon-portfolio-p206',
-				'icon-portfolio-p203',
-				'icon-portfolio-p205',
-			);
-		}
-		if ( $param_name == "image_zoom_icon" ) {
-			$icons = array(
-				'icon-portfolio-p211',
-				'icon-portfolio-p212',
-				'icon-portfolio-p208',
-				'icon-portfolio-p204',
-				'icon-portfolio-p201',
-				'icon-portfolio-p206',
-				'icon-portfolio-p203',
-				'icon-portfolio-p205',
-			);
-		}
-		if ( $param_name == "gallery_image_zoom_icon" ) {
-			$icons = array(
-				'icon-im-hover-000',
-				'icon-im-hover-001',
-				'icon-im-hover-005',
-				'icon-im-hover-003',
-				'icon-im-hover-004',
-				'icon-im-hover-009',
-				'icon-im-hover-010',
-				'icon-im-hover-011',
-				'icon-im-hover-012',
-				'icon-im-hover-013',
-				'icon-im-hover-021',
-				'icon-im-hover-022',
-				'icon-im-hover-023',
-				'icon-im-hover-024',
-				'icon-im-hover-031',
-				'icon-im-hover-032',
-				'icon-im-hover-041',
-				'icon-im-hover-042',
-			);
-		}
-		$output = '<input type="hidden" name="' . $param_name . '" class="wpb_vc_param_value ' . $param_name . ' ' . $type . ' ' . $class . '" value="' . $value . '" />';
-		$output .= '<ul class="dt-icon-list">';
-		$output .= '<li class="dt-icons-selector" data-car-icon=""><i class="moon-icon "></i><span class="selector-button"><i class="fa-arrow-down fip-fa fa"></i></span>';
-		$output .= '<ul class="dt-icon-list-sub">';
-		$n      = 1;
-		foreach ( $icons as $icon ) {
-			$selected = ( $icon == $value ) ? 'class="selected"' : '';
-			$id       = $icon_id . $n;
 
-			$output .= '<li ' . $selected . ' data-car-icon="' . $icon . '"><i class="moon-icon ' . $icon . '"></i><label class="moon-icon">' . $icon . '</label></li>';
-
-			$n++;
-		}
-		$output .= '</ul>';
-		$output .= '</li>';
-		$output .= '</ul>';
-
-		return $output;
+		return The7_Option_Field_Icons_Picker::static_html( $settings['param_name'], $settings['param_name'], $value, array(
+			'icons' => $icons,
+			'value_input_class' => 'wpb_vc_param_value',
+		) );
 	}
 
 	/**
@@ -695,6 +589,7 @@ class The7_Inc_Shortcodes_VCParams {
 		$param_name = isset( $settings['param_name'] ) ? $settings['param_name'] : '';
 		$type       = isset( $settings['type'] ) ? $settings['type'] : '';
 		$class      = isset( $settings['class'] ) ? $settings['class'] : '';
+		$icons = array();
 		if ( $param_name == "dt_soc_icon" ) {
 			$icons = array(
 				'dt-icon-px-500',
@@ -707,7 +602,6 @@ class The7_Inc_Shortcodes_VCParams {
 				'dt-icon-flickr',
 				'dt-icon-foursquare',
 				'dt-icon-github',
-				'dt-icon-google',
 				'dt-icon-instagram',
 				'dt-icon-lastfm',
 				'dt-icon-linkedin',
@@ -733,12 +627,14 @@ class The7_Inc_Shortcodes_VCParams {
 				'dt-icon-yelp',
 				'dt-icon-you-tube',
 				'dt-icon-snapchat',
+				'dt-icon-telegram',
 			);
 		}
 
+		$icons = apply_filters( 'the7_icons_in_settings', $icons );
 		$output = '<input type="hidden" name="' . $param_name . '" class="wpb_vc_param_value ' . $param_name . ' ' . $type . ' ' . $class . '" value="' . $soc_value . '" />';
 		$output .= '<ul class="dt-icon-list">';
-		$output .= '<li class="dt-icons-selector" data-car-icon=""><i class="soc-font-icon moon-icon "></i><span class="selector-button"><i class="fa-arrow-down fip-fa fa"></i></span>';
+		$output .= '<li class="dt-icons-selector" data-car-icon=""><i class="soc-font-icon moon-icon "></i><span class="selector-button"><i class="icomoon-the7-font-the7-arrow-05"></i></span>';
 		$output .= '<ul class="dt-icon-list-sub">';
 		$n      = 1;
 		foreach ( $icons as $icon ) {
@@ -866,11 +762,20 @@ if ( class_exists( 'WPBakeryVisualComposerAbstract' ) ) {
 	 * Register custom vc_pie shortcode script.
 	 */
 	function presscore_vc_register_custom_vc_pie_script() {
-		wp_register_script( 'vc_dt_pie', PRESSCORE_THEME_URI . '/inc/shortcodes/vc_extend/jquery.vc_chart.js', array(
-			'jquery',
-			'waypoints',
-			'progressCircle',
-		), THE7_VERSION );
+		if ( version_compare( WPB_VC_VERSION, '6.0.2', '<' ) ) {
+			$dependencies = array(
+				'jquery',
+				'waypoints',
+				'progressCircle',
+			);
+		} else {
+			$dependencies = array(
+				'jquery',
+				'vc_waypoints',
+				'progressCircle',
+			);
+		}
+		wp_register_script( 'vc_dt_pie', PRESSCORE_THEME_URI . '/inc/shortcodes/vc_extend/jquery.vc_chart.js', $dependencies, THE7_VERSION );
 	}
 
 	add_action( 'wp_enqueue_scripts', 'presscore_vc_register_custom_vc_pie_script', 15 );
@@ -953,8 +858,188 @@ if ( ! function_exists( 'presscore_vc_add_ultimate_addons_icons' ) ) :
 	}
 
 endif;
+
+function presscore_get_icons_for_vc_icon_picker( $type = '' ) {
+	$icons = array(
+		'next_icon'               => array(
+			'icon-ar-021-r',
+			'icon-ar-022-r',
+			'icon-ar-023-r',
+			'icon-ar-001-r',
+			'icon-ar-002-r',
+			'icon-ar-003-r',
+			'icon-ar-004-r',
+			'icon-ar-005-r',
+			'icon-ar-006-r',
+			'icon-ar-007-r',
+			'icon-ar-008-r',
+			'icon-ar-009-r',
+			'icon-ar-010-r',
+			'icon-ar-011-r',
+			'icon-ar-012-r',
+			'icon-ar-013-r',
+			'dt-icon-the7-arrow-0-41',
+			'icon-ar-014-r',
+			'icon-ar-015-r',
+			'icon-ar-017-r',
+			'icon-ar-018-r',
+			'icon-ar-019-r',
+			'icon-ar-020-r',
+			'icomoon-the7-font-the7-arrow-29-2',
+			'dt-icon-the7-arrow-07',
+			'dt-icon-the7-arrow-03',
+		),
+		'prev_icon'               => array(
+			'icon-ar-021-l',
+			'icon-ar-022-l',
+			'icon-ar-023-l',
+			'icon-ar-001-l',
+			'icon-ar-002-l',
+			'icon-ar-003-l',
+			'icon-ar-004-l',
+			'icon-ar-005-l',
+			'icon-ar-006-l',
+			'icon-ar-007-l',
+			'icon-ar-008-l',
+			'icon-ar-009-l',
+			'icon-ar-010-l',
+			'icon-ar-011-l',
+			'icon-ar-012-l',
+			'icon-ar-013-l',
+			'dt-icon-the7-arrow-0-42',
+			'icon-ar-014-l',
+			'icon-ar-015-l',
+			'icon-ar-017-l',
+			'icon-ar-018-l',
+			'icon-ar-019-l',
+			'icon-ar-020-l',
+			'icomoon-the7-font-the7-arrow-29-3',
+			'dt-icon-the7-arrow-06',
+			'icomoon-the7-font-the7-arrow-02'
+		),
+		'project_link_icon'       => array(
+			'icon-portfolio-p208',
+			'icon-portfolio-p206',
+			'dt-icon-the7-menu-004',
+			'dt-icon-the7-menu-007',
+		),
+		'external_link_icon'      => array(
+			'icon-portfolio-p201',
+			'icomoon-the7-font-the7-link-01',
+			'icon-portfolio-p204',
+			'icomoon-the7-font-the7-link-03',
+		),
+		'image_zoom_icon'         => array(
+			'icomoon-the7-font-the7-zoom-01',
+			'icomoon-the7-font-the7-zoom-02',
+			'icomoon-the7-font-the7-zoom-03',
+			'icomoon-the7-font-the7-zoom-044',
+			'icomoon-the7-font-the7-zoom-05',
+			'icomoon-the7-font-icon-gallery-011-2',
+			'icomoon-the7-font-the7-zoom-06',
+			'icomoon-the7-font-the7-zoom-08',
+			'icomoon-the7-font-the7-expand-01',
+			'icomoon-the7-font-the7-expand-02',
+			'icomoon-the7-font-the7-expand-03',
+			'icomoon-the7-font-the7-expand-04',
+			'icomoon-the7-font-the7-expand-05',
+			'icomoon-the7-font-the7-expand-06',
+			'icomoon-the7-font-the7-expand-07',
+			'icomoon-the7-font-the7-expand-08',
+			'icomoon-the7-font-the7-plus-00',
+			'icomoon-the7-font-the7-plus-01',
+			'icomoon-the7-font-the7-plus-02',
+			'icomoon-the7-font-the7-plus-03',
+			'icomoon-the7-font-the7-plus-04',
+			'icomoon-the7-font-the7-plus-05',
+			'icomoon-the7-font-the7-plus-06',
+			'icomoon-the7-font-the7-plus-07',
+			'icomoon-the7-font-the7-plus-08',
+			'icomoon-the7-font-the7-plus-09',
+			'icomoon-the7-font-the7-plus-10',
+			'icomoon-the7-font-the7-plus-11',
+			'icomoon-the7-font-the7-plus-12',
+		),
+		'gallery_image_zoom_icon' => array(
+			'icomoon-the7-font-the7-zoom-01',
+			'icomoon-the7-font-the7-zoom-02',
+			'icomoon-the7-font-the7-zoom-03',
+			'icomoon-the7-font-the7-zoom-044',
+			'icomoon-the7-font-the7-zoom-05',
+			'icomoon-the7-font-icon-gallery-011-2',
+			'icomoon-the7-font-the7-zoom-06',
+			'icomoon-the7-font-the7-zoom-08',
+			'icomoon-the7-font-the7-expand-01',
+			'icomoon-the7-font-the7-expand-02',
+			'icomoon-the7-font-the7-expand-03',
+			'icomoon-the7-font-the7-expand-04',
+			'icomoon-the7-font-the7-expand-05',
+			'icomoon-the7-font-the7-expand-06',
+			'icomoon-the7-font-the7-expand-07',
+			'icomoon-the7-font-the7-expand-08',
+			'icomoon-the7-font-the7-plus-00',
+			'icomoon-the7-font-the7-plus-01',
+			'icomoon-the7-font-the7-plus-02',
+			'icomoon-the7-font-the7-plus-03',
+			'icomoon-the7-font-the7-plus-04',
+			'icomoon-the7-font-the7-plus-05',
+			'icomoon-the7-font-the7-plus-06',
+			'icomoon-the7-font-the7-plus-07',
+			'icomoon-the7-font-the7-plus-08',
+			'icomoon-the7-font-the7-plus-09',
+			'icomoon-the7-font-the7-plus-10',
+			'icomoon-the7-font-the7-plus-11',
+			'icomoon-the7-font-the7-plus-12',
+		),
+		'dt_soc_icon'             => array(
+			'dt-icon-px-500',
+			'dt-icon-behance',
+			'dt-icon-blogger',
+			'dt-icon-delicious',
+			'dt-icon-devian',
+			'dt-icon-dribbble',
+			'dt-icon-facebook',
+			'dt-icon-flickr',
+			'dt-icon-foursquare',
+			'dt-icon-github',
+			'dt-icon-instagram',
+			'dt-icon-lastfm',
+			'dt-icon-linkedin',
+			'dt-icon-mail',
+			'dt-icon-odnoklassniki',
+			'dt-icon-pinterest',
+			'dt-icon-reddit',
+			'dt-icon-research-gate',
+			'dt-icon-rss',
+			'dt-icon-skype',
+			'dt-icon-soundcloud',
+			'dt-icon-stumbleupon',
+			'dt-icon-tripedvisor',
+			'dt-icon-tumbler',
+			'dt-icon-twitter',
+			'dt-icon-viber',
+			'dt-icon-vimeo',
+			'dt-icon-vk',
+			'dt-icon-website',
+			'dt-icon-weibo',
+			'dt-icon-whatsapp',
+			'dt-icon-xing',
+			'dt-icon-yelp',
+			'dt-icon-you-tube',
+			'dt-icon-snapchat',
+			'dt-icon-telegram',
+		),
+	);
+
+	if ( array_key_exists( $type, $icons ) ) {
+		return $icons[ $type ];
+	}
+
+	return array();
+}
+
 if ( ! function_exists( 'dt_productIdAutocompleteSuggesterExactSku' ) ) :
-	function productIdAutocompleteSuggesterExactSku( $query ) {
+	function dt_productIdAutocompleteSuggesterExactSku( $query ) {
 		global $wpdb;
 		$query        = trim( $query );
 		$product_id   = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_sku' AND meta_value='%s' LIMIT 1", stripslashes( $query ) ) );
@@ -994,7 +1079,7 @@ if ( ! function_exists( 'dt_productIdAutocompleteSuggesterExactSku' ) ) :
 endif;
 if ( ! function_exists( 'dt_productIdDefaultValueFromSkuToId' ) ) :
 	function dt_productIdDefaultValueFromSkuToId( $query ) {
-		$result = $this->dt_productIdAutocompleteSuggesterExactSku( $query );
+		$result = dt_productIdAutocompleteSuggesterExactSku( $query );
 
 		return isset( $result['value'] ) ? $result['value'] : false;
 	}
@@ -1021,7 +1106,7 @@ if ( ! function_exists( 'dt_productsIdsDefaultValue' ) ) :
 			$skus       = $atts['skus'];
 			$skus_array = explode( ',', $skus );
 			foreach ( $skus_array as $sku ) {
-				$id = $this->dt_productIdDefaultValueFromSkuToId( trim( $sku ) );
+				$id = dt_productIdDefaultValueFromSkuToId( trim( $sku ) );
 				if ( is_numeric( $id ) ) {
 					$data[] = $id;
 				}
@@ -1242,7 +1327,7 @@ $posts_autocomplete    = new The7_VC_Posts_Autocomplete( 'dt_gallery', $posts_la
 $category_autocomplete = new The7_VC_Taxonomy_Autocomplete( 'dt_gallery_category', $taxonomy_label_tpl );
 $tags_autocomplete     = new The7_VC_Taxonomy_Autocomplete( 'post_tag', $taxonomy_label_tpl );
 
-foreach ( array(  'dt_photos_carousel','dt_gallery_photos_masonry' ) as $shortcode_tag ) {
+foreach ( array(  'dt_photos_carousel','dt_gallery_photos_masonry', 'dt_albums_masonry', 'dt_albums_carousel' ) as $shortcode_tag ) {
 	// Posts.
 	add_filter( "vc_autocomplete_{$shortcode_tag}_posts_callback", array( $posts_autocomplete, 'suggester' ) );
 	add_filter( "vc_autocomplete_{$shortcode_tag}_posts_render", array( $posts_autocomplete, 'renderer' ) );

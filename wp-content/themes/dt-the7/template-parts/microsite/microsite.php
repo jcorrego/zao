@@ -12,7 +12,7 @@
 			the_post();
 			do_action( 'presscore_before_loop' );
 			the_content();
-			presscore_display_share_buttons_for_post( 'page' );
+			the7_display_post_share_buttons( 'page' );
 			comments_template( '', true );
 		}
 	} else {

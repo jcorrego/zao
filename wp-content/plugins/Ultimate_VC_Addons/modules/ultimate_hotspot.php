@@ -128,6 +128,7 @@ if(!class_exists('ULT_HotSpot')) {
 				'tooltip_font_line_height'        	=> '',
 				'tooltip_custom_border_size'      	=> '',
 				'tooltip_align'						=> '',
+				'el_sub_class'						=> '',
 			), $atts ) 	);
 
 			//$content = wpb_js_remove_wpautop($content, false); // fix unclosed/unwanted paragraph tags in $content
@@ -142,7 +143,7 @@ if(!class_exists('ULT_HotSpot')) {
 						break;
 					case "glow":
 						if($glow_color !== '')
-							$glow_color = 'style="background-color:'.$glow_color.'"';
+							$glow_color = 'style=background-color:' .$glow_color.';';
 						else
 							$glow_color = '';
 								$glow = " <div class='ult-glow' ".esc_attr($glow_color)."></div>";
@@ -264,7 +265,7 @@ if(!class_exists('ULT_HotSpot')) {
 				$rel 			= ( isset( $href['rel'] ) && $href['rel'] !== '' ) ? esc_attr($href['rel']) : '';
 			}
 
-			$output  = "<div class='ult-hotspot-item ".esc_attr($pulse)."' style='top:-webkit-calc(".esc_attr($hotspot_x_position)."% - ".esc_attr($temp_icon_size)."px);top:-moz-calc(".esc_attr($hotspot_x_position)."% - ".esc_attr($temp_icon_size)."px);top:calc(".esc_attr($hotspot_x_position)."% - ".esc_attr($temp_icon_size)."px);left: -webkit-calc(".esc_attr($hotspot_y_position)."% - ".esc_attr($temp_icon_size)."px);left: -moz-calc(".esc_attr($hotspot_y_position)."% - ".esc_attr($temp_icon_size)."px);left: calc(".esc_attr($hotspot_y_position)."% - ".esc_attr($temp_icon_size)."px);' >";
+			$output  = "<div class='ult-hotspot-item ".esc_attr($pulse)." ".esc_attr($el_sub_class)."' style='top:-webkit-calc(".esc_attr($hotspot_x_position)."% - ".esc_attr($temp_icon_size)."px);top:-moz-calc(".esc_attr($hotspot_x_position)."% - ".esc_attr($temp_icon_size)."px);top:calc(".esc_attr($hotspot_x_position)."% - ".esc_attr($temp_icon_size)."px);left: -webkit-calc(".esc_attr($hotspot_y_position)."% - ".esc_attr($temp_icon_size)."px);left: -moz-calc(".esc_attr($hotspot_y_position)."% - ".esc_attr($temp_icon_size)."px);left: calc(".esc_attr($hotspot_y_position)."% - ".esc_attr($temp_icon_size)."px);' >";
   			$output .= "  <div style='z-index: 39;position: relative;'>";
 
 			if($link_style == 'link'){
@@ -568,6 +569,12 @@ if(!class_exists('ULT_HotSpot')) {
 								"dependency" => Array("element" => "link_style","value" => "tooltip"),
 								'admin_label' => true,
 								"edit_field_class" => "ult_hide_editor_fullscreen vc_col-xs-12 vc_column wpb_el_type_textarea_html vc_wrapper-param-type-textarea_html vc_shortcode-param",
+							),
+							array(
+								"type" => "textfield",
+								"heading" => __("Extra Class Name", "ultimate_vc"),
+								"param_name" => "el_sub_class",
+								"description" => __("Ran out of options? Need more styles? Write your own CSS and mention the class name here.", "ultimate_vc")
 							),
 
 							/*array(

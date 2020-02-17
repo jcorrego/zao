@@ -27,9 +27,9 @@ class Loco_error_AdminNotices extends Loco_hooks_Hookable {
         return self::$singleton;
     } 
 
-
     
     /**
+     * @param Loco_error_Exception
      * @return Loco_error_Exception
      */
     public static function add( Loco_error_Exception $error ){
@@ -44,19 +44,13 @@ class Loco_error_AdminNotices extends Loco_hooks_Hookable {
         }
         // if exception wasn't thrown we have to do some work to establish where it was invoked
         if( __FILE__ === $error->getFile() ){
-            $stack = debug_backtrace();
-            $error->setCallee( $stack[1] );
+            $error->setCallee(1);
         }
         // Log messages of minimum priority and up, depending on debug mode
         // note that non-debug level is in line with error_reporting set by WordPress (notices ignored)
         $priority = loco_debugging() ? Loco_error_Exception::LEVEL_DEBUG : Loco_error_Exception::LEVEL_WARNING;
         if( $error->getLevel() <= $priority ){
-            $file = new Loco_fs_File( $error->getRealFile() );
-            $path = $file->getRelativePath( loco_plugin_root() );
-            $text = sprintf('[Loco.%s] "%s" in %s:%u', $error->getType(), $error->getMessage(), $path, $error->getRealLine() );
-            // This writes to default PHP log, but note that WP_DEBUG_LOG may have set that to wp-content/debug.log.
-            // If no `error_log` is set this will send message to the SAPI, so check your httpd/fast-cgi errors too.
-            error_log( $text, 0 );
+            $error->log();
         }
         return $error;
     }
@@ -64,37 +58,56 @@ class Loco_error_AdminNotices extends Loco_hooks_Hookable {
 
     /**
      * Raise a success message
-     * @return Loco_error_Success
+     * @param string
+     * @return Loco_error_Exception
      */
     public static function success( $message ){
-        return self::add( new Loco_error_Success($message) );
+        $notice = new Loco_error_Success($message);
+        return self::add( $notice->setCallee(1) );
+    }
+
+
+    /**
+     * Raise a failure message
+     * @param string
+     * @return Loco_error_Exception
+     */
+    public static function err( $message ){
+        $notice = new Loco_error_Exception($message);
+        return self::add( $notice->setCallee(1) );
     }
 
 
     /**
      * Raise a warning message
-     * @return Loco_error_Warning
+     * @param string
+     * @return Loco_error_Exception
      */
     public static function warn( $message ){
-        return self::add( new Loco_error_Warning($message) );
+        $notice = new Loco_error_Warning($message);
+        return self::add( $notice->setCallee(1) );
     }
 
 
     /**
      * Raise a generic info message
-     * @return Loco_error_Notice
+     * @param string
+     * @return Loco_error_Exception
      */
     public static function info( $message ){
-        return self::add( new Loco_error_Notice($message) );
+        $notice = new Loco_error_Notice($message);
+        return self::add( $notice->setCallee(1) );
     }
 
 
     /**
      * Raise a debug notice, if debug is enabled
+     * @param string
      * @return Loco_error_Debug
      */
     public static function debug( $message ){
         $notice = new Loco_error_Debug($message);
+        $notice->setCallee(1);
         loco_debugging() and self::add( $notice );
         return $notice;
     }

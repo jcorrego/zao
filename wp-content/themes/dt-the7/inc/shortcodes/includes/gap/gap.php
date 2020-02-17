@@ -22,17 +22,13 @@ class DT_Shortcode_Gap extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( $this->shortcode_name, array($this, 'shortcode') );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
     }
 
     public function shortcode( $atts, $content = null ) {
        extract( shortcode_atts( array(
 		'height' => 10,
-	    ), $atts ) );
+	    ), $atts, $this->shortcode_name ) );
 	    
 	    $output = '<div class="gap" style="line-height: ' . absint($height) . 'px; height: ' . absint($height) . 'px;"></div>';
 	    

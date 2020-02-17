@@ -1,3 +1,44 @@
+3.19.2 - 03 Feb 2020
+- Improvement: Hardened the security of the plugin.
+
+3.19.1 - 22 Jan 2020
+- Security Fix: Cross-site scripting (XSS) vulnerability.
+
+3.19.0 - 30 July 2019
+- New: Introducing Dual Color Heading Element.
+- Improvement: Added the Extra class option for the Hotspot item.
+- Improvement: Update WPML XML file for Compatibility.
+- Improvement: Update the string as an Element instead of Modules in backend settings.
+- Fix: PHP Notice of $ub variable is not initialized.
+- Fix: Hotspot glow animation color is not working.
+- Fix: PHP Warning in Team element appearing on the front end.
+- Removed purchase key License activation method as the API for this is now being deprecated by Envato.
+
+3.18.0 - 18 Feb 2019
+- New: Introduce Ribbon element.
+- Improvement: Added the animation option for a marker in Google Map.
+- Fix: Advanced Carousel rendering issue when page refresh.
+- Fix: PHP Notice Undefined license-form-method variable.
+
+3.17.1 - 6 Dec 2018
+- Improvement: Added Text transform option for Fancy text.
+- Improvement: Update WPML xml file for Compatibility.
+- Improvement: Added license key purchase form button in debug screen.
+- Fix: Spacing issue in Fancy text.
+- Fix: Advanced Carousel doesn't slide properly with one at a time option on Tablet and Mobile devices.
+
+3.17.0 - 29 Oct 2018
+- New: Introduce Video element.
+- Improvement: Toolip will display in case of link in Just Icon.
+- Fix: Fancy Text not consistent in slide up option.
+- Removed purchase key License activation method as the API for this is now being deprecated by Envato.
+
+3.16.26 - 27-Sept-2018
+- Improvement: Added Border radius option for Flip Box.
+- Fix: Advanced Tab collapsed when the value is not set for the Active tab.
+- Fix: Control option not working when Load script globally option is enabled in the hosted video.
+- Fix: Youtube video not working when the Viewport option is enabled.
+
 3.16.25 - 22-Aug-2018
 - Improvement: Added Modal on menu option in Debug setting.
 - Improvement: Added Description color option for Flip Box.

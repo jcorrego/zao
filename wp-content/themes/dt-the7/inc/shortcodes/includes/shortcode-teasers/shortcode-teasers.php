@@ -46,7 +46,7 @@ if ( ! class_exists( 'DT_Shortcode_Teaser', false ) ) {
 				'animation' => 'none',
 			);
 
-			$attributes = shortcode_atts( $default_atts, $atts );
+			$attributes = shortcode_atts( $default_atts, $atts, $this->shortcode_name );
 
 			$attributes['type'] = sanitize_key( $attributes['type'] );
 			$attributes['target'] = sanitize_key( $attributes['target'] );

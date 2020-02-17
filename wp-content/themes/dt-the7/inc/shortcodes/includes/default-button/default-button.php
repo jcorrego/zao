@@ -2,16 +2,15 @@
 /**
  * Default button shortcode.
  *
+ * @package The7
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
-
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 
 	class DT_Shortcode_Default_Button extends DT_Shortcode_With_Inline_Css {
+
 		public static $instance;
 
 		public static function get_instance() {
@@ -22,25 +21,51 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 		}
 
 		public function __construct() {
-			$this->sc_name = 'dt_default_button';
+			$this->sc_name           = 'dt_default_button';
 			$this->unique_class_base = 'default-btn';
-			$this->default_atts = array(
-				'size'                 => 'small',
-				'link'                 => '',
-				'default_btn_bg_color' => '',
-				'bg_hover_color'       => '',
-				'text_color'           => '',
-				'text_hover_color'     => '',
-				'animation'            => 'none',
-				'icon_type'            => 'html',
-				'icon'                 => '',
-				'icon_align'           => 'left',
-				'button_alignment'     => 'btn_inline_left',
-				'smooth_scroll'        => 'n',
-				'btn_width'            => 'btn_auto_width',
-				'custom_btn_width'     => '200px',
-				'el_class'             => '',
-				'css'                  => '',
+			$this->default_atts      = array(
+				'size'                           => 'small',
+				'font_size'                      => '14px',
+				'button_padding'                 => '12px 18px 12px 18px',
+				'border_radius'                  => '1px',
+				'border_width'                   => '0px',
+				'link'                           => '',
+				'text_color'                     => '',
+				'default_btn_bg'                 => 'y',
+				'default_btn_bg_color'           => '',
+				'default_btn_border'             => 'y',
+				'default_btn_border_color'       => '',
+				'default_btn_hover'              => 'y',
+				'text_hover_color'               => '',
+				'default_btn_bg_hover'           => 'y',
+				'bg_hover_color'                 => '',
+				'default_btn_border_hover'       => 'y',
+				'default_btn_border_hover_color' => '',
+				'btn_decoration'                 => 'none',
+				'animation'                      => 'none',
+				'icon_type'                      => 'html',
+				'icon'                           => '',
+				'icon_picker'                    => '',
+				'icon_size'                      => '12px',
+				'icon_gap'						 => '8px',
+				'icon_align'                     => 'left',
+				'button_alignment'               => 'btn_inline_left',
+				'smooth_scroll'                  => 'n',
+				'btn_width'                      => 'btn_auto_width',
+				'custom_btn_width'               => '200px',
+				'link_font_size'				 => '14px',
+				'link_font_style' 				 => ':bold:',
+				'link_icon_size'				 => '11px',
+				'link_padding'					 => '4px 0px 4px 0px',
+				'link_text_color'				 => '',
+				'link_hover'					 => 'n',
+				'link_decoration'				 => 'upwards',
+				'link_border_width'				 => '2px',
+				'link_border_color'				 => '',
+				'link_border_hover_color'		 => '',
+				'link_text_hover_color'			 => '',
+				'el_class'                       => '',
+				'css'                            => '',
 			);
 			parent::__construct();
 		}
@@ -50,17 +75,20 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 
 			$icon_html = '';
 			$icon_type = $this->atts['icon_type'];
-			if ( 'html' === $icon_type ) {
-				if ( preg_match( '/^fa[a-z]*\s/', $this->atts['icon'] ) ) {
-					$icon_html = '<i class="' . esc_attr( $this->atts['icon'] ) . '"></i>';
-				} else {
-					$icon_html = wp_kses( rawurldecode( base64_decode( $this->atts['icon'] ) ), array( 'i' => array( 'class' => array() ) ) );
+			if ( $icon_type !== 'none' ) {
+				if ( 'html' === $icon_type ) {
+					if ( preg_match( '/^fa[a-z]*\s/', $this->atts['icon'] ) ) {
+						$icon_html = '<i class="' . esc_attr( $this->atts['icon'] ) . '"></i>';
+					} else {
+						$icon_html = wp_kses( rawurldecode( base64_decode( $this->atts['icon'] ) ), array( 'i' => array( 'class' => array() ) ) );
+					}
+				} elseif ( ! empty( $this->atts[ "icon_{$icon_type}" ] ) ) {
+					$icon_html = '<i class="' . esc_attr( $this->atts[ "icon_{$icon_type}" ] ) . '"></i>';
 				}
-			} elseif ( $this->atts["icon_{$icon_type}"] ) {
-				$icon_html = '<i class="' . esc_attr( $this->atts["icon_{$icon_type}"] ) . '"></i>';
 			}
 
-			$after_title = $before_title = '';
+			$after_title  = '';
+			$before_title = '';
 			if ( 'right' === $this->atts['icon_align'] ) {
 				$after_title = $icon_html;
 			} else {
@@ -68,32 +96,38 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 			}
 
 			$btn_width = '';
-			if ('btn_fixed_width' ===  $this->atts['btn_width'] ) {
-				$btn_width .= ' style="width:' . absint( $this->atts['custom_btn_width'] ) . 'px;"' ;
+			if ( 'btn_fixed_width' === $this->atts['btn_width'] ) {
+				$btn_width .= ' style="width:' . absint( $this->atts['custom_btn_width'] ) . 'px;"';
 			}
 
-			$url = $this->atts['link'] ? $this->atts['link'] : '#';
-			$link_title = $target = $rel = '';
+			$url        = $this->atts['link'] ? $this->atts['link'] : '#';
+			$link_title = '';
+			$target     = '';
+			$rel        = '';
 			if ( function_exists( 'vc_build_link' ) ) {
 				$link = vc_build_link( $this->atts['link'] );
 				if ( ! empty( $link['url'] ) ) {
-					$url = $link['url'];
-					$target = ( empty( $link['target'] ) ? '' : sprintf( ' target="%s"', trim( $link['target'] ) ) );
+					$url        = $link['url'];
+					$target     = ( empty( $link['target'] ) ? '' : sprintf( ' target="%s"', trim( $link['target'] ) ) );
 					$link_title = ( empty( $link['title'] ) ? '' : sprintf( ' title="%s"', $link['title'] ) );
-					$rel = ( empty( $link['rel'] ) ? '' : sprintf( ' rel="%s"', $link['rel'] ) );
+					$rel        = ( empty( $link['rel'] ) ? '' : sprintf( ' rel="%s"', $link['rel'] ) );
 				}
 			}
+			if ( $this->atts['size'] === 'link' ) {
+				$content = '<span>' . $content . '</span>';
+			}
 
-			// get button html
-			$button_html = presscore_get_button_html( array(
-				'before_title'	=> $before_title,
-				'after_title'	=> $after_title,
-				'href'			=> esc_attr( $url ),
-				'title'			=> $content,
-				'target'		=> $target,
-				'class'			=> $this->get_html_class(),
-				'atts'			=> ' id="' . $this->get_unique_class() . '"'  . $btn_width  . $link_title . $rel ,
-			) );
+			$button_html = presscore_get_button_html(
+				array(
+					'before_title' => $before_title,
+					'after_title'  => $after_title,
+					'href'         => esc_attr( $url ),
+					'title'        => $content,
+					'target'       => $target,
+					'class'        => $this->get_html_class(),
+					'atts'         => ' id="' . $this->get_unique_class() . '"' . $btn_width . $link_title . $rel,
+				)
+			);
 
 			switch ( $this->atts['button_alignment'] ) {
 				case 'btn_left':
@@ -107,12 +141,16 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 					break;
 			}
 
+
 			echo $button_html;
 		}
 
 		protected function get_html_class() {
-			// static classes
-			$classes = array( 'default-btn-shortcode dt-btn' );
+			if ( $this->get_att( 'size' ) === 'link' ) {
+				$classes = array( 'default-btn-shortcode dt-btn-link' );
+			}else{
+				$classes = array( 'default-btn-shortcode dt-btn' );
+			}
 			switch ( $this->atts['size'] ) {
 				case 'small':
 					$classes[] = 'dt-btn-s';
@@ -124,28 +162,38 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 					$classes[] = 'dt-btn-l';
 					break;
 			};
-			// animation
 			if ( presscore_shortcode_animation_on( $this->atts['animation'] ) ) {
 				$classes[] = presscore_get_shortcode_animation_html_class( $this->atts['animation'] );
 				$classes[] = 'animation-builder';
 			}
 
-			// icon alignment
-			if ( $this->atts['icon'] && 'right' == $this->atts['icon_align'] ) {
+			$icon_type = $this->atts['icon_type'];
+			if ( 'html' === $icon_type ) {
+				$there_is_an_icon = ! empty( $this->atts['icon'] );
+			} else {
+				$there_is_an_icon = ! empty( $this->atts[ "icon_{$icon_type}" ] );
+			}
+
+			if ( ! $this->get_flag( 'default_btn_hover' ) ) {
+				$classes[] = 'btn-hover-off';
+			}
+			if ( ! $this->get_flag( 'link_hover' ) ) {
+				$classes[] = 'link-hover-off';
+			}
+
+			if ( $there_is_an_icon && 'right' === $this->atts['icon_align'] ) {
 				$classes[] = 'ico-right-side';
 			}
 
-			// smooth scroll
 			if ( $this->get_flag( 'smooth_scroll' ) ) {
 				$classes[] = 'anchor-link';
 			}
 
-			// custom class
 			if ( $this->atts['el_class'] ) {
 				$classes[] = $this->atts['el_class'];
 			}
 
-			if ('btn_full_width' ==  $this->atts['btn_width'] ) {
+			if ( 'btn_full_width' === $this->atts['btn_width'] ) {
 				$classes[] = 'full-width-btn';
 			}
 
@@ -157,12 +205,41 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 					$classes[] = 'btn-inline-right';
 					break;
 			}
+			if ( 'custom' === $this->atts['size'] ) {
+				switch ( $this->atts['btn_decoration'] ) {
+					case 'none':
+						$classes[] = 'btn-flat';
+						break;
+					case 'btn_3d':
+						$classes[] = 'btn-3d';
+						break;
+					case 'btn_shadow':
+						$classes[] = 'btn-shadow';
+						break;
+				}
+			}
+			if ( $this->get_att( 'link_decoration' ) != 'none' && 'link' === $this->atts['size']  ) {
+				switch ( $this->atts['link_decoration'] ) {
+					case 'left_to_right':
+						$classes[] = 'left-to-right-line';
+						break;
+					case 'from_center':
+						$classes[] = 'from-center-line';
+						break;
+					case 'upwards':
+						$classes[] = 'upwards-line';
+						break;
+					case 'downwards':
+						$classes[] = 'downwards-line';
+						break;
+				}
+			}
 
 			if ( function_exists( 'vc_shortcode_custom_css_class' ) ) {
 				$classes[] = vc_shortcode_custom_css_class( $this->atts['css'], ' ' );
 			}
 
-			return  esc_attr( implode( ' ', $classes ) );
+			return esc_attr( implode( ' ', $classes ) );
 		}
 
 		/**
@@ -177,26 +254,135 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
-			$less_vars->add_keyword( 'unique-shortcode-class-name',  $this->get_unique_class(), '~"%s"' );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
-			$less_vars->add_keyword( 'default-btn-bg', $this->get_att( 'default_btn_bg_color', '~""') );
-			$less_vars->add_keyword( 'default-btn-bg-hover', $this->get_att( 'bg_hover_color', '~""' ) );
+			$less_vars->add_keyword( 'unique-shortcode-class-name', $this->get_unique_class(), '~"%s"' );
+			
+			$less_vars->add_pixel_number( 'btn-icon-gap', $this->get_att( 'icon_gap' ) );
 
-			$less_vars->add_keyword( 'default-btn-color', $this->get_att( 'text_color', '~""' ) );
-			$less_vars->add_keyword( 'default-btn-color-hover', $this->get_att( 'text_hover_color', '~""' ) );
+			/**
+			 * Custom settings.
+			 */
+			if ( $this->get_att( 'size' ) === 'custom' ) {
+				$btn_padding       = array(
+					'btn-padding-top',
+					'btn-padding-right',
+					'btn-padding-bottom',
+					'btn-padding-left',
+				);
+				$btn_hover_padding = array(
+					'btn-padding-top-hover',
+					'btn-padding-right-hover',
+					'btn-padding-bottom-hover',
+					'btn-padding-left-hover',
+				);
+				$less_vars->add_paddings( $btn_padding, $this->get_att( 'button_padding' ) );
+				$less_vars->add_paddings( $btn_hover_padding, $this->get_att( 'button_padding' ) );
+
+				$less_vars->add_pixel_number( 'btn-icon-size', $this->get_att( 'icon_size' ) );
+				$less_vars->add_pixel_number( 'btn-font-size', $this->get_att( 'font_size' ) );
+				$less_vars->add_pixel_number( 'btn-border-radius', $this->get_att( 'border_radius' ) );
+
+				$less_vars->add_keyword( 'btn-color', $this->get_att( 'text_color' ) );
+				$less_vars->add_keyword( 'btn-bg-color', 'none' );
+				if ( $this->get_flag( 'default_btn_bg' ) ) {
+					$less_vars->add_keyword( 'btn-bg-color', $this->get_att( 'default_btn_bg_color' ) );
+				}
+				$less_vars->add_keyword( 'btn-border-color', $this->get_att( 'default_btn_border_color' ) );
+
+				$border_width = $this->get_att( 'border_width' );
+
+				// Take care of border width.
+				$less_vars->add_pixel_number( 'btn-border-width', $border_width );
+				if ( ! $this->get_flag( 'default_btn_border' ) ) {
+					$less_vars->add_pixel_number( 'btn-border-width', 0 );
+					$less_vars->add_pixel_number( 'btn-pi', $border_width );
+				}
+
+				if ( $this->get_flag( 'default_btn_hover' ) ) {
+					$less_vars->add_keyword( 'btn-color-hover', $this->get_att( 'text_hover_color' ) );
+					$less_vars->add_keyword( 'btn-bg-color-hover', 'none' );
+					if ( $this->get_flag( 'default_btn_bg_hover' ) ) {
+						$less_vars->add_keyword( 'btn-bg-color-hover', $this->get_att( 'bg_hover_color' ) );
+					}
+					$less_vars->add_keyword( 'btn-border-color-hover', $this->get_att( 'default_btn_border_hover_color' ) );
+
+					// Take care of border width on hover.
+					$less_vars->add_pixel_number( 'btn-border-width-hover', $border_width );
+					if ( ! $this->get_flag( 'default_btn_border_hover' ) ) {
+						$less_vars->add_pixel_number( 'btn-border-width-hover', 0 );
+						$less_vars->add_pixel_number( 'btn-pi-h', $border_width );
+					}
+				} else {
+					// Fill hover vars with regular values.
+					$less_vars->add_keyword( 'btn-color-hover', $less_vars->get_var( 'btn-color' ) );
+					$less_vars->add_keyword( 'btn-bg-color-hover', $less_vars->get_var( 'btn-bg-color' ) );
+					$less_vars->add_keyword( 'btn-border-color-hover', $less_vars->get_var( 'btn-border-color' ) );
+					$less_vars->add_pixel_number( 'btn-border-width-hover', $less_vars->get_var( 'btn-border-width' ) );
+					if ( $less_vars->get_var( 'btn-pi' ) ) {
+						$less_vars->add_pixel_number( 'btn-pi-h', $less_vars->get_var( 'btn-pi' ) );
+					}
+				}
+			}
+
+			if ( $this->get_att( 'size' ) === 'link' ) {
+				$btn_padding       = array(
+					'link-padding-top',
+					'link-padding-right',
+					'link-padding-bottom',
+					'link-padding-left',
+				);
+				$less_vars->add_paddings( $btn_padding, $this->get_att( 'link_padding' ) );
+
+				$less_vars->add_pixel_number( 'link-icon-size', $this->get_att( 'link_icon_size' ) );
+				$less_vars->add_pixel_number( 'link-font-size', $this->get_att( 'link_font_size' ) );
+				$less_vars->add_font_style( array(
+					'link-font-style',
+					'link-font-weight',
+					'link-text-transform',
+				), $this->get_att( 'link_font_style' ) );
+
+				$less_vars->add_keyword( 'link-color', $this->get_att( 'link_text_color' ) );
+				$less_vars->add_keyword( 'btn-border-color', $this->get_att( 'default_btn_border_color' ) );
+
+				$border_width = $this->get_att( 'link_border_width' );
+
+				// Take care of border width.
+				$less_vars->add_pixel_number( 'link-border-width', $border_width );
+				if ( $this->get_att( 'link_decoration' ) == 'none' ) {
+					$less_vars->add_pixel_number( 'link-border-width', 0 );
+					$less_vars->add_pixel_number( 'link-pi', $border_width );
+				}
+
+				$less_vars->add_keyword( 'link-border-color-hover', $this->get_att( 'link_border_color' ) );
+
+				if ( $this->get_flag( 'link_hover' ) ) {
+					$less_vars->add_keyword( 'link-color-hover', $this->get_att( 'link_text_hover_color' ) );
+					
+					// Take care of border width on hover.
+					$less_vars->add_pixel_number( 'btn-border-width-hover', $border_width );
+					if ( ! $this->get_flag( 'default_btn_border_hover' ) ) {
+						$less_vars->add_pixel_number( 'btn-border-width-hover', 0 );
+						$less_vars->add_pixel_number( 'btn-pi-h', $border_width );
+					}
+				} else {
+					// Fill hover vars with regular values.
+					$less_vars->add_keyword( 'btn-color-hover', $less_vars->get_var( 'btn-color' ) );
+					$less_vars->add_keyword( 'btn-bg-color-hover', $less_vars->get_var( 'btn-bg-color' ) );
+					$less_vars->add_keyword( 'btn-border-color-hover', $less_vars->get_var( 'btn-border-color' ) );
+					$less_vars->add_pixel_number( 'btn-border-width-hover', $less_vars->get_var( 'btn-border-width' ) );
+					if ( $less_vars->get_var( 'btn-pi' ) ) {
+						$less_vars->add_pixel_number( 'btn-pi-h', $less_vars->get_var( 'btn-pi' ) );
+					}
+				}
+			}
+
 
 			return $less_vars->get_vars();
 		}
 
 		protected function get_less_file_name() {
-			// @TODO: Remove in production.
-			$less_file_name = 'default-buttons';
-			$less_file_path = trailingslashit( get_template_directory() ) . "css/dynamic-less/shortcodes/{$less_file_name}.less";
-
-			return $less_file_path;
+			return trailingslashit( get_template_directory() ) . 'css/dynamic-less/shortcodes/default-buttons.less';
 		}
 
 		/**
@@ -205,9 +391,8 @@ if ( ! class_exists( 'DT_Shortcode_Default_Button', false ) ) {
 		 * @return string
 		 */
 		protected function get_vc_inline_html() {
-            return false;
+			return false;
 		}
-
 	}
 	DT_Shortcode_Default_Button::get_instance()->add_shortcode();
 }

@@ -7,11 +7,9 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 
-	class DT_Shortcode_Team_Masonry extends DT_Shortcode_With_Inline_Css {
+	class DT_Shortcode_Team_Masonry extends The7pt_Shortcode_With_Inline_CSS {
 		/**
 		 * @var string
 		 */
@@ -47,6 +45,7 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 			$this->default_atts = array(
 				'post_type' => 'category',
 				'posts' => '',
+				'posts_offset' => 0,
 				'category' => '',
 				'order' => 'desc',
 				'orderby' => 'date',
@@ -101,10 +100,12 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 				'soc_icon_border_width'	=> '0',
 				'soc_icon_border_radius'=> '100px',
 				'soc_icon_color' => 'rgba(255,255,255,1)',
+				'soc_icon_border'	=> 'y',
 				'soc_icon_border_color'	=> '',
 				'soc_icon_bg' => 'y',
 				'soc_icon_bg_color'	=> '',
 				'soc_icon_color_hover' => 'rgba(255,255,255,0.75)',
+				'soc_icon_border_hover'	=> 'y',
 				'soc_icon_border_color_hover' => '',
 				'soc_icon_bg_hover' => 'y',
 				'soc_icon_bg_color_hover' => '',
@@ -128,7 +129,7 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 				'jsl_posts_per_page'             => '',
 				'navigation_font_color'          => '',
 				'navigation_accent_color'        => '',
-				'show_categories_filter' => 'n',
+				'show_categories_filter'         => 'n',
 			);
 			parent::__construct();
 		}
@@ -136,24 +137,12 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 		 * Do shortcode here.
 		 */
 		protected function do_shortcode( $atts, $content = '' ) {
-			// Loop query.
-			$post_type = $this->get_att( 'post_type' );
-			$config = presscore_config();
-			if ( 'posts' === $post_type ) {
-				$query = $this->get_posts_by_post_type( 'dt_team', $this->get_att( 'posts' ) );
-			}else {
-				$category_terms = presscore_sanitize_explode_string( $this->get_att( 'category' ) );
-				$category_field = ( is_numeric( $category_terms[0] ) ? 'term_id' : 'slug' );
-
-				$query = $this->get_posts_by_taxonomy( 'dt_team', 'dt_team_category', $category_terms, $category_field );
-			}
-
-			$query_new = apply_filters( 'the7_shortcode_query', null, $this->sc_name, $this->atts );
-			if ( is_a( $query_new, 'WP_Query' ) ) {
-				$query = $query_new;
-			}
+			$query = $this->get_loop_query();
 
 			do_action( 'presscore_before_shortcode_loop', $this->sc_name, $this->atts );
+
+			// Remove default masonry posts wrap.
+			presscore_remove_posts_masonry_wrap();
 
 			$loading_mode = $this->get_att( 'loading_mode' );
 
@@ -220,8 +209,15 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 					if ( $query->have_posts() ): while( $query->have_posts() ): $query->the_post();
 					do_action('presscore_before_post');
 
+						// Post visibility on the first page.
+						$visibility = 'visible';
+						if ( $data_post_limit >= 0 && $query->current_post >= $data_post_limit ) {
+							$visibility = 'hidden';
+						}
+						echo '<div ' . presscore_tpl_masonry_item_wrap_class( $visibility ) . presscore_tpl_masonry_item_wrap_data_attr() . '>';
+
 						presscore_populate_team_config();
-						printf( '<div class="%s">', implode( ' ', get_post_class( 'team-container' ) ) );
+						printf( '<div class="%s">', implode( ' ', get_post_class( 'team-container visible post' ) ) );
 
 							presscore_get_template_part( 'mod_team', 'team-post-media' );
 
@@ -286,7 +282,7 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 								}
 
 							echo '</div>';
-						//echo '</div>';
+						echo '</div>';
 					echo '</div>';
 					
 					do_action('presscore_after_post');
@@ -379,11 +375,21 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 			}else{
 				$class[] = 'dt-icon-bg-off';
 			};
+			if($this->atts['soc_icon_border'] === 'y'){
+				$class[] = 'dt-icon-border-on';
+			}else{
+				$class[] = 'dt-icon-border-off';
+			};
 
 			if($this->atts['soc_icon_bg_hover'] === 'y'){
 				$class[] = 'dt-icon-hover-bg-on';
 			}else{
 				$class[] = 'dt-icon-hover-bg-off';
+			};
+			if($this->atts['soc_icon_border_hover'] === 'y'){
+				$class[] = 'dt-icon-border-hover-on';
+			}else{
+				$class[] = 'dt-icon-border-hover-off';
 			};
 			if($this->atts['show_icons_under'] === 'under_position'){
 				$class[] = 'move-icons-under-position';
@@ -479,11 +485,6 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 				$excerpt = apply_filters( 'the_excerpt', $excerpt );
 			}
 
-			 // Add masonry wrap actions if they was removed in content.
-			 if ( has_action( 'presscore_before_post', 'presscore_before_post_masonry' ) === false ) {
-				 presscore_page_masonry_controller();
-			 }
-
 			return $excerpt;
 		 }
 		/**
@@ -535,9 +536,8 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
+
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'dt-team-shortcode.' . $this->get_unique_class(), '~"%s"' );
 			$less_vars->add_pixel_or_percent_number( 'post-content-width', $this->get_att( 'bo_content_width' ) );
 			$less_vars->add_pixel_number( 'post-content-top-overlap', $this->get_att( 'bo_content_overlap' ) );
@@ -654,10 +654,76 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 			return $this->vc_inline_dummy( array(
 				'class'  => 'dt_team_masonry',
 				'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_team_masonry_editor_ico.gif', 98, 104 ),
-				'title'  => _x( 'Team Masonry & Grid', 'vc inline dummy', 'the7mk2' ),
+				'title'  => _x( 'Team Masonry & Grid', 'vc inline dummy', 'dt-the7-core' ),
 
 				'style' => array( 'height' => 'auto' )
 			) );
+		}
+
+		/**
+		 * Return posts query.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @return WP_Query
+		 */
+		protected function get_loop_query() {
+			$query = apply_filters( 'the7_shortcode_query', null, $this->sc_name, $this->atts );
+			if ( is_a( $query, 'WP_Query' ) ) {
+				return $query;
+			}
+
+			add_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			add_filter( 'found_posts', array( $this, 'fix_pagination' ), 1, 2 );
+
+			// Loop query.
+			$post_type = $this->get_att( 'post_type' );
+			if ( 'posts' === $post_type ) {
+				$query = $this->get_posts_by_post_type( 'dt_team', $this->get_att( 'posts' ) );
+			}else {
+				$category_terms = presscore_sanitize_explode_string( $this->get_att( 'category' ) );
+				$category_field = ( is_numeric( $category_terms[0] ) ? 'term_id' : 'slug' );
+
+				$query = $this->get_posts_by_taxonomy( 'dt_team', 'dt_team_category', $category_terms, $category_field );
+			}
+
+			remove_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			remove_filter( 'found_posts', array( $this, 'fix_pagination' ), 1 );
+
+			return $query;
+		}
+
+		/**
+		 * Add offset to the posts query.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @param WP_Query $query
+		 */
+		public function add_offset( &$query ) {
+			$offset  = (int) $this->atts['posts_offset'];
+			$ppp     = (int) $query->query_vars['posts_per_page'];
+			$current = (int) $query->query_vars['paged'];
+
+			if ( $query->is_paged ) {
+				$page_offset = $offset + ( $ppp * ( $current - 1 ) );
+				$query->set( 'offset', $page_offset );
+			} else {
+				$query->set( 'offset', $offset );
+			}
+		}
+
+		/**
+		 * Fix pagination accordingly with posts offset.
+		 *
+		 * @since 1.16.0
+		 *
+		 * @param int $found_posts
+		 *
+		 * @return int
+		 */
+		public function fix_pagination( $found_posts ) {
+			return $found_posts - (int) $this->atts['posts_offset'];
 		}
 
 		protected function get_posts_by_post_type( $post_type, $post_ids = array() ) {
@@ -767,13 +833,14 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 		}
 
 		protected function get_posts_per_page( $pagination_mode ) {
-			$posts_per_page = - 1;
+			$max_posts_per_page = 99999;
 			switch ( $pagination_mode ) {
 				case 'disabled':
 					$posts_per_page = $this->get_att( 'dis_posts_total' );
 					break;
 				case 'standard':
 					$posts_per_page = $this->get_att( 'st_posts_per_page' );
+					$posts_per_page = $posts_per_page ? $posts_per_page : get_option( 'posts_per_page' );
 					break;
 				case 'js_pagination':
 					$posts_per_page = $this->get_att( 'jsp_posts_total' );
@@ -784,6 +851,13 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 				case 'js_lazy_loading':
 					$posts_per_page = $this->get_att( 'jsl_posts_total' );
 					break;
+				default:
+					return $max_posts_per_page;
+			}
+
+			$posts_per_page = (int) $posts_per_page;
+			if ( $posts_per_page === -1 ) {
+				return $max_posts_per_page;
 			}
 
 			return $posts_per_page;
@@ -843,12 +917,6 @@ if ( ! class_exists( 'DT_Shortcode_Team_Masonry', false ) ) :
 		}
 
 		protected function get_posts_filter_terms( $query ) {
-			if ( 'standard' !== $this->get_att( 'loading_mode' ) ) {
-				$post_ids = wp_list_pluck( $query->posts, 'ID' );
-
-				return wp_get_object_terms( $post_ids, 'dt_team_category', array( 'fields' => 'all_with_object_id' ) );
-			}
-
 			$post_type = $this->get_att( 'post_type' );
 			$data = $this->get_att( $post_type );
 

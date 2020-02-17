@@ -24,7 +24,7 @@ class Presscore_Mod_Albums_Public {
 	}
 
 	public function register_shortcodes() {
-		foreach ( array( 'albums', 'albums-jgrid', 'albums-slider', 'photos-masonry', 'photos-jgrid', 'photos-slider', 'gallery-masonry', 'photos-carousel' ) as $shortcode_name ) {
+		foreach ( array( 'albums', 'albums-jgrid', 'albums-slider', 'photos-masonry', 'photos-jgrid', 'photos-slider', 'gallery-masonry', 'photos-carousel', 'albums-masonry', 'albums-carousel' ) as $shortcode_name ) {
 			include_once plugin_dir_path( __FILE__ ) . "shortcodes/{$shortcode_name}/{$shortcode_name}.php";
 		}
 	}
@@ -103,6 +103,14 @@ class Presscore_Mod_Albums_Public {
 		return $page_id;
 	}
 
+	public function the7_archive_display_full_content_filter( $display_full_content ) {
+		if ( is_tax( 'dt_gallery_category' ) || is_post_type_archive( 'dt_gallery' ) ) {
+			$display_full_content = of_get_option( 'template_page_id_gallery_category_full_content' );
+		}
+
+		return $display_full_content;
+	}
+
 	public function post_meta_wrap_class_filter( $class ) {
 		if ( 'dt_gallery' == get_post_type() ) {
 			$class[] = 'portfolio-categories';
@@ -111,6 +119,10 @@ class Presscore_Mod_Albums_Public {
 	}
 
 	public function filter_page_title( $page_title ) {
+		if ( of_get_option( 'show_static_part_of_archive_title' ) === '0' ) {
+			return $page_title;
+		}
+
 		if ( is_tax( 'dt_gallery_category' ) ) {
 			$page_title = sprintf( __( 'Albums Archives: %s', 'dt-the7-core' ), '<span>' . single_term_title( '', false ) . '</span>' );
 		} elseif ( is_post_type_archive( 'dt_gallery' ) ) {
@@ -127,15 +139,7 @@ class Presscore_Mod_Albums_Public {
 			$classes[] = 'photo-scroller-album';
 		}
 
-		// miniatures style
-		switch ( presscore_config()->get( 'post.preview.mini_images.style' ) ) {
-			case 'style_1':
-				$classes[] = 'album-minuatures-style-1';
-				break;
-			case 'style_2':
-				$classes[] = 'album-minuatures-style-2';
-				break;
-		}
+
 
 		return $classes;
 	}
@@ -150,5 +154,21 @@ class Presscore_Mod_Albums_Public {
 	public function filter_add_to_author_archive( $new_post_types ) {
 		$new_post_types[] = 'dt_gallery';
 		return $new_post_types;
+	}
+
+	/**
+	 * Register dynamic stylesheets.
+	 *
+	 * @param array $dynamic_stylesheets
+	 *
+	 * @return array
+	 */
+	public function register_dynamic_stylesheet( $dynamic_stylesheets ) {
+		$dynamic_stylesheets['the7-elements-albums-portfolio'] = array(
+			'path' => The7pt()->plugin_path() . 'assets/css/legacy.less',
+			'src' => 'the7-elements-albums-portfolio.less',
+		);
+
+		return $dynamic_stylesheets;
 	}
 }

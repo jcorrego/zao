@@ -39,6 +39,7 @@ if ( ! class_exists( 'Presscore_Mod_Albums', false ) ) {
 
 		private function setup_services() {
 			presscore_template_manager()->add_path( 'mod_albums', array( 'mods/albums/public/templates', 'inc/mods/albums/public/templates' ) );
+			presscore_template_manager()->add_path( 'mod_albums_shortcodes', array( 'mods/albums/public/shortcodes', 'inc/mods/albums/public/shortcodes' ) );
 		}
 
 		private function define_admin_hooks() {
@@ -89,6 +90,7 @@ if ( ! class_exists( 'Presscore_Mod_Albums', false ) ) {
 			 */
 			add_filter( 'presscore_config_post_id_filter', array( $mod_public, 'archive_page_id' ), 15 );
 			add_filter( 'the7_archive_page_template_id', array( $mod_public, 'archive_page_id' ) );
+			add_filter( 'the7_archive_display_full_content', array( $mod_public, 'the7_archive_display_full_content_filter' ) );
 			add_filter( 'presscore_archive_post_content-dt_gallery', array( $mod_public, 'archive_post_content' ) );
 			add_filter( 'presscore_posted_on_wrap_class', array( $mod_public, 'post_meta_wrap_class_filter' ) );
 			add_filter( 'presscore_get_page_title', array( $mod_public, 'filter_page_title' ) );
@@ -103,6 +105,9 @@ if ( ! class_exists( 'Presscore_Mod_Albums', false ) ) {
 
 			// add single post photoscroller slider
 			add_action( 'presscore_before_main_container', 'presscore_mod_albums_single_post_photoscroller', 10 );
+
+			// Register dynamic stylesheets.
+			add_filter( 'presscore_get_dynamic_stylesheets_list', array( $mod_public, 'register_dynamic_stylesheet' ) );
 		}
 	}
 

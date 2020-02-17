@@ -3,6 +3,7 @@
 global $WOOF;
 $_REQUEST['additional_taxes'] = $additional_taxes;
 $_REQUEST['hide_terms_count_txt'] = 0;
+//***
 
 //***
 
@@ -78,10 +79,7 @@ if (!function_exists('woof_draw_checkbox_childs'))
                         }
                     }
 
-                    if ($_REQUEST['hide_terms_count_txt'])
-                    {
-                        $count_string = "";
-                    }
+              
 
                     //excluding hidden terms
                     if (in_array($term['term_id'], $hidden_terms))
@@ -176,11 +174,7 @@ if (!function_exists('woof_draw_checkbox_childs'))
                 }
             }
 
-            if ($_REQUEST['hide_terms_count_txt'])
-            {
-                $count_string = "";
-            }
-
+     
             //excluding hidden terms
             if (in_array($term['term_id'], $hidden_terms))
             {

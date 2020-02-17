@@ -21,4 +21,21 @@ class Presscore_Mod_Logos_Public {
 	public function init_widgets() {
 		register_widget( 'Presscore_Inc_Widgets_Logos' );
 	}
+
+	/**
+	 * Register dynamic stylesheets.
+	 *
+	 * @param array $dynamic_stylesheets
+	 *
+	 * @return array
+	 */
+	public function register_dynamic_stylesheet( $dynamic_stylesheets ) {
+		$dynamic_stylesheets['the7-elements-benefits-logo'] = array(
+			'path'         => The7pt()->plugin_path() . 'assets/css/legacy/benefits.less',
+			'src'          => 'the7-elements-benefits-logo.less',
+			'auto_enqueue' => false,
+		);
+
+		return $dynamic_stylesheets;
+	}
 }

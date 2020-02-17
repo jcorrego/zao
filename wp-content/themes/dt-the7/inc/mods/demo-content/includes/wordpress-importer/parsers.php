@@ -349,6 +349,7 @@ class WXR_Parser_XML {
 			case 'dc:creator': $this->in_tag = 'post_author'; break;
 			case 'content:encoded': $this->in_tag = 'post_content'; break;
 			case 'excerpt:encoded': $this->in_tag = 'post_excerpt'; break;
+			case 'link': if ( $this->in_post ) $this->in_tag = 'link'; break;
 
 			case 'wp:term_slug': $this->in_tag = 'slug'; break;
 			case 'wp:meta_key': $this->in_sub_tag = 'key'; break;
@@ -592,6 +593,7 @@ class WXR_Parser_Regex {
 		$is_sticky      = $this->get_tag( $post, 'wp:is_sticky' );
 		$guid           = $this->get_tag( $post, 'guid' );
 		$post_author    = $this->get_tag( $post, 'dc:creator' );
+		$link           = $this->get_tag( $post, 'link' );
 
 		$post_excerpt = $this->get_tag( $post, 'excerpt:encoded' );
 		$post_excerpt = preg_replace_callback( '|<(/?[A-Z]+)|', array( &$this, '_normalize_tag' ), $post_excerpt );
@@ -605,7 +607,7 @@ class WXR_Parser_Regex {
 
 		$postdata = compact( 'post_id', 'post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_excerpt',
 			'post_title', 'status', 'post_name', 'comment_status', 'ping_status', 'guid', 'post_parent',
-			'menu_order', 'post_type', 'post_password', 'is_sticky'
+			'menu_order', 'post_type', 'post_password', 'is_sticky', 'link'
 		);
 
 		$attachment_url = $this->get_tag( $post, 'wp:attachment_url' );

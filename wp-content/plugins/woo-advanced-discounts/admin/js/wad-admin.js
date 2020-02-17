@@ -2,16 +2,12 @@
     'use strict';
 
     $(document).ready(function () {
-        if (typeof lang_wordpress != "undefined" || typeof formatted_date != "undefined")
+        if (typeof lang_wordpress != "undefined")
             $.datetimepicker.setLocale(lang_wordpress);
         $(".o-date").each(function ()
         {
             var element = $(this);
             element.datetimepicker({
-                 format: formatted_date,
-                // date: element.val(),
-                // timepicker: true,
-                // scrollInput:false,
             });
         });
 
@@ -188,7 +184,100 @@
             }
         });
 
+
+        
     });
+
+           /*
+         * 
+         * Newsletter
+         */
+        $(document).on("click", ".wad-dismiss-newsletters", function () {
+            $.post(
+                    ajaxurl,
+                    {
+                        action: "wad_hide_notice",
+                    },
+                    function (data) {
+                        if(data === "ok"){
+                           $('#subscription-notice').hide(); 
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert(error);
+    }); 
+ });
+
+        $(document).on("click", ".wad-dismiss-notice", function () {
+            $.post(
+                    ajaxurl,
+                    {
+                        action: "wad_hide_notice",
+                    },
+                    function (data) {
+                        if(data === "ok"){
+                            $('.wad-review').hide(); 
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert(error);
+            }); 
+        });
+
+
+
+    
+
+        $(document).on("click", "#wad-subscribe", function () {
+            $("#wad-subscribe-loader").show();
+            $("#wad-subscribe").attr("disabled", true);
+            $("#wad-subscribe").addClass('disabled');
+            if (!$('#o_user_email').val()) {
+                alert('No email found. Please add an email address to subscribe.');
+                $("#wad-subscribe-loader").hide();
+                $("#wad-subscribe").attr("disabled", false);
+                $("#wad-subscribe").removeClass('disabled');
+            } else {
+                var email = $('#o_user_email').val();
+                $.post(
+                        ajaxurl,
+                        {
+                            action: "wad_subscribe",
+                            email: email
+                        },
+                        function (data) {
+                            if (data == "true") {
+                                $("#wad-subscribe-loader").hide();
+                                $('#subscription-notice').hide();
+                                $('#subscription-success-notice').show();
+                            } else {
+                                $("#wad-subscribe-loader").hide();
+                                $("#wad-subscribe").attr("disabled", false);
+                                $("#wad-subscribe").removeClass('disabled');
+                                alert(data);
+                            }
+                        })
+                        .fail(function (xhr, status, error) {
+                            $("#wad-subscribe-loader").hide();
+                            $("#wad-subscribe").attr("disabled", false);
+                            $("#wad-subscribe").removeClass('disabled');
+                            alert(error);
+                        });
+            }
+
+        });
+
+        $(document).on('click',"#submit-a-review",function(e){
+            $.post(ajaxurl,{
+                action : "wad_submit_a_review"
+            },function(data){
+                if (data === "ok"){
+                    $('div.wad-review').hide(); 
+                }
+            });  
+        });
+
+        
 
 })(jQuery);
 

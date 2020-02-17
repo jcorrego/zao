@@ -120,88 +120,103 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
 
             else{
 
-                $filtered_posts   = array();
-                $queried_post_ids = array();
+            	if( is_shop() || is_product_taxonomy() || ! apply_filters( 'yith_wcan_is_search', is_search() ) ){
+		            $filtered_posts   = array();
+		            $queried_post_ids = array();
 
-                $problematic_theme = array(
-                    'basel'
-                );
+		            $problematic_theme = array(
+			            'basel',
+			            'ux-shop',
+			            'aardvark'
+		            );
 
-                $is_qTranslateX_and_yit_core_1_0_0 = class_exists( 'QTX_Translator' ) && defined('YIT_CORE_VERSION') && '1.0.0' == YIT_CORE_VERSION;
-                $is_problematic_theme = in_array( wp_get_theme()->get_template(), $problematic_theme );
+		            $wp_theme       = wp_get_theme();
+		            $template_name  = $wp_theme->get_template();
 
-                if( $is_qTranslateX_and_yit_core_1_0_0 || $is_problematic_theme || class_exists( 'SiteOrigin_Panels' ) ){
-                    add_filter( 'yith_wcan_skip_layered_nav_query', '__return_true' );
-                }
+		            /**
+		             * Support for Flatsome Theme lower then 3.6.0
+		             */
+		            if( 'flatsome' == $template_name && version_compare( '3.6.0', $wp_theme->Version, '<' ) ){
+			            $problematic_theme[] = 'flatsome';
+		            }
 
-                $query_filtered_posts = $this->layered_nav_query();
+		            $is_qTranslateX_and_yit_core_1_0_0 = class_exists( 'QTX_Translator' ) && defined('YIT_CORE_VERSION') && '1.0.0' == YIT_CORE_VERSION;
+		            $is_problematic_theme = in_array( $template_name, $problematic_theme );
 
-                foreach ( $posts as $post ) {
+		            if( $is_qTranslateX_and_yit_core_1_0_0 || $is_problematic_theme || class_exists( 'SiteOrigin_Panels' ) ){
+			            add_filter( 'yith_wcan_skip_layered_nav_query', '__return_true' );
+		            }
 
-                    if ( in_array( $post->ID, $query_filtered_posts ) ) {
-                        $filtered_posts[]   = $post;
-                        $queried_post_ids[] = $post->ID;
-                    }
-                }
+		            $query_filtered_posts = $this->layered_nav_query();
 
-                $query->posts       = $filtered_posts;
-                $query->post_count  = count( $filtered_posts );
+		            foreach ( $posts as $post ) {
 
-                // Get main query
-                $current_wp_query = $this->select_query_object( $query );
+			            if ( in_array( $post->ID, $query_filtered_posts ) ) {
+				            $filtered_posts[]   = $post;
+				            $queried_post_ids[] = $post->ID;
+			            }
+		            }
 
-                if( is_array( $current_wp_query ) ){
-                    // Get WP Query for current page (without 'paged')
-                    unset( $current_wp_query['paged'] );
-                }
+		            $query->posts       = $filtered_posts;
+		            $query->post_count  = count( $filtered_posts );
 
-                else {
-                    $current_wp_query = array();
-                }
+		            // Get main query
+		            $current_wp_query = $this->select_query_object( $query );
 
-                // Ensure filters are set
-                $unfiltered_args = array_merge(
-                    $current_wp_query,
-                    array(
-                        'post_type'              => 'product',
-                        'numberposts'            => - 1,
-                        'post_status'            => 'publish',
-                        'meta_query'             => is_object( $current_wp_query ) ? $current_wp_query->meta_query : array(),
-                        'fields'                 => 'ids',
-                        'no_found_rows'          => true,
-                        'update_post_meta_cache' => false,
-                        'update_post_term_cache' => false,
-                        'pagename'               => '',
-                        'wc_query'               => 'get_products_in_view',
-                        'suppress_filters'       => true
-                    )
-                );
+		            if( is_array( $current_wp_query ) ){
+			            // Get WP Query for current page (without 'paged')
+			            unset( $current_wp_query['paged'] );
+		            }
 
-                $hide_out_of_stock_items = apply_filters( 'yith_wcan_hide_out_of_stock_items', 'yes' == get_option( 'woocommerce_hide_out_of_stock_items' ) ? true : false );
+		            else {
+			            $current_wp_query = array();
+		            }
 
-                if( $hide_out_of_stock_items ){
-                    $unfiltered_args['meta_query'][] = array(
-                        'key' => '_stock_status',
-                        'value' => 'instock',
-                        'compare' => 'AND'
-                    );
-                }
+		            // Ensure filters are set
+		            $unfiltered_args = array_merge(
+			            $current_wp_query,
+			            array(
+				            'post_type'              => 'product',
+				            'numberposts'            => - 1,
+				            'post_status'            => 'publish',
+				            'meta_query'             => is_object( $current_wp_query ) ? $current_wp_query->meta_query : array(),
+				            'fields'                 => 'ids',
+				            'no_found_rows'          => true,
+				            'update_post_meta_cache' => false,
+				            'update_post_term_cache' => false,
+				            'pagename'               => '',
+				            'wc_query'               => 'get_products_in_view', //Only for WC <= 2.6.x
+				            'suppress_filters'       => true,
+			            )
+		            );
 
-                $this->unfiltered_product_ids = apply_filters( 'yith_wcan_unfiltered_product_ids', get_posts( $unfiltered_args ), $query, $current_wp_query );
-                $this->filtered_product_ids   = $queried_post_ids;
+		            $hide_out_of_stock_items = apply_filters( 'yith_wcan_hide_out_of_stock_items', 'yes' == get_option( 'woocommerce_hide_out_of_stock_items' ) ? true : false );
 
-                // Also store filtered posts ids...
-                if ( sizeof( $queried_post_ids ) > 0 ) {
-                    $this->filtered_product_ids = array_intersect( $this->unfiltered_product_ids, $queried_post_ids );
-                } else {
-                    $this->filtered_product_ids = $this->unfiltered_product_ids;
-                }
+		            if( $hide_out_of_stock_items ){
+			            $unfiltered_args['meta_query'][] = array(
+				            'key' => '_stock_status',
+				            'value' => 'instock',
+				            'compare' => 'AND'
+			            );
+		            }
 
-                if ( sizeof( $this->layered_nav_post__in ) > 0 ) {
-                    $this->layered_nav_product_ids = array_intersect( $this->unfiltered_product_ids, $this->layered_nav_post__in );
-                } else {
-                    $this->layered_nav_product_ids = $this->unfiltered_product_ids;
-                }
+		            $unfiltered_args = apply_filters( 'yith_wcan_unfiltered_args', $unfiltered_args );
+		            $this->unfiltered_product_ids = apply_filters( 'yith_wcan_unfiltered_product_ids', get_posts( $unfiltered_args ), $query, $current_wp_query );
+		            $this->filtered_product_ids   = $queried_post_ids;
+
+		            // Also store filtered posts ids...
+		            if ( sizeof( $queried_post_ids ) > 0 ) {
+			            $this->filtered_product_ids = array_intersect( $this->unfiltered_product_ids, $queried_post_ids );
+		            } else {
+			            $this->filtered_product_ids = $this->unfiltered_product_ids;
+		            }
+
+		            if ( sizeof( $this->layered_nav_post__in ) > 0 ) {
+			            $this->layered_nav_product_ids = array_intersect( $this->unfiltered_product_ids, $this->layered_nav_post__in );
+		            } else {
+			            $this->layered_nav_product_ids = $this->unfiltered_product_ids;
+		            }
+            	}
             }
             return $posts;
         }
@@ -220,7 +235,9 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
                 wp_enqueue_style( 'yith-wcan-frontend', YITH_WCAN_URL . 'assets/css/frontend.css', false, $this->version );
                 wp_enqueue_script( 'yith-wcan-script', YITH_WCAN_URL . 'assets/js/yith-wcan-frontend' . $suffix . '.js', array( 'jquery' ), $this->version, true );
 
-                $custom_style = yith_wcan_get_option( 'yith_wcan_custom_style', '' );
+	            $custom_style     = yith_wcan_get_option( 'yith_wcan_custom_style', '' );
+	            $current_theme    = function_exists( 'wp_get_theme' ) ? wp_get_theme() : null;
+	            $current_template = $current_theme instanceof WP_Theme ? $current_theme->get_template() : '';
 
                 ! empty( $custom_style ) && wp_add_inline_style( 'yith-wcan-frontend', sanitize_text_field( $custom_style ) );
 
@@ -246,6 +263,10 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
                         'flatsome'              => array(
                             'is_enabled'         => function_exists( 'flatsome_option' ),
                             'lazy_load_enabled'  => get_theme_mod( 'lazy_load_images' )
+                        ),
+		                /* === YooThemes Theme Support === */
+                        'yootheme' => array(
+	                        'is_enabled' => 'yootheme' === $current_template
                         ),
                     )
                 );
@@ -306,7 +327,7 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
                                         'terms' 	=> $value,
                                         'field' 	=> YITH_WCAN()->filter_term_field
                                     )
-                                )
+                                ),
                             );
 
                             $args = yit_product_visibility_meta( $args );
@@ -373,16 +394,29 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
                     'fields'           => 'ids',
                     'no_found_rows'    => true,
                     'suppress_filters' => true,
-                    'tax_query'        => array()
+                    'tax_query'        => array(),
+                    'meta_query' => array()
                 );
 
                 if( $is_product_taxonomy ){
                     $args['tax_query'][] = $is_product_taxonomy;
                 }
 
+                if( isset( $_GET['min_price'] ) && isset( $_GET['max_price'] ) ){
+                	$min_price = sanitize_text_field( $_GET['min_price'] );
+                	$max_price = sanitize_text_field( $_GET['max_price'] );
+                	$args['meta_query'][] =  array(
+		                'key' => '_price',
+		                'value' => array($min_price, $max_price),
+		                'compare' => 'BETWEEN',
+		                'type' => 'NUMERIC'
+	                );
+                }
+
                 $args = yit_product_visibility_meta( $args );
 
-                $queried_object = is_object( get_queried_object() ) ? get_queried_object() : false;
+                global $wp_query;
+                $queried_object = function_exists( 'get_queried_object' ) && is_callable( array( $wp_query, 'get_queried_object' ) ) ? get_queried_object() : false;
 
                 $taxonomy   = $queried_object && property_exists( $queried_object, 'taxonomy' ) ? $queried_object->taxonomy : false;
                 $slug       = $queried_object && property_exists( $queried_object, 'slug' ) ? $queried_object->slug : false;

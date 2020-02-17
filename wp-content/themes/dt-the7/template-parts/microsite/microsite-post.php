@@ -19,7 +19,7 @@ if ( presscore_config()->get_bool( 'post.fancy_date.enabled' ) ) {
 			presscore_get_template_part( 'theme', 'single-post/post-featured-image' );
 			do_action( 'presscore_before_loop' );
 			the_content();
-			presscore_display_share_buttons_for_post( 'post' );
+			the7_display_post_share_buttons( 'post' );
 			comments_template( '', true );
 		}
 	} else {

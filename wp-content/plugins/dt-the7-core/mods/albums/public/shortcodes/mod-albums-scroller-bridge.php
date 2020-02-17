@@ -8,8 +8,8 @@ include dirname( __FILE__ ) . '/mod-albums-bridge-common-parts.php';
 return array(
 	"weight" => -1,
 	"base" => 'dt_albums_scroller',
-	"name" => __( "Albums Scroller", 'dt-the7-core' ),
-	"category" => __( 'by Dream-Theme', 'dt-the7-core' ),
+	"name" => __( "Albums Scroller (old)", 'dt-the7-core' ),
+	"category" => __( 'The7 Old', 'dt-the7-core' ),
 	"icon" => "dt_vc_ico_albums",
 	"class" => "dt_vc_sc_albums",
 	"params" => array_merge(

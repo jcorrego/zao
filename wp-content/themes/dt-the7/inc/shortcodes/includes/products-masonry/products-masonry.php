@@ -1,11 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'DT_Shortcode_ProductsMasonry', false ) ):
 
@@ -166,7 +161,6 @@ if ( ! class_exists( 'DT_Shortcode_ProductsMasonry', false ) ):
 
 			/**
 			 * Products posts have a custom lazy loading classes.
-			 * @see DT_Products_Shortcode_HTML::get_post_image
 			 */
 			presscore_remove_lazy_load_attrs();
 
@@ -454,9 +448,7 @@ if ( ! class_exists( 'DT_Shortcode_ProductsMasonry', false ) ):
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'products-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
@@ -636,7 +628,7 @@ if ( ! class_exists( 'DT_Shortcode_ProductsMasonry', false ) ):
 			}
 			//For standard pagination mode.
 			if ( 'standard' == $pagination_mode ) {
-				$query_args['paged'] = dt_get_paged_var();
+				$query_args['paged'] = the7_get_paged_var();
 
 				// Posts filter part.
 				$config = presscore_config();
@@ -669,12 +661,6 @@ if ( ! class_exists( 'DT_Shortcode_ProductsMasonry', false ) ):
 		 * @return array|int|WP_Error
 		 */
 		protected function get_posts_filter_terms( $query ) {
-			if ( 'standard' !== $this->get_att( 'loading_mode' ) ) {
-				$post_ids = wp_list_pluck( $query->posts, 'ID' );
-
-				return wp_get_object_terms( $post_ids, 'product_cat', array( 'fields' => 'all_with_object_id' ) );
-			}
-
 			$show_products = $this->get_att( 'show_products' );
 
 			if ( 'sale_products' === $show_products ) {

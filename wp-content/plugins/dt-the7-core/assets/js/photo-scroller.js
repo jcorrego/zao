@@ -1434,11 +1434,17 @@ jQuery(document).ready(function($){
 
                     var $windowH = $window.height(),
                         $adminBarH = $("#wpadminbar").height();
-                    if ($(".mixed-header").length > 0){
+                    if ($(".mixed-header").length > 0 && !$elParent.hasClass('full-screen')){
                         var $headerH = $(".mixed-header").height();
-                    }else{                      
+                    }else if(!$elParent.hasClass('full-screen')){                      
                         var $headerH = $(".masthead").height();
+                    }else{
+                    	 var $headerH = 0;
                     }
+                    if($elParent.hasClass('full-screen')){
+                    	var $adminBarH = 0;
+                    }
+
                     if ($body.hasClass("transparent") || $slider.parents(".photo-scroller").hasClass("full-screen")) {
 
                         if(window.innerWidth < dtLocal.themeSettings.mobileHeader.secondSwitchPoint) {
@@ -1678,12 +1684,17 @@ jQuery(document).ready(function($){
         if(!dtGlobals.isWindowsPhone){
             $(".full-screen-btn").each(function(){
                 var $this = $(this),
-                    $thisParent = $this.parents(".photo-scroller");
+                    $thisParent = $this.parents(".photo-scroller"),
+                    $frame = $thisParent.find(".ts-wrap");
                 document.addEventListener("fullscreenchange", function () {
                     if(!document.fullscreen){
                         $this.removeClass("act");
                         $thisParent.removeClass("full-screen");
                         $("body, html").css("overflow", "");
+                        var scroller = $frame.data("thePhotoSlider");
+                        if(typeof scroller!= "undefined"){
+                            scroller.update();
+                        };
                     }
                 }, false);
                 document.addEventListener("mozfullscreenchange", function () {
@@ -1704,13 +1715,20 @@ jQuery(document).ready(function($){
                         };
                     }
                 }, false);
+                $window.on("debouncedresize", function() {
+		        	var scroller = $frame.data("thePhotoSlider");
+	                if(typeof scroller!= "undefined"){
+	                    scroller.update();
+	                };
+		         })
             })
-
+             this.fullScreenMode = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+   
             $(".full-screen-btn").on("click", function(e){
                 e.preventDefault();
-                var $this = $(this),
+                	var $this = $(this),
                     $thisParent = $this.parents(".photo-scroller"),
-                    $frame = $thisParent.find(".ts-wrap"),
+                    $frame = $thisParent.find(".ts-wrap"),										
                     $thumbs = $thisParent.find(".scroller-thumbnails").data("thePhotoSlider"),
                     $scroller = $frame.data("thePhotoSlider");
                 $this.parents(".photo-scroller").find("figure").animate({"opacity": 0},150);

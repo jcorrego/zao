@@ -51,26 +51,16 @@
 .pswp__button,
 .pswp__button--arrow--left:before,
 .pswp__button--arrow--right:before {
-  background: url(../images/default-skin.png) 0 0 no-repeat;
-  background-size: 264px 88px;
   width: 44px;
   height: 44px; }
 
 @media (-webkit-min-device-pixel-ratio: 1.1), (-webkit-min-device-pixel-ratio: 1.09375), (min-resolution: 105dpi), (min-resolution: 1.1dppx) {
   /* Serve SVG sprite if browser supports SVG and resolution is more than 105dpi */
-  .pswp--svg .pswp__button,
-  .pswp--svg .pswp__button--arrow--left:before,
-  .pswp--svg .pswp__button--arrow--right:before {
-    background-image: url(../images/default-skin.svg); }
+
   .pswp--svg .pswp__button--arrow--left,
   .pswp--svg .pswp__button--arrow--right {
     background: none; } }
 
-.pswp__button--close {
-  background-position: 0 -44px; }
-
-.pswp__button--share {
-  background-position: -44px -44px; }
 
 .pswp__button--fs {
   display: none; }
@@ -78,18 +68,12 @@
 .pswp--supports-fs .pswp__button--fs {
   display: block; }
 
-.pswp--fs .pswp__button--fs {
-  background-position: -44px 0; }
-
 .pswp__button--zoom {
-  display: none;
-  background-position: -88px 0; }
+  display: none; }
 
 .pswp--zoom-allowed .pswp__button--zoom {
   display: block; }
 
-.pswp--zoomed-in .pswp__button--zoom {
-  background-position: -132px 0; }
 
 /* no arrows on touch screens */
 .pswp--touch .pswp__button--arrow--left,
@@ -125,12 +109,11 @@
   position: absolute; }
 
 .pswp__button--arrow--left:before {
-  left: 6px;
-  background-position: -138px -44px; }
+  left: 6px; }
 
 .pswp__button--arrow--right:before {
-  right: 6px;
-  background-position: -94px -44px; }
+  left: 0;
+  right: 6px; }
 
 /*
 
@@ -225,8 +208,6 @@ a.pswp__share--facebook:before {
 a.pswp__share--facebook:hover {
   background: #3E5C9A;
   color: #FFF; }
-  a.pswp__share--facebook:hover:before {
-    border-bottom-color: #3E5C9A; }
 
 a.pswp__share--twitter:hover {
   background: #55ACEE;
@@ -313,9 +294,6 @@ a.pswp__share--download:hover {
 
 .pswp__preloader--active {
   opacity: 1; }
-  .pswp__preloader--active .pswp__preloader__icn {
-    /* We use .gif in browsers that don't support CSS animation */
-    background: url(../images/preloader.gif) 0 0 no-repeat; }
 
 .pswp--css_animation .pswp__preloader--active {
   opacity: 1; }

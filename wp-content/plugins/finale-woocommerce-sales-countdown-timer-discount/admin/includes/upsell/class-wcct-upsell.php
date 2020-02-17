@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WCCT_Upsell {
 
 	protected static $instance = null;
+	protected $name = '';
+	protected $year = '';
 	protected $notice_time = array();
 	protected $notice_displayed = false;
 	protected $plugin_path = WCCT_PLUGIN_FILE;
@@ -14,6 +16,12 @@ class WCCT_Upsell {
 	 * construct
 	 */
 	public function __construct() {
+		$this->name = 'Finale: WooCommerce Countdown Timer';
+		$this->year = date( 'y' );
+		if ( 1 === absint( date( 'n' ) ) ) {
+			$this->year = $this->year - 1;
+		}
+
 		$this->hooks();
 		$this->set_notice_timings();
 	}
@@ -45,7 +53,6 @@ class WCCT_Upsell {
 
 		add_action( 'admin_notices', array( $this, 'xl_upsells_notice_html_finale' ), 10 );
 		add_action( 'admin_notices', array( $this, 'xl_upsells_notice_html_nextmove' ), 10 );
-		//      add_action( 'admin_notices', array( $this, 'xl_upsells_notice_html_sales_trigger' ), 10 );
 
 		add_action( 'admin_notices', array( $this, 'xl_upsells_notice_js' ), 20 );
 	}
@@ -55,12 +62,6 @@ class WCCT_Upsell {
 	 * Always use 2 time period as 'no'
 	 */
 	public function set_notice_timings() {
-		$sales_trigger_notice_time = array(
-			'0' => 8 * DAY_IN_SECONDS, // +8 days
-			'1' => 4 * DAY_IN_SECONDS, // +4 days
-		);
-		//      $this->notice_time['sales_trigger'] = $sales_trigger_notice_time;
-
 		$finale_notice_time          = array(
 			'0' => 3 * DAY_IN_SECONDS, // +3 days
 			'1' => 3 * DAY_IN_SECONDS, // +3 days
@@ -73,29 +74,29 @@ class WCCT_Upsell {
 		);
 		$this->notice_time['nextmove'] = $nextmove_notice_time;
 
-		$halloween_sale_notice_time             = array(
+		$halloween_sale_notice_time                           = array(
 			'0' => 0.05 * DAY_IN_SECONDS, // +1.2 hrs
 			'1' => 1 * DAY_IN_SECONDS, // +1 day
 		);
-		$this->notice_time['halloween_sale_18'] = $halloween_sale_notice_time;
+		$this->notice_time[ 'halloween_sale_' . $this->year ] = $halloween_sale_notice_time;
 
-		$pre_bf_sale_notice_time                  = array(
+		$pre_bf_sale_notice_time                                = array(
 			'0' => 0.05 * DAY_IN_SECONDS, // +1.2 hrs
 			'1' => 1 * DAY_IN_SECONDS, // +1 day
 		);
-		$this->notice_time['pre_black_friday_18'] = $pre_bf_sale_notice_time;
+		$this->notice_time[ 'pre_black_friday_' . $this->year ] = $pre_bf_sale_notice_time;
 
-		$bfcm_sale_notice_time        = array(
+		$bfcm_sale_notice_time                      = array(
 			'0' => 0.05 * DAY_IN_SECONDS, // +1.2 hrs
 			'1' => 1 * DAY_IN_SECONDS, // +1 day
 		);
-		$this->notice_time['bfcm_18'] = $bfcm_sale_notice_time;
+		$this->notice_time[ 'bfcm_' . $this->year ] = $bfcm_sale_notice_time;
 
-		$christmas_sale_notice_time        = array(
+		$christmas_sale_notice_time                      = array(
 			'0' => 0.05 * DAY_IN_SECONDS, // +1.2 hrs
 			'1' => 1 * DAY_IN_SECONDS, // +1 day
 		);
-		$this->notice_time['christmas_18'] = $christmas_sale_notice_time;
+		$this->notice_time[ 'christmas_' . $this->year ] = $christmas_sale_notice_time;
 	}
 
 	/**
@@ -124,52 +125,25 @@ class WCCT_Upsell {
 	 */
 	public function xl_upsells_notice_html_nextmove() {
 		global $xl_upsells_notice_active;
+		$short_slug = 'nextmove';
 		if ( true === $xl_upsells_notice_active ) {
 			return;
 		}
-		if ( true === $this->plugin_already_installed( 'nextmove' ) ) {
+		if ( true === $this->plugin_already_installed( $short_slug ) ) {
 			return;
 		}
 		if ( true === $this->hide_notice() ) {
 			return;
 		}
-		if ( ! isset( $this->notice_time['nextmove'] ) ) {
+		if ( ! isset( $this->notice_time[ $short_slug ] ) ) {
 			return;
 		}
-		$this->main_plugin_activation( 'nextmove' );
-		if ( true === $this->notice_dismissed( 'nextmove' ) ) {
+		$this->main_plugin_activation( $short_slug );
+		if ( true === $this->notice_dismissed( $short_slug ) ) {
 			return;
 		}
 		$this->notice_displayed = true;
 		echo $this->nextmove_notice_html();
-		$xl_upsells_notice_active = true;
-	}
-
-	/**
-	 * Upsell notice html - Sales Trigger
-	 * @global boolean $xl_upsells_notice_active
-	 * @return type
-	 */
-	public function xl_upsells_notice_html_sales_trigger() {
-		global $xl_upsells_notice_active;
-		if ( true === $xl_upsells_notice_active ) {
-			return;
-		}
-		if ( true === $this->plugin_already_installed( 'sales_trigger' ) ) {
-			return;
-		}
-		if ( true === $this->hide_notice() ) {
-			return;
-		}
-		if ( ! isset( $this->notice_time['sales_trigger'] ) ) {
-			return;
-		}
-		$this->main_plugin_activation( 'sales_trigger' );
-		if ( true === $this->notice_dismissed( 'sales_trigger' ) ) {
-			return;
-		}
-		$this->notice_displayed = true;
-		echo $this->sales_trigger_notice_html();
 		$xl_upsells_notice_active = true;
 	}
 
@@ -180,21 +154,22 @@ class WCCT_Upsell {
 	 */
 	public function xl_upsells_notice_html_finale() {
 		global $xl_upsells_notice_active;
+		$short_slug = 'finale';
 		if ( true === $xl_upsells_notice_active ) {
 			return;
 		}
-		if ( true === $this->plugin_already_installed( 'finale' ) ) {
-			//return;
+		if ( true === $this->plugin_already_installed( $short_slug ) ) {
+			return;
 			/** As this is a lite plugin */
 		}
 		if ( true === $this->hide_notice() ) {
 			return;
 		}
-		if ( ! isset( $this->notice_time['finale'] ) ) {
+		if ( ! isset( $this->notice_time[ $short_slug ] ) ) {
 			return;
 		}
-		$this->main_plugin_activation( 'finale' );
-		if ( true === $this->notice_dismissed( 'finale' ) ) {
+		$this->main_plugin_activation( $short_slug );
+		if ( true === $this->notice_dismissed( $short_slug ) ) {
 			return;
 		}
 		$this->notice_displayed = true;
@@ -209,17 +184,18 @@ class WCCT_Upsell {
 	 */
 	public function xl_halloween_sale_notice() {
 		global $xl_upsells_notice_active;
+		$short_slug = 'halloween_sale_' . $this->year;
 		if ( true === $xl_upsells_notice_active ) {
 			return;
 		}
 		if ( true === $this->hide_notice() ) {
 			return;
 		}
-		if ( true === $this->valid_time_duration( 'halloween_sale_18' ) ) {
+		if ( true === $this->valid_time_duration( $short_slug ) ) {
 			return;
 		}
-		$this->main_plugin_activation( 'halloween_sale_18' );
-		if ( true === $this->notice_dismissed( 'halloween_sale_18' ) ) {
+		$this->main_plugin_activation( $short_slug );
+		if ( true === $this->notice_dismissed( $short_slug ) ) {
 			return;
 		}
 		$this->notice_displayed = true;
@@ -234,17 +210,18 @@ class WCCT_Upsell {
 	 */
 	public function xl_pre_black_friday_sale_notice() {
 		global $xl_upsells_notice_active;
+		$short_slug = 'pre_black_friday_' . $this->year;
 		if ( true === $xl_upsells_notice_active ) {
 			return;
 		}
 		if ( true === $this->hide_notice() ) {
 			return;
 		}
-		if ( true === $this->valid_time_duration( 'pre_black_friday_18' ) ) {
+		if ( true === $this->valid_time_duration( $short_slug ) ) {
 			return;
 		}
-		$this->main_plugin_activation( 'pre_black_friday_18' );
-		if ( true === $this->notice_dismissed( 'pre_black_friday_18' ) ) {
+		$this->main_plugin_activation( $short_slug );
+		if ( true === $this->notice_dismissed( $short_slug ) ) {
 			return;
 		}
 		$this->notice_displayed = true;
@@ -259,17 +236,18 @@ class WCCT_Upsell {
 	 */
 	public function xl_bfcm_sale_notice() {
 		global $xl_upsells_notice_active;
+		$short_slug = 'bfcm_' . $this->year;
 		if ( true === $xl_upsells_notice_active ) {
 			return;
 		}
 		if ( true === $this->hide_notice() ) {
 			return;
 		}
-		if ( true === $this->valid_time_duration( 'bfcm_18' ) ) {
+		if ( true === $this->valid_time_duration( $short_slug ) ) {
 			return;
 		}
-		$this->main_plugin_activation( 'bfcm_18' );
-		if ( true === $this->notice_dismissed( 'bfcm_18' ) ) {
+		$this->main_plugin_activation( $short_slug );
+		if ( true === $this->notice_dismissed( $short_slug ) ) {
 			return;
 		}
 		$this->notice_displayed = true;
@@ -290,11 +268,11 @@ class WCCT_Upsell {
 		if ( true === $this->hide_notice() ) {
 			return;
 		}
-		if ( true === $this->valid_time_duration( 'christmas_18' ) ) {
+		if ( true === $this->valid_time_duration( 'christmas_' . $this->year ) ) {
 			return;
 		}
-		$this->main_plugin_activation( 'christmas_18' );
-		if ( true === $this->notice_dismissed( 'christmas_18' ) ) {
+		$this->main_plugin_activation( 'christmas_' . $this->year );
+		if ( true === $this->notice_dismissed( 'christmas_' . $this->year ) ) {
 			return;
 		}
 		$this->notice_displayed = true;
@@ -317,11 +295,6 @@ class WCCT_Upsell {
 				return true;
 			}
 		}
-		if ( 'sales_trigger' == $plugin_short_name ) {
-			if ( defined( 'WCST_SLUG' ) ) {
-				return true;
-			}
-		}
 
 		return false;
 	}
@@ -332,7 +305,7 @@ class WCCT_Upsell {
 	 */
 	public function hide_notice() {
 		$screen     = get_current_screen();
-		$base_array = array( 'plugin-install', 'update-core', 'post', 'export', 'import', 'upload', 'media', 'edit' );
+		$base_array = array( 'plugin-install', 'update-core', 'post', 'export', 'import', 'upload', 'media', 'edit', 'edit-tags' );
 		$post_type  = 'wcct_countdown';
 		if ( is_object( $screen ) && in_array( $screen->base, $base_array ) ) {
 			if ( 'post' == $screen->base && $post_type == $screen->post_type ) {
@@ -403,29 +376,29 @@ class WCCT_Upsell {
 	 */
 	public function valid_time_duration( $plugin_short_name ) {
 		$current_date_obj = new DateTime( 'now', new DateTimeZone( 'America/New_York' ) );
-		if ( 'halloween_sale_18' == $plugin_short_name ) {
+		if ( 'halloween_sale_' . $this->year == $plugin_short_name ) {
 			if ( $current_date_obj->getTimestamp() > 1541131200 ) {
 				return true;
 			}
 			// 1541131200 nov 2 midnight
-		} elseif ( 'pre_black_friday_18' == $plugin_short_name ) {
-			if ( $current_date_obj->getTimestamp() < 1542600000 || $current_date_obj->getTimestamp() > 1542945600 ) {
+		} elseif ( 'pre_black_friday_' . $this->year == $plugin_short_name ) {
+			if ( $current_date_obj->getTimestamp() < 1574208000 || $current_date_obj->getTimestamp() > 1574985600 ) {
 				return true;
 			}
-			// 1542600000 nov 19 midnight
-			// 1542945600 nov 23 midnight
-		} elseif ( 'bfcm_18' == $plugin_short_name ) {
-			if ( $current_date_obj->getTimestamp() < 1542945600 || $current_date_obj->getTimestamp() > 1543550400 ) {
+			// 1574208000 nov 20 midnight
+			// 1574985600 nov 29 midnight
+		} elseif ( 'bfcm_' . $this->year == $plugin_short_name ) {
+			if ( $current_date_obj->getTimestamp() < 1574985600 || $current_date_obj->getTimestamp() > 1575676800 ) {
 				return true;
 			}
-			// 1542945600 nov 23 midnight
-			// 1543550400 nov 30 midnight
-		} elseif ( 'christmas_18' == $plugin_short_name ) {
-			if ( $current_date_obj->getTimestamp() < 1545278400 || $current_date_obj->getTimestamp() > 1546401600 ) {
+			// 1574985600 nov 29 midnight
+			// 1575676800 dec 7 midnight
+		} elseif ( 'christmas_' . $this->year == $plugin_short_name ) {
+			if ( $current_date_obj->getTimestamp() < 1576800000 || $current_date_obj->getTimestamp() > 1577923200 ) {
 				return true;
 			}
-			// 1545278400 dec 20 midnight
-			// 1546401600 jan 2 midnight
+			// 1576800000 dec 20 midnight
+			// 1577923200 jan 2 midnight
 		}
 
 		return false;
@@ -485,10 +458,10 @@ class WCCT_Upsell {
 			?>
             <script type="text/javascript">
                 (function ($) {
-                    var noticeWrap = $('#xl_notice_type_2');
+                    var noticeWrap = $('#xl_notice_type_3');
                     var pluginShortSlug = noticeWrap.attr("data-plugin");
                     var pluginSlug = noticeWrap.attr("data-plugin-slug");
-                    noticeWrap.on('click', '.xl-notice-dismiss', function (e) {
+                    $('body').on('click', '.xl-notice-dismiss', function (e) {
                         e.preventDefault();
                         var $this = $(this);
                         var xlDisplayedMode = $this.attr("data-mode");
@@ -524,85 +497,79 @@ class WCCT_Upsell {
 		}
 	}
 
+	protected function external_template( $notice_slug, $plugin_name, $plugin_url, $heading, $sub_heading, $image ) {
+		?>
+        <div class="updated" id="xl_notice_type_3" data-offer="yes" data-plugin="<?php echo $notice_slug ?>">
+            <div class="xl_upsell_area">
+                <div class="upsell_left_abs">
+                    <img width="70" src="<?php echo $image ?>" alt="<?php echo $plugin_name ?>"/>
+                </div>
+                <div class="upsell_main_abs">
+                    <h3><?php echo $heading ?></h3>
+                    <p><?php echo $sub_heading ?></p>
+                </div>
+                <div class="upsell_right_abs">
+                    <div id="plugin-filter" class="upsell_xl_plugin_btn">
+                        <a class="button-primary" href="<?php echo $plugin_url; ?>" data-name="<?php echo $plugin_name ?>" target="_blank">Explore this Amazing Offer</a>
+                        <span class="dashicons dashicons-calendar"></span>
+                        <a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be later</a>
+                        <span class="dashicons dashicons-hidden"></span>
+                        <a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
+                    </div>
+                </div>
+            </div>
+            <span class="dashicons dashicons-megaphone"></span>
+        </div>
+		<?php
+	}
+
+	protected function repo_template( $plugin_slug, $plugin_short_slug, $plugin_name, $plugin_url, $heading, $sub_heading, $image ) {
+		?>
+        <div class="updated" id="xl_notice_type_3" data-plugin="<?php echo $plugin_short_slug ?>" data-plugin-slug="<?php echo $plugin_slug; ?>">
+            <div class="xl_upsell_area">
+                <div class="upsell_left_abs">
+                    <img src="<?php echo $image; ?>" alt="<?php echo $plugin_name ?>">
+                </div>
+                <div class="upsell_main_abs">
+                    <h3><?php echo $heading ?></h3>
+                    <p><?php echo $sub_heading ?></p>
+                </div>
+                <div class="upsell_right_abs">
+                    <div id="plugin-filter" class="upsell_xl_plugin_btn plugin-card plugin-card-<?php echo $plugin_slug; ?>">
+                        <a class="button-primary install-now button" data-slug="<?php echo $plugin_slug; ?>" href="<?php echo $plugin_url; ?>" aria-label="Install <?php echo $plugin_name ?>" data-name="Install <?php echo $plugin_name ?>">Try
+                            for Free</a>
+                        <span class="dashicons dashicons-calendar"></span>
+                        <a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be later</a>
+                        <span class="dashicons dashicons-hidden"></span>
+                        <a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a>
+                    </div>
+                </div>
+            </div>
+            <span class="dashicons dashicons-megaphone"></span>
+        </div>
+		<?php
+	}
+
 	/**
 	 * NextMove upsell notice html
 	 * @return type
 	 */
 	protected function nextmove_notice_html() {
-		$plugin_slug = 'woo-thank-you-page-nextmove-lite';
-		$plugin_url  = wp_nonce_url( add_query_arg( array(
+		$plugin_slug       = 'woo-thank-you-page-nextmove-lite';
+		$plugin_short_slug = 'nextmove';
+		$plugin_name       = 'WooCommerce Thank You Page – NextMove Lite';
+		$plugin_url        = wp_nonce_url( add_query_arg( array(
 			'action' => 'install-plugin',
 			'plugin' => $plugin_slug,
 			'from'   => 'import',
 		), self_admin_url( 'update.php' ) ), 'install-plugin_' . $plugin_slug );
-		ob_start();
-		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="nextmove" data-plugin-slug="<?php echo $plugin_slug; ?>">
-            <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
-                <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/nextmove.png'; ?>" alt="NextMove Logo">
-                    </div>
-                    <div class="xl_h4">NextMove</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
-                </div>
-                <div class="upsell_right_abs">
-                    <div id="plugin-filter" class="upsell_xl_plugin_btn plugin-card plugin-card-<?php echo $plugin_slug; ?>">
-                        <a class="install-now button" data-slug="<?php echo $plugin_slug; ?>" href="<?php echo $plugin_url; ?>" aria-label="Install WooCommerce Thank You Page – NextMove Lite"
-                           data-name="Install WooCommerce Thank You Page – NextMove Lite">Try
-                            for Free</a>
-                        <p><a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be
-                                later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
-                    </div>
-                </div>
-                <div class="upsell_main_abs">
-                    <h3>Say good bye to templated & lousy Thank You pages. Hack your growth with NextMove.</h3>
-                    <p>Use NextMove to create profit-pulling Thank You pages with plug & play components and watch your repeats orders explode.</p>
-                </div>
-            </div>
-        </div>
-		<?php
-		return ob_get_clean();
-	}
+		$heading           = 'Say good bye to templated & lousy Thank You pages. Hack your growth with NextMove.';
+		$sub_heading       = 'Use NextMove to create profit-pulling Thank You pages with plug & play components and watch your repeats orders explode.';
+		$image             = plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/nextmove.png';
 
-	/**
-	 * Sales Trigger upsell notice html
-	 * @return type
-	 */
-	protected function sales_trigger_notice_html() {
-		$sales_trigger_link = add_query_arg( array(
-			'utm_source'   => 'finale-lite',
-			'utm_medium'   => 'notice',
-			'utm_campaign' => 'sales-trigger',
-			'utm_term'     => 'more-info',
-		), 'https://xlplugins.com/woocommerce-sales-triggers/' );
 		ob_start();
-		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="sales_trigger">
-            <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
-                <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/sales-trigger.png'; ?>" alt="Sales Trigger Logo">
-                    </div>
-                    <div class="xl_h4">Sales Triggers</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
-                </div>
-                <div class="upsell_right_abs">
-                    <div id="plugin-filter" class="upsell_xl_plugin_btn">
-                        <a class="button" href="<?php echo $sales_trigger_link; ?>" data-name="XL WooCommerce Sales Triggers" target="_blank">Get More Info</a>
-                        <p><a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be
-                                later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
-                    </div>
-                </div>
-                <div class="upsell_main_abs">
-                    <h3>Transform Weak WooCommerce Product Pages into Conversion Powerhouses.</h3>
-                    <p>Deploy 7 Psychological Triggers On WooCommerce Products Page And Watch Your Sales Grow.</p>
-                </div>
-            </div>
-        </div>
-		<?php
+		$this->repo_template( $plugin_slug, $plugin_short_slug, $plugin_name, $plugin_url, $heading, $sub_heading, $image );
+
 		return ob_get_clean();
 	}
 
@@ -619,15 +586,14 @@ class WCCT_Upsell {
 		), 'https://xlplugins.com/finale-woocommerce-sales-countdown-timer-discount-plugin/' );
 		ob_start();
 		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="finale">
+        <div class="updated" id="xl_notice_type_3" data-plugin="finale">
             <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
                 <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/finale.png'; ?>" alt="Finale Logo">
-                    </div>
-                    <div class="xl_h4">Finale</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
+                    <img src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/finale.png'; ?>" alt="Finale Logo">
+                </div>
+                <div class="upsell_main_abs">
+                    <h3>Set up profit-pulling promotions in your WooCommerce Store this season.</h3>
+                    <p>Finale helps store owners run seasonal offers, flash sales, deals of the day & festive offers to boost conversions.</p>
                 </div>
                 <div class="upsell_right_abs">
                     <div id="plugin-filter" class="upsell_xl_plugin_btn">
@@ -636,10 +602,6 @@ class WCCT_Upsell {
                                 later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
                     </div>
                 </div>
-                <div class="upsell_main_abs">
-                    <h3>Set up profit-pulling promotions in your WooCommerce Store this season.</h3>
-                    <p>Finale helps store owners run seasonal offers, flash sales, deals of the day & festive offers to boost conversions.</p>
-                </div>
             </div>
         </div>
 		<?php
@@ -647,42 +609,26 @@ class WCCT_Upsell {
 	}
 
 	/**
-	 * Haloween Sale notice html
+	 * Halloween Sale notice html
 	 * @return type
 	 */
 	protected function halloween_sale_notice_html() {
-		$halloween_finale_link = add_query_arg( array(
+		$plugin_name = $this->name;
+		$plugin_url  = add_query_arg( array(
 			'utm_source'   => 'finale-lite',
 			'utm_medium'   => 'notice',
-			'utm_campaign' => 'halloween',
+			'utm_campaign' => 'halloween-' . $this->year,
 			'utm_term'     => 'sale',
 		), 'https://xlplugins.com/finale-woocommerce-sales-countdown-timer-discount-plugin/' );
+		$heading     = "Upgrade to FINALE PRO and Save 20%! Use coupon 'XLHALLOWEEN'";
+		$sub_heading = "This <em>one-time</em> spooky deal ends on <em>November 2nd</em> 12 AM EST. 'Act Fast!'";
+		$image       = plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/halloween.jpg';
+
+		$notice_slug = 'halloween_sale_' . $this->year;
+
 		ob_start();
-		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="halloween_sale_18">
-            <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
-                <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img width="70" src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/halloween.jpg'; ?>" alt="Halloween Sale"/>
-                    </div>
-                    <div class="xl_h4">Halloween Sale</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
-                </div>
-                <div class="upsell_right_abs">
-                    <div id="plugin-filter" class="upsell_xl_plugin_btn">
-                        <a class="button" href="<?php echo $halloween_finale_link; ?>" data-name="XL WooCommerce Sales Triggers" target="_blank">Grab The Offer</a>
-                        <p><a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be
-                                later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
-                    </div>
-                </div>
-                <div class="upsell_main_abs">
-                    <h3>Upgrade to FINALE PRO and Save 20%! Use coupon 'XLHALLOWEENSALE18'</h3>
-                    <p>This <em>one-time</em> spooky deal ends on <em>November 2nd</em> 12 AM EST. 'Act Fast!'</p>
-                </div>
-            </div>
-        </div>
-		<?php
+		$this->external_template( $notice_slug, $plugin_name, $plugin_url, $heading, $sub_heading, $image );
+
 		return ob_get_clean();
 	}
 
@@ -691,38 +637,22 @@ class WCCT_Upsell {
 	 * @return type
 	 */
 	protected function pre_black_friday_notice_html() {
-		$pre_black_friday_finale_link = add_query_arg( array(
+		$plugin_name = $this->name;
+		$plugin_link = add_query_arg( array(
 			'utm_source'   => 'finale-lite',
 			'utm_medium'   => 'notice',
-			'utm_campaign' => 'pre-black-friday-18',
+			'utm_campaign' => 'pre-black-friday-' . $this->year,
 			'utm_term'     => 'sale',
 		), 'https://xlplugins.com/finale-woocommerce-sales-countdown-timer-discount-plugin/' );
+		$heading     = 'Prepare your store for Black Friday Sale. Upgrade to FINALE PRO and Save 20%!';
+		$sub_heading = "Use coupon 'XLPREBFCM'. Deal expires on <em>November 23th</em> 12 AM EST. 'Act Fast!'";
+		$image       = plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/black-friday.jpg';
+
+		$notice_slug = 'pre_black_friday_' . $this->year;
+
 		ob_start();
-		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="pre_black_friday_18">
-            <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
-                <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img width="70" src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/black-friday.jpg'; ?>" alt="Pre Black Friday Sale"/>
-                    </div>
-                    <div class="xl_h4">Pre Black Friday Sale</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
-                </div>
-                <div class="upsell_right_abs">
-                    <div id="plugin-filter" class="upsell_xl_plugin_btn">
-                        <a class="button" href="<?php echo $pre_black_friday_finale_link; ?>" data-name="Finale: WooCommerce Countdown Timer" target="_blank">Grab The Offer</a>
-                        <p><a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be
-                                later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
-                    </div>
-                </div>
-                <div class="upsell_main_abs">
-                    <h3>Prepare your store for Black Friday Sale. Upgrade to FINALE PRO and Save 20%!</h3>
-                    <p>Use coupon 'XLPREBF18'. Deal expires on <em>November 23th</em> 12 AM EST. 'Act Fast!'</p>
-                </div>
-            </div>
-        </div>
-		<?php
+		$this->external_template( $notice_slug, $plugin_name, $plugin_link, $heading, $sub_heading, $image );
+
 		return ob_get_clean();
 	}
 
@@ -731,38 +661,22 @@ class WCCT_Upsell {
 	 * @return type
 	 */
 	protected function bfcm_notice_html() {
-		$bfcm_finale_link = add_query_arg( array(
+		$plugin_name = $this->name;
+		$plugin_link = add_query_arg( array(
 			'utm_source'   => 'finale-lite',
 			'utm_medium'   => 'notice',
-			'utm_campaign' => 'bfcm-18',
+			'utm_campaign' => 'bfcm_' . $this->year,
 			'utm_term'     => 'sale',
 		), 'https://xlplugins.com/finale-woocommerce-sales-countdown-timer-discount-plugin/' );
+		$heading     = "Upgrade to FINALE PRO and Save 30%! Use coupon 'XLBFCM'";
+		$sub_heading = "Get a super high 30% off on our plugins. Act fast! Deal expires on <em>November 30th</em> 12 AM EST.";
+		$image       = plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/black-friday.jpg';
+
+		$notice_slug = 'bfcm_' . $this->year;
+
 		ob_start();
-		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="bfcm_18">
-            <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
-                <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img width="70" src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/black-friday.jpg'; ?>" alt="Black Friday Sale"/>
-                    </div>
-                    <div class="xl_h4">Black Friday Sale</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
-                </div>
-                <div class="upsell_right_abs">
-                    <div id="plugin-filter" class="upsell_xl_plugin_btn">
-                        <a class="button" href="<?php echo $bfcm_finale_link; ?>" data-name="Finale: WooCommerce Countdown Timer" target="_blank">Grab The Offer</a>
-                        <p><a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be
-                                later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
-                    </div>
-                </div>
-                <div class="upsell_main_abs">
-                    <h3>Upgrade to FINALE PRO and Save 30%! Use coupon 'XLBFCM18'</h3>
-                    <p>Get a super high 30% off on our plugins. Act fast! Deal expires on <em>November 30th</em> 12 AM EST.</p>
-                </div>
-            </div>
-        </div>
-		<?php
+		$this->external_template( $notice_slug, $plugin_name, $plugin_link, $heading, $sub_heading, $image );
+
 		return ob_get_clean();
 	}
 
@@ -771,38 +685,22 @@ class WCCT_Upsell {
 	 * @return type
 	 */
 	protected function christmas_notice_html() {
-		$christmas_finale_link = add_query_arg( array(
+		$plugin_name = $this->name;
+		$plugin_link = add_query_arg( array(
 			'utm_source'   => 'finale-lite',
 			'utm_medium'   => 'notice',
-			'utm_campaign' => 'christmas-18',
+			'utm_campaign' => 'christmas-' . $this->year,
 			'utm_term'     => 'sale',
 		), 'https://xlplugins.com/finale-woocommerce-sales-countdown-timer-discount-plugin/' );
+		$heading     = "Upgrade to FINALE PRO and Save 25%! Use coupon 'XLCHRISTMAS'";
+		$sub_heading = "Get a super high 25% off on our plugins. Act fast! Deal expires on <em>January 2nd</em> 12 AM EST.";
+		$image       = plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/christmas.jpg';
+
+		$notice_slug = 'christmas_' . $this->year;
+
 		ob_start();
-		?>
-        <div class="updated" id="xl_notice_type_2" data-plugin="christmas_18">
-            <div class="xl_upsell_area">
-                <div class="xl_skew_arow"></div>
-                <div class="upsell_left_abs">
-                    <div class="xl_plugin_logo">
-                        <img width="70" src="<?php echo plugin_dir_url( $this->plugin_path ) . 'admin/assets/img/christmas.jpg'; ?>" alt="Christmas Sale"/>
-                    </div>
-                    <div class="xl_h4">Christmas Sale</div>
-                    <div class="xl_cen_icon"><i class="xl-icon"></i></div>
-                </div>
-                <div class="upsell_right_abs">
-                    <div id="plugin-filter" class="upsell_xl_plugin_btn">
-                        <a class="button" href="<?php echo $christmas_finale_link; ?>" data-name="Finale: WooCommerce Countdown Timer" target="_blank">Grab The Offer</a>
-                        <p><a class="xl-notice-dismiss" data-mode="later" href="javascript:void(0)">May be
-                                later</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="xl-notice-dismiss" data-mode="dismiss" title="Dismiss forever" href="javascript:void(0)">No, thanks</a></p>
-                    </div>
-                </div>
-                <div class="upsell_main_abs">
-                    <h3>Upgrade to FINALE PRO and Save 25%! Use coupon 'XLCHRISTMAS18'</h3>
-                    <p>Get a super high 25% off on our plugins. Act fast! Deal expires on <em>January 2nd</em> 12 AM EST.</p>
-                </div>
-            </div>
-        </div>
-		<?php
+		$this->external_template( $notice_slug, $plugin_name, $plugin_link, $heading, $sub_heading, $image );
+
 		return ob_get_clean();
 	}
 
@@ -812,11 +710,11 @@ class WCCT_Upsell {
 	 *
 	 * @param type $key
 	 * @param type $value
-	 * @param type $expirtaion
+	 * @param type $expiration
 	 */
-	public function set_xl_transient( $key, $value, $expirtaion ) {
+	public function set_xl_transient( $key, $value, $expiration ) {
 		$array = array(
-			'time'  => time() + (int) $expirtaion,
+			'time'  => time() + (int) $expiration,
 			'value' => $value,
 		);
 		update_option( '_xl_transient_' . $key, $array, false );

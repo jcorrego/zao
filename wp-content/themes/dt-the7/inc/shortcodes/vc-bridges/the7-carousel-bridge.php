@@ -1,9 +1,6 @@
 <?php
 
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	'weight'                  => -1,
@@ -11,14 +8,11 @@ return array(
 	'base'                    => 'dt_carousel',
 	'icon'                    => 'dt_vc_ico_carousel',
 	'class'                   => 'dt_carousel',
-	'as_parent'               => array( 'except' => 'dt_carousel' ),
+	'as_parent'               => array( 'except' => 'dt_carousel, dt_slideshow, ult_tab_element, dt_team_carousel, dt_testimonials_carousel, dt_small_photos, dt_albums, dt_photos_masonry, dt_testimonials, dt_team, dt_albums_scroller, dt_portfolio_carousel, dt_portfolio_slide, dt_portfolio, dt_albums_carousel, dt_photos_carousel, dt_portfolio_slider, dt_products_carousel, dt_media_gallery_carousel, dt_before_after, dt_blog_scroller, dt_blog_posts, dt_blog_carousel, ult_range_slider, ultimate_carousel' ),
 	'content_element'         => true,
 	'controls'                => 'full',
 	'show_settings_on_create' => true,
 	'category'                => __( 'by Dream-Theme', 'the7mk2' ),
-	'admin_enqueue_css'       => array(
-		PRESSCORE_THEME_URI . '/fonts/icomoon-arrows-the7/style.css'
-	),
 	'params'                  => array(
 		array(
 			'heading'    => __( 'Columns & Responsiveness', 'the7mk2' ),
@@ -72,6 +66,13 @@ return array(
 			'param_name'       => 'item_space',
 			'type'             => 'dt_number',
 			'value'            => '30',
+			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
+		),
+		array(
+			'heading'          => __( 'Stage padding ', 'the7mk2' ),
+			'param_name'       => 'stage_padding',
+			'type'             => 'dt_number',
+			'value'            => '0',
 			'edit_field_class' => 'vc_col-xs-12 vc_column dt_row-6',
 		),
 		array(

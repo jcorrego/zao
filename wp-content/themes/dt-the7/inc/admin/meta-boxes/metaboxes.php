@@ -343,6 +343,9 @@ $DT_META_BOXES['dt_page_box-header_options'] = array(
 		),
 
 		array(
+			// container begin !!!
+			'before'		=> '<div class="the7-mb-flickering-field ' . "the7-mb-input-{$prefix}transparent_settings" . '">',
+
 			"type"    => "radio",
 			"id"      => "{$prefix}transparent_bg_color_scheme",
 			"name"    => _x( "Color scheme", "theme-options", 'the7mk2' ),
@@ -355,9 +358,6 @@ $DT_META_BOXES['dt_page_box-header_options'] = array(
 		),
 
 		array(
-			// container begin !!!
-			'before'		=> '<div class="the7-mb-flickering-field ' . "the7-mb-input-{$prefix}transparent_settings" . '">',
-
 			'name'    		=> _x(' Top bar color', 'backend metabox', 'the7mk2'),
 			'id'      		=> "{$prefix}transparent_top_bar_bg_color",
 			'type'    		=> 'color',
@@ -469,22 +469,36 @@ $prefix = '_dt_page_overrides_';
 
 $DT_META_BOXES['dt_page_box-page_vertical_margins'] = array(
 	'id'		=> 'dt_page_box-page_vertical_margins',
-	'title' 	=> _x('Page Margins', 'backend metabox', 'the7mk2'),
+	'title' 	=> _x('Page Paddings', 'backend metabox', 'the7mk2'),
 	'pages' 	=> $pages_with_basic_meta_boxes,
 	'context' 	=> 'side',
 	'priority' 	=> 'low',
 	'fields' 	=> array(
 		array(
-			'name'			=> _x('Top (in px)', 'backend metabox', 'the7mk2'),
-			'desc'			=> _x('Leave empty to use value from theme options.', 'backend metabox', 'the7mk2'),
+			'name'			=> _x('Top ("px" or "%")', 'backend metabox', 'the7mk2'),
+			'desc'			=> _x('Leave empty to use the value from the theme options.', 'backend metabox', 'the7mk2'),
 			'id'    		=> "{$prefix}top_margin",
 			'type'  		=> 'text',
 			'std'   		=> '',
 		),
 		array(
-			'name'			=> _x('Bottom (in px)', 'backend metabox', 'the7mk2'),
-			'desc'			=> _x('Leave empty to use value from theme options.', 'backend metabox', 'the7mk2'),
+			'name'			=> _x('Right ("px" or "%")', 'backend metabox', 'the7mk2'),
+			'desc'			=> _x('Leave empty to use the value from the theme options.', 'backend metabox', 'the7mk2'),
+			'id'    		=> "{$prefix}right_margin",
+			'type'  		=> 'text',
+			'std'   		=> '',
+		),
+		array(
+			'name'			=> _x('Bottom ("px" or "%")', 'backend metabox', 'the7mk2'),
+			'desc'			=> _x('Leave empty to use the value from the theme options.', 'backend metabox', 'the7mk2'),
 			'id'    		=> "{$prefix}bottom_margin",
+			'type'  		=> 'text',
+			'std'   		=> '',
+		),
+		array(
+			'name'			=> _x('Left ("px" or "%")', 'backend metabox', 'the7mk2'),
+			'desc'			=> _x('Leave empty to use the value from the theme options.', 'backend metabox', 'the7mk2'),
+			'id'    		=> "{$prefix}left_margin",
 			'type'  		=> 'text',
 			'std'   		=> '',
 		),
@@ -503,6 +517,11 @@ $DT_META_BOXES['dt_page_box-slideshow_options'] = array(
 	'pages' 	=> $pages_with_basic_meta_boxes,
 	'context' 	=> 'normal',
 	'priority' 	=> 'high',
+	'only_on' => array(
+		'meta_value' => array(
+			'_dt_header_title' => 'slideshow',
+		)
+	),
 	'fields' 	=> array(
 
 		// Slideshow mode
@@ -803,411 +822,7 @@ $DT_META_BOXES['dt_page_box-slideshow_options'] = array(
 	)
 );
 
-/***********************************************************/
-// Fancy title options
-/***********************************************************/
-
-$prefix = '_dt_fancy_header_';
-
-$DT_META_BOXES['dt_page_box-fancy_header_options'] = array(
-	'id'		=> 'dt_page_box-fancy_header_options',
-	'title' 	=> _x('Fancy Title Options', 'backend metabox', 'the7mk2'),
-	'pages' 	=> $pages_with_basic_meta_boxes,
-	'context' 	=> 'normal',
-	'priority' 	=> 'high',
-	'fields' 	=> array(
-
-		///////////////////////
-		// Title alignment //
-		///////////////////////
-
-		array(
-			'name'			=> _x('Layout', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}layout_heading",
-			'type'	 		=> 'heading',
-		),
-
-		array(
-			'name'    	=> _x('Fancy title layout', 'backend metabox', 'the7mk2'),
-			'id'      	=> "{$prefix}title_aligment",
-			'type'    	=> 'radio',
-			'std'		=> 'center',
-			'options'	=> array(
-				'left'		=> array( _x('Left title + right breadcrumbs', 'backend metabox', 'the7mk2'), array('l-r-page.gif', 75, 50) ),
-				'right'		=> array( _x('Right title + left breadcrumbs', 'backend metabox', 'the7mk2'), array('r-l-page.gif', 75, 50) ),
-				'all_left'	=> array( _x('Left title + left breadcrumbs', 'backend metabox', 'the7mk2'), array('l-l-page.gif', 75, 50) ),
-				'all_right'	=> array( _x('Right title + right breadcrumbs', 'backend metabox', 'the7mk2'), array('r-r-page.gif', 75, 50) ),
-				'center'	=> array( _x('Centred title + centred breadcrumbs', 'backend metabox', 'the7mk2'), array('centre-page.gif', 75, 50) )
-			)
-		),
-
-
-		// Height
-		array(
-			'name'    	=> _x('Minimum height (px)', 'backend metabox', 'the7mk2'),
-			'id'      	=> "{$prefix}height",
-			'type'    	=> 'text',
-			'std'		=> '300',
-			'top_divider'	=> true,
-		),
-
-		array(
-			'id'		=> "{$prefix}padding-top",
-			'name'       => _x( 'Top padding (px or %)', 'backend metabox', 'the7mk2' ),
-			'type'       => 'text',
-			'std'        => '0px',
-			'class'      => 'mini',
-			'sanitize'   => 'css_width',
-		),
-
-		array(
-			'id'		=> "{$prefix}padding-bottom",
-			'name'       => _x( 'Bottom padding (px or %)', 'backend metabox', 'the7mk2' ),
-			'type'       => 'text',
-			'std'        => '0px',
-			'class'      => 'mini',
-			'sanitize'   => 'css_width',
-		),
-
-		///////////////////
-		// Breadcrumbs //
-		///////////////////
-
-		array(
-			'name'			=> _x('Breadcrumbs', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}breadcrumbs_heading",
-			'type'	 		=> 'heading',
-			'top_divider'	=> true,
-		),
-
-		array(
-			'name'			=> _x('Breadcrumbs', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}breadcrumbs",
-			'type'	 		=> 'radio',
-			'std'			=> 'enabled',
-			'hide_fields'	=> array('disabled'	=> array( "{$prefix}breadcrumbs_settings" ) ),
-			'options'		=> array(
-				'enabled'	=> _x('Enabled', 'backend metabox', 'the7mk2'),
-				'disabled'	=> _x('Disabled', 'backend metabox', 'the7mk2'),
-			)
-		),
-
-		// Breadcrumbs text color
-		array(
-			// container begin !!!
-			'before'		=> '<div class="the7-mb-flickering-field ' . "the7-mb-input-{$prefix}breadcrumbs_settings" . '">',
-
-			'name'    		=> _x('Breadcrumbs text color', 'backend metabox', 'the7mk2'),
-			'id'      		=> "{$prefix}breadcrumbs_text_color",
-			'type'    		=> 'color',
-			'std'			=> '#ffffff'
-		),
-
-		// Breadcrumbs background color
-		array(
-			'name'			=> _x('Breadcrumbs background color', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}breadcrumbs_bg_color",
-			'type'	 		=> 'radio',
-			'std'			=> 'disabled',
-			'options'		=> array(
-				'disabled'	=> _x('Disabled', 'backend metabox', 'the7mk2'),
-				'black'		=> _x('Black', 'backend metabox', 'the7mk2'),
-				'white'		=> _x('White', 'backend metabox', 'the7mk2'),
-			),
-
-			// container end
-			'after'	=> '</div>'
-		),
-
-		//////////////////////
-		// Title settings //
-		//////////////////////
-
-		array(
-			'name'			=> _x('Title', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}title_heading",
-			'type'	 		=> 'heading',
-			'top_divider'	=> true,
-		),
-
-		// Title
-		array(
-			'name'			=> _x('Title', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}title_mode",
-			'type'	 		=> 'radio',
-			'std'			=> 'custom',
-			'hide_fields'	=> array('generic'	=> array( "{$prefix}title" ) ),
-			'options'		=> array(
-				'generic'	=> _x('Page title', 'backend metabox', 'the7mk2'),
-				'custom'	=> _x('Custom title', 'backend metabox', 'the7mk2'),
-			)
-		),
-
-		// Custom Title
-		array(
-			'name'			=> _x('Custom title', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}title",
-			'type'			=> 'text',
-			'std'			=> ''
-		),
-		array(
-			"name"      => _x( 'Font size', 'backend metabox', 'the7mk2' ),
-			"id"        => "{$prefix}title_font_size",
-			"std"       => '30',
-			"type"      => "slider",
-			"options"   => array( 'min' => 9, 'max' => 120 ),
-			"sanitize"  => 'font_size',
-			
-		),
-		array(
-			"name"      => _x( 'Line height', 'backend metabox', 'the7mk2' ),
-			"id"        => "{$prefix}title_line_height",
-			"std"       => '36',
-			"type"      => "slider",
-			"options"   => array( 'min' => 9, 'max' => 140 ),
-			"sanitize"  => 'font_size',
-			
-		),
-		array(
-			"name" => _x( 'Capitalize', 'backend metabox', 'the7mk2' ),
-			"id" => "{$prefix}uppercase",
-			"type" => 'checkbox',
-			'std' => '0',
-		),
-
-		// Title font color
-		array(
-			'name'			=> _x('Font color', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}title_color_mode",
-			'type'	 		=> 'radio',
-			'std'			=> 'color',
-			'hide_fields'	=> array( 'accent' => array( "{$prefix}title_color_settings" ) ),
-			'options'		=> $accent_custom_color
-		),
-
-		// Title color
-		array(
-			// container begin !!!
-			'before'		=> '<div class="the7-mb-flickering-field ' . "the7-mb-input-{$prefix}title_color_settings" . '">',
-
-			'name'    		=> '&nbsp;',
-			'id'      		=> "{$prefix}title_color",
-			'type'    		=> 'color',
-			'std'			=> '#ffffff',
-
-			// container end
-			'after'			=> '</div>'
-		),
-
-		/////////////////////////
-		// Subtitle settings //
-		/////////////////////////
-
-		array(
-			'name'			=> _x('Subtitle', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}subtitle_heading",
-			'type'	 		=> 'heading',
-			'top_divider'	=> true,
-		),
-
-		// Subtitle
-		array(
-			'name'    	=> _x('Subtitle', 'backend metabox', 'the7mk2'),
-			'id'      	=> "{$prefix}subtitle",
-			'type'    	=> 'text',
-			'std'		=> '',
-		),
-
-		// Subtitle font size
-		// array(
-		// 	'name'     	=> _x('Subtitle font size:', 'backend metabox', 'the7mk2'),
-		// 	'id'       	=> "{$prefix}subtitle_size",
-		// 	'type'     	=> 'select',
-		// 	'options'  	=> $font_size,
-		// 	'std'		=> 'h3'
-		// ),
-		array(
-			"name"      => _x( 'Font size', 'backend metabox', 'the7mk2' ),
-			"id"        => "{$prefix}subtitle_font_size",
-			"std"       => '18',
-			"type"      => "slider",
-			"options"   => array( 'min' => 9, 'max' => 120 ),
-			"sanitize"  => 'font_size',
-			
-		),
-		array(
-			"name"      => _x( 'Line height', 'backend metabox', 'the7mk2' ),
-			"id"        => "{$prefix}subtitle_line_height",
-			"std"       => '26',
-			"type"      => "slider",
-			"options"   => array( 'min' => 9, 'max' => 140 ),
-			"sanitize"  => 'font_size',
-			
-		),
-		array(
-			"name" => _x( 'Capitalize', 'backend metabox', 'the7mk2' ),
-			"id" => "{$prefix}subtitle_uppercase",
-			"type" => 'checkbox',
-			'std' => '0',
-		),
-		// Subtitle font color
-		array(
-			'name'			=> _x('Subtitle font color', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}subtitle_color_mode",
-			'type'	 		=> 'radio',
-			'std'			=> 'color',
-			'hide_fields'	=> array( 'accent' => array( "{$prefix}subtitle_color_settings" ) ),
-			'options'		=> $accent_custom_color
-		),
-
-		// Subtitle color
-		array(
-			// container begin !!!
-			'before'		=> '<div class="the7-mb-flickering-field ' . "the7-mb-input-{$prefix}subtitle_color_settings" . '">',
-
-			'name'    		=> '&nbsp;',
-			'id'      		=> "{$prefix}subtitle_color",
-			'type'    		=> 'color',
-			'std'			=> '#ffffff',
-
-			// container end
-			'after'			=> '</div>'
-		),
-
-		///////////////////////////
-		// Background settings //
-		///////////////////////////
-
-		array(
-			'name'			=> _x('Background', 'backend metabox', 'the7mk2'),
-			'id'			=> "{$prefix}bg_heading",
-			'type'	 		=> 'heading',
-			'top_divider'	=> true,
-		),
-
-		// Background color
-		array(
-			'name'    		=> _x('Background color', 'backend metabox', 'the7mk2'),
-			'id'      		=> "{$prefix}bg_color",
-			'type'    		=> 'color',
-			'std'			=> '#222222',
-		),
-
-		// Background image
-		array(
-			'name'             	=> _x('Background image', 'backend metabox', 'the7mk2'),
-			'id'               	=> "{$prefix}bg_image",
-			'type'             	=> 'image_advanced_mk2',
-			'max_file_uploads'	=> 1,
-		),
-
-		// Repeat options
-		array(
-			'name'     	=> _x('Repeat options', 'backend metabox', 'the7mk2'),
-			'id'       	=> "{$prefix}bg_repeat",
-			'type'     	=> 'select',
-			'options'  	=> $repeat_options,
-			'std'		=> 'no-repeat'
-		),
-
-		// Position x
-		array(
-			'name'     	=> _x('Position x', 'backend metabox', 'the7mk2'),
-			'id'       	=> "{$prefix}bg_position_x",
-			'type'     	=> 'select',
-			'options'  	=> $position_x_options,
-			'std'		=> 'center'
-		),
-
-		// Position y
-		array(
-			'name'     	=> _x('Position y', 'backend metabox', 'the7mk2'),
-			'id'       	=> "{$prefix}bg_position_y",
-			'type'     	=> 'select',
-			'options'  	=> $position_y_options,
-			'std'		=> 'center'
-		),
-
-		// Fullscreen
-		array(
-			'name'    		=> _x('Fullscreen', 'backend metabox', 'the7mk2'),
-			'id'      		=> "{$prefix}bg_fullscreen",
-			'type'    		=> 'checkbox',
-			'std'			=> 1,
-		),
-
-		// Fixed background
-		// array(
-		// 	'name'    		=> _x('Fixed background:', 'backend metabox', 'the7mk2'),
-		// 	'id'      		=> "{$prefix}bg_fixed",
-		// 	'type'    		=> 'checkbox',
-		// 	'std'			=> 0
-		// ),
-
-		//Overlay bg settings
-		
-		array(
-
-			'name'      => _x( 'Enable color overlay ', 'backend metabox', 'the7mk2' ),
-			'id'    	=> "{$prefix}bg_overlay",
-			'type'  	=> 'checkbox',
-			'std'   	=> 0,
-			'hide_fields'	=> array( "{$prefix}bg_overlay_opacity", "{$prefix}overlay_color" ),
-		),
-
-		array(
-			'name'	=> _x( 'Overlay color', 'backend metabox', 'the7mk2' ),
-			'id'	=> "{$prefix}overlay_color",
-			'type'	=> 'color',
-			'std'	=> '#000',
-		),
-
-		array(
-			'name'      => _x( 'Overlay opacity', 'backend metabox', 'the7mk2' ),
-			'id'        => "{$prefix}bg_overlay_opacity",
-			'type'      => 'slider',
-			'std'       => 50,
-		),
-
-
-		//Background effects
-		array(
-			'name' => _x( 'Scroll effect', 'backend metabox', 'the7mk2' ),
-			'id' => "{$prefix}scroll_effect",
-			'type' => 'radio',
-			'std' => 'default',
-			'options' => array(
-				'default' => _x( 'Move with the content', 'backend metabox', 'the7mk2' ),
-				'fixed' => _x( "Fixed at it's position", 'backend metabox', 'the7mk2' ),
-				'parallax' => _x( 'Vertical parallax on scroll', 'backend metabox', 'the7mk2' ),
-			),
-			'hide_fields'	=> array(
-				'default'	=> array("{$prefix}bg_parallax" ),
-				'fixed'	=> array("{$prefix}bg_parallax" ),
-			)
-		),
-
-		//-----
-
-		array(
-			'id'		=> "{$prefix}bg_parallax",
-			'name'		=> _x( 'Parallax speed', 'backend metabox', 'the7mk2' ),
-			'desc'      => _x( 'Enter value between 0 to 1', 'backend metabox', 'the7mk2' ),
-			'type'		=> 'text',
-			'std'		=> '0.5',
-			'class'		=> 'mini',
-		),
-		// Enable parallax & Parallax speed
-		// array(
-		// 	'name'    	=> _x('Parallax speed:', 'backend metabox', 'the7mk2'),
-		// 	'desc'  	=> _x('if field is empty, parallax disabled', 'backend metabox', 'the7mk2'),
-		// 	'id'      	=> "{$prefix}parallax_speed",
-		// 	'type'    	=> 'text',
-		// 	'std'		=> '0',
-		// ),
-
-	)
-);
+Include dirname( __FILE__ ) . '/fancy-title-meta-box.php';
 
 /***********************************************************/
 // Content area options

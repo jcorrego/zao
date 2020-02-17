@@ -35,11 +35,15 @@ textarea,
 .wpcf7-number {
 	
 	color: @input-color;
-	border-width: @input-border-width;
+	border-top-width: @top-input-border-width;
+	border-right-width: @right-input-border-width;
+	border-bottom-width: @bottom-input-border-width;
+	border-left-width: @left-input-border-width;
+	padding: @top-input-padding @right-input-padding @bottom-input-padding @left-input-padding;
 	border-color: @input-border-color;
 	background-color: @input-bg-color;
 	border-radius: @input-border-radius;
-	#page & {
+	.content & {
 		font-size: @base-font-size;
 		line-height: @base-line-height;
 		.mixin-float-line-height (@base-line-height, @input-height)
@@ -56,7 +60,8 @@ input[type="date"],
 input[type="range"],
 input[type="password"],
 select,
-.wpcf7-number {
+.wpcf7-number,
+.tinvwl-input-group .form-control {
 	height: @input-height;
 }
 .formError + input,

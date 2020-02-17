@@ -101,6 +101,15 @@ if ( ! class_exists( 'DT_WC_Template_Config', false ) ) :
 			$this->restore_config();
 		}
 
+		/**
+		 * Fix fancy title for archives.
+		 *
+		 * Show generic title instead of custom.
+		 */
+		public function fix_fancy_title_for_archives() {
+			presscore_config()->set( 'fancy_header.title.mode', 'generic' );
+		}
+
 		private function backup_config() {
 			$this->config_back = $this->config->get();
 		}

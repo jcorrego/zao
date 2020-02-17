@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * WP CLI Commands to manage Brainstorm Force products.
+ */
 class BSF_WP_CLI_Command extends WP_CLI_Command {
 
 	private $license_manager = '';
@@ -28,7 +30,6 @@ class BSF_WP_CLI_Command extends WP_CLI_Command {
 	 *      - This will activate the license for plugin Ultimate Addons for beaver builder with purchase key <purchase-key>
 	 *  2. wp brainstormforce license deactivate uabb <purchase-key>
 	 *      - This will deactivate the license for plugin Ultimate Addons for beaver builder with purchase key <purchase-key>
-	 *
 	 */
 	public function license( $args, $assoc_args ) {
 
@@ -56,29 +57,33 @@ class BSF_WP_CLI_Command extends WP_CLI_Command {
 		$_POST = array(
 			'bsf_license_manager' => array(
 				'license_key' => $purchase_key,
-				'product_id'  => $poduct_id
-			)
+				'product_id'  => $poduct_id,
+			),
 		);
 
-		if ( $action == 'activate' ) {
+		$bsf_action = '';
 
+		if ( $action == 'activate' ) {
+			$bsf_action = 'bsf_license_activation';
 			$_POST['bsf_activate_license'] = true;
 			$this->license_manager->bsf_activate_license();
 		} else {
-
+			$bsf_action = 'bsf_license_deactivation';
 			$_POST['bsf_deactivate_license'] = true;
 			$this->license_manager->bsf_deactivate_license();
 		}
 
-		if ( isset( $_POST['bsf_license_activation']['success'] ) && $_POST['bsf_license_activation']['success'] == true ) {
+		if( '' !== $bsf_action ) {
+			if ( isset( $_POST[$bsf_action]['success'] ) && $_POST[$bsf_action]['success'] == true ) {
 
-			$success_message = esc_attr( $_POST['bsf_license_activation']['message'] );
+				$success_message = esc_attr( $_POST[$bsf_action]['message'] );
 
-			WP_CLI::success( $success_message );
-		} else {
-			$error_message = esc_attr( $_POST['bsf_license_activation']['message'] );
+				WP_CLI::success( $success_message );
+			} else {
+				$error_message = esc_attr( $_POST[$bsf_action]['message'] );
 
-			WP_CLI::error( $error_message );
+				WP_CLI::error( $error_message );
+			}
 		}
 
 	}

@@ -2,12 +2,13 @@
 /**
  * Menu icon header.
  *
- * @package The7
- * @since 5.7.0
+ * @since   5.7.0
+ * @package The7/Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 
 <?php presscore_get_template_part( 'theme', 'header/mixed-navigation', presscore_get_mixed_header_navigation() ); ?>

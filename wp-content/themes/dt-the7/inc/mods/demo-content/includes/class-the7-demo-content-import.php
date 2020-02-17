@@ -109,21 +109,24 @@ class The7_Demo_Content_Import extends WP_Import {
 			'menu-item-status'      => $item['status'],
 		);
 
+		/**
+		 * Filter menu item args.
+		 *
+		 * @since 7.4.1
+		 */
+		$args = apply_filters( 'wxr_menu_item_args', $args, $menu_id );
 
 		$id = wp_update_nav_menu_item( $menu_id, 0, $args );
 		if ( $id && ! is_wp_error( $id ) ) {
 			$this->processed_menu_items[ intval( $item['post_id'] ) ] = (int) $id;
-		}
 
-		// Add custom meta.
-		if ( $id && ! is_wp_error( $id ) ) {
-			foreach ( $item['postmeta'] as $itemkey => $meta ) {
-				$key = str_replace( '_', '-', ltrim( $meta['key'], "_" ) );
-
-				if ( ! array_key_exists( $key, $args ) && $key != "menu-item-menu-item-parent" ) {
-					if ( ! empty( $meta['value'] ) ) {
-						update_post_meta( $id, $meta['key'], $meta['value'] );
-					}
+			// Add custom meta.
+			$meta_to_exclude   = array_keys( $args );
+			$meta_to_exclude[] = 'menu-item-menu-item-parent';
+			foreach ( $item['postmeta'] as $meta ) {
+				$key = str_replace( '_', '-', ltrim( $meta['key'], '_' ) );
+				if ( ! empty( $meta['value'] ) && ! in_array( $key, $meta_to_exclude, true ) ) {
+					update_post_meta( $id, $meta['key'], maybe_unserialize( $meta['value'] ) );
 				}
 			}
 		}
@@ -156,5 +159,15 @@ class The7_Demo_Content_Import extends WP_Import {
 				$this->$group = $data;
 			}
 		}
+	}
+
+	/**
+	 * Decide whether or not the importer is allowed to create users.
+	 * Default is false (we don't want to scare users), can be filtered via import_allow_create_users.
+	 *
+	 * @return bool True if creating users is allowed
+	 */
+	public function allow_create_users() {
+		return apply_filters( 'import_allow_create_users', false );
 	}
 }

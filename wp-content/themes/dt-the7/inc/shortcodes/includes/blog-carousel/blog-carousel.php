@@ -7,8 +7,6 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-require_once trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . 'abstract-dt-shortcode-with-inline-css.php';
-
 if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 
 	class DT_Shortcode_Blog_Carousel extends DT_Shortcode_With_Inline_Css {
@@ -38,120 +36,133 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 		}
 
 		public function __construct() {
-
-			$this->sc_name = 'dt_blog_carousel';
+			$this->sc_name           = 'dt_blog_carousel';
 			$this->unique_class_base = 'blog-carousel-shortcode-id';
-			$this->taxonomy = 'category';
-			$this->post_type = 'post';
-
-			$this->default_atts = array(
-				'post_type' => 'category',
-				'category' => '',
-				'tags' => '',
-				'posts' => '',
-				'order' => 'desc',
-				'orderby' => 'date',
-				'dis_posts_total' => '6',
-				'layout' => 'classic',
-				'bo_content_width' => '75%',
-				'bo_content_top_overlap' => '100px',
-				'grovly_content_overlap' => '0px',
-				'content_bg' => 'y',
-				'custom_content_bg_color' => '',
-				'post_content_paddings' => '15px 20px 20px 20px',
-				'image_sizing' => 'resize',
-				'resized_image_dimensions' => '3x2',
-				'image_paddings' => '0px 0px 0px 0px',
-				'image_scale_animation_on_hover' => 'y',
-				'image_hover_bg_color' => 'y',
-				'slide_to_scroll' => 'single',
-				'slides_on_wide_desk' => '4',
-				'slides_on_desk' => '3',
-				'slides_on_lapt' => '3',
-				'slides_on_h_tabs' => '3',
-				'slides_on_v_tabs' => '2',
-				'slides_on_mob' => '1',
-				'adaptive_height' => 'y',
-				'item_space' => '30',
-				'speed' => '600',
-				'autoplay' => 'n',
-				'autoplay_speed' => "6000",
-				'content_alignment' => 'left',
-				'post_title_font_style' => ':bold:',
-				'post_title_font_size' => '',
-				'post_title_line_height' => '',
-				'custom_title_color' => '',
-				'post_title_bottom_margin' => '5px',
-				'post_date' => 'y',
-				'post_category' => 'y',
-				'post_author' => 'y',
-				'post_comments' => 'y',
-				'meta_info_font_style' => '',
-				'meta_info_font_size' => '',
-				'meta_info_line_height' => '',
-				'custom_meta_color' => '',
-				'meta_info_bottom_margin' => '15px',
-				'post_content' => 'show_excerpt',
-				'excerpt_words_limit' => '',
-				'content_font_style' => '',
-				'content_font_size' => '',
-				'content_line_height' => '',
-				'custom_content_color' => '',
-				'content_bottom_margin' => '5px',
-				'read_more_button' => 'default_link',
-				'read_more_button_text' => 'Read more',
-				'fancy_date' => 'n',
-				'fancy_date_font_color' => '',
-				'fancy_date_bg_color' => '',
-				'fancy_date_line_color' => '',
-				'fancy_categories' => 'n',
-				'fancy_categories_font_color' => '',
-				'fancy_categories_bg_color' => '',
-				'arrows' => 'y',
-				'arrow_icon_size' => '18px',
-				'r_arrow_icon_paddings' => '0 0 0 0',
-				'l_arrow_icon_paddings' => '0 0 0 0',
-				'arrow_bg_width' => "36px",
-				'arrow_bg_height' => "36px",
-				'arrow_border_radius' => '500px',
-				'arrow_border_width' => '0',
-				'arrow_icon_color' => '#ffffff',
-				'arrow_icon_border' => 'y',
-				'arrow_border_color' => '',
-				'arrows_bg_show' => 'y',
-				'arrow_bg_color' => '',
-				'arrow_icon_color_hover' => 'rgba(255,255,255,0.75)',
-				'arrow_icon_border_hover' => 'y',
-				'arrow_border_color_hover' => '',
-				'arrows_bg_hover_show' => 'y',
-				'arrow_bg_color_hover' => '',
-				'r_arrow_v_position' => 'center',
-				'r_arrow_h_position' => 'right',
-				'r_arrow_v_offset' => '0',
-				'r_arrow_h_offset' => '-43px',
-				'l_arrow_v_position' => 'center',
-				'l_arrow_h_position' => 'left',
-				'l_arrow_v_offset' => '0',
-				'l_arrow_h_offset' => '-43px',
-				'arrow_responsiveness' => 'reposition-arrows',
-				'hide_arrows_mobile_switch_width' => '778px',
+			$this->taxonomy          = 'category';
+			$this->post_type         = 'post';
+			$this->default_atts      = array(
+				'post_type'                             => 'category',
+				'category'                              => '',
+				'tags'                                  => '',
+				'posts'                                 => '',
+				'posts_offset'                          => 0,
+				'order'                                 => 'desc',
+				'orderby'                               => 'date',
+				'dis_posts_total'                       => '6',
+				'layout'                                => 'classic',
+				'bo_content_width'                      => '75%',
+				'bo_content_top_overlap'                => '100px',
+				'grovly_content_overlap'                => '0px',
+				'content_bg'                            => 'y',
+				'custom_content_bg_color'               => '',
+				'post_content_paddings'                 => '15px 20px 20px 20px',
+				'image_sizing'                          => 'resize',
+				'resized_image_dimensions'              => '3x2',
+				'image_paddings'                        => '0px 0px 0px 0px',
+				'image_scale_animation_on_hover' 		=> 'slow_scale',
+				'image_hover_bg_color'           		=> 'disabled',
+				'custom_rollover_bg_color'       		=> 'rgba(0,0,0,0.5)',
+				'custom_rollover_bg_gradient'    		=> '45deg|rgba(12,239,154,0.8) 0%|rgba(0,108,220,0.8) 50%|rgba(184,38,220,0.8) 100%',
+				'slide_to_scroll'                       => 'single',
+				'slides_on_wide_desk'                   => '4',
+				'slides_on_desk'                        => '3',
+				'slides_on_lapt'                        => '3',
+				'slides_on_h_tabs'                      => '3',
+				'slides_on_v_tabs'                      => '2',
+				'slides_on_mob'                         => '1',
+				'adaptive_height'                       => 'y',
+				'item_space'                            => '30',
+				'stage_padding' 						=> '0',
+				'speed'                                 => '600',
+				'autoplay'                              => 'n',
+				'autoplay_speed'                        => "6000",
+				'content_alignment'                     => 'left',
+				'post_title_font_style'                 => ':bold:',
+				'post_title_font_size'                  => '',
+				'post_title_line_height'                => '',
+				'custom_title_color'                    => '',
+				'post_title_bottom_margin'              => '5px',
+				'post_date'                             => 'y',
+				'post_category'                         => 'y',
+				'post_author'                           => 'y',
+				'post_comments'                         => 'y',
+				'meta_info_font_style'                  => '',
+				'meta_info_font_size'                   => '',
+				'meta_info_line_height'                 => '',
+				'custom_meta_color'                     => '',
+				'meta_info_bottom_margin'               => '15px',
+				'post_content'                          => 'show_excerpt',
+				'excerpt_words_limit'                   => '',
+				'content_font_style'                    => '',
+				'content_font_size'                     => '',
+				'content_line_height'                   => '',
+				'custom_content_color'                  => '',
+				'content_bottom_margin'                 => '5px',
+				'read_more_button'                      => 'default_link',
+				'read_more_button_text'                 => '',
+				'fancy_date'                            => 'n',
+				'fancy_date_font_color'                 => '',
+				'fancy_date_bg_color'                   => '',
+				'fancy_date_line_color'                 => '',
+				'fancy_categories'                      => 'n',
+				'fancy_categories_font_color'           => '',
+				'fancy_categories_bg_color'             => '',
+				'show_zoom'                      => 'n',
+				'gallery_image_zoom_icon'        => 'icon-im-hover-001',
+				'project_icon_size'              => '32px',
+				'dt_project_icon'                => '',
+				'project_icon_bg_size'           => '44px',
+				'project_icon_border_width'      => '0',
+				'project_icon_border_radius'     => '100px',
+				'project_icon_color'             => 'rgba(255,255,255,1)',
+				'project_icon_border_color'      => '',
+				'project_icon_bg'                => 'n',
+				'project_icon_bg_color'          => 'rgba(255,255,255,0.3)',
+				'arrows'                                => 'y',
+				'arrow_icon_size'                       => '18px',
+				'r_arrow_icon_paddings'                 => '0 0 0 0',
+				'l_arrow_icon_paddings'                 => '0 0 0 0',
+				'arrow_bg_width'                        => "36px",
+				'arrow_bg_height'                       => "36px",
+				'arrow_border_radius'                   => '500px',
+				'arrow_border_width'                    => '0',
+				'arrow_icon_color'                      => '#ffffff',
+				'arrow_icon_border'                     => 'y',
+				'arrow_border_color'                    => '',
+				'arrows_bg_show'                        => 'y',
+				'arrow_bg_color'                        => '',
+				'arrow_icon_color_hover'                => 'rgba(255,255,255,0.75)',
+				'arrow_icon_border_hover'               => 'y',
+				'arrow_border_color_hover'              => '',
+				'arrows_bg_hover_show'                  => 'y',
+				'arrow_bg_color_hover'                  => '',
+				'r_arrow_v_position'                    => 'center',
+				'r_arrow_h_position'                    => 'right',
+				'r_arrow_v_offset'                      => '0',
+				'r_arrow_h_offset'                      => '-43px',
+				'l_arrow_v_position'                    => 'center',
+				'l_arrow_h_position'                    => 'left',
+				'l_arrow_v_offset'                      => '0',
+				'l_arrow_h_offset'                      => '-43px',
+				'arrow_responsiveness'                  => 'reposition-arrows',
+				'hide_arrows_mobile_switch_width'       => '778px',
 				'reposition_arrows_mobile_switch_width' => '778px',
-				'l_arrows_mobile_h_position' => '10px',
-				'r_arrows_mobile_h_position' => '10px',
-				'show_bullets' => 'n',
-				'bullets_style' => 'small-dot-stroke',
-				'bullet_size' => '10px',
-				'bullet_color' => '',
-				'bullet_color_hover' => '',
-				'bullet_gap' => "16px",
-				'bullets_v_position' => 'bottom',
-				'bullets_h_position' => 'center',
-				'bullets_v_offset' => '20px',
-				'bullets_h_offset' => '0',
-				'next_icon' => 'icon-ar-017-r',
-				'prev_icon' => 'icon-ar-017-l',
-				'css_dt_blog_carousel'         => '',
-				'el_class' => '',
+				'l_arrows_mobile_h_position'            => '10px',
+				'r_arrows_mobile_h_position'            => '10px',
+				'show_bullets'                          => 'n',
+				'bullets_style'                         => 'small-dot-stroke',
+				'bullet_size'                           => '10px',
+				'bullet_color'                          => '',
+				'bullet_color_hover'                    => '',
+				'bullet_gap'                            => "16px",
+				'bullets_v_position'                    => 'bottom',
+				'bullets_h_position'                    => 'center',
+				'bullets_v_offset'                      => '20px',
+				'bullets_h_offset'                      => '0',
+				'next_icon'                             => 'icon-ar-017-r',
+				'prev_icon'                             => 'icon-ar-017-l',
+				'css_dt_blog_carousel'                  => '',
+				'el_class'                              => '',
 			);
 			parent::__construct();
 		}
@@ -164,9 +175,14 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 			do_action( 'presscore_before_shortcode_loop', $this->sc_name, $this->atts );
 
 			presscore_remove_posts_masonry_wrap();
+			presscore_remove_lazy_load_attrs();
+			$show_icon_zoom = '';
+			if ( $this->get_att( 'show_zoom' ) === 'y' ) {
+				$show_icon_zoom = '<span class="gallery-zoom-ico ' . esc_attr( $this->get_att( 'gallery_image_zoom_icon' ) ) . '"><span></span></span>';
+			}
 
 			echo '<div ' . $this->get_container_html_class( array( 'owl-carousel blog-carousel-shortcode dt-owl-carousel-call' ) ) . ' ' . $this->get_container_data_atts() . '>';
-
+			$lazy_loading_enabled = presscore_lazy_loading_enabled();
 			if ( $query->have_posts() ): while( $query->have_posts() ): $query->the_post();
 
 					do_action('presscore_before_post');
@@ -195,20 +211,26 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 								'v_tablet' => $this->get_att( 'slides_on_v_tabs' ),
 								'phone'    => $this->get_att( 'slides_on_mob' ),
 							);
-							$thumb_args = apply_filters( 'dt_post_thumbnail_args', array(
-								'img_id'  => get_post_thumbnail_id(),
-								'class'   => 'post-thumbnail-rollover',
-								'options' => the7_calculate_bwb_image_resize_options( $columns, $this->get_att( 'item_space' ) ),
-								'href'    => get_permalink(),
-								'wrap'    => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
-								'echo'    => false,
-							) );
 
-							$post_media = dt_get_thumb_img( $thumb_args );
+							$config = presscore_config();
+							$image_is_wide = ( 'wide' === $config->get( 'post.preview.width' ) && ! $config->get( 'all_the_same_width' ) );
+							$thumb_args = array(
+								'lazy_loading'  => $lazy_loading_enabled,
+								'lazy_class'    => 'owl-lazy-load',
+								'lazy_bg_class' => 'layzr-bg',
+								'img_id'        => get_post_thumbnail_id(),
+								'class'         => 'post-thumbnail-rollover',
+								'options'       => the7_calculate_bwb_image_resize_options( $columns, $this->get_att( 'item_space' ), $image_is_wide ),
+								'href'          => get_permalink(),
+								'wrap'          => '<a %HREF% %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% />' . $show_icon_zoom . '</a>',
+								'echo'          => false,
+							);
+
+							$post_media = dt_get_thumb_img( apply_filters( 'dt_post_thumbnail_args', $thumb_args ) );
 						}
 
 						$details_btn_style = $this->get_att( 'read_more_button' );
-						$details_btn_text = $this->get_att( 'read_more_button_text' );
+						$details_btn_text = $this->get_att( 'read_more_button_text', esc_html_x( 'Read more', 'the7 shortcode', 'the7mk2' ) );
 						$details_btn_class = ('default_button' === $details_btn_style ? array( 'dt-btn-s', 'dt-btn' ) : array());
 
 						presscore_get_template_part( 'shortcodes', 'blog-carousel/tpl-layout', $this->get_att( 'layout' ), array(
@@ -226,6 +248,9 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 
 					endwhile; endif;
 				echo '</div>';
+
+				presscore_add_lazy_load_attrs();
+
 				do_action( 'presscore_after_shortcode_loop', $this->sc_name, $this->atts );
 		}
 		
@@ -255,11 +280,18 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 				$class[] = 'content-bg-on';
 			}
 
-			if ( $this->get_flag( 'image_scale_animation_on_hover' ) ) {
+			if ( $this->atts['image_scale_animation_on_hover']  === 'quick_scale' ) {
+				$class[] = 'quick-scale-img';
+			}else if($this->atts['image_scale_animation_on_hover']  === 'slow_scale') {
 				$class[] = 'scale-img';
 			}
-			if ( $this->get_flag( 'image_hover_bg_color' ) ) {
+			if ( 'disabled' != $this->get_att( 'image_hover_bg_color' ) ) {
 				$class[] = 'enable-bg-rollover';
+			}
+			if ( $this->get_flag( 'project_icon_bg' ) ) {
+				$class[] = 'dt-icon-bg-on';
+			} else {
+				$class[] = 'dt-icon-bg-off';
 			}
 			if($this->atts['arrow_icon_border'] === 'y'){
 				$class[] = 'dt-arrow-border-on';
@@ -387,6 +419,7 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 				'phone-columns-num' => $this->atts['slides_on_mob'],
 				'auto-height' => ($this->atts['adaptive_height'] === 'y') ? 'true' : 'false',
 				'col-gap' => $this->atts['item_space'],
+				'stage-padding' => $this->atts['stage_padding'],
 				'speed' => $this->atts['speed'],
 				'autoplay' => ($this->atts['autoplay'] === 'y') ? 'true' : 'false',
 				'autoplay_speed' => $this->atts['autoplay_speed'],
@@ -408,6 +441,8 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 			$config->set( 'post.preview.content.visible', $show_post_content );
 
 			$config->set( 'show_details', ( 'off' !== $this->get_att( 'read_more_button' ) ) );
+			$config->set( 'blog.show_icon', ('n' !==$this->get_att( 'show_zoom' )));
+			$config->set( 'blog.show_icon.html',($this->get_att( 'gallery_image_zoom_icon')));
 
 			$config->set( 'image_layout', ( 'resize' === $this->get_att( 'image_sizing' ) ? $this->get_att( 'image_sizing' ) : 'original' ) );
 			if ( 'resize' == $this->get_att( 'image_sizing' ) && $this->get_att( 'resized_image_dimensions' ) ) {
@@ -440,9 +475,7 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 		 * @return array
 		 */
 		protected function get_less_vars() {
-			$storage = new Presscore_Lib_SimpleBag();
-			$factory = new Presscore_Lib_LessVars_Factory();
-			$less_vars = new DT_Blog_LessVars_Manager( $storage, $factory );
+			$less_vars = the7_get_new_shortcode_less_vars_manager();
 			$less_vars->add_keyword( 'unique-shortcode-class-name', 'blog-carousel-shortcode.' . $this->get_unique_class(), '~"%s"' );
 
 
@@ -466,6 +499,20 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 				'post-thumb-padding-bottom',
 				'post-thumb-padding-left',
 			), $this->get_att( 'image_paddings' ), '%|px' );
+			switch ( $this->get_att( 'image_hover_bg_color' ) ) {
+				case 'gradient_rollover_bg':
+					$first_color = 'rgba(0,0,0,0.6)';
+					$gradient    = '';
+					if ( function_exists( 'the7_less_prepare_gradient_var' ) ) {
+						list( $first_color, $gradient ) = the7_less_prepare_gradient_var( $this->get_att( 'custom_rollover_bg_gradient' ) );
+					}
+					$less_vars->add_rgba_color( 'portfolio-rollover-bg', $first_color );
+					$less_vars->add_keyword( 'portfolio-rollover-bg-gradient', $gradient );
+					break;
+				case 'solid_rollover_bg':
+					$less_vars->add_keyword( 'portfolio-rollover-bg', $this->get_att( 'custom_rollover_bg_color', '~""' ) );
+					break;
+			}
 
 			//Post tab
 			$less_vars->add_font_style( array(
@@ -504,6 +551,14 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 			$less_vars->add_keyword( 'fancy-data-line-color', $this->get_att( 'fancy_date_line_color', '~""' ) );
 			$less_vars->add_keyword( 'fancy-category-color', $this->get_att( 'fancy_categories_font_color', '~""' ) );
 			$less_vars->add_keyword( 'fancy-category-bg', $this->get_att( 'fancy_categories_bg_color', '~""' ) );
+
+			$less_vars->add_pixel_number( 'project-icon-size', $this->get_att( 'project_icon_size' ) );
+			$less_vars->add_pixel_number( 'project-icon-bg-size', $this->get_att( 'project_icon_bg_size' ) );
+			$less_vars->add_pixel_number( 'project-icon-border-width', $this->get_att( 'project_icon_border_width' ) );
+			$less_vars->add_pixel_number( 'project-icon-border-radius', $this->get_att( 'project_icon_border_radius' ) );
+			$less_vars->add_keyword( 'project-icon-color', $this->get_att( 'project_icon_color', '~""' ) );
+			$less_vars->add_keyword( 'project-icon-border-color', $this->get_att( 'project_icon_border_color', '~""' ) );
+			$less_vars->add_keyword( 'project-icon-bg-color', $this->get_att( 'project_icon_bg_color', '~""' ) );
 
 			$less_vars->add_pixel_number( 'icon-size', $this->get_att( 'arrow_icon_size' ) );
 			$less_vars->add_paddings( array(
@@ -556,14 +611,41 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 
 			return $less_vars->get_vars();
 		}
+
 		protected function get_less_file_name() {
-			// @TODO: Remove in production.
-			$less_file_name = 'dt-blog-carousel';
-
-			$less_file_path = trailingslashit( get_template_directory() ) . "css/dynamic-less/shortcodes/{$less_file_name}.less";
-
-			return $less_file_path;
+			return PRESSCORE_THEME_DIR . '/css/dynamic-less/shortcodes/dt-blog-carousel.less';
 		}
+
+		/**
+		 * Return less imports.
+		 *
+		 * @return array
+		 */
+		protected function get_less_imports() {
+			$dynamic_import_bottom = array();
+			$dynamic_import_top = array();
+
+			switch ( $this->atts['layout'] ) {
+				case 'bottom_overlap':
+					$dynamic_import_top[] = 'blog/bottom-overlap-layout-blog.less';
+					break;
+				case 'gradient_overlap':
+					$dynamic_import_top[] = 'blog/gradient-overlap-layout-blog.less';
+					break;
+				case 'gradient_overlay':
+					$dynamic_import_top[] = 'blog/gradient-overlay-layout-blog.less';
+					break;
+				case 'gradient_rollover':
+					$dynamic_import_top[] = 'blog/content-rollover-layout-blog.less';
+					break;
+				case 'classic':
+				default:
+					$dynamic_import_top[] = 'blog/classic-layout-blog.less';
+			}
+
+			return compact( 'dynamic_import_top', 'dynamic_import_bottom' );
+		}
+
 		/**
 		 * Return dummy html for VC inline editor.
 		 *
@@ -588,6 +670,9 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 				return $query;
 			}
 
+			add_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			add_filter( 'found_posts', array( $this, 'fix_pagination' ), 1, 2 );
+
 			$post_type = $this->get_att( 'post_type' );
 			if ( 'posts' === $post_type ) {
 				$query = $this->get_posts_by_post_type( 'post', $this->get_att( 'posts' ) );
@@ -600,32 +685,79 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 				$query = $this->get_posts_by_taxonomy( 'post', 'category', $category_terms, $category_field );
 			}
 
+			remove_action( 'pre_get_posts', array( $this, 'add_offset' ), 1 );
+			remove_filter( 'found_posts', array( $this, 'fix_pagination' ), 1 );
+
 			return $query;
+		}
+/**
+		 * Add offset to the posts query.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @param WP_Query $query
+		 */
+		public function add_offset( &$query ) {
+			// Apply offset only to the7 main query.
+			if ( empty( $query->query['is_the7_main_query'] ) ) {
+				return;
+			}
+
+			$offset  = (int) $this->get_att( 'posts_offset' );
+			$ppp     = (int) $query->query_vars['posts_per_page'];
+			$current = (int) $query->query_vars['paged'];
+
+			if ( $query->is_paged ) {
+				$page_offset = $offset + ( $ppp * ( $current - 1 ) );
+				$query->set( 'offset', $page_offset );
+			} else {
+				$query->set( 'offset', $offset );
+			}
+		}
+
+		/**
+		 * Fix pagination accordingly with posts offset.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @param int      $found_posts
+		 * @param WP_Query $query
+		 *
+		 * @return int
+		 */
+		public function fix_pagination( $found_posts, $query ) {
+			// Apply offset only to the7 main query.
+			if ( empty( $query->query['is_the7_main_query'] ) ) {
+				return $found_posts;
+			}
+
+			return $found_posts - (int) $this->get_att( 'posts_offset' );
 		}
 
 		protected function get_posts_by_post_type( $post_type, $post_ids = array() ) {
-			$posts_per_page = $this->get_att( 'dis_posts_total', '-1' );
+			$posts_per_page = $this->get_posts_per_page();
 
 			if ( is_string( $post_ids ) ) {
 				$post_ids = presscore_sanitize_explode_string( $post_ids );
 			}
 			$post_ids = array_filter( $post_ids );
 			$query_args = array(
-				'orderby'          => $this->get_att( 'orderby' ),
-				'order'            => $this->get_att( 'order' ),
-				'posts_per_page'   => $posts_per_page,
-				'post_type'        => $post_type,
-				'post_status'      => 'publish',
-				'paged'            => 1,
-				'suppress_filters' => false,
-				'post__in'         => $post_ids,
+				'orderby'            => $this->get_att( 'orderby' ),
+				'order'              => $this->get_att( 'order' ),
+				'posts_per_page'     => $posts_per_page,
+				'post_type'          => $post_type,
+				'post_status'        => 'publish',
+				'paged'              => 1,
+				'suppress_filters'   => false,
+				'post__in'           => $post_ids,
+				'is_the7_main_query' => true,
 			);
 
 			return new WP_Query( $query_args );
 		}
 
 		protected function get_posts_by_taxonomy( $post_type, $taxonomy, $taxonomy_terms = array(), $taxonomy_field = 'term_id' ) {
-			$posts_per_page = $this->get_att( 'dis_posts_total', '-1' );
+			$posts_per_page = $this->get_posts_per_page();
 
 			if ( is_string( $taxonomy_terms ) ) {
 				$taxonomy_terms = presscore_sanitize_explode_string( $taxonomy_terms );
@@ -633,10 +765,11 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 			$taxonomy_terms = array_filter( $taxonomy_terms );
 
 			$query_args = array(
-				'posts_per_page'   => $posts_per_page,
-				'post_type'        => $post_type,
-				'post_status'      => 'publish',
-				'suppress_filters' => false,
+				'posts_per_page'     => $posts_per_page,
+				'post_type'          => $post_type,
+				'post_status'        => 'publish',
+				'suppress_filters'   => false,
+				'is_the7_main_query' => true,
 			);
 
 			$tax_query = array();
@@ -662,6 +795,22 @@ if ( ! class_exists( 'DT_Shortcode_Blog_Carousel', false ) ) :
 			add_action( 'pre_get_posts', array( $this, 'sticky_posts_fix' ) );
 
 			return new WP_Query( $query_args );
+		}
+
+		/**
+		 * Return posts per page query var.
+		 *
+		 * @since 7.1.0
+		 *
+		 * @return int
+		 */
+		protected function get_posts_per_page() {
+			$posts_per_page = (int) $this->get_att( 'dis_posts_total', '-1' );
+			if ( $posts_per_page === -1 ) {
+				return 99999;
+			}
+
+			return $posts_per_page;
 		}
 
 		/**

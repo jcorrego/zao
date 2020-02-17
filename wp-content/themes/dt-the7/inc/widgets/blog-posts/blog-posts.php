@@ -204,7 +204,7 @@ class Presscore_Inc_Widgets_BlogPosts extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'round_images' ); ?>"><?php _ex('Enable rounded corners', 'widget', 'the7mk2'); ?></label>
+			<label for="<?php echo $this->get_field_id( 'round_images' ); ?>"><?php _ex('Make images round', 'widget', 'the7mk2'); ?></label>
 			<input type="checkbox" for="<?php echo $this->get_field_id( 'round_images' ); ?>" name="<?php echo $this->get_field_name( 'round_images' ); ?>" value="1" <?php checked($instance['round_images']); ?> />
 		</p>
 

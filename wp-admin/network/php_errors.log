@@ -1,0 +1,1 @@
+[29-Jan-2020 12:39:16 UTC] PHP Warning:  Use of undefined constant WPLANG - assumed 'WPLANG' (this will throw an Error in a future version of PHP) in /home/forge/zaomakeup.com.co/wp-content/plugins/woocommerce-es/woocommerce-es.php on line 113

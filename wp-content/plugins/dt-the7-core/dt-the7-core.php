@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       The7 Elements
  * Description:       This plugin contains The7 custom post types and corresponding Visual Composer elements.
- * Version:           1.13.0
+ * Version:           2.2.7
  * Author:            Dream-Theme
  * Author URI:        http://dream-theme.com/
  * Text Domain:       dt-the7-core
@@ -51,15 +51,15 @@ if ( ! class_exists( 'The7PT_Core' ) ) :
 
 	final class The7PT_Core {
 
-		const THE7_COMPATIBLE_VERSION = '6.9.3';
-		const PLUGIN_DB_VERSION = '1.13.0';
+		const THE7_COMPATIBLE_VERSION = '8.1.0';
+		const PLUGIN_DB_VERSION = '2.2.4';
 
 		/**
 		 * Plugin version.
 		 *
 		 * @var string
 		 */
-		private $version = '1.13.0';
+		private $version = '2.2.7';
 
 		/**
 		 * The single instance of the class.
@@ -101,11 +101,17 @@ if ( ! class_exists( 'The7PT_Core' ) ) :
 		}
 
 		public function after_setup_theme_action() {
+			if ( ! defined( 'THE7_VERSION' ) ) {
+				return;
+			}
+
 			$plugin_path = $this->plugin_path();
 
 			require_once $plugin_path . 'includes/sliders/class-the7pt-slider.php';
 			require_once $plugin_path . 'includes/sliders/class-the7pt-photo-scroller.php';
 			require_once $plugin_path . 'includes/sliders/class-the7pt-posts-scroller.php';
+			require_once $plugin_path . 'includes/compatibility-functions.php';
+			require_once $plugin_path . 'includes/class-the7pt-shortcode-with-inline-css.php';
 
 			$this->load_plugin_textdomain();
 
@@ -126,6 +132,8 @@ if ( ! class_exists( 'The7PT_Core' ) ) :
 			require_once $plugin_path . 'includes/class-the7pt-assets.php';
 			require_once $plugin_path . 'includes/class-the7pt-admin.php';
 			require_once $plugin_path . 'includes/class-the7pt-install.php';
+			require_once $plugin_path . 'includes/class-the7pt-template-ajax-content-builder.php';
+			require_once $plugin_path . 'includes/the7pt-fix-the7-775-update-bug.php';
 		}
 
 		/**

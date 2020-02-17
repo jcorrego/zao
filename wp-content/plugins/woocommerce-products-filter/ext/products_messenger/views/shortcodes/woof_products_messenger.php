@@ -52,7 +52,7 @@ if (is_user_logged_in() AND isset($WOOF->settings['products_messenger']) ) {
 	    <?php
 	    $get_array = $WOOF->get_request_data();
             
-	    if (!(!$WOOF->settings['products_messenger']['show_btn_subscr'] AND ( empty($get_array) OR count($get_array) <= 1) )) { // hide btn without search query
+	    if (!(!$WOOF->settings['products_messenger']['show_btn_subscr'] AND ( empty($get_array) OR count($get_array) <= 1) ) OR class_exists("WOOF_EXT_TURBO_MODE")) { // hide btn without search query
 		$visible = 'none';
 		if ($subscr_count > count($user_data_mess)) {
 		    $visible = 'block';
@@ -64,7 +64,7 @@ if (is_user_logged_in() AND isset($WOOF->settings['products_messenger']) ) {
         
 	    <?php } ?>
             <?php if (isset($this->settings['products_messenger']['notes_for_customer']) AND ! empty($this->settings['products_messenger']['notes_for_customer'])): ?>
-                <span class="woof_products_messenger_notes_for_customer"><?php echo do_shortcode($this->settings['products_messenger']['notes_for_customer']) ?></span>
+<span class="woof_products_messenger_notes_for_customer"><?php echo stripcslashes(do_shortcode($this->settings['products_messenger']['notes_for_customer'])); ?></span>
             <?php endif; ?>
         </div>
     </div>

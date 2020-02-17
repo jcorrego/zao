@@ -4,8 +4,8 @@
  */
 
 $this->extend('../layout');
-
 $fs_help = esc_url( apply_filters('loco_external','https://localise.biz/wordpress/plugin/manual/filesystem') );
+/* @var Loco_data_Settings $opts */
 ?> 
 
     <form action="" method="post" enctype="application/x-www-form-urlencoded">
@@ -48,9 +48,15 @@ $fs_help = esc_url( apply_filters('loco_external','https://localise.biz/wordpres
                             </p>
                             <p>
                                 <label for="loco--php_alias">
-                                    <?php esc_html_e('Scan PHP files with extensions:','loco-translate')?> 
+                                    <?php esc_html_e('Scan PHP files with extensions:','loco-translate')?>
                                 </label>
                                 <input type="text" size="15" name="opts[php_alias]" id="loco--php_alias" value="<?php echo esc_attr( implode(' ',$opts->php_alias) )?>" placeholder="<?php echo esc_attr(implode(' ',$dflt->php_alias))?>" />
+                            </p>
+                            <p>
+                                <label for="loco--jsx_alias">
+                                    <?php esc_html_e('Scan JavaScript files with extensions:','loco-translate')?>
+                                </label>
+                                <input type="text" size="15" name="opts[jsx_alias]" id="loco--jsx_alias" value="<?php echo esc_attr( implode(' ',$opts->jsx_alias) )?>" placeholder="<?php echo esc_attr(implode(' ',$dflt->jsx_alias))?>" />
                             </p>
                         </fieldset>
                     </td>
@@ -77,7 +83,13 @@ $fs_help = esc_url( apply_filters('loco_external','https://localise.biz/wordpres
                             <p>
                                 <label for="loco--po-utf8-bom">
                                     <input type="checkbox" name="opts[po_utf8_bom]" value="1" id="loco--po-utf8-bom"<?php echo $opts->po_utf8_bom?' checked':''?> />
-                                    <?php esc_html_e('Add UTF-8 byte order mark','loco-translate')?> (<?php esc_html_e('Not recommended','loco-translate')?>) 
+                                    <?php esc_html_e('Add UTF-8 byte order mark','loco-translate')?> (<?php esc_html_e('Not recommended','loco-translate')?>)
+                                </label>
+                            </p>
+                            <p>
+                                <label for="loco--ajax-files">
+                                    <input type="checkbox" name="opts[ajax_files]" value="1" id="loco--ajax-files"<?php echo $opts->ajax_files?' checked':''?> />
+                                    <?php esc_html_e('Enable Ajax file uploads','loco-translate')?> (<?php esc_html_e('Recommended','loco-translate')?>)
                                 </label>
                             </p>
                         </fieldset>

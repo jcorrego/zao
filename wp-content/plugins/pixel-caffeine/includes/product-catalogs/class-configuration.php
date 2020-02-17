@@ -18,6 +18,7 @@ class Configuration {
 	const OPTION_GOOGLE_CATEGORY = 'google_category';
 	const OPTION_FILE_NAME = 'file_name';
 	const OPTION_DIRECTORY_PATH = 'directory_path';
+	const OPTION_DIRECTORY_URL = 'directory_url';
 	const OPTION_CHUNK_LIMIT = 'chunk_limit';
 	const OPTION_SKU_FOR_ID = 'sku_instead_id';
 	const OPTION_IMAGE_SIZE = 'image_size';

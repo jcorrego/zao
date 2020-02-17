@@ -26,11 +26,7 @@ class DT_Shortcode_Stripe extends DT_Shortcode {
 	}
 
 	protected function __construct() {
-
 		add_shortcode( $this->shortcode_name, array($this, 'shortcode') );
-
-		// add shortcode button
-		$tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)) );
 	}
 
 	public function shortcode( $atts, $content = null ) {
@@ -51,7 +47,7 @@ class DT_Shortcode_Stripe extends DT_Shortcode {
 			'padding_bottom'    => '',
 			'margin_top'        => '',
 			'margin_bottom'     => ''
-		), $atts ) );
+		), $atts, $this->shortcode_name ) );
 
 		$bg_cover = apply_filters( 'dt_sanitize_flag', $bg_cover );
 		$bg_attachment = in_array( $bg_attachment, array( 'false', 'fixed', 'true' ) ) ? $bg_attachment : 'false';

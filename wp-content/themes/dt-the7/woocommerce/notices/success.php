@@ -11,25 +11,29 @@
  * the readme will list any important changes.
  *
  * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     3.3.0
+ * @version     3.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit;
 }
 
-if ( ! $messages ){
+if ( ! $notices ) {
 	return;
 }
 
 ?>
 <div class="woocommerce-message" role="alert">
-<?php foreach ( $messages as $message ) : ?>
-	<div class="woocommerce-message-text"><?php echo wp_kses_post( $message ); ?></div><span class="close-message"></span>
+<?php foreach ( $notices as $notice ) : ?>
+	<div class="woocommerce-message-text"<?php echo function_exists( 'wc_get_notice_data_attr' ) ? wc_get_notice_data_attr( $notice ) : ''; ?>><?php
+		echo wc_kses_notice( $notice['notice'] );
+	?></div>
+    <span class="close-message"></span>
 <?php endforeach; ?>
 </div>
-<?php if(is_product() && of_get_option('header-elements-woocommerce_cart-show_sub_cart')) { ?>
-	   <span class="added-to-cart" data-timer=""></span>
-<?php } ?>
+<?php
+if ( is_product() && of_get_option( 'header-elements-woocommerce_cart-show_sub_cart' ) ) {
+	echo '<span class="added-to-cart" data-timer=""></span>';
+}
+?>

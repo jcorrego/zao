@@ -10,7 +10,6 @@ class WCCT_cart {
 
 	public static $_instance = null;
 	public $is_mini_cart = false;
-	public $is_loaded_from_session = false;
 	public $add_to_cart_action = false;
 	public $cart_product_id = 0;
 	public $cart_product_qty = array();
@@ -67,10 +66,12 @@ class WCCT_cart {
 		add_filter( 'wcct_skip_discounts', array( $this, 'maybe_skip_for_wc_product_addon' ), 999, 3 );
 
 		add_filter( 'woocommerce_add_cart_item', array( $this, 'maybe_setup_data' ), 99, 2 );
-		add_filter( 'woocommerce_get_cart_item_from_session', array( $this, 'maybe_setup_data' ), 1, 2 );
 
-		add_action( 'woocommerce_load_cart_from_session', array( $this, 'set_cart_loaded_from_session' ), 1 );
-		add_action( 'woocommerce_cart_loaded_from_session', array( $this, 'remove_cart_loaded_from_session' ), 9999999, 1 );
+		if ( defined( 'PPOM_VERSION' ) ) {
+			add_filter( 'woocommerce_get_cart_item_from_session', array( $this, 'maybe_setup_data' ), 1, 2 );
+		} else {
+			add_filter( 'woocommerce_get_cart_item_from_session', array( $this, 'maybe_setup_data' ), 19, 2 );
+		}
 
 	}
 
@@ -78,7 +79,7 @@ class WCCT_cart {
 	 * @return WCCT_cart
 	 */
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self;
 		}
 
@@ -103,7 +104,7 @@ class WCCT_cart {
 	 * Checking into mini cart starts
 	 */
 	public function detect_mini_cart_start() {
-		if ( WCCT_Common::$is_executing_rule ) {
+		if ( WCCT_Common::$is_executing_rule || ! WC()->cart instanceof WC_Cart ) {
 			return;
 		}
 
@@ -138,8 +139,8 @@ class WCCT_cart {
 
 	/**
 	 * Checking cart item stock, Iterating each item in the cart validating its attributes
-	 * @see WCCT_Cart::wcct_check_cart_items()
 	 * @return bool|WP_Error
+	 * @see WCCT_Cart::wcct_check_cart_items()
 	 */
 	public function check_cart_item_stock() {
 		global $wpdb, $woocommerce;
@@ -231,15 +232,6 @@ class WCCT_cart {
 
 					return $error;
 				}
-
-				/**
-				 * WC 3.0.8 Source Code
-				 */
-				//                if ( $_product->get_stock_quantity() < ( $held_stock + $product_qty_in_cart[ $_product->get_stock_managed_by_id() ] ) ) {
-				//                    /* translators: 1: product name 2: minutes */
-				//                    $error->add( 'out-of-stock', sprintf( __( 'Sorry, we do not have enough "%1$s" in stock to fulfill your order right now. Please try again in %2$d minutes or edit your cart and try again. We apologize for any inconvenience caused.', 'woocommerce' ), $_product->get_name(), get_option( 'woocommerce_hold_stock_minutes' ) ) );
-				//                    return $error;
-				//                }
 			}
 		}
 
@@ -250,7 +242,7 @@ class WCCT_cart {
 	 * Checking product stock on the cart, first checking a running campaign and then checking product stock attributes
 	 * We forked WC native has_product_stock function to make it work
 	 *
-	 * @param $qty Qty added to the cart
+	 * @param $qty - added to the cart
 	 * @param WC_Product $product
 	 *
 	 * @return bool True on success| False otherwise
@@ -275,39 +267,41 @@ class WCCT_cart {
 
 	/**
 	 * Update Sold Out Quantity against product and campaign id for current occurrence and all occurrence
-	 * @global WooCommerce $woocommerce
 	 *
 	 * @param Integer $order_id
 	 * @param array $posted
 	 *
 	 * @return boolean
+	 * @global WooCommerce $woocommerce
+	 *
 	 */
 	public function wcct_wc_checkout_update_order_meta( $order_id, $posted ) {
 		global $woocommerce;
 		if ( empty( $order_id ) ) {
 			return false;
 		}
+
+		$all_camps_data         = array();
 		$items                  = $woocommerce->cart->get_cart();
 		$get_session            = WC()->session->get( '_wcct_cart_data_' );
 		$get_prev_session_camps = WC()->session->get( '_wcct_cart_running_camp_data_' );
+		$maybe_data_processed   = get_post_meta( (int) $order_id, '_wcct_goaldeal_sold_backup', true );
 
-		$all_camps_data = array();
-
-		$maybe_data_processed = get_post_meta( (int) $order_id, '_wcct_goaldeal_sold_backup', true );
 		if ( is_array( $maybe_data_processed ) && count( $maybe_data_processed ) > 0 ) {
 			return false;
 		}
 
 		if ( is_array( $items ) && count( $items ) > 0 && is_array( $get_session ) && count( $get_session ) > 0 ) {
 			$finale_inventory_reduced_handle = array();
-			$stock_type                      = '';
+			$finale_product_meta             = array();
+			$stock_type                      = array();
 
 			foreach ( $items as $key => $val ) {
 				$val_data = $val;
 				$val      = isset( $get_session[ $key ] ) ? $get_session[ $key ] : array();
 				$pro_id   = $val_data['product_id'];
 
-				if ( isset( $val['from_timestamp'] ) && ( '' != $val['from_timestamp'] ) ) {
+				if ( isset( $val['from_timestamp'] ) && ( '' !== $val['from_timestamp'] ) ) {
 					$start_time           = $val['from_timestamp'];
 					$campaign_id          = $val['campaign_id'];
 					$end_time             = isset( $val['to_timestamp'] ) ? $val['to_timestamp'] : '0';
@@ -316,23 +310,46 @@ class WCCT_cart {
 					$wcct_sold_unit_key   = "_wcct_goaldeal_sold_unit_{$campaign_id}_{$start_time}_{$end_time}";
 					$wcct_sold_total_unit = "_wcct_goaldeal_sold_unit_{$campaign_id}";
 
-					$sold_unit       = get_post_meta( $pro_id, $wcct_sold_out_key, true );
-					$total_sold_unit = get_post_meta( $pro_id, $wcct_sold_total_out, true );
-					$sold_unit       = ! empty( $sold_unit ) ? $sold_unit : 0;
-					$total_sold_unit = ! empty( $total_sold_unit ) ? $total_sold_unit : 0;
+					if ( isset( $finale_product_meta[ $pro_id ] ) && isset( $finale_product_meta[ $pro_id ][ $wcct_sold_out_key ] ) && ! empty( $finale_product_meta[ $pro_id ][ $wcct_sold_out_key ] ) ) {
+						$sold_unit = $finale_product_meta[ $pro_id ][ $wcct_sold_out_key ];
+					} else {
+						$sold_unit = get_post_meta( $pro_id, $wcct_sold_out_key, true );
+					}
 
-					$stock_type = empty( $stock_type ) ? get_post_meta( $campaign_id, '_wcct_deal_units', true ) : $stock_type;
+					if ( isset( $finale_product_meta[ $pro_id ] ) && isset( $finale_product_meta[ $pro_id ][ $wcct_sold_total_out ] ) && ! empty( $finale_product_meta[ $pro_id ][ $wcct_sold_total_out ] ) ) {
+						$total_sold_unit = $finale_product_meta[ $pro_id ][ $wcct_sold_total_out ];
+					} else {
+						$total_sold_unit = get_post_meta( $pro_id, $wcct_sold_total_out, true );
+					}
 
+					$sold_unit           = ! empty( $sold_unit ) ? $sold_unit : 0;
+					$total_sold_unit     = ! empty( $total_sold_unit ) ? $total_sold_unit : 0;
 					$sold_unit_mod       = (int) $sold_unit;
 					$sold_unit_mod       = $sold_unit_mod + (int) $val_data['quantity'];
 					$total_sold_unit_mod = (int) $total_sold_unit + (int) $val_data['quantity'];
 
-					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_out_key ]   = $sold_unit_mod - $sold_unit;
-					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_total_out ] = $total_sold_unit_mod - $total_sold_unit;
+					$temp_sold_out        = 0;
+					$temp_sold_total_out  = 0;
+					$temp_sold_unit       = 0;
+					$temp_sold_total_unit = 0;
 
-					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_unit_key ]   = $sold_unit_mod;
-					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_total_unit ] = $total_sold_unit_mod;
+					if ( isset( $finale_inventory_reduced_handle[ $pro_id ] ) && isset( $finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_out_key ] ) && ! empty( $finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_out_key ] ) ) {
+						$temp_sold_out        = $finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_out_key ] + (int) $val_data['quantity'];
+						$temp_sold_total_out  = $finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_total_out ] + (int) $val_data['quantity'];
+						$temp_sold_unit       = $finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_unit_key ] + (int) $val_data['quantity'];
+						$temp_sold_total_unit = $finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_total_unit ] + (int) $val_data['quantity'];
+					}
 
+					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_out_key ]    = ( 0 !== $temp_sold_out ) ? $temp_sold_out : ( $sold_unit_mod - $sold_unit );
+					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_total_out ]  = ( 0 !== $temp_sold_total_out ) ? $temp_sold_total_out : ( $total_sold_unit_mod - $total_sold_unit );
+					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_unit_key ]   = ( 0 !== $temp_sold_unit ) ? $temp_sold_unit : $sold_unit_mod;
+					$finale_inventory_reduced_handle[ $pro_id ][ $wcct_sold_total_unit ] = ( 0 !== $temp_sold_total_unit ) ? $temp_sold_total_unit : $total_sold_unit_mod;
+
+					if ( ! isset( $stock_type[ $campaign_id ] ) || empty( $stock_type[ $campaign_id ] ) ) {
+						$stock_type[ $campaign_id ] = get_post_meta( $campaign_id, '_wcct_deal_units', true );
+					}
+
+					$finale_inventory_reduced_handle[ $pro_id ]['stock_type']  = $stock_type[ $campaign_id ];
 					$finale_inventory_reduced_handle[ $pro_id ]['campaign_id'] = $campaign_id;
 					$finale_inventory_reduced_handle[ $pro_id ]['start_time']  = $start_time;
 					$finale_inventory_reduced_handle[ $pro_id ]['end_time']    = $end_time;
@@ -357,7 +374,6 @@ class WCCT_cart {
 			}
 
 			if ( is_array( $finale_inventory_reduced_handle ) && count( $finale_inventory_reduced_handle ) > 0 ) {
-				$finale_inventory_reduced_handle['stock_type'] = $stock_type;
 				update_post_meta( (int) $order_id, '_wcct_goaldeal_sold_backup', $finale_inventory_reduced_handle );
 
 				wcct_force_log( "single event scheduled for order: {$order_id} on key: wcct_sold_stock_backup_time", 'finale-inventory.txt' );
@@ -376,7 +392,6 @@ class WCCT_cart {
 	 * Favor: Themes and customizations
 	 */
 	public function wcct_push_discount_price_to_cart() {
-
 		$this->add_to_cart_action = true;
 
 		if ( WCCT_Common::$is_executing_rule ) {
@@ -487,7 +502,6 @@ class WCCT_cart {
 	 * @return boolean result of validation
 	 */
 	public function wcct_setup_data_when_cart( $bool, $productID, $qty ) {
-
 		if ( WCCT_Common::$is_executing_rule ) {
 			return $bool;
 		}
@@ -499,7 +513,6 @@ class WCCT_cart {
 	}
 
 	public function setup_cart_data_session( $cart ) {
-
 		if ( WCCT_Common::$is_executing_rule ) {
 			return $cart;
 		}
@@ -533,6 +546,17 @@ class WCCT_cart {
 		}
 
 		$price = $cart_item['data']->get_price();
+		if ( class_exists( 'WOOCS' ) ) {
+			global $WOOCS;
+			$current = $WOOCS->current_currency;
+
+			if ( $current != $WOOCS->default_currency ) {
+				$currencies = $WOOCS->get_currencies();
+				$rate       = $currencies[ $current ]['rate'];
+				$price      = $price / ( $rate );
+			}
+		}
+
 		$cart_item['data']->set_price( $price );
 		array_push( WCCT_Core()->discount->excluded, $cart_item['data']->get_id() );
 
@@ -543,7 +567,7 @@ class WCCT_cart {
 		$order_id        = WCCT_Compatibility::get_order_id( $order );
 		$order_sold_meta = get_post_meta( $order_id, '_wcct_goaldeal_sold_backup', true );
 
-		if ( ! is_array( $order_sold_meta ) || count( $order_sold_meta ) == 0 ) {
+		if ( ! is_array( $order_sold_meta ) || count( $order_sold_meta ) === 0 ) {
 			$order_sold_meta = array();
 		}
 
@@ -566,18 +590,13 @@ class WCCT_cart {
 	}
 
 	public function maybe_skip_for_wc_product_addon( $bool, $price, $product ) {
-		if ( ( true === WCCT_Core()->discount->is_wc_calculating || true === $this->is_mini_cart || true === $this->is_loaded_from_session ) && ( $product instanceof WC_Product ) && in_array( $product->get_id(), WCCT_Core()->discount->excluded ) ) {
+		if ( ( true === WCCT_Core()->discount->is_wc_calculating || true === $this->is_mini_cart ) && ( $product instanceof WC_Product ) && in_array( $product->get_id(), WCCT_Core()->discount->excluded ) ) {
 			return true;
 		}
+
+		return $bool;
 	}
 
-	public function set_cart_loaded_from_session() {
-		$this->is_loaded_from_session = true;
-	}
-
-	public function remove_cart_loaded_from_session( $cart ) {
-		$this->is_loaded_from_session = false;
-	}
 
 }
 

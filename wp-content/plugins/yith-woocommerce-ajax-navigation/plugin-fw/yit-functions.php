@@ -1,7 +1,6 @@
 <?php
 /**
  * This file belongs to the YIT Plugin Framework.
- *
  * This source file is subject to the GNU GENERAL PUBLIC LICENSE (GPL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -19,7 +18,6 @@ if ( !function_exists( 'yit_plugin_locate_template' ) ) {
      * @param string $plugin_basename
      * @param string $path
      * @param array  $var
-     *
      * @return string
      * @since 2.0.0
      */
@@ -48,7 +46,6 @@ if ( !function_exists( 'yit_plugin_get_template' ) ) {
      * @param string $path
      * @param mixed  $var
      * @param bool   $return
-     *
      * @return string
      * @since 2.0.0
      */
@@ -84,7 +81,6 @@ if ( !function_exists( 'yit_plugin_content' ) ) {
      * @param string     $more_text
      * @param string     $split
      * @param string     $in_paragraph
-     *
      * @return string
      * @since 2.0.0
      */
@@ -187,9 +183,8 @@ if ( !function_exists( 'yit_plugin_string' ) ) {
      *
      * @param string $before What there is before the main string
      * @param string $string The main string. If it is empty or null, the functions return null.
-     * @param string $after What there is after the main string
-     * @param bool   $echo If echo or only return it
-     *
+     * @param string $after  What there is after the main string
+     * @param bool   $echo   If echo or only return it
      * @return string The complete string, if the main string is not empty or null
      * @since 2.0.0
      */
@@ -211,15 +206,12 @@ if ( !function_exists( 'yit_plugin_string' ) ) {
 if ( !function_exists( 'yit_plugin_decode_title' ) ) {
     /**
      * Change some special characters to put easily html into a string
-     *
      * E.G.
      * string: This is [my title] with | a new line
      * return: This is <span class="title-highlight">my title</span> with <br /> a new line
      *
      * @param  string $title The string to convert
-     *
      * @return string  The html
-     *
      * @since 1.0
      */
     function yit_plugin_decode_title( $title ) {
@@ -235,9 +227,7 @@ if ( !function_exists( 'yit_plugin_get_attachment_id' ) ) {
      * Return the ID of an attachment.
      *
      * @param string $url
-     *
      * @return int
-     *
      * @since 2.0.0
      */
 
@@ -297,7 +287,6 @@ if ( !function_exists( 'yit_plugin_get_attachment_id' ) ) {
 if ( !function_exists( 'yit_enqueue_script' ) ) {
     /**
      * Enqueues script.
-     *
      * Registers the script if src provided (does NOT overwrite) and enqueues.
      *
      * @since  2.0.0
@@ -318,7 +307,6 @@ if ( !function_exists( 'yit_enqueue_script' ) ) {
 if ( !function_exists( 'yit_enqueue_style' ) ) {
     /**
      * Enqueues style.
-     *
      * Registers the style if src provided (does NOT overwrite) and enqueues.
      *
      * @since  2.0.0
@@ -346,12 +334,10 @@ if ( !function_exists( 'yit_enqueue_style' ) ) {
 if ( !function_exists( 'yit_get_post_meta' ) ) {
     /**
      * Retrieve the value of a metabox.
-     *
      * This function retrieve the value of a metabox attached to a post. It return either a single value or an array.
      *
-     * @param int    $id Post ID.
+     * @param int    $id   Post ID.
      * @param string $meta The meta key to retrieve.
-     *
      * @return mixed Single value or array
      * @since    2.0.0
      */
@@ -380,9 +366,8 @@ if ( !function_exists( 'yit_string' ) ) {
      *
      * @param string $before What there is before the main string
      * @param string $string The main string. If it is empty or null, the functions return null.
-     * @param string $after What there is after the main string
-     * @param bool   $echo If echo or only return it
-     *
+     * @param string $after  What there is after the main string
+     * @param bool   $echo   If echo or only return it
      * @return string The complete string, if the main string is not empty or null
      * @since 2.0.0
      */
@@ -401,14 +386,12 @@ if ( !function_exists( 'yit_string' ) ) {
     }
 }
 
-
 if ( !function_exists( 'yit_pagination' ) ) {
     /**
      * Print pagination
      *
      * @param string $pages
      * @param int    $range
-     *
      * @return string
      * @since 2.0.0
      */
@@ -450,7 +433,7 @@ if ( !function_exists( 'yit_pagination' ) ) {
             for ( $i = 1; $i <= $pages; $i++ ) {
                 if ( 1 != $pages && ( !( $i >= $paged + $range + 1 || $i <= $paged - $range - 1 ) || $pages <= $showitems ) ) {
                     $class = ( $paged == $i ) ? " class='selected'" : '';
-                    $html .= "<a href='" . get_pagenum_link( $i ) . "'$class >$i</a>";
+                    $html  .= "<a href='" . get_pagenum_link( $i ) . "'$class >$i</a>";
                 }
             }
 
@@ -502,7 +485,6 @@ if ( !function_exists( 'yit_layout_option' ) ) {
      * @param bool   $id
      * @param string $type
      * @param string $model
-     *
      * @return array
      * @since 2.0.0
      */
@@ -551,13 +533,10 @@ if ( !function_exists( 'yit_curPageURL' ) ) {
 
 if ( !function_exists( 'yit_get_excluded_categories' ) ) {
     /**
-     *
      * Retrieve the escluded categories, set on Theme Options
      *
      * @param int $k
-     *
      * @return string String with all id categories excluded, separated by a comma
-     *
      * @since 2.0.0
      */
 
@@ -598,7 +577,6 @@ if ( !function_exists( 'yit_get_excluded_categories' ) ) {
     }
 }
 
-
 if ( !function_exists( 'yit_add_extra_theme_headers' ) ) {
     add_filter( 'extra_theme_headers', 'yit_add_extra_theme_headers' );
 
@@ -606,7 +584,6 @@ if ( !function_exists( 'yit_add_extra_theme_headers' ) ) {
      * Check the framework core version
      *
      * @param $headers Array
-     *
      * @return bool
      * @since  2.0.0
      * @author Andrea Grillo <andrea.grillo@yithemes.com>
@@ -679,7 +656,6 @@ if ( !function_exists( 'yit_avoid_duplicate' ) ) {
      * @param mixed  $value
      * @param array  $array
      * @param string $check
-     *
      * @return mixed
      * @since  2.0.0
      * @author Antonino Scarf� <antonino.scarfi@yithemes.com>
@@ -709,15 +685,12 @@ if ( !function_exists( 'yit_avoid_duplicate' ) ) {
 if ( !function_exists( 'yit_title_special_characters' ) ) {
     /**
      * The chars used in yit_decode_title() and yit_encode_title()
-     *
      * E.G.
      * string: This is [my title] with | a new line
      * return: This is <span class="highlight">my title</span> with <br /> a new line
      *
      * @param  string $title The string to convert
-     *
      * @return string  The html
-     *
      * @since 1.0
      */
     function yit_title_special_characters( $chars ) {
@@ -733,15 +706,12 @@ if ( !function_exists( 'yit_title_special_characters' ) ) {
 if ( !function_exists( 'yit_decode_title' ) ) {
     /**
      * Change some special characters to put easily html into a string
-     *
      * E.G.
      * string: This is [my title] with | a new line
      * return: This is <span class="title-highlight">my title</span> with <br /> a new line
      *
      * @param  string $title The string to convert
-     *
      * @return string  The html
-     *
      * @since 1.0
      */
     function yit_decode_title( $title ) {
@@ -754,15 +724,12 @@ if ( !function_exists( 'yit_decode_title' ) ) {
 if ( !function_exists( 'yit_encode_title' ) ) {
     /**
      * Change some special characters to put easily html into a string
-     *
      * E.G.
      * string: This is [my title] with | a new line
      * return: This is <span class="title-highlight">my title</span> with <br /> a new line
      *
      * @param  string $title The string to convert
-     *
      * @return string  The html
-     *
      * @since 1.0
      */
     function yit_encode_title( $title ) {
@@ -775,15 +742,12 @@ if ( !function_exists( 'yit_encode_title' ) ) {
 if ( !function_exists( 'yit_remove_chars_title' ) ) {
     /**
      * Change some special characters to put easily html into a string
-     *
      * E.G.
      * string: This is [my title] with | a new line
      * return: This is <span class="title-highlight">my title</span> with <br /> a new line
      *
      * @param  string $title The string to convert
-     *
      * @return string  The html
-     *
      * @since 1.0
      */
     function yit_remove_chars_title( $title ) {
@@ -816,7 +780,6 @@ if ( !function_exists( 'yit_load_js_file' ) ) {
      * Load .min.js file if WP_Debug is not defined
      *
      * @param string $filename The file name
-     *
      * @return string The file path
      * @since  2.0.0
      * @author Andrea Grillo <andrea.grillo@yithemes.com>
@@ -838,7 +801,6 @@ if ( !function_exists( 'yit_wpml_register_string' ) ) {
      * @param $contenxt context name
      * @param $name     string name
      * @param $value    value to translate
-     *
      * @since  2.0.0
      * @author Andrea Frascaspata <andrea.frascaspata@yithemes.com>
      */
@@ -855,7 +817,6 @@ if ( !function_exists( 'yit_wpml_string_translate' ) ) {
      * @param $contenxt         context name
      * @param $name             string name
      * @param $default_value    value to translate
-     *
      * @return string the string translated
      * @since  2.0.0
      * @author Andrea Frascaspata <andrea.frascaspata@yithemes.com>
@@ -874,7 +835,6 @@ if ( !function_exists( 'yit_wpml_object_id' ) ) {
      * @param string      $element_type
      * @param bool        $return_original_if_missing
      * @param null|string $ulanguage_code
-     *
      * @return int the translation id
      * @since  2.0.0
      * @author Antonio La Rocca <antonio.larocca@yithemes.com>
@@ -891,14 +851,12 @@ if ( !function_exists( 'yit_wpml_object_id' ) ) {
 
 }
 
-
 if ( !function_exists( 'yith_get_formatted_price' ) ) {
     /**
      * Format the price with a currency symbol.
      *
      * @param float $price
      * @param array $args (default: array())
-     *
      * @return string
      */
     function yith_get_formatted_price( $price, $args = array() ) {
@@ -931,7 +889,6 @@ if ( !function_exists( 'yith_get_terms' ) ) {
      * Get terms
      *
      * @param $args
-     *
      * @return array|int|WP_Error
      */
     function yith_get_terms( $args ) {
@@ -967,7 +924,6 @@ if ( !function_exists( 'yith_panel_field_deps_data' ) ) {
     /**
      * @param                                               $option
      * @param YIT_Plugin_Panel|YIT_Plugin_Panel_WooCommerce $panel
-     *
      * @return string
      */
     function yith_panel_field_deps_data( $option, $panel ) {
@@ -989,7 +945,6 @@ if ( !function_exists( 'yith_plugin_fw_get_field' ) ) {
      * @param array $field
      * @param bool  $echo
      * @param bool  $show_container
-     *
      * @return string|void
      */
     function yith_plugin_fw_get_field( $field, $echo = false, $show_container = true ) {
@@ -1010,6 +965,13 @@ if ( !function_exists( 'yith_plugin_fw_get_field' ) ) {
 
 
         $field_template = yith_plugin_fw_get_field_template_path( $field );
+
+        if ( !isset( $field[ 'id' ] ) ) {
+            static $field_number = 1;
+            $field[ 'id' ] = "yith-plugin-fw-field__{$field_number}";
+            $field_number++;
+        }
+
         if ( $field_template ) {
             if ( !$echo )
                 ob_start();
@@ -1038,6 +1000,7 @@ if ( !function_exists( 'yith_plugin_fw_get_field_template_path' ) ) {
             return false;
 
         $field_template = YIT_CORE_PLUGIN_TEMPLATE_PATH . '/fields/' . sanitize_title( $field[ 'type' ] ) . '.php';
+
         $field_template = apply_filters( 'yith_plugin_fw_get_field_template_path', $field_template, $field );
 
         return file_exists( $field_template ) ? $field_template : false;
@@ -1051,7 +1014,7 @@ if ( !function_exists( 'yith_plugin_fw_html_data_to_string' ) ) {
         if ( is_array( $data ) ) {
             foreach ( $data as $key => $value ) {
                 $current_value = !is_array( $value ) ? $value : implode( ',', $value );
-                $html_data .= " data-$key='$current_value'";
+                $html_data     .= " data-$key='$current_value'";
             }
             $html_data .= ' ';
         }
@@ -1062,6 +1025,7 @@ if ( !function_exists( 'yith_plugin_fw_html_data_to_string' ) ) {
             return $html_data;
     }
 }
+
 if ( !function_exists( 'yith_plugin_fw_get_icon' ) ) {
     function yith_plugin_fw_get_icon( $icon = '', $args = array() ) {
         return YIT_Icons()->get_icon( $icon, $args );
@@ -1070,6 +1034,315 @@ if ( !function_exists( 'yith_plugin_fw_get_icon' ) ) {
 
 if ( !function_exists( 'yith_plugin_fw_is_true' ) ) {
     function yith_plugin_fw_is_true( $value ) {
-        return true === $value || 1 === $value || '1' === $value || 'yes' === $value;
+        return true === $value || 1 === $value || '1' === $value || 'yes' === $value || 'true' === $value;
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_enqueue_enhanced_select' ) ) {
+    function yith_plugin_fw_enqueue_enhanced_select() {
+        wp_enqueue_script( 'yith-enhanced-select' );
+        $select2_style_to_enqueue = function_exists( 'WC' ) ? 'woocommerce_admin_styles' : 'yith-select2-no-wc';
+        wp_enqueue_style( $select2_style_to_enqueue );
+    }
+}
+
+if ( !function_exists( 'yit_add_select2_fields' ) ) {
+    /**
+     * Add select 2
+     *
+     * @param array $args
+     */
+    function yit_add_select2_fields( $args = array() ) {
+        $default = array(
+            'type'              => 'hidden',
+            'class'             => '',
+            'id'                => '',
+            'name'              => '',
+            'data-placeholder'  => '',
+            'data-allow_clear'  => false,
+            'data-selected'     => '',
+            'data-multiple'     => false,
+            'data-action'       => '',
+            'value'             => '',
+            'style'             => '',
+            'custom-attributes' => array()
+        );
+
+        $args = wp_parse_args( $args, $default );
+
+        $custom_attributes = array();
+        foreach ( $args[ 'custom-attributes' ] as $attribute => $attribute_value ) {
+            $custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+        }
+        $custom_attributes = implode( ' ', $custom_attributes );
+
+        if ( !function_exists( 'WC' ) || version_compare( WC()->version, '2.7.0', '>=' ) ) {
+            if ( $args[ 'data-multiple' ] === true && substr( $args[ 'name' ], -2 ) != '[]' ) {
+                $args[ 'name' ] = $args[ 'name' ] . '[]';
+            }
+            $select2_template_name = 'select2.php';
+
+        } else {
+            if ( $args[ 'data-multiple' ] === false && is_array( $args[ 'data-selected' ] ) ) {
+                $args[ 'data-selected' ] = current( $args[ 'data-selected' ] );
+            }
+            $select2_template_name = 'select2-wc-2.6.php';
+        }
+
+        $template = YIT_CORE_PLUGIN_TEMPLATE_PATH . '/fields/resources/' . $select2_template_name;
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_get_version' ) ) {
+    function yith_plugin_fw_get_version() {
+        $plugin_fw_data = get_file_data( trailingslashit( YIT_CORE_PLUGIN_PATH ) . 'init.php', array( 'Version' => 'Version' ) );
+        return $plugin_fw_data[ 'Version' ];
+    }
+}
+
+if ( !function_exists( 'yith_get_premium_support_url' ) ) {
+    //@TODO: To Remove
+    /**
+     * Return the url for My Account > Support dashboard
+     *
+     * @return string The complete string, if the main string is not empty or null
+     * @since 2.0.0
+     */
+    function yith_get_premium_support_url() {
+        return 'https://yithemes.com/my-account/support/dashboard/';
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_is_panel' ) ) {
+    function yith_plugin_fw_is_panel() {
+        $panel_screen_id = 'yith-plugins_page';
+        $screen          = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+        return $screen instanceof WP_Screen && strpos( $screen->id, $panel_screen_id ) !== false;
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_force_regenerate_plugin_update_transient' ) ) {
+    /**
+     * Delete the update plugins transient
+     *
+     * @return void
+     * @since  1.0
+     * @see    update_plugins transient and pre_set_site_transient_update_plugins hooks
+     * @author Andrea Grillo <andrea.grillo@yithemes.com>
+     */
+    function yith_plugin_fw_force_regenerate_plugin_update_transient() {
+        delete_site_transient( 'update_plugins' );
+    }
+}
+
+/* === Gutenberg Support === */
+
+if ( !function_exists( 'yith_plugin_fw_is_gutenberg_enabled' ) ) {
+    function yith_plugin_fw_is_gutenberg_enabled() {
+        return function_exists( 'YITH_Gutenberg' );
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_gutenberg_add_blocks' ) ) {
+    /**
+     * Add new blocks to Gutenberg
+     *
+     * @param $blocks string|array new blocks
+     * @return bool true if add a new blocks, false otherwise
+     * @author Andrea Grillo <andrea.grillo@yithemes.com>
+     */
+    function yith_plugin_fw_gutenberg_add_blocks( $blocks ) {
+        $added = false;
+        if ( yith_plugin_fw_is_gutenberg_enabled() ) {
+            // ADD Blocks
+            $added = YITH_Gutenberg()->add_blocks( $blocks );
+
+            //ADD Blocks arguments
+            if ( $added ) {
+                YITH_Gutenberg()->set_block_args( $blocks );
+            }
+        }
+
+        return $added;
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_gutenberg_get_registered_blocks' ) ) {
+    /**
+     * Return an array with the registered blocks
+     *
+     * @return array
+     */
+    function yith_plugin_fw_gutenberg_get_registered_blocks() {
+        return yith_plugin_fw_is_gutenberg_enabled() ? YITH_Gutenberg()->get_registered_blocks() : array();
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_gutenberg_get_to_register_blocks' ) ) {
+    /**
+     * Return an array with the blocks to register
+     *
+     * @return array
+     */
+    function yith_plugin_fw_gutenberg_get_to_register_blocks() {
+        return yith_plugin_fw_is_gutenberg_enabled() ? YITH_Gutenberg()->get_to_register_blocks() : array();
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_get_default_logo' ) ) {
+    /**
+     * Get the default SVG logo
+     *
+     * @return string default logo image url
+     */
+    function yith_plugin_fw_get_default_logo() {
+        return YIT_CORE_PLUGIN_URL . '/assets/images/yith-icon.svg';
+    }
+}
+
+if ( !function_exists( 'yith_set_wrapper_class' ) ) {
+    /**
+     * Return the class for the new plugin panel style.
+     *
+     * @param $class array|string the list of additional classes to add inside the panel wrapper.
+     * @return string
+     * @author Emanuela Castorina
+     */
+    function yith_set_wrapper_class( $class = '' ) {
+        $new_class = 'yith-plugin-ui';
+        $class     = ( !empty( $class ) && is_array( $class ) ) ? implode( ' ', $class ) : $class;
+
+        return $new_class . ' ' . $class;
+    }
+}
+
+if ( !function_exists( 'yith_get_date_format' ) ) {
+    /**
+     * get all available date format
+     *
+     * @since  3.1
+     * @author Salvatore Strano
+     * @return array
+     */
+
+    function yith_get_date_format( $js = true ) {
+
+        $date_formats = array(
+            'F j, Y' => 'F j, Y',
+            'Y-m-d'  => 'Y-m-d',
+            'm/d/Y'  => 'm/d/Y',
+            'd/m/Y'  => 'd/m/Y',
+        );
+
+        if ( $js ) {
+            $date_formats = array(
+                'MM d, yy' => 'F j, Y',
+                'yy-mm-dd' => 'Y-m-d',
+                'mm/dd/yy' => 'm/d/Y',
+                'dd/mm/yy' => 'd/m/Y',
+            );
+        }
+
+        return apply_filters( 'yith_plugin_fw_date_formats', $date_formats, $js );
+    }
+}
+
+
+if ( !function_exists( 'yith_format_toggle_title' ) ) {
+    /**
+     * replace the placeholders with the values of the element id
+     * for toggle element field.
+     *
+     * @return array
+     * @author Salvatore Strano
+     * @since  3.1
+     */
+
+    function yith_format_toggle_title( $title, $value ) {
+        preg_match_all( '/(?<=\%%).+?(?=\%%)/', $title, $matches );
+        if ( isset( $matches[ 0 ] ) ) {
+            foreach ( $matches[ 0 ] as $element_id ) {
+                if ( isset( $value[ $element_id ] ) ) {
+                    $title = str_replace( '%%' . $element_id . '%%', $value[ $element_id ], $title );
+                }
+            }
+        }
+
+        return $title;
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_load_update_and_licence_files' ) ) {
+    /**
+     * Load premium file for license and update system
+     *
+     * @author Andrea Grillo <andrea.grillo@yithemes.com>
+     * @return void
+     */
+    function yith_plugin_fw_load_update_and_licence_files() {
+        global $plugin_upgrade_fw_data;
+
+        /**
+         * If the init.php was load by old plugin-fw version
+         * load the upgrade and license key from local folder
+         */
+        if ( empty( $plugin_upgrade_fw_data ) ) {
+            $plugin_upgrade_path = plugin_dir_path( __DIR__ ) . 'plugin-upgrade';
+            if ( file_exists( $plugin_upgrade_path ) ) {
+                $required_files = array(
+                    $plugin_upgrade_path . '/lib/yit-licence.php',
+                    $plugin_upgrade_path . '/lib/yit-plugin-licence.php',
+                    $plugin_upgrade_path . '/lib/yit-theme-licence.php',
+                    $plugin_upgrade_path . '/lib/yit-plugin-upgrade.php'
+                );
+
+                $plugin_upgrade_fw_data = array( '1.0' => $required_files );
+            }
+        }
+
+        if ( !empty( $plugin_upgrade_fw_data ) && is_array( $plugin_upgrade_fw_data ) ) {
+            foreach ( $plugin_upgrade_fw_data as $fw_version => $core_files ) {
+                foreach ( $core_files as $core_file ) {
+                    if ( file_exists( $core_file ) ) {
+                        include_once $core_file;
+                    }
+                }
+            }
+        }
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_remove_duplicate_classes' ) ) {
+    /**
+     * Remove the duplicate classes from a string.
+     *
+     * @param  $classes string
+     * @return string
+     * @since  3.2.2
+     * @author Emanuela Castorina <emanuela.castorina@yithemes.com>
+     */
+    function yith_plugin_fw_remove_duplicate_classes( $classes ) {
+        $class_array  = explode( ' ', $classes );
+        $class_unique = array_unique( array_filter( $class_array ) );
+        if ( $class_unique ) {
+            $classes = implode( ' ', $class_unique );
+        }
+
+        return $classes;
+    }
+}
+
+if ( !function_exists( 'yith_plugin_fw_add_requirements' ) ) {
+
+    function yith_plugin_fw_add_requirements( $plugin_name, $requirements ) {
+        if ( !empty( $requirements ) ) {
+            YITH_System_Status()->add_requirements( $plugin_name, $requirements );
+
+
+        }
     }
 }

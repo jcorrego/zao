@@ -3,8 +3,8 @@
 Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
 Requires at least: 4.0
-Tested up to: 4.9.4
-Stable tag: 3.5.1
+Tested up to: 5.3
+Stable tag: 3.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ All this can be done in a quick and very intuitive way that will certainly help 
 Working demos for YITH WooCommerce Ajax Product Filter are available here:
 **[LIVE DEMO](https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/)**
 
-Full documentation for YITH WooCommerce Ajax Product Filter is available [here](http://yithemes.com/docs-plugins/yith-woocommerce-ajax-product-filter/).
+Full documentation for YITH WooCommerce Ajax Product Filter is available [here](https://docs.yithemes.com/yith-woocommerce-ajax-product-filter/).
 
 **Main Features of YITH WooCommerce Ajax Product Filter:**
 
@@ -158,6 +158,95 @@ If you want to see a demonstration version of the premium plugin, you can see it
 10. Admin: YIT Plugins -> Ajax Product Filter -> Custom Style
 
 == Changelog ==
+
+= 3.8.4 - Released on 27 December 2019  =
+
+* New: Support for WooCommerce 3.9
+* Fix: Not updating filters when the customer apply a filter by price
+
+= 3.8.3 - Released on 11 December 2019 =
+
+* Fix: Filter not working on product tag page
+* Update: plugin framework
+
+= 3.8.2 - Released on 28 November 2019  =
+
+* Update: plugin framework
+
+= 3.8.1 - Released on 04 November 2019  =
+
+* Update: plugin framework
+* Fix: Undefined variable message on frontend
+
+= 3.8.0 - Released on 30 October 2019  =
+
+* New: Support for WordPress 5.3
+* New: Support for WooCommerce 3.8
+* Update: plugin framework
+* Fix: Call get_query_object() on null
+* Dev: New filter 'yith_wcan_skip_check_on_product_in_term'
+
+= 3.7.1 - Released on 27th August, 2019  =
+
+* Fix: curl_init() doesn't exist
+
+= 3.7.0 - Released on 07th August, 2019  =
+
+* New: Support for WooCommerce 3.7
+* Fix: Style issues with Storefront theme
+
+= 3.6.6 - Released on 12nd June, 2019 =
+
+* Fix: Bug on plugin options
+
+= 3.6.5 - Released on 12nd June, 2019 =
+
+* Update: Plugin Core Framework
+
+= 3.6.4 - Released on 06th June, 2019 =
+
+* Tweak: WooCommerce 3.6 optimization
+* Update: Plugin Core Framework
+* Update: Languages file
+* Fix: Unable to reset filter in subcategory page
+* Fix: undefined variable term_id in attributes table
+
+= 3.6.3 - Released on 23rd April, 2019 =
+
+* Update: Plugin Core Framework
+
+= 3.6.2 - Released on 08th April, 2019 =
+
+* New: Support to WooCommerce 3.6
+* Tweak: New Widgets name
+* Update: Plugin Core Framework
+* Fix: Undefined variable term_id in attributes table
+* Fix: Wrong reset page with WooCommerce Filter by price widget
+* Fix: Support to Aurum theme - Filter issue using AND operator
+* Fix: Undefined index: source_tax in YITH Reset Filter widget
+* Fix: Issue with reset filter in product categories page
+* Fix: Reset button doesn't works if a variable use a slash char in query string
+* Dev: new parameter for filter 'yith_wcan_dropdown_label'
+
+= 3.6.1 - Released on 11th October, 2018 =
+
+* Update: Plugin Core Framework
+
+= 3.6.0 - Released on 11th October, 2018 =
+
+* New: Support for WooCommerce 3.5
+* New: Support for Aardvark theme
+* New: Support for Aurum theme
+* New: Support for UX Shop theme
+* New: Support for YooTheme theme
+* Fix: Wrong results with search query string
+* Fix: Double chosen icon with themes that override layered navigation style
+* Tweak: Widget reinit after ajax call
+* Tweak: Flatsome optimization
+* Tweak: Prevent untrailingslashit on filter url for SEO optimization
+* Update: Spanish language
+* Update: Italian Language
+* Dev: yith_wcan_skip_no_products_label hook
 
 = 3.5.1 - Released on 14th March, 2018 =
 
@@ -580,7 +669,7 @@ If you have created your own language pack, or have an update for an existing on
 
 == Documentation ==
 
-Full documentation is available [here](http://yithemes.com/docs-plugins/yith_woocommerce_ajax_navigation/).
+Full documentation is available [here](https://docs.yithemes.com/yith-woocommerce-ajax-product-filter/).
 
 == Upgrade notice ==
 

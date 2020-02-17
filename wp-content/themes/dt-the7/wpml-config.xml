@@ -408,6 +408,21 @@
         <custom-field action="copy">_dt_testimonials_options_masonry_layout</custom-field>
         <custom-field action="copy">_dt_testimonials_options_target_width</custom-field>
         <custom-field action="copy">_dt_testimonial_options_link</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsiveness_heading</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsiveness</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsiveness_switch</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsive_height</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsive_font_size</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsive_title_line_height </custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsive_subtitle_font_size</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsive_subtitle_line_height</custom-field>
+        <custom-field action="copy">_dt_fancy_header_responsive_breadcrumbs</custom-field>
+        <custom-field action="copy">_dt_fancy_header_title_line_height</custom-field>
+        <custom-field action="copy">_dt_fancy_header_title_font_size</custom-field>
+        <custom-field action="copy">_dt_fancy_header_subtitle_font_size</custom-field>
+        <custom-field action="copy">_dt_fancy_header_subtitle_line_height</custom-field>
+        <custom-field action="copy">_dt_fancy_header_subtitle_text_transform</custom-field>
+        <custom-field action="copy">_dt_fancy_header_text_transform</custom-field>
         <custom-field action="translate">_dt_testimonial_options_position</custom-field>
     </custom-fields>
     <admin-texts>
@@ -435,8 +450,15 @@
             <key name="header-elements-contact-email-caption" />
             <key name="header-elements-contact-phone-caption" />
             <key name="header-elements-contact-address-caption" />
+            <key name="header-elements-contact-multipurpose_1-caption" />
+            <key name="header-elements-contact-multipurpose_2-caption" />
+            <key name="header-elements-contact-multipurpose_3-caption" />
+            <key name="header-elements-contact-multipurpose_4-caption" />
             <key name="header-elements-search-caption" />
+            <key name="header-elements-search-input-caption" />
             <key name="header-elements-woocommerce_cart-caption" />
+            <key name="header-elements-button-1-name" />
+            <key name="header-elements-button-2-name" />
             <key name="bottom_bar-copyrights" />
             <key name="bottom_bar-text" />
             <key name="header-logo_regular">

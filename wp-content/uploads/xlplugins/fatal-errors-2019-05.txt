@@ -490,3 +490,21 @@ May 28, 2019 17.54.44: Cannot redeclare qvwebot() (previously declared in /home/
 May 28, 2019 17.54.55: Cannot redeclare qvwebot() (previously declared in /home/forge/zaomakeup.com.co/wp-content/plugins/Ultimate_VC_Addons/presets/rotdlsxg.php:2)
 
 May 28, 2019 17.57.48: Cannot redeclare qvwebot() (previously declared in /home/forge/zaomakeup.com.co/wp-content/plugins/Ultimate_VC_Addons/presets/rotdlsxg.php:2)
+
+May 30, 2019 23.58.01: Uncaught Error: Call to undefined method WC_Product_Simple::get_variation_attributes() in /home/forge/zaomakeup.com.co/wp-content/plugins/woocommerce/includes/class-wc-ajax.php:647
+Stack trace:
+#0 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(286): WC_AJAX::add_variation('')
+#1 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(310): WP_Hook->apply_filters('', Array)
+#2 /home/forge/zaomakeup.com.co/wp-includes/plugin.php(453): WP_Hook->do_action(Array)
+#3 /home/forge/zaomakeup.com.co/wp-admin/admin-ajax.php(100): do_action('wp_ajax_woocomm...')
+#4 {main}
+  thrown
+
+May 31, 2019 00.36.34: Uncaught Error: Call to undefined method WC_Product_Simple::get_variation_attributes() in /home/forge/zaomakeup.com.co/wp-content/plugins/woocommerce/includes/class-wc-ajax.php:647
+Stack trace:
+#0 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(286): WC_AJAX::add_variation('')
+#1 /home/forge/zaomakeup.com.co/wp-includes/class-wp-hook.php(310): WP_Hook->apply_filters('', Array)
+#2 /home/forge/zaomakeup.com.co/wp-includes/plugin.php(453): WP_Hook->do_action(Array)
+#3 /home/forge/zaomakeup.com.co/wp-admin/admin-ajax.php(100): do_action('wp_ajax_woocomm...')
+#4 {main}
+  thrown

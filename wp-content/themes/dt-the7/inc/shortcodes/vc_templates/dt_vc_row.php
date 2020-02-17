@@ -40,6 +40,7 @@ $el_id = $el_class = $anchor = $min_height = $margin_top = $margin_bottom = $ful
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
+wp_enqueue_style( 'the7-stripes' );
 wp_enqueue_script( 'wpb_composer_front_js' );
 
 $el_class = $this->getExtraClass( $el_class );
@@ -223,4 +224,4 @@ $output .= wpb_js_remove_wpautop( $content );
 $output .= '</div>';
 $output .= $after_output;
 
-echo $output;
+return $output;

@@ -1,12 +1,9 @@
 <?php
 /**
- * General.
+ * "General Appearance" theme options.
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Heading definition.
@@ -20,10 +17,12 @@ $options[] = array(
 /**
  * Layout.
  */
-$options[] = array( 'name' => _x( 'Layout', 'theme-options', 'the7mk2' ), 'type' => 'block' );
-
-// text
 $options[] = array(
+	'name' => _x( 'Layout', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
+
+$options['general-content_width'] = array(
 	'name'  => _x( 'Content width', 'theme-options', 'the7mk2' ),
 	'id'    => 'general-content_width',
 	'std'   => '1200px',
@@ -31,8 +30,7 @@ $options[] = array(
 	'units' => 'px|%',
 );
 
-// radio
-$options[] = array(
+$options['general-layout'] = array(
 	'name'    => _x( 'Layout', 'theme-options', 'the7mk2' ),
 	'id'      => 'general-layout',
 	'std'     => 'wide',
@@ -50,7 +48,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-box_width'] = array(
 	'name'       => _x( 'Box width', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-box_width',
 	'std'        => '1320px',
@@ -70,14 +68,14 @@ $options[] = array(
 	'type' => 'title',
 );
 
-$options[] = array(
+$options['general-boxed_bg_color'] = array(
 	'name' => _x( 'Background color', 'theme-options', 'the7mk2' ),
 	'type' => 'color',
 	'id'   => 'general-boxed_bg_color',
 	'std'  => '#ffffff',
 );
 
-$options[] = array(
+$options['general-boxed_bg_image'] = array(
 	'name' => _x( 'Add background image', 'theme-options', 'the7mk2' ),
 	'type' => 'background_img',
 	'id'   => 'general-boxed_bg_image',
@@ -89,14 +87,14 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-boxed_bg_fullscreen'] = array(
 	'name' => _x( 'Fullscreen ', 'theme-options', 'the7mk2' ),
 	'type' => 'checkbox',
 	'id'   => 'general-boxed_bg_fullscreen',
 	'std'  => 0,
 );
 
-$options[] = array(
+$options['general-boxed_bg_fixed'] = array(
 	'name' => _x( 'Fixed background ', 'theme-options', 'the7mk2' ),
 	'type' => 'checkbox',
 	'id'   => 'general-boxed_bg_fixed',
@@ -104,11 +102,58 @@ $options[] = array(
 );
 
 /**
+ * Main area (content & sidebar).
+ */
+$options[] = array(
+	'name' => _x( 'Main area (content & sidebar)', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
+
+$options['general-page_content_margin'] = array(
+	'name'   => _x( 'Paddings', 'theme-options', 'the7mk2' ),
+	'id'     => 'general-page_content_margin',
+	'type'   => 'spacing',
+	'std'    => '50px 50px 50px 50px',
+	'units'  => 'px|%',
+	'fields' => array(
+		_x( 'Top', 'theme-options', 'the7mk2' ),
+		_x( 'Right', 'theme-options', 'the7mk2' ),
+		_x( 'Bottom', 'theme-options', 'the7mk2' ),
+		_x( 'Left', 'theme-options', 'the7mk2' ),
+	),
+);
+
+$options['general-switch_content_paddings'] = array(
+	'name'  => _x( 'Mobile breakpoint', 'theme-options', 'the7mk2' ),
+	'id'    => 'general-switch_content_paddings',
+	'type'  => 'number',
+	'std'   => '778px',
+	'units' => 'px',
+);
+
+$options['general-page_content_mobile_margin'] = array(
+	'name'   => _x( 'Mobile paddings', 'theme-options', 'the7mk2' ),
+	'id'     => 'general-page_content_mobile_margin',
+	'type'   => 'spacing',
+	'std'    => '50px 20px 50px 20px',
+	'units'  => 'px|%',
+	'fields' => array(
+		_x( 'Top', 'theme-options', 'the7mk2' ),
+		_x( 'Right', 'theme-options', 'the7mk2' ),
+		_x( 'Bottom', 'theme-options', 'the7mk2' ),
+		_x( 'Left', 'theme-options', 'the7mk2' ),
+	),
+);
+
+/**
  * Background.
  */
-$options[] = array( 'name' => _x( 'Background', 'theme-options', 'the7mk2' ), 'type' => 'block' );
-
 $options[] = array(
+	'name' => _x( 'Background', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
+
+$options['general-bg_color'] = array(
 	'name' => _x( 'Color', 'theme-options', 'the7mk2' ),
 	'type' => 'alpha_color',
 	'id'   => 'general-bg_color',
@@ -116,7 +161,7 @@ $options[] = array(
 	'desc' => _x( '"Opacity" isn\'t compatible with slide-out footer', 'theme-options', 'the7mk2' ),
 );
 
-$options[] = array(
+$options['general-bg_image'] = array(
 	'name' => _x( 'Add background image', 'theme-options', 'the7mk2' ),
 	'type' => 'background_img',
 	'id'   => 'general-bg_image',
@@ -128,14 +173,14 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-bg_fullscreen'] = array(
 	'name' => _x( 'Fullscreen', 'theme-options', 'the7mk2' ),
 	'type' => 'checkbox',
 	'id'   => 'general-bg_fullscreen',
 	'std'  => 0,
 );
 
-$options[] = array(
+$options['general-bg_fixed'] = array(
 	'name' => _x( 'Fixed background', 'theme-options', 'the7mk2' ),
 	'type' => 'checkbox',
 	'id'   => 'general-bg_fixed',
@@ -146,16 +191,19 @@ $options[] = array(
 /**
  * Content boxes.
  */
-$options[] = array( 'name' => _x( 'Content boxes', 'theme-options', 'the7mk2' ), 'type' => 'block' );
-
 $options[] = array(
+	'name' => _x( 'Content boxes', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
+
+$options['general-content_boxes_bg_color'] = array(
 	'name' => _x( 'Background color', 'theme-options', 'the7mk2' ),
 	'type' => 'alpha_color',
 	'id'   => 'general-content_boxes_bg_color',
 	'std'  => '#FFFFFF',
 );
 
-$options[] = array(
+$options['general-content_boxes_decoration'] = array(
 	'name'    => _x( 'Decoration', 'theme-options', 'the7mk2' ),
 	'type'    => 'images',
 	'id'      => 'general-content_boxes_decoration',
@@ -177,7 +225,7 @@ $options[] = array(
 	),
 );
 
-$options[] = array(
+$options['general-content_boxes_decoration_outline_color'] = array(
 	'name'       => _x( 'Decoration outline color', 'theme-options', 'the7mk2' ),
 	'type'       => 'alpha_color',
 	'id'         => 'general-content_boxes_decoration_outline_color',
@@ -192,7 +240,10 @@ $options[] = array(
 /**
  * Dividers.
  */
-$options[] = array( 'name' => _x( 'Dividers', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+$options[] = array(
+	'name' => _x( 'Dividers', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
 
 $options['dividers-color'] = array(
 	'name' => _x( 'Dividers color', 'theme-options', 'the7mk2' ),
@@ -204,11 +255,14 @@ $options['dividers-color'] = array(
 /**
  * Color accent.
  */
-$options[] = array( 'name' => _x( 'Color accent', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+$options[] = array(
+	'name' => _x( 'Color accent', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
 
 $options['general-accent_color_mode'] = array(
 	'name'      => _x( 'Accent color', 'theme-options', 'the7mk2' ),
-	'type'      => 'images',
+	'type'      => 'radio',
 	'id'        => 'general-accent_color_mode',
 	'std'       => 'color',
 	'class'     => 'small',
@@ -217,16 +271,11 @@ $options['general-accent_color_mode'] = array(
 		'gradient' => 'general-accent_color_mode-gradient',
 	),
 	'options'   => array(
-		'color'    => array(
-			'title' => _x( 'Solid color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'gradient' => array(
-			'title' => _x( 'Gradient', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom-gradient.gif',
-		),
+		'color'    => _x( 'Solid color', 'theme-options', 'the7mk2' ),
+		'gradient' => _x( 'Gradient', 'theme-options', 'the7mk2' ),
 	),
 );
+
 
 $options['general-accent_bg_color'] = array(
 	'name'       => '&nbsp;',
@@ -255,9 +304,12 @@ $options['general-accent_bg_color_gradient'] = array(
 /**
  * Border radius.
  */
-$options[] = array( 'name' => _x( 'Border radius', 'theme-options', 'the7mk2' ), 'type' => 'block' );
-
 $options[] = array(
+	'name' => _x( 'Border radius', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
+
+$options['general-border_radius'] = array(
 	'name'  => _x( 'Border radius', 'theme-options', 'the7mk2' ),
 	'type'  => 'number',
 	'id'    => 'general-border_radius',
@@ -268,7 +320,10 @@ $options[] = array(
 /**
  * Beautiful loading.
  */
-$options[] = array( 'name' => _x( 'Beautiful loading', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+$options[] = array(
+	'name' => _x( 'Beautiful loading', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
 
 $options['general-beautiful_loading'] = array(
 	'name'    => _x( 'Beautiful loading', 'theme-options', 'the7mk2' ),
@@ -291,22 +346,13 @@ $options['general-beautiful_loading'] = array(
 $options['general-fullscreen_overlay_color_mode'] = array(
 	'name'       => _x( 'Fullscreen overlay color', 'theme-options', 'the7mk2' ),
 	'id'         => 'general-fullscreen_overlay_color_mode',
-	'type'       => 'images',
+	'type'       => 'radio',
 	'class'      => 'small',
 	'std'        => 'accent',
 	'options'    => array(
-		'accent'   => array(
-			'title' => _x( 'Accent', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-accent.gif',
-		),
-		'color'    => array(
-			'title' => _x( 'Custom color', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom.gif',
-		),
-		'gradient' => array(
-			'title' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
-			'src'   => '/inc/admin/assets/images/color-custom-gradient.gif',
-		),
+		'accent'   => _x( 'Accent', 'theme-options', 'the7mk2' ),
+		'color'    => _x( 'Custom color', 'theme-options', 'the7mk2' ),
+		'gradient' => _x( 'Custom gradient', 'theme-options', 'the7mk2' ),
 	),
 	'dependency' => array(
 		'field'    => 'general-beautiful_loading',
@@ -428,7 +474,10 @@ $options[] = array( 'type' => 'js_hide_end' );
 /**
  * Lightbox.
  */
-$options[] = array( 'name' => _x( 'Lightbox', 'theme-options', 'the7mk2' ), 'type' => 'block' );
+$options[] = array(
+	'name' => _x( 'Lightbox', 'theme-options', 'the7mk2' ),
+	'type' => 'block',
+);
 
 $options['general-lightbox_overlay_opacity'] = array(
 	'name'    => _x( 'Lightbox overlay opacity', 'theme-options', 'the7mk2' ),

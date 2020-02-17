@@ -17,13 +17,18 @@ class The7_Dev_Beta_Tester {
 	 * Save beta tester mode.
 	 */
 	public static function save_mode() {
+		if ( ! check_ajax_referer( 'the7-dev-beta-tester', false, false ) || ! current_user_can( 'switch_themes' )  ) {
+			return;
+		}
+
 		if ( ! isset( $_POST['save'] ) ) {
 			return;
 		}
 
-		check_ajax_referer( 'the7-dev-beta-tester' );
+		self::set_status(  (int) isset( $_POST['beta-tester'] ) );
 
-		self::set_status( intval( isset( $_POST['beta-tester'] ) ) );
+		// Force update plugins list on next page load.
+		delete_site_option( 'the7_plugins_last_check' );
 	}
 
 	/**

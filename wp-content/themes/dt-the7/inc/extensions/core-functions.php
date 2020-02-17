@@ -8,6 +8,19 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+if ( ! function_exists( 'the7_aq_resize' ) ) {
+
+	/**
+	 * This is just a tiny wrapper function for the class above so that there is no
+	 * need to change any code in your own WP themes. Usage is still the same :)
+	 */
+	function the7_aq_resize( $url, $img_width, $img_height, $width = null, $height = null, $crop = null, $single = true, $upscale = false ) {
+		$aq_resize = The7_Aq_Resize::getInstance();
+
+		return $aq_resize->process( $url, $img_width, $img_height, $width, $height, $crop, $single, $upscale );
+	}
+}
+
 /**
  * Constrain dimensions helper.
  *
@@ -201,6 +214,9 @@ function dt_get_thumb_img( $opts = array() ) {
 		'options' => array(),
 		'default_img' => $default_image,
 		'prop' => false,
+		'lazy_loading' => false,
+		'lazy_class'    => 'lazy-load',
+		'lazy_bg_class' => 'layzr-bg',
 		'echo' => true,
 	);
 	$opts = wp_parse_args( $opts, $defaults );
@@ -223,11 +239,11 @@ function dt_get_thumb_img( $opts = array() ) {
 		$_img_meta = $original_image;
 
 		if ( $_prop > 1 ) {
-			$h = intval(floor($_img_meta[1] / $_prop));
-			$w = intval(floor($_prop * $h));
+			$h = (int) floor((int) $_img_meta[1] / $_prop);
+			$w = (int) floor($_prop * $h );
 		} else if ( $_prop < 1 ) {
-			$w = intval(floor($_prop * $_img_meta[2]));
-			$h = intval(floor($w / $_prop));
+			$w = (int) floor($_prop * $_img_meta[2]);
+			$h = (int) floor($w / $_prop );
 		} else {
 			$w = $h = min($_img_meta[1], $_img_meta[2]);
 		}
@@ -278,11 +294,6 @@ function dt_get_thumb_img( $opts = array() ) {
 		}
 	}
 
-	$class = empty( $opts['class'] ) ? '' : 'class="' . esc_attr( trim($opts['class']) ) . '"';
-	$title = empty( $opts['title'] ) ? '' : 'title="' . esc_attr( trim($opts['title']) ) . '"';
-	$img_title = empty( $opts['img_title'] ) ? '' : 'title="' . esc_attr( trim($opts['img_title']) ) . '"';
-	$img_class = empty( $opts['img_class'] ) ? '' : 'class="' . esc_attr( trim($opts['img_class']) ) . '"';
-
 	$href = $opts['href'];
 	if ( !$href ) {
 		$href = $original_image[0];
@@ -297,7 +308,6 @@ function dt_get_thumb_img( $opts = array() ) {
 		$size = $resized_image[3];
 	}
 
-//	$lazy_loading_src = "data:image/svg+xml,%3Csvg xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox%3D'0 0 $_width $_height'%2F%3E";
 	$lazy_loading_src = "data:image/svg+xml,%3Csvg%20xmlns%3D&#39;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#39;%20viewBox%3D&#39;0%200%20{$_width}%20{$_height}&#39;%2F%3E";
 
 	$lazy_loading = ! empty( $opts['lazy_loading'] );
@@ -313,6 +323,8 @@ function dt_get_thumb_img( $opts = array() ) {
 			$src_att .= ', ' . sprintf( $srcset_tpl, esc_attr( $hd_src ), $resized_image_hd[1] );
 		}
 		$src_att = 'src="' . $lazy_loading_src . '" data-src="' . $esc_src . '" data-srcset="' . $src_att . '"';
+		$opts['img_class'] .= ' ' . $opts['lazy_class'];
+		$opts['class'] .= ' ' . $opts['lazy_bg_class'];
 	} else {
 		$src_att = sprintf( $srcset_tpl, $src, $resized_image[1] );
 		if ( $resized_image_hd ) {
@@ -321,6 +333,11 @@ function dt_get_thumb_img( $opts = array() ) {
 		$src_sizes = $resized_image[1] . 'px';
 		$src_att = 'src="' . esc_attr( $src ) . '" srcset="' . esc_attr( $src_att ) . '" sizes="' . esc_attr( $src_sizes ) . '"';
 	}
+
+	$class = empty( $opts['class'] ) ? '' : 'class="' . esc_attr( trim($opts['class']) ) . '"';
+	$title = empty( $opts['title'] ) ? '' : 'title="' . esc_attr( trim($opts['title']) ) . '"';
+	$img_title = empty( $opts['img_title'] ) ? '' : 'title="' . esc_attr( trim($opts['img_title']) ) . '"';
+	$img_class = empty( $opts['img_class'] ) ? '' : 'class="' . esc_attr( trim($opts['img_class']) ) . '"';
 
 	$output = str_replace(
 		array(
@@ -337,7 +354,7 @@ function dt_get_thumb_img( $opts = array() ) {
 			'%RAW_ALT%',
 			'%RAW_IMG_TITLE%',
 			'%RAW_IMG_DESCRIPTION%',
-			'%RAW_IMG_CAPTION'
+			'%RAW_IMG_CAPTION%'
 		),
 		array(
 			'href="' . esc_url( $href ) . '"',
@@ -504,36 +521,6 @@ function dt_get_uploaded_logo( $logo, $type = 'normal' ) {
 	return $res_arr;
 }
 
-
-// TODO: refactor
-/**
- * Description here.
- *
- * @since presscore 0.1
- */
-function dt_get_google_fonts( $font = '', $effect = '' ) {
-	if ( ! $font ) {
-		return;
-	}
-
-	?>
-	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=<?php echo str_replace( ' ', '+', $font ); ?>">
-	<?php
-}
-
-/**
- * Description here.
- *
- * @since presscore 0.1
- */
-function dt_make_web_font_uri( $font ) {
-	if ( !$font ) {
-		return false;
-	}
-
-    return '//fonts.googleapis.com/css?family=' . str_replace( ' ', '+', $font );
-}
-
 /**
  * Create html tag.
  *
@@ -580,16 +567,28 @@ function the7_get_image_mime( $image ) {
 /**
  * Return current paged/page query var or 1 if it's empty.
  *
- * @return ineger.
+ * @since 7.1.1
  *
- * @since presscore 0.1
+ * @return int
  */
-function dt_get_paged_var() {
-	if ( !( $pg = get_query_var('page') ) ) {
-		$pg = get_query_var('paged');
+function the7_get_paged_var() {
+	$pg = get_query_var( 'page' );
+
+	if ( ! $pg ) {
+		$pg = get_query_var( 'paged' );
 		$pg = $pg ? $pg : 1;
 	}
-	return absint($pg);
+
+	/**
+	 * Filter the returned paged var.
+	 *
+     * @since 7.1.1
+     *
+     * @see the7_get_paged_var()
+     *
+	 * @param int Paged var.
+	 */
+	return apply_filters( 'the7_get_paged_var', absint( $pg ) );
 }
 
 /**
@@ -783,154 +782,12 @@ function dt_get_short_post_myme_type( $post_id = '' ) {
  * @return mixed.
  */
 function dt_get_embed( $src, $width = '', $height = '' ) {
-    if ( ! class_exists( 'The7_Embed', false ) ) {
-        require_once dirname( __FILE__ ) . '/class-the7-embed.php';
-    }
-
     $the7_embed = new The7_Embed( $src );
 	$the7_embed->set_width( $width );
 	$the7_embed->set_height( $height );
 
 	return $the7_embed->get_html();
 }
-
-/**
- * Ajax send mail function.
- *
- * Description here.
- *
- * @since 1.0.0
- */
-function dt_core_send_mail() {
-	$honey_msg = isset( $_POST['send_message'] ) ? trim( $_POST['send_message'] ) : '';
-	$fields = empty( $_POST['fields'] ) ? array() : $_POST['fields'];
-
-	$fields_titles = array(
-		'name'		=> _x( 'Name:', 'mail', 'the7mk2' ),
-		'email'		=> _x( 'E-mail:', 'mail', 'the7mk2' ),
-		'telephone'	=> _x( 'Telephone:', 'mail', 'the7mk2' ),
-		'country'	=> _x( 'Country:', 'mail', 'the7mk2' ),
-		'city'		=> _x( 'City:', 'mail', 'the7mk2' ),
-		'company'	=> _x( 'Company:', 'mail', 'the7mk2' ),
-		'website'	=> _x( 'Website:', 'mail', 'the7mk2' ),
-		'message'	=> _x( 'Message:', 'mail', 'the7mk2' ),
-	);
-
-	$fields = apply_filters( 'dt_core_send_mail-sanitize_fields', $fields, $fields_titles );
-
-	$send = false;
-	$errors = '';
-
-	if( $honey_msg ) {
-		$errors = _x( 'Sorry, we suspect that you are bot', 'feedback', 'the7mk2' );
-	}
-
-	if ( ! empty( $fields ) && ! $errors ) {
-
-		// target email
-		$em = apply_filters( 'dt_core_send_mail-to', get_option( 'admin_email' ) );
-
-		$name = get_option( 'blogname' );
-		$email = $em;
-
-		if ( !empty( $fields['email'] ) && is_email( $fields['email'] ) ) {
-			$email = $fields['email'];
-		}
-
-		$email = sanitize_email( $email );
-
-		if ( !empty( $fields['name'] ) ) {
-			$name = $fields['name'];
-		}
-
-		// set headers
-		$headers = array(
-			'From: ' . esc_attr( strip_tags( $name ) ) . ' <' . $em . '>',
-			'Reply-To: ' . $email,
-		);
-		$headers = apply_filters( 'dt_core_send_mail-headers', $headers );
-
-		// construct mail message
-		$msg_mail = '';
-		foreach ( $fields as $field=>$value ) {
-			if ( !isset($fields_titles[ $field ]) ) {
-				continue;
-			}
-
-			$msg_mail .= $fields_titles[ $field ] . ' ' . stripslashes( $value ) . "\n";
-		}
-		$msg_mail = wp_kses_post( $msg_mail );
-		$msg_mail = apply_filters( 'dt_core_send_mail-msg', $msg_mail, $fields );
-
-		$subject = apply_filters( 'dt_core_send_mail-subject', sprintf( _x( '[Feedback from: %s]', 'feedback msg', 'the7mk2' ), esc_attr( get_option( 'blogname' ) ) ) );
-
-		// send email
-		$send = wp_mail(
-			$em,
-			$subject,
-			$msg_mail,
-			$headers
-		);
-
-		$custom_success_msg = of_get_option( 'custom_success_messages', '' );
-		$custom_error_msg = of_get_option( 'custom_error_messages', '' );
-
-		// message
-		if ( $send ) {
-			$errors = empty( $custom_success_msg ) ? _x( 'Your message has been sent.', 'feedback msg', 'the7mk2' ) : $custom_success_msg;
-		} else {
-			$errors = empty( $custom_error_msg ) ? _x( 'The message has not been sent. Please try again.', 'feedback msg', 'the7mk2' ) : $custom_error_msg;
-		}
-	}
-
-	wp_send_json( array(
-		'success' => $send,
-		'errors'  => $errors,
-	) );
-}
-add_action( 'wp_ajax_nopriv_dt_send_mail', 'dt_core_send_mail' );
-add_action( 'wp_ajax_dt_send_mail', 'dt_core_send_mail' );
-
-/**
- * Sanitize email fields.
- *
- * @param $fields array
- * @param $fields_titles array
- *
- * @return array
- */
-function dt_sanitize_email_fields( $fields = array(), $fields_titles = array() ) {
-	if ( empty( $fields ) || empty( $fields_titles ) ) {
-		return array();
-	}
-
-	foreach ( $fields as $field=>$value ) {
-		if ( !isset($fields_titles[ $field ]) ) {
-			unset( $fields[ $field ] );
-		}
-
-		switch ( $field ) {
-
-			case 'email' :
-				$fields[ $field ] = sanitize_email( $value );
-				break;
-
-			case 'message' :
-				$fields[ $field ] = esc_html( $value );
-				break;
-
-			case 'website' :
-				$fields[ $field ] = esc_url( $value );
-				break;
-
-			default:
-				$fields[ $field ] = sanitize_text_field( $value );
-		}
-	}
-
-	return $fields;
-}
-add_filter( 'dt_core_send_mail-sanitize_fields', 'dt_sanitize_email_fields', 15, 2 );
 
 /**
  * Inner left join filter for query.
@@ -1109,29 +966,32 @@ function dt_print_filters_for( $hook = '' ) {
 /**
  * Get next post url.
  *
+ * @param int $max_page Optional. Max page.
+ *
+ * @return string
  */
 function dt_get_next_posts_url( $max_page = 0 ) {
 	global $paged, $wp_query;
 
-	if( !$paged = intval(get_query_var('page'))) {
-		$paged = intval(get_query_var('paged'));
+	if ( ! $paged = (int) get_query_var( 'page' ) ) {
+		$paged = (int) get_query_var( 'paged' );
 	}
 
-	if ( !$max_page ) {
+	if ( ! $max_page ) {
 		$max_page = $wp_query->max_num_pages;
 	}
 
-	if ( !$paged ) {
+	if ( ! $paged ) {
 		$paged = 1;
 	}
 
-	$nextpage = intval($paged) + 1;
+	$nextpage = (int) $paged + 1;
 
-	if ( !is_single() && ( $nextpage <= $max_page ) ) {
-		return next_posts( $max_page, false );
+	if ( ! $max_page || $max_page >= $nextpage ) {
+		return get_pagenum_link( $max_page );
 	}
 
-	return false;
+	return '';
 }
 
 function dt_is_woocommerce_enabled() {
@@ -1223,7 +1083,7 @@ if ( ! function_exists( 'presscore_template_manager' ) ) :
 	function presscore_template_manager() {
 		static $instance = null;
 		if ( null === $instance ) {
-			$instance = new Presscore_Template_Manager();
+			$instance = new The7_Template_Manager();
 		}
 		return $instance;
 	}
@@ -1235,7 +1095,7 @@ if ( ! function_exists( 'presscore_query' ) ) :
 	function presscore_query() {
 		static $instance = null;
 		if ( null === $instance ) {
-			$instance = new Presscore_Query();
+			$instance = new The7_Query();
 		}
 		return $instance;
 	}
@@ -1271,10 +1131,6 @@ function presscore_sanitize_classes( $classes ) {
 }
 
 function presscore_theme_is_activated() {
-	if ( defined( 'ENVATO_HOSTED_SITE' ) ) {
-		return true;
-	}
-
 	return ( 'yes' === get_site_option( 'the7_registered' ) );
 }
 
@@ -1293,10 +1149,6 @@ function presscore_delete_purchase_code() {
 }
 
 function presscore_get_purchase_code() {
-	if ( defined( 'SUBSCRIPTION_CODE' ) ) {
-	    return 'envato_hosted:' . SUBSCRIPTION_CODE;
-	}
-
 	return get_site_option( 'the7_purchase_code' );
 }
 
@@ -1308,6 +1160,15 @@ function presscore_get_censored_purchase_code() {
 	}
 
 	return $code;
+}
+
+/**
+ * Check if silence mode enabled
+ *
+ * @return boolean
+ */
+function presscore_is_silence_enabled() {
+	return presscore_theme_is_activated() && The7_Admin_Dashboard_Settings::get( 'silence-purchase-notification' );
 }
 
 /**
@@ -1338,3 +1199,58 @@ if ( ! function_exists( 'the7_get_theme_version' ) ):
     }
 
 endif;
+
+/**
+ * Add a submenu page after specified submenu page.
+ *
+ * This function takes a capability which will be used to determine whether
+ * or not a page is included in the menu.
+ *
+ * The function which is hooked in to handle the output of the page must check
+ * that the user has the required capability as well.
+ *
+ * @since 7.0.0
+ *
+ * @global array $submenu
+ * @global array $menu
+ * @global array $_wp_real_parent_file
+ * @global bool  $_wp_submenu_nopriv
+ * @global array $_registered_pages
+ * @global array $_parent_pages
+ *
+ * @param string   $parent_slug The slug name for the parent menu (or the file name of a standard
+ *                              WordPress admin page).
+ * @param string   $page_title  The text to be displayed in the title tags of the page when the menu
+ *                              is selected.
+ * @param string   $menu_title  The text to be used for the menu.
+ * @param string   $capability  The capability required for this menu to be displayed to the user.
+ * @param string   $menu_slug   The slug name to refer to this menu by. Should be unique for this menu
+ *                              and only include lowercase alphanumeric, dashes, and underscores characters
+ *                              to be compatible with sanitize_key().
+ * @param callable $function    The function to be called to output the content for this page.
+ * @param string $insert_after  Insert after menu item with that slug.
+ * @return false|string The resulting page's hook_suffix, or false if the user does not have the capability required.
+ */
+function the7_add_submenu_page_after( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function = '', $insert_after = '' ) {
+	$hook = add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+
+	if ( $hook && $insert_after ) {
+		global $submenu;
+
+		$menu_slug   = plugin_basename( $menu_slug );
+		$new_submenu = array();
+		foreach ( $submenu[ $parent_slug ] as $i => $item ) {
+			if ( $item[2] === $menu_slug ) {
+				continue;
+			}
+
+			isset( $new_submenu[ $i ] ) ? $new_submenu[] = $item : $new_submenu[ $i ] = $item;
+			if ( $item[2] === $insert_after ) {
+				$new_submenu[] = array( $menu_title, $capability, $menu_slug, $page_title );
+			}
+		}
+		$submenu[ $parent_slug ] = $new_submenu;
+	}
+
+	return $hook;
+}

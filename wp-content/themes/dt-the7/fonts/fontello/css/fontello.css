@@ -3,8 +3,7 @@
   src: url('../font/fontello.eot?2136226');
   src: url('../font/fontello.eot?2136226#iefix') format('embedded-opentype'),
        url('../font/fontello.woff?2136226') format('woff'),
-       url('../font/fontello.ttf?2136226') format('truetype'),
-       url('../font/fontello.svg?2136226#fontello') format('svg');
+       url('../font/fontello.ttf?2136226') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

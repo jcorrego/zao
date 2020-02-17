@@ -42,7 +42,7 @@ class DT_Shortcode_BlogPostsSmall extends DT_Shortcode {
 			'number' => '6',
 			'columns' => '1',
 			'show_excerpts' => '',
-		), $atts ) );
+		), $atts, $this->shortcode_name ) );
 
 		// sanitize attributes
 		$featured_images = apply_filters('dt_sanitize_flag', $featured_images );

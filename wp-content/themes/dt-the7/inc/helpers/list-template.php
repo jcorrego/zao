@@ -11,7 +11,7 @@ if ( ! function_exists( 'presscore_list_container_data_atts' ) ) :
 	 */
 	function presscore_list_container_data_atts( $custom_atts = array() ) {
 		$data_atts = array(
-			'data-cur-page="' . dt_get_paged_var() . '"'
+			'data-cur-page="' . the7_get_paged_var() . '"'
 		);
 		$data_atts = array_merge( $data_atts, $custom_atts );
 

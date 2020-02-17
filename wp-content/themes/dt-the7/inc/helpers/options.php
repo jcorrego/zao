@@ -52,7 +52,6 @@ if ( ! function_exists( 'presscore_get_social_icons_data' ) ) :
 		$icons = array(
 			'facebook'		=> __('Facebook', 'the7mk2'),
 			'twitter'		=> __('Twitter', 'the7mk2'),
-			'google'		=> __('Google+', 'the7mk2'),
 			'dribbble'		=> __('Dribbble', 'the7mk2'),
 			'you-tube'		=> __('YouTube', 'the7mk2'),
 			'rss'			=> __('Rss', 'the7mk2'),
@@ -86,120 +85,13 @@ if ( ! function_exists( 'presscore_get_social_icons_data' ) ) :
 			'whatsapp'	=> __('Whatsapp', 'the7mk2'),
 			'reddit'	=> __('Reddit', 'the7mk2'),
 			'snapchat'	=> __('Snapchat', 'the7mk2'),
+			'telegram'	=> __('Telegram', 'the7mk2'),
 		);
 
 		return apply_filters( 'presscore_get_social_icons_data', $icons );
 	}
 
 endif; // presscore_get_social_icons_data
-
-if ( ! function_exists( 'presscore_themeoptions_get_headers_defaults' ) ) :
-
-	/**
-	 * Returns headers defaults array.
-	 *
-	 * @return array.
-	 * @since presscore 0.1
-	 */
-	function presscore_themeoptions_get_headers_defaults() {
-
-		$headers = array(
-			'h1'	=> array(
-				'desc'	=> _x('H1', 'theme-options', 'the7mk2'),
-				'fs'	=> 44,	// font size
-				'ff'	=> '',	// font face
-				'lh'	=> 50,	// line height
-				'uc'	=> 0,	// upper case
-			), 
-			'h2'	=> array(
-				'desc'	=> _x('H2', 'theme-options', 'the7mk2'),
-				'fs'	=> 26,
-				'ff'	=> '',
-				'lh'	=> 30,
-				'uc'	=> 0
-			), 
-			'h3'	=> array(
-				'desc'	=> _x('H3', 'theme-options', 'the7mk2'),
-				'fs'	=> 22,
-				'ff'	=> '',
-				'lh'	=> 30,
-				'uc'	=> 0
-			),
-			'h4'	=> array(
-				'desc'	=> _x('H4', 'theme-options', 'the7mk2'),
-				'fs'	=> 18,
-				'ff'	=> '',
-				'lh'	=> 20,
-				'uc'	=> 0
-			),
-			'h5'	=> array(
-				'desc'	=> _x('H5', 'theme-options', 'the7mk2'),
-				'fs'	=> 15,
-				'ff'	=> '',
-				'lh'	=> 20,
-				'uc'	=> 0
-			),
-			'h6'	=> array(
-				'desc'	=> _x('H6', 'theme-options', 'the7mk2'),
-				'fs'	=> 12,
-				'ff'	=> '',
-				'lh'	=> 20,
-				'uc'	=> 0
-			)
-		);
-
-		return $headers;
-	}
-
-endif; // presscore_themeoptions_get_headers_defaults
-
-if ( ! function_exists( 'presscore_themeoptions_get_buttons_defaults' ) ) :
-
-	/**
-	 * Buttons defaults array.
-	 *
-	 * @return array
-	 */
-	function presscore_themeoptions_get_buttons_defaults() {
-		return array(
-			's'		=> array(
-				'desc'	=> _x('Small buttons', 'theme-options', 'the7mk2'),
-				'ff'	=> '',
-				'fs'	=> 12,
-				'uc'	=> 0,
-				'lh'	=> 21,
-				'padding_left' => 14,
-				'padding_right' => 14,
-				'padding_top' => 8,
-				'padding_bottom' => 7,
-				'border_radius' => '4'
-				),
-			'm'	=> array(
-				'desc'	=> _x('Medium buttons', 'theme-options', 'the7mk2'),
-				'ff'	=> '',
-				'fs'	=> 12,
-				'uc'	=> 0,
-				'padding_left' => 18,
-				'padding_right' => 18,
-				'padding_top' => 12,
-				'padding_bottom' => 11,
-				'border_radius' => '4'
-				),
-			'l'	=> array(
-				'desc'	=> _x('Big buttons', 'theme-options', 'the7mk2'),
-				'ff'	=> '',
-				'fs'	=> 14,
-				'uc'	=> 0,
-				'padding_left' => 24,
-				'padding_right' => 24,
-				'padding_top' => 17,
-				'padding_bottom' => 16,
-				'border_radius' => '4'
-				)
-		);
-	}
-
-endif; // presscore_themeoptions_get_buttons_defaults
 
 if ( ! function_exists( 'presscore_themeoptions_get_social_buttons_list' ) ) :
 
@@ -210,7 +102,6 @@ if ( ! function_exists( 'presscore_themeoptions_get_social_buttons_list' ) ) :
 		return array(
 			'facebook' 	=> __('Facebook', 'the7mk2'),
 			'twitter' 	=> __('Twitter', 'the7mk2'),
-			'google+' 	=> __('Google+', 'the7mk2'),
 			'pinterest' => __('Pinterest', 'the7mk2'),
 			'linkedin' 	=> __('LinkedIn', 'the7mk2'),
 			'whatsapp' 	=> __('WhatsApp', 'the7mk2'),
@@ -415,22 +306,85 @@ if ( ! function_exists( 'presscore_options_get_header_layout_elements' ) ) :
 	 */
 	function presscore_options_get_header_layout_elements() {
 		return apply_filters( 'header_layout_elements', array(
-			'social_icons'  => array( 'title' => _x( 'Social icons', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'search'        => array( 'title' => _x( 'Search', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'custom_menu'   => array( 'title' => _x( 'Menu 1', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'menu2'         => array( 'title' => _x( 'Menu 2', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'login'         => array( 'title' => _x( 'Login', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'text_area'     => array( 'title' => _x( 'Text 1', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'text2_area'    => array( 'title' => _x( 'Text 2', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'text3_area'    => array( 'title' => _x( 'Text 3', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'text4_area'    => array( 'title' => _x( 'Text 4', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'text5_area'    => array( 'title' => _x( 'Text 5', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'skype'         => array( 'title' => _x( 'Skype', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'email'         => array( 'title' => _x( 'Mail', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'address'       => array( 'title' => _x( 'Address', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'phone'         => array( 'title' => _x( 'Phone', 'theme-options', 'the7mk2' ), 'class' => '' ),
-			'working_hours' => array( 'title' => _x( 'Working hours', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'social_icons'   => array( 'title' => _x( 'Social icons', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'search'         => array( 'title' => _x( 'Search', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'custom_menu'    => array( 'title' => _x( 'Menu 1', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'menu2'          => array( 'title' => _x( 'Menu 2', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'login'          => array( 'title' => _x( 'Login', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'text_area'      => array( 'title' => _x( 'Text 1', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'text2_area'     => array( 'title' => _x( 'Text 2', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'text3_area'     => array( 'title' => _x( 'Text 3', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'text4_area'     => array( 'title' => _x( 'Text 4', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'text5_area'     => array( 'title' => _x( 'Text 5', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'multipurpose_1' => array( 'title' => _x( 'Multipurpose 1', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'multipurpose_2' => array( 'title' => _x( 'Multipurpose 2', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'multipurpose_3' => array( 'title' => _x( 'Multipurpose 3', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'multipurpose_4' => array( 'title' => _x( 'Multipurpose 4', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'address'        => array( 'title' => _x( 'Multipurpose 5', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'email'          => array( 'title' => _x( 'Multipurpose 6', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'phone'          => array( 'title' => _x( 'Multipurpose 7', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'skype'          => array( 'title' => _x( 'Multipurpose 8', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'working_hours'  => array( 'title' => _x( 'Multipurpose 9', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'button'         => array( 'title' => _x( 'Button 1', 'theme-options', 'the7mk2' ), 'class' => '' ),
+			'button-2'       => array( 'title' => _x( 'Button 2', 'theme-options', 'the7mk2' ), 'class' => '' ),
 		) );
 	}
 
 endif;
+
+if ( ! function_exists( 'presscore_options_micro_widgets_common_icons' ) ) {
+
+	/**
+	 * Return array of common micro-widgets icons classes.
+	 *
+	 * @since 7.3.0
+	 *
+	 * @param array $icons
+	 *
+	 * @return array
+	 */
+	function presscore_options_micro_widgets_common_icons( $icons = array() ) {
+		$common_icons = array(
+			'icomoon-the7-font-the7-mail-01',
+			'icomoon-the7-font-the7-mail-011',
+			'icomoon-the7-font-the7-mail-02',
+			'icomoon-the7-font-the7-mail-03',
+			'icomoon-the7-font-the7-mw-mail-04',
+			'icomoon-the7-font-the7-mw-mail-041',
+			'icomoon-the7-font-the7-mail-05',
+			'icomoon-the7-font-the7-mail-mail-06',
+			'icomoon-the7-font-the7-mail-07',
+			'icomoon-the7-font-the7-mail-08',
+			'icomoon-the7-font-the7-mail-09',
+			'icomoon-the7-font-the7-phone-01',
+			'icomoon-the7-font-the7-phone-02',
+			'icomoon-the7-font-the7-phone-03',
+			'icomoon-the7-font-the7-phone-04',
+			'icomoon-the7-font-the7-phone-041',
+			'icomoon-the7-font-the7-phone-05',
+			'icomoon-the7-font-the7-phone-051',
+			'icomoon-the7-font-the7-phone-06',
+			'icomoon-the7-font-the7-phone-07',
+			'icomoon-the7-font-the7-phone-071',
+			'icomoon-the7-font-the7-home-00',
+			'icomoon-the7-font-the7-home-02',
+			'icomoon-the7-font-the7-home-021',
+			'icomoon-the7-font-the7-home-022',
+			'icomoon-the7-font-the7-home-03',
+			'icomoon-the7-font-the7-home-04',
+			'icomoon-the7-font-the7-map-02',
+			'icomoon-the7-font-the7-map-03',
+			'icomoon-the7-font-the7-map-04',
+			'icomoon-the7-font-the7-map-05',
+			'icomoon-the7-font-the7-map-06',
+			'icomoon-the7-font-the7-map-07',
+			'icomoon-the7-font-the7-clock-00',
+			'icomoon-the7-font-the7-clock-01',
+			'icomoon-the7-font-the7-clock-02',
+			'icomoon-the7-font-the7-clock-03'
+		);
+
+		return (array) apply_filters( 'the7_options_micro_widgets_common_icons', array_merge( $common_icons, $icons ) );
+	}
+
+}

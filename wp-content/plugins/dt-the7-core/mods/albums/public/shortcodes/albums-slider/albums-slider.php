@@ -24,7 +24,7 @@ if ( ! class_exists( 'DT_Shortcode_Albums_Slider', false ) ) {
 			    return $this->vc_inline_dummy( array(
 	                'class'  => 'dt_vc-albums_scroller',
 	                'img' => array( PRESSCORE_SHORTCODES_URI . '/images/vc_album_carousel_editor_ico.gif', 131, 104 ),
-	                'title'  => _x( 'Albums Scroller', 'vc inline dummy', 'the7mk2' ),
+	                'title'  => _x( 'Albums Scroller', 'vc inline dummy', 'dt-the7-core' ),
 
 	                'style' => array( 'height' => 'auto' )
 	            ) );
@@ -46,7 +46,6 @@ if ( ! class_exists( 'DT_Shortcode_Albums_Slider', false ) ) {
 				'select' => $attributes['select'],
 				'category' => $attributes['category']
 			) );
-
 			if ( $dt_query->have_posts() ) {
 
 				// setup
@@ -71,9 +70,6 @@ if ( ! class_exists( 'DT_Shortcode_Albums_Slider', false ) ) {
 				// shape output
 				$output = '<div ' . $this->get_container_html_class( array( 'dt-albums-shortcode', 'slider-wrapper owl-carousel dt-owl-carousel-init' ) ) . ' ' . $this->get_container_data_atts() . '>';
 				$output .= $posts_html;
-				// if ( $attributes['arrows'] ) {
-				// 	$output .= '<div class="prev"><i></i></div><div class="next"><i></i></div>';
-				// }
 				$output .= '</div>';
 
 				// cleanup
@@ -120,7 +116,7 @@ if ( ! class_exists( 'DT_Shortcode_Albums_Slider', false ) ) {
 				'width'                       => '0',
 				'max_width'                   => '',
 				'height'                      => '210',
-			), $atts );
+			), $atts, $this->shortcode_name );
 
 			// sanitize attributes
 			$attributes['order'] = apply_filters('dt_sanitize_order', $attributes['order']);

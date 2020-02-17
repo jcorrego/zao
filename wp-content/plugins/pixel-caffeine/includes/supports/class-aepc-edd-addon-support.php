@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AEPC_Edd_Addon_Support extends AEPC_Addon_Factory implements ECommerceAddOnInterface {
 
 	const FEED_STATUS_META = '_product_feed_status';
+	const ALREADY_TRACKED_POSTMETA = '_aepc_puchase_tracked';
 
 	/**
 	 * The slug of addon, useful to identify some common resources
@@ -103,7 +104,11 @@ class AEPC_Edd_Addon_Support extends AEPC_Addon_Factory implements ECommerceAddO
 	 * @return bool
 	 */
 	protected function can_fire_purchase() {
-		return edd_is_success_page() && ! empty( $GLOBALS['edd_receipt_args']['id'] );
+		global $edd_receipt_args;
+
+		return edd_is_success_page()
+		       && ! empty( $edd_receipt_args['id'] )
+		       && !get_post_meta($edd_receipt_args['id'], self::ALREADY_TRACKED_POSTMETA, true);
 	}
 
 	/**
@@ -225,6 +230,8 @@ class AEPC_Edd_Addon_Support extends AEPC_Addon_Factory implements ECommerceAddO
 		foreach ( (array) $cart as $key => $item ) {
 			$product_ids[] = $this->maybe_sku( $item['id'] );
 		}
+
+		add_post_meta($payment_id, self::ALREADY_TRACKED_POSTMETA, true);
 
 		return array(
 			'content_ids' => $product_ids,
@@ -543,6 +550,10 @@ class AEPC_Edd_Addon_Support extends AEPC_Addon_Factory implements ECommerceAddO
 	 */
 	protected function query_items( $filter, ProductCatalogManager $product_catalog, Metaboxes $metaboxes ) {
 		$products_query = $this->query_items_args( $filter, $product_catalog );
+
+		// Fix plugin compatibilities
+		add_filter('option_siteground_optimizer_optimize_images', '__return_true');
+		add_filter('site_option_siteground_optimizer_optimize_images', '__return_true');
 
 		// Map WC objects
 		$products = new WP_Query( $products_query );

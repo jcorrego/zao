@@ -144,7 +144,7 @@ jQuery(document).ready(function(){
 			});
 
 			// Add ability to write an option not present on list of select
-			context.find('.js-ecommerce input').on( 'change.data', function(){
+			context.find('.js-ecommerce input, .js-events input').on( 'change.data', function(){
 				context.find('#dpa_key')
 					.select2({
 						placeholder: aepc_admin.filter_custom_field_placeholder,

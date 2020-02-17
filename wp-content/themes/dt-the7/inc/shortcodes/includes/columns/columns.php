@@ -28,19 +28,15 @@ class DT_Shortcode_Columns extends DT_Shortcode {
     }
 
     protected function __construct() {
-
         add_shortcode( $this->shortcode_name, array( $this, 'shortcode_cell' ) );
         add_filter( 'dt_get_puny_shortcodes', array( $this, 'register_puny_shortcode' ) );
-
-        // add shortcode button
-        $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
     }
 
     public function shortcode_cell( $atts, $content = null ) {
         $def_atts = array(
             'width'         => '1',
         );
-        extract( shortcode_atts( $def_atts, $atts ) );
+        extract( shortcode_atts( $def_atts, $atts, $this->shortcode_name ) );
 
         $width_classes = array(
             '1' => 'wf-1',

@@ -72,10 +72,6 @@ class AEPC_Facebook_Adapter {
 	 * Define access token, where we can know if the user did login or not
 	 */
 	public function connect() {
-		if ( ! is_user_logged_in() ) {
-			return;
-		}
-
 		// Load local configuration, if defined the file resources/fb.yml
 		if ( file_exists( PixelCaffeine()->plugin_path() . '/includes/resources/fb.dev.yml' ) && class_exists( '\Symfony\Component\Yaml\Yaml' ) ) {
 			$local_config = Yaml::parse( file_get_contents( PixelCaffeine()->plugin_path() . '/includes/resources/fb.dev.yml' ) );
@@ -671,14 +667,11 @@ class AEPC_Facebook_Adapter {
 			return $business_id;
 		}
 
-		$response = $this->request( 'GET', '/act_' . $account_id . '/userpermissions' );
-		$permissions = json_decode( wp_remote_retrieve_body( $response ) );
+		$response = $this->request( 'GET', '/act_' . $account_id, ['fields' => 'business'] );
+		$data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		foreach ( $permissions->data as $data ) {
-			if ( ! empty( $data->business ) && ! empty( $data->user ) && $data->user->id === $this->get_user_id() ) {
-				$business_id = $data->business->id;
-				break;
-			}
+		if ( ! empty( $data->business->id ) ) {
+			$business_id = $data->business->id;
 		}
 
 		return $business_id;
@@ -696,13 +689,35 @@ class AEPC_Facebook_Adapter {
 			return null;
 		}
 
-		$response = $this->request( 'GET', '/act_' . $account_id . '/adspixels', array(
-			'fields' => 'id,name',
-			'limit' => apply_filters( 'aepc_facebook_request_pixels_limit', 100 )
-		) );
+		try {
+			$response = $this->request('GET', '/act_' . $account_id . '/adspixels', [
+				'fields' => 'id,name',
+				'limit'  => apply_filters('aepc_facebook_request_pixels_limit', 100),
+			]);
+		} catch (Exception $e) {
+			return array();
+		}
 
-		$pixels = json_decode( wp_remote_retrieve_body( $response ) );
-		return $pixels->data;
+		$pixels = json_decode( wp_remote_retrieve_body( $response ) )->data;
+
+		if ( $business_id = $this->get_business_id_from_account_id() ) {
+			try {
+				$response = $this->request('GET', '/' . $business_id . '/adspixels', [
+					'fields' => 'id,name',
+					'limit'  => apply_filters('aepc_facebook_request_pixels_limit', 100),
+				]);
+
+				// Add into the list only if it's not been fetched before
+				foreach ( json_decode(wp_remote_retrieve_body($response))->data as $pixel ) {
+					if ( ! in_array( $pixel->id, wp_list_pluck($pixels, 'id') ) ) {
+						$pixels[] = $pixel;
+					}
+				}
+			} catch (Exception $e) {
+			}
+		}
+
+		return $pixels;
 	}
 
 	/**
@@ -768,7 +783,6 @@ class AEPC_Facebook_Adapter {
 
 		$args = wp_parse_args( $args, array(
 			'aggregation' => 'pixel_fire',
-//			'event' => 'aggregation',
 			'start_time' => time() - 2 * WEEK_IN_SECONDS,
 			'end_time' => time()
 		) );
@@ -1122,6 +1136,11 @@ class AEPC_Facebook_Adapter {
 		// Add DPA tracking events on condition
 		elseif ( 'ecommerce' == $args['event_type'] && in_array( $args['event'], array_keys( AEPC_Track::$standard_events ) ) ) {
 			$filters[] = $this->add_ca_filter('event', self::CA_RULE_CONTAINS, $args['event']);
+		}
+
+		// Add custom events
+		elseif ( 'events' == $args['event_type'] ) {
+			$filters[] = $this->add_ca_filter('event', self::CA_RULE_EQ, $args['event']);
 		}
 
 		/**

@@ -37,6 +37,9 @@
  * The `lessc_formatter` takes a CSS tree, and dumps it to a formatted string,
  * handling things like indentation.
  */
+
+defined( 'ABSPATH' ) || exit;
+
 class the7_lessc {
 	static public $VERSION = "v0.4.0";
 	static protected $TRUE = array("keyword", "true");
@@ -643,11 +646,12 @@ class the7_lessc {
 		// set error position context
 		$this->sourceLoc = isset($prop[-1]) ? $prop[-1] : -1;
 
+		$this->currentProp = 'undefined';
+
 		switch ($prop[0]) {
 		case 'assign':
 			list(, $name, $value) = $prop;
 
-			// modified by Daniel Gerasimov
 			if ( defined('DT_LESS_USE_PHP_VARS') && DT_LESS_USE_PHP_VARS ) {
 				static $new_parser = null;
 				if ( empty($new_parser) ) {
@@ -665,7 +669,6 @@ class the7_lessc {
 
 				}
 			}
-			// end
 
 			if ($name[0] == $this->vPrefix) {
 				$this->set($name, $value);
@@ -735,7 +738,7 @@ class the7_lessc {
 					if ($suffix !== null &&
 						$subProp[0] == "assign" &&
 						is_string($subProp[1]) &&
-						$subProp[1]{0} != $this->vPrefix)
+						$subProp[1][0] != $this->vPrefix)
 					{
 						$subProp[2] = array(
 							'list', ' ',
@@ -1210,7 +1213,7 @@ class the7_lessc {
 	protected function assertColor($value, $error = "expected color value") {
 		$color = $this->coerceColor($value);
 		if (is_null($color)) {
-			$this->throwError( sprintf( "$error (%s)", print_r( $value, true ) ) );
+			$this->throwError( $error );
 		}
 		return $color;
 	}
@@ -1788,7 +1791,7 @@ class the7_lessc {
 		$this->pushEnv();
 		$parser = new the7_lessc_parser($this, __METHOD__);
 		foreach ($args as $name => $strValue) {
-			if ($name{0} != '@') $name = '@'.$name;
+			if ($name[0] != '@') $name = '@'.$name;
 			$parser->count = 0;
 			$parser->buffer = (string)$strValue;
 			if (!$parser->propertyValue($value)) {
@@ -2024,8 +2027,10 @@ class the7_lessc {
 	 * Uses the current value of $this->count to show line and line number
 	 */
 	protected function throwError($msg = null) {
-		if ($this->sourceLoc >= 0) {
-			$this->sourceParser->throwError($msg, $this->sourceLoc);
+		if ( $this->sourceLoc >= 0 ) {
+			$file = str_replace( ABSPATH, '', (string) key( $this->allParsedFiles ) );
+			end( $this->allParsedFiles );
+			$this->sourceParser->throwError( "{$msg} in var {$this->currentProp} in file {$file}", $this->sourceLoc );
 		}
 		throw new exception($msg);
 	}
@@ -2444,7 +2449,7 @@ class the7_lessc_parser {
 				$hidden = true;
 				if (!isset($block->args)) {
 					foreach ($block->tags as $tag) {
-						if (!is_string($tag) || $tag{0} != $this->the7_lessc->mPrefix) {
+						if (!is_string($tag) || $tag[0] != $this->the7_lessc->mPrefix) {
 							$hidden = false;
 							break;
 						}
@@ -2498,7 +2503,7 @@ class the7_lessc_parser {
 	protected function fixTags($tags) {
 		// move @ tags out of variable namespace
 		foreach ($tags as &$tag) {
-			if ($tag{0} == $this->the7_lessc->vPrefix)
+			if ($tag[0] == $this->the7_lessc->vPrefix)
 				$tag[0] = $this->the7_lessc->mPrefix;
 		}
 		return $tags;

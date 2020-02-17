@@ -40,8 +40,8 @@ if (!defined('ABSPATH'))
         
     }
     public function wp_footer(){
-         wp_enqueue_script( 'meta-textinput-js',  $this->get_meta_filter_link(). 'js/textinput.js', array('jquery'), '', true );
-         wp_enqueue_style( 'meta-textinput-css',  $this->get_meta_filter_link(). 'css/textinput.css' );
+         wp_enqueue_script( 'meta-textinput-js',  $this->get_meta_filter_link(). 'js/textinput.js', array('jquery'),WOOF_VERSION, true );
+         wp_enqueue_style( 'meta-textinput-css',  $this->get_meta_filter_link(). 'css/textinput.css',array(),WOOF_VERSION);
     }
     public function get_meta_filter_path(){
         return plugin_dir_path(__FILE__);

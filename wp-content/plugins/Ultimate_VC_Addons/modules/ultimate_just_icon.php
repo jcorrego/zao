@@ -330,7 +330,7 @@ if(!class_exists('AIO_Just_Icon'))
 				}
 			}
 			
-			if($tooltip_disp !== '' && $href['url'] == NULL ){
+			if($tooltip_disp !== '' && $link_title == '' ){
 				$link_prefix .= '<div class="aio-tooltip '.esc_attr($uniqid).'" data-toggle="tooltip" data-placement="'.esc_attr($tooltip_disp).'" title="'.esc_attr($tooltip_text).'">';
 				$link_sufix .= '</div>';
 			}

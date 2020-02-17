@@ -25,9 +25,23 @@ abstract class The7_DB_Patch implements The7_DB_Patch_Interface {
 	abstract protected function do_apply();
 
 	protected function rename_option( $old_key, $new_key ) {
-		if ( $this->option_exists( $old_key ) && ! $this->option_exists( $new_key ) ) {
-			$this->set_option( $new_key, $this->get_option( $old_key ) );
-			$this->remove_option( $old_key );
+		if ( array_key_exists( $old_key, $this->options ) && ! array_key_exists( $new_key, $this->options ) ) {
+			$this->options[ $new_key ] = $this->options[ $old_key ];
+			unset( $this->options[ $old_key ] );
+		}
+	}
+
+	/**
+	 * Copy option value to another option, if value option exists.
+	 *
+	 * @since 7.4.0
+	 *
+	 * @param string $target_key
+	 * @param string $value_key
+	 */
+	protected function copy_option_value( $target_key, $value_key ) {
+		if ( array_key_exists( $value_key, $this->options ) && ! array_key_exists( $target_key, $this->options ) ) {
+			$this->options[ $target_key ] = $this->options[ $value_key ];
 		}
 	}
 
@@ -39,8 +53,14 @@ abstract class The7_DB_Patch implements The7_DB_Patch_Interface {
 		$this->options[ $key ] = $val;
 	}
 
+	protected function add_option( $key, $val ) {
+		if ( ! array_key_exists( $key, $this->options ) ) {
+			$this->options[ $key ] = $val;
+		}
+	}
+
 	protected function get_option( $key ) {
-		if ( $this->option_exists( $key ) ) {
+		if ( array_key_exists( $key, $this->options ) ) {
 			return $this->options[ $key ];
 		}
 

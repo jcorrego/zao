@@ -1,89 +1,98 @@
 <?php
-/* Template Name: Portfolio - masonry & grid */
-
 /**
+ * Template Name: Portfolio - masonry & grid
+ *
  * Portfolio masonry layout.
  *
- * @package The7
- * @since 1.0.0
+ * @since   1.0.0
+ *
+ * @package The7\Templates
  */
 
-// File Security Check
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 $config = presscore_config();
 $config->set( 'template', 'portfolio' );
 
-add_action('presscore_before_main_container', 'presscore_page_content_controller', 15);
+add_action( 'presscore_before_main_container', 'presscore_page_content_controller', 15 );
 
 get_header();
 
-if ( presscore_is_content_visible() ): ?>
+if ( presscore_is_content_visible() ) : ?>
 
-			<!-- Content -->
-			<div id="content" class="content" role="main">
+	<!-- Content -->
+	<div id="content" class="content" role="main">
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); // main loop
+		<?php
+		if ( have_posts() ) :
+			while ( have_posts() ) :
+				the_post();
 
-					do_action( 'presscore_before_loop' );
+				do_action( 'presscore_before_loop' );
 
-					if ( post_password_required() ) {
-						the_content();
-					} else {
-						// backup config
-						$config_backup = $config->get();
+				if ( post_password_required() ) {
+					the_content();
+				} else {
+					$config_backup = $config->get();
 
-						presscore_display_posts_filter( array(
+					presscore_display_posts_filter(
+						array(
 							'post_type' => 'dt_portfolio',
-							'taxonomy' => 'dt_portfolio_category'
-						) );
+							'taxonomy'  => 'dt_portfolio_category',
+						)
+					);
 
-						// fullwidth wrap open
-						if ( $config->get( 'full_width' ) ) { echo '<div class="full-width-wrap">'; }
-
-						// masonry container open
-						echo '<div ' . presscore_masonry_container_class( array( 'wf-container' ) ) . presscore_masonry_container_data_atts() . '>';
-
-							$page_query = presscore_get_filtered_posts( array( 'post_type' => 'dt_portfolio', 'taxonomy' => 'dt_portfolio_category' ) );
-							if ( $page_query->have_posts() ) {
-
-								while( $page_query->have_posts() ) {
-									$page_query->the_post();
-
-									// populate post config
-									presscore_populate_portfolio_config();
-
-									presscore_get_template_part( 'mod_portfolio', 'masonry/project' );
-								}
-
-								wp_reset_postdata();
-							}
-
-						// masonry container close
-						echo '</div>';
-
-						// fullwidth wrap close
-						if ( $config->get( 'full_width' ) ) { echo '</div>'; }
-
-						presscore_complex_pagination( $page_query );
-
-						// restore config
-						$config->reset( $config_backup );
+					if ( $config->get( 'full_width' ) ) {
+						echo '<div class="full-width-wrap">';
 					}
 
-					do_action( 'presscore_after_loop' );
+					echo '<div ' . presscore_masonry_container_class(
+						array( 'wf-container' )
+					) . presscore_masonry_container_data_atts() . '>';
 
-					presscore_display_share_buttons_for_post( 'page' );
+					$page_query = presscore_get_filtered_posts(
+						array(
+							'post_type' => 'dt_portfolio',
+							'taxonomy'  => 'dt_portfolio_category',
+						)
+					);
+					if ( $page_query->have_posts() ) {
 
-				endwhile; endif; // main loop ?>
+						while ( $page_query->have_posts() ) {
+							$page_query->the_post();
 
-			</div><!-- #content -->
+							presscore_populate_portfolio_config();
 
-			<?php
-			do_action('presscore_after_content');
+							presscore_get_template_part( 'mod_portfolio', 'masonry/project' );
+						}
 
-endif; // if content visible
+						wp_reset_postdata();
+					}
+
+					echo '</div>';
+
+					if ( $config->get( 'full_width' ) ) {
+						echo '</div>';
+					}
+
+					presscore_complex_pagination( $page_query );
+
+					$config->reset( $config_backup );
+				}
+
+				do_action( 'presscore_after_loop' );
+
+				the7_display_post_share_buttons( 'page' );
+
+			endwhile;
+		endif;
+		?>
+
+	</div><!-- #content -->
+
+	<?php
+	do_action( 'presscore_after_content' );
+
+endif;
 
 get_footer(); ?>

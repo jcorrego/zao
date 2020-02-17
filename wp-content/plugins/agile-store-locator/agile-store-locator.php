@@ -10,10 +10,10 @@
  * Plugin Name:       Agile Store Locator
  * Plugin URI:        https://agilestorelocator.com
  * Description:       Agile Store Locator is a WordPress Store Finder/Locator Plugin that renders stores list with Location markers on Google Maps v3, it supports GeoLocation and render nearest stores with direction over google maps.
- * Version:           1.1.4
+ * Version:           1.1.10
  * Author:            AGILELOGIX
  * Author URI:        https://agilestorelocator.com/
- * License:           Copyrights 2018
+ * License:           Copyrights 2020
  * License URI:       
  * Text Domain:       asl_locator
  * Domain Path:       /languages/
@@ -29,7 +29,7 @@ define( 'AGILESTORELOCATOR_URL_PATH', plugin_dir_url( __FILE__ ) );
 define( 'AGILESTORELOCATOR_PLUGIN_PATH', plugin_dir_path(__FILE__) );
 define( 'AGILESTORELOCATOR_PREFIX', $wpdb->prefix."asl_" );
 define( 'AGILESTORELOCATOR_PLUGIN_BASE', dirname( plugin_basename( __FILE__ ) ) );
-define( 'AGILESTORELOCATOR_CVERSION', "1.1.4" );
+define( 'AGILESTORELOCATOR_CVERSION', "1.1.10" );
 
 global $wp_version;
 
@@ -65,9 +65,29 @@ add_action( 'upgrader_process_complete', 'asl_upgrate_process',10, 2);
 
 function asl_upgrate_process( $upgrader_object, $options ) {
 
-  	//Store Timing
-	require_once AGILESTORELOCATOR_PLUGIN_PATH . 'includes/class-agile-store-locator-helper.php';
-	AgileStoreLocator_Helper::fix_backward_compatible();
+	require_once AGILESTORELOCATOR_PLUGIN_PATH . 'includes/class-agile-store-locator-activator.php';
+
+	$our_plugin = plugin_basename( __FILE__ );
+ 	
+ 	// If an update has taken place and the updated type is plugins and the plugins element exists
+ 	if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+	  
+	  // Iterate through the plugins being updated and check if ours is there
+	  foreach( $options['plugins'] as $plugin ) {
+	  	
+	  	if( $plugin == $our_plugin ) {
+
+
+	  		//Store Timing
+				require_once AGILESTORELOCATOR_PLUGIN_PATH . 'includes/class-agile-store-locator-helper.php';
+				AgileStoreLocator_Helper::fix_backward_compatible();
+
+				AgileStoreLocator_Activator::upgrade_method();
+	    	
+	  	}
+	  }
+ 	}
+  
 }
 
 

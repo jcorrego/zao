@@ -344,7 +344,7 @@ if(!class_exists("Ultimate_Team")){
 
 			    $social_icons = json_decode (urldecode( $social_links ) );
 
-			    if ( count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
+			    if ( $social_icons && count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
 
 			        $icon_styling = 'font-size:' . esc_attr($social_icon_size) .' ; margin-left:' . esc_attr($social_icon_space) .';margin-right:' . esc_attr($social_icon_space) .';';
 			        echo "<div class='ult-social-buttons'>";
@@ -413,7 +413,7 @@ if(!class_exists("Ultimate_Team")){
 
 			    $social_icons = json_decode (urldecode( $social_links ) );
 
-			    if ( count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
+			    if ( $social_icons && count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
 
 			        $icon_styling = ' font-size:' . $social_icon_size .' ; margin-left:' . $social_icon_space .';margin-right:' . $social_icon_space .';';
 			        echo "<div class='ult-social-buttons'>";
@@ -504,7 +504,7 @@ if(!class_exists("Ultimate_Team")){
 
 			    $social_icons = json_decode (urldecode( $social_links ) );
 
-			    if ( count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
+			    if ( $social_icons && count( $social_icons ) > 0 && $social_icon_effect == 'on' ) {
 
 			        $icon_styling = 'font-size:' . $social_icon_size .' ; margin-left:' . $social_icon_space .';margin-right:' . esc_attr($social_icon_space) .';';
 			        echo "<div class='ult-social-buttons'>";

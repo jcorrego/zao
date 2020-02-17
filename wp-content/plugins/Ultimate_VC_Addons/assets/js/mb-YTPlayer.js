@@ -38,7 +38,7 @@ jQuery(document).ready(function(){
 					var is_viewport = selector.parent().find('.enable-on-viewport').length;
 					if(is_viewport > 0)
 					{
-						plr.pauseYTP();
+						plr.YTPPause();
 						vc_viewport_video(plr);
 						jQuery(window).scroll(function(){
 							vc_viewport_video(plr);
@@ -55,9 +55,9 @@ jQuery(document).ready(function(){
 	{
 			var is_on_viewport = plr.isVdoOnScreen();
 			if(is_on_viewport)
-				plr.playYTP();
+				plr.YTPPlay();
 			else
-				plr.pauseYTP();
+				plr.YTPPause();
 	}
 
 	function check_for_control(button,plr)
@@ -69,13 +69,13 @@ jQuery(document).ready(function(){
 			{
 				if(current_action == 'pause')
 				{
-					plr.playYTP();
+					plr.YTPPlay();
 					jQuery(button).attr('data-action','play');
 					jQuery(button).html('<i class="Defaults-pause"></i>');
 				}
 				else
 				{
-					plr.pauseYTP();
+					plr.YTPPause();
 					jQuery(button).attr('data-action','pause');
 					jQuery(button).html('<i class="Defaults-play"></i>');
 				}

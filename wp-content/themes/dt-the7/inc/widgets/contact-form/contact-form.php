@@ -2,8 +2,9 @@
 /**
  * Contact form widget.
  *
- * @package presscore.
- * @since presscore 1.0
+ * @since 1.0.0
+ *
+ * @package The7
  */
 
 // File Security Check
@@ -26,6 +27,13 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 	);
 
 	public static $fields_list = array();
+
+	/**
+	 * The7 ReCaptcha object.
+	 *
+	 * @var The7_ReCaptcha
+	 */
+	protected $captcha;
 
 	/**
 	 * Widget setup.
@@ -52,7 +60,9 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 
 		self::$widget_defaults['terms_msg'] = _x( 'By using this form you agree with the storage and handling of your data by this website.', 'widget', 'the7mk2' );
 
-		add_filter('dt_core_send_mail-to', array( $this, 'presscore_send_to_filter' ), 20);
+		add_filter( 'dt_core_send_mail-to', array( $this, 'widget_send_to_email_filter' ), 20, 2 );
+
+		$this->captcha = new The7_ReCaptcha();
 	}
 
 	/**
@@ -104,14 +114,16 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 			if ( $instance['terms'] ) {
 			    $form_class[] = 'privacy-form';
             }
+			$form_class = implode( ' ', $form_class );
 
 			// form begin
-			printf( '<form class="%s" action="/" method="post">' . "\n", implode( ' ', $form_class ) );
-			
+			echo '<form class="'. esc_attr( $form_class ) . '" method="post">';
+
 			echo '<input type="hidden" name="widget_id" value="' . $this->id . '" />';
 
 			// some sort of bot check
 			echo '<input type="hidden" name="send_message" value="" />';
+			echo '<input type="hidden" name="security_token" value="' . esc_attr( of_get_option( 'contact_form_security_token' ) ) . '"/>';
 
 			$fields_str = '';
 			$message = '';
@@ -202,6 +214,10 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 			}
 
 			echo $fields_str . $message;
+
+			if ( $this->captcha->is_active() ) {
+				echo '<div class="the7-g-captcha"></div>';
+			}
 
 			if ( $instance['terms'] ) {
 			    $terms_field_id = 'the7-form-terms-' . md5( (string) rand( 0, 9999 ) );
@@ -324,11 +340,33 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 	 * Enqueue scripts.
 	 */
 	function presscore_enqueue_scripts() {
+		wp_register_script(
+			'the7-form-validator',
+			PRESSCORE_THEME_URI . '/js/atoms/plugins/validator/jquery.validationEngine.js',
+			array( 'jquery' ),
+			THE7_VERSION,
+			true
+		);
 		$ve_locale = $this->_get_validator_locale();
+		wp_register_script(
+			'the7-form-validator-translation',
+			PRESSCORE_THEME_URI . '/js/atoms/plugins/validator/languages/jquery.validationEngine-' . $ve_locale . '.js',
+			array( 'the7-form-validator' ),
+			THE7_VERSION,
+			true
+		);
+		the7_register_script(
+			'the7-contact-form',
+			PRESSCORE_THEME_URI . '/js/dt-contact-form',
+			array( 'the7-form-validator', 'the7-form-validator-translation' ),
+			THE7_VERSION,
+			true
+		);
+		wp_enqueue_script( 'the7-contact-form' );
 
-		wp_enqueue_script( 'dt-validator', PRESSCORE_THEME_URI . '/js/atoms/plugins/validator/jquery.validationEngine.js', array( 'jquery' ), THE7_VERSION, true );
-		wp_enqueue_script( 'dt-validation-translation', PRESSCORE_THEME_URI . '/js/atoms/plugins/validator/languages/jquery.validationEngine-' . $ve_locale . '.js', array('dt-validator'), THE7_VERSION, true );
-		wp_enqueue_script( 'dt-contact-form', PRESSCORE_THEME_URI . '/js/dt-contact-form.js', array('dt-validator', 'dt-validation-translation'), THE7_VERSION, true );
+		if ( $this->captcha->is_active() ) {
+			$this->captcha->enqueue_scripts();
+		}
 	}
 
 	function _get_validator_locale() {
@@ -380,15 +418,16 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
     }
 
 	/**
-     * Filter send_to mail attribute.
-     *
-	 * @param string $em
+	 * Filter send_to mail attribute.
+	 *
+	 * @param string $em      Default email.
+	 * @param array  $request Request arguments array.
 	 *
 	 * @return string
 	 */
-	function presscore_send_to_filter( $em = '' ) {
-		if ( ! empty( $_POST['widget_id'] ) ) {
-			$widget_id = str_replace( "$this->id_base-", '', $_POST['widget_id'] );
+	public function widget_send_to_email_filter( $em = '', $request = array() ) {
+		if ( ! empty( $request['widget_id'] ) ) {
+			$widget_id = str_replace( "{$this->id_base}-", '', $request['widget_id'] );
 			$option = get_option( $this->option_name );
 			if ( isset( $option[ $widget_id ] ) && ! empty( $option[ $widget_id ]['send_to'] ) ) {
 				return $option[ $widget_id ]['send_to'];
